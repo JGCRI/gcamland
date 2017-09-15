@@ -4,7 +4,7 @@
 \alias{AgProductionTechnology_calcProfitRate}
 \title{AgProductionTechnology_calcProfitRate}
 \usage{
-AgProductionTechnology_calcProfitRate(aRegionName, aPeriod)
+AgProductionTechnology_calcProfitRate(mLandAllocator, aPeriod)
 }
 \arguments{
 \item{aRegionName}{Region name.}

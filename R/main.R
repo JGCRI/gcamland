@@ -17,7 +17,7 @@ run_model <- function() {
     # First, call initCalc for AgProductionTechnology and LandAllocator
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
-    AgProductionTechnology_initCalc(REGION, year)
+    AgProductionTechnology_initCalc(mLandAllocator, year)
     LandAllocator_initCalc(mLandAllocator, year)
 
     # Next, call calcFinalLandAllocation for LandAllocator

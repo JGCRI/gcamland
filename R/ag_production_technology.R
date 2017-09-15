@@ -64,24 +64,31 @@ AgProductionTechnology_initCalc <- function(aRegionName, aPeriod) {
 #'          Profit rate is in 1975$ per billion m2, so computation includes yield.
 #' @param aRegionName Region name.
 #' @author KVC September 2017
-AgProductionTechnology_calcProfitRate <- function(aRegionName, aPeriod) {
+AgProductionTechnology_calcProfitRate <- function(mLandAllocator, aPeriod) {
   # TODO: Fix this to use read-in data and figure out future periods
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.
   # We multiply by 1e9 since profitRate initially is in $/m2
   # and the land allocator needs it in $/billion m2. This assumes yield is in kg/m2.
   if(aPeriod <= FINAL_CALIBRATION_PERIOD) {
-    LANDLEAF_CALDATA %>%
-      mutate(profit = (price - cost) * yield * 1e9) %>%
-      select(name, profit) ->
-      LANDLEAF_PROFIT
+    # TODO: allow for more than one node
+    # Figure out how to read in/differentiate price, cost, yield
+    price <- 1
+    cost <- 0
+    yield <- 1
+    landNode <- mLandAllocator$mChild
+    for ( leaf in landNode$mChildren ) {
+      leaf$mProfitRate <- (price - cost) * yield * 1e9
+    }
   } else {
     # TODO: Fix this to use future data
-    LANDLEAF_CALDATA %>%
-      mutate(profit = (price - cost) * yield * 1e9) %>%
-      select(name, profit) ->
-      LANDLEAF_PROFIT
+    # TODO: allow for more than one node
+    # Figure out how to read in/differentiate price, cost, yield
+    price <- 1
+    cost <- 0
+    yield <- 1
+    landNode <- mLandAllocator$mChild
+    for ( leaf in landNode$mChildren ) {
+      leaf$mProfitRate <- (price - cost) * yield * 1e9
+    }
   }
-
-  # TODO: Change how we store data
-  write_csv(LANDLEAF_PROFIT, "./inst/extdata/temp-data/LANDLEAF_PROFIT.csv")
 }

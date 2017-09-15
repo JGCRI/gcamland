@@ -4,7 +4,7 @@
 \alias{LandLeaf_calculateShareWeight}
 \title{LandLeaf_calculateShareWeight}
 \usage{
-LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod)
+LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT)
 }
 \arguments{
 \item{aChoiceFnAbove}{Type of logit}
