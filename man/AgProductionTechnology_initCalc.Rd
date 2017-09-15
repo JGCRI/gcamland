@@ -4,10 +4,10 @@
 \alias{AgProductionTechnology_initCalc}
 \title{AgProductionTechnology_initCalc}
 \usage{
-AgProductionTechnology_initCalc(aRegionName, aPeriod)
+AgProductionTechnology_initCalc(aLandAllocator, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
+\item{aLandAllocator}{Land allocator}
 
 \item{aPeriod}{Model time period.}
 }

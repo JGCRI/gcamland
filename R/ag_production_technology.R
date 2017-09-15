@@ -6,10 +6,10 @@
 #'          Adjusts costs & yields for technical change, calculate
 #'          profit rate and make it available for the land allocator.
 #'          Note: this method must be called before LandAllocator initCalc
-#' @param aRegionName Region name.
+#' @param aLandAllocator Land allocator
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
-AgProductionTechnology_initCalc <- function(aRegionName, aPeriod) {
+AgProductionTechnology_initCalc <- function(aLandAllocator, aPeriod) {
 #   // Compute tech change values for this period for both ag productivity and
 #   // the nonLandVariableCost.  Since technologies are distinct by vintage and don't
 #   // previous period technologies, need to save a previous period compounded cumulative
@@ -54,7 +54,7 @@ AgProductionTechnology_initCalc <- function(aRegionName, aPeriod) {
 # }
 
   # Calculate profit rate
-  AgProductionTechnology_calcProfitRate(aRegionName, aPeriod)
+  AgProductionTechnology_calcProfitRate(aLandAllocator, aPeriod)
 }
 
 #' AgProductionTechnology_calcProfitRate
@@ -62,9 +62,10 @@ AgProductionTechnology_initCalc <- function(aRegionName, aPeriod) {
 #' @details Calculates the profit rate which is equal to the market price minus
 #'          the variable cost. Profit rate can be negative.
 #'          Profit rate is in 1975$ per billion m2, so computation includes yield.
-#' @param aRegionName Region name.
+#' @param aLandAllocator Land allocator
+#' @param aPeriod Current model period
 #' @author KVC September 2017
-AgProductionTechnology_calcProfitRate <- function(mLandAllocator, aPeriod) {
+AgProductionTechnology_calcProfitRate <- function(aLandAllocator, aPeriod) {
   # TODO: Fix this to use read-in data and figure out future periods
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.
   # We multiply by 1e9 since profitRate initially is in $/m2
@@ -75,7 +76,7 @@ AgProductionTechnology_calcProfitRate <- function(mLandAllocator, aPeriod) {
     price <- 1
     cost <- 0
     yield <- 1
-    landNode <- mLandAllocator$mChild
+    landNode <- aLandAllocator$mChild
     for ( leaf in landNode$mChildren ) {
       leaf$mProfitRate <- (price - cost) * yield * 1e9
     }
@@ -86,7 +87,7 @@ AgProductionTechnology_calcProfitRate <- function(mLandAllocator, aPeriod) {
     price <- 1
     cost <- 0
     yield <- 1
-    landNode <- mLandAllocator$mChild
+    landNode <- aLandAllocator$mChild
     for ( leaf in landNode$mChildren ) {
       leaf$mProfitRate <- (price - cost) * yield * 1e9
     }

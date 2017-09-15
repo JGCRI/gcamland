@@ -18,7 +18,7 @@ LandLeaf <- function(aName, aLandAllocation) {
   mLandAllocation = aLandAllocation
   mShare = NULL
   mShareWeight = NULL
-  mProfitRate = 1e9  # TODO: Set this from AgProductionTechnology
+  mProfitRate = NULL
   greet = function() {
     cat(paste0("Hello, I am a LandLeaf named ", self$mName, ".\n"))
   }
