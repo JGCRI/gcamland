@@ -12,6 +12,7 @@
 #' @field mShare Share of land allocated to this node
 #' @field mShareWeight Share weight of this node
 #' @field mProfitRate Profit rate of this node
+#' @field mChildren list of LandLeaf children
 #'
 #' @return New, initialized LandNode
 #' @author KVC September 2017
@@ -22,6 +23,9 @@ LandNode <- function(aName, aLogitExponent, aLandAllocation) {
   mShare = NULL
   mShareWeight = NULL
   mProfitRate = NULL
+  mChildren = list(LandLeaf("Crop1", 100),
+                   LandLeaf("Crop2", 100)
+  )
   greet = function() {
     cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))
   }
@@ -64,7 +68,6 @@ LandNode_initCalc <- function(aLandNode, aPeriod) {
 #' @param aLandAllocationAbove Land allocation of the parent node
 #' @param aPeriod Model period
 #' @import dplyr tidyr
-#' @importFrom readr write_csv
 #' @author KVC September 2017
 LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
   # Calculate the total land within this node.
@@ -76,9 +79,9 @@ LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
   aLandNode$mShare <- nodeLandAllocation / aLandAllocationAbove
 
   # Call setInitShares on all children
-  # TODO: Loop through somehow
-  aRegionName <- "USA"
-  LandLeaf_setInitShares(aRegionName, nodeLandAllocation, aPeriod)
+  for( leaf in aLandNode$mChildren ) {
+    LandLeaf_setInitShares(leaf, nodeLandAllocation, aPeriod)
+  }
 }
 
 #' LandNode_calcLandShares
@@ -98,21 +101,29 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # These calls need to be made to initiate recursion into lower nests even
   # if the current node will have fixed shares.
   # Note: these are the log( unnormalized shares )
-  # TODO: loop over children
-  aRegionName <- "USA"
-  UNNORMALIZED_SHARES <- LandLeaf_calcLandShares(aRegionName, aChoiceFnAbove, aPeriod)
+  # TODO: store vector of shares
+  i <- 1
+  unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
+  for( leaf in aLandNode$mChildren ) {
+    print(paste("Calculate unnormalized share for leaf ", leaf$mName))
+    unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(leaf, aChoiceFnAbove, aPeriod)
+    i <- i + 1
+  }
+
+  print(unNormalizedShares)
 
   # Step 2. Normalize and set the share of each child
   # The log( unnormalized ) shares will be normalizd after this call and it will
   # do it making an attempt to avoid numerical instabilities given the profit rates
   # may be large values.  The value returned is a pair<unnormalizedSum, log(scale factor)>
   # again in order to try to make calculations in a numerically stable way.
-  unnormalizedSum <- SectorUtils_normalizeLogShares(UNNORMALIZED_SHARES)
+  normalizationInfo <- SectorUtils_normalizeLogShares(unNormalizedShares)
 
-  # TODO: Figure out if we need to do this
-  #   for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
-  #   mChildren[ i ]->setShare( unnormalizedShares[ i ], aPeriod );
-  #   }
+  i <- 1
+  for ( leaf in aLandNode$mChildren ) {
+    leaf$mShare <- normalizationInfo$normalizedShares$share[ i ]
+    i <- i + 1
+  }
 
   # TODO: Complete this
   # Step 3 Option (a) . compute node profit based on share denominator
@@ -138,8 +149,9 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # For testing, use separate implementations for LandLeaf and LandNode
   LandNode_calculateShareWeight(aLandNode, aChoiceFnAbove, aPeriod)
 
-  aRegionName <- "USA"
-  LandLeaf_calculateShareWeight(aRegionName, aChoiceFnAbove, aPeriod)
+  for( leaf in aLandNode$mChildren ) {
+    LandLeaf_calculateShareWeight(leaf, aChoiceFnAbove, aPeriod, aLandNode$mProfitRate)
+  }
 
   # TODO: Figure this out
   # we can use the base class implementation to calculate the share weight at this node.
@@ -187,7 +199,6 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
 #' @param aAverageProfitRateAbove Average profit rate of the parent node.
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Period.
-#' @importFrom readr read_csv write_csv
 #' @author KVC September 2017
 LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove, aChoiceFnAbove, aPeriod) {
   avgProfitRate = -SMALL_NUMBER
@@ -326,7 +337,6 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 #' @param aRegionName Region name
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
-#' @importFrom readr read_csv
 #' @author KVC September 2017
 LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Calculate the share weight for the node

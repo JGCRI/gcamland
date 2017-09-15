@@ -4,12 +4,12 @@
 \alias{LandLeaf_initCalc}
 \title{LandLeaf_initCalc}
 \usage{
-LandLeaf_initCalc(aRegionName, aPeriod)
+LandLeaf_initCalc(aLandLeaf, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Name of the region}
-
 \item{aPeriod}{Current time period}
+
+\item{aRegionName}{Name of the region}
 }
 \description{
 LandLeaf_initCalc

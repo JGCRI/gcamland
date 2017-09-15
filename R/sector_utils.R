@@ -55,9 +55,8 @@ SectorUtils_normalizeLogShares <- function(aShares) {
     i <- i + 1
   }
 
-  print(NORMALIZED_SHARES)
-  write_csv(NORMALIZED_SHARES, "./inst/extdata/temp-data/LANDLEAF_SHARES.csv")
-
   # TODO: check to make sure sum is 1
-  return(c(unnormAdjustedSum, lfac$lfac))
+  return(list(normalizedShares = NORMALIZED_SHARES,
+           unnormalizedSum = unnormAdjustedSum,
+           lfac = lfac$lfac))
 }

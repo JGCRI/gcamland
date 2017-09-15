@@ -4,14 +4,14 @@
 \alias{LandLeaf_calculateShareWeight}
 \title{LandLeaf_calculateShareWeight}
 \usage{
-LandLeaf_calculateShareWeight(aRegionName, aChoiceFnAbove, aPeriod)
+LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name}
-
 \item{aChoiceFnAbove}{Type of logit}
 
 \item{aPeriod}{Model time period}
+
+\item{aRegionName}{Region name}
 }
 \description{
 LandLeaf_calculateShareWeight

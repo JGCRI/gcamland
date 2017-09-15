@@ -36,6 +36,8 @@ Initialize an Class called LandNode
 \item{\code{mShareWeight}}{Share weight of this node}
 
 \item{\code{mProfitRate}}{Profit rate of this node}
+
+\item{\code{mChildren}}{list of LandLeaf children}
 }}
 
 \author{

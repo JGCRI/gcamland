@@ -28,10 +28,10 @@ run_model <- function() {
 
   mLandAllocator$greet()
   mLandAllocator$mChild$greet()
-
-  print(paste("DEBUG: share is currently ", mLandAllocator$mChild$mShare))
-  print(paste("DEBUG: share weight is currently ", mLandAllocator$mChild$mShareWeight))
-  print(paste("DEBUG: profit rate is currently ", mLandAllocator$mChild$mProfitRate))
+  for( leaf in  mLandAllocator$mChild$mChildren ) {
+    print(paste("DEBUG: profit rate is currently ", leaf$mProfitRate))
+    print(paste("DEBUG: share is currently ", leaf$mShare))
+  }
 }
 
 

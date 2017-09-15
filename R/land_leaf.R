@@ -1,5 +1,33 @@
 # land_leaf.R
 
+#' LandLeaf
+#'
+#' @details Initialize an Class called LandLeaf
+#' @param aName Leaf name
+#' @param aLandAllocation Land allocation for this leaf
+#' @field mName Leaf name
+#' @field mLandAllocation Land allocation for this leaf
+#' @field mShare Share of land allocated to this leaf
+#' @field mShareWeight Share weight of this leaf
+#' @field mProfitRate Profit rate of this leaf
+#'
+#' @return New, initialized LandLeaf
+#' @author KVC September 2017
+LandLeaf <- function(aName, aLandAllocation) {
+  mName = aName
+  mLandAllocation = aLandAllocation
+  mShare = NULL
+  mShareWeight = NULL
+  mProfitRate = 1e9  # TODO: Set this from AgProductionTechnology
+  greet = function() {
+    cat(paste0("Hello, I am a LandLeaf named ", self$mName, ".\n"))
+  }
+
+  self <- environment()
+  class(self) <- "LandLeaf"
+  self
+}
+
 #' LandLeaf_initCalc
 #'
 #' @param aRegionName Name of the region
@@ -7,7 +35,7 @@
 #' @details Initial calculations needed for the land leaf.
 #'          Currently, this just copies shareweights forward.
 #' @author KVC September 2017
-LandLeaf_initCalc <- function(aRegionName, aPeriod ) {
+LandLeaf_initCalc <- function(aLandLeaf, aPeriod ) {
 #   if ( aPeriod > 1 ) {
 #     // If leaf is a "new tech" get the scaler from its parent
 #     if ( !mShareWeight[ aPeriod ].isInited()) {
@@ -25,20 +53,15 @@ LandLeaf_initCalc <- function(aRegionName, aPeriod ) {
 #' @param aRegionName Region.
 #' @param aLandAllocationAbove Land allocation of the parent node
 #' @param aPeriod Model period
-#' @importFrom readr write_csv
 #' @author KVC September 2017
-LandLeaf_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
+LandLeaf_setInitShares <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
   # If there is no land allocation for the parent land type, set the share to a small number.
   # Otherwise, set the share of this node.
-  # TODO: Save this somehow/somewhere. Also, split into individual leafs
-  LANDLEAF_CALDATA %>%
-    mutate(land_above = aLandAllocationAbove) %>%
-    mutate(share = if_else(land_above <=0, 0, area / land_above)) %>%
-    select(name, share) ->
-    LANDLEAF_SHARES
-
-  # TODO: Change how we store data
-  write_csv(LANDLEAF_SHARES, "./inst/extdata/temp-data/LANDLEAF_SHARES.csv")
+  if( aLandAllocationAbove <= 0) {
+    aLandLeaf$mShare <- SMALL_NUMBER
+  } else {
+    aLandLeaf$mShare <- aLandLeaf$mLandAllocation / aLandAllocationAbove
+  }
 }
 
 #' LandLeaf_calcLandShares
@@ -51,27 +74,13 @@ LandLeaf_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
 #' @param aPeriod Model period
 #' @return Unormalized land shares
 #' @author KVC September 2017
-LandLeaf_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
+LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # Calculate the unnormalized share for this leaf
   # The unnormalized share is used by the parent node to
   # calculate the leaf's share of the parent's land
-  # TODO: do this right
-  PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_PROFIT.csv"))
-  SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_SHARES.csv"))
+  unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aLandLeaf$mShare, aLandLeaf$mProfitRate, aPeriod)
 
-  # TODO: move output cost to a member variable; move the loop over leafs somewhere else
-  SHARES %>%
-    select(-share) %>%
-    mutate(unnormalized.share = -SMALL_NUMBER) ->
-    UNNORMALIZED_SHARES
-
-  i <- 1
-  while(i <= nrow(SHARES)) {
-    UNNORMALIZED_SHARES$unnormalized.share[i] <- RelativeCostLogit_calcUnnormalizedShare(SHARES$share[i], PROFIT$profit[i], aPeriod)
-    i <- i + 1
-  }
-
-  return(UNNORMALIZED_SHARES)
+  return(unNormalizedShare)
 }
 
 #' LandLeaf_calcLandAllocation
@@ -87,7 +96,7 @@ LandLeaf_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
 #' @param aLandAllocationAbove Land allocated to the parent node
 #' @param aPeriod Model period
 #' @author KVC September 2017
-LandLeaf_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, aPeriod) {
+LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
 #   assert( mShare[ aPeriod ] >= 0 &&
 #   mShare[ aPeriod ] <= 1 );
 #
@@ -105,25 +114,11 @@ LandLeaf_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, aPeri
 #' @param aRegionName Region name
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
-#' @importFrom readr read_csv write_csv
 #' @author KVC September 2017
-LandLeaf_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  # TODO: handle data better
-  NODE_PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv"))
-  PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_PROFIT.csv"))
-  SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_SHARES.csv"))
-
-  # TODO: move output cost to a member variable; move the loop over leafs somewhere else
-  SHARES %>%
-    select(-share) %>%
-    mutate(share.weight = -SMALL_NUMBER) ->
-    SHARE_WEIGHT
-
-  i <- 1
-  while(i <= nrow(SHARES)) {
-    SHARE_WEIGHT$share.weight[i] <- RelativeCostLogit_calcShareWeight(SHARES$share[i], PROFIT$profit[i], aPeriod, NODE_PROFIT$profit)
-    i <- i + 1
-  }
+LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT) {
+  # TODO: move output cost to a member variable
+  aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandLeaf$mShare, aLandLeaf$mProfitRate,
+                                                              aPeriod, NODE_PROFIT)
 
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
@@ -157,8 +152,6 @@ LandLeaf_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) 
     #       }
     #     }
   }
-
-  write_csv(SHARE_WEIGHT, "./inst/extdata/temp-data/LANDLEAF_SHAREWEIGHT.csv")
 }
 
 
