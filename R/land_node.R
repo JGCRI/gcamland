@@ -117,7 +117,7 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 
   i <- 1
   for ( leaf in aLandNode$mChildren ) {
-    leaf$mShare <- normalizationInfo$normalizedShares$share[ i ]
+    leaf$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
     i <- i + 1
   }
 

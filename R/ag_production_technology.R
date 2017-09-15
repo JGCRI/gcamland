@@ -78,7 +78,7 @@ AgProductionTechnology_calcProfitRate <- function(aLandAllocator, aPeriod) {
     yield <- 1
     landNode <- aLandAllocator$mChild
     for ( leaf in landNode$mChildren ) {
-      leaf$mProfitRate <- (price - cost) * yield * 1e9
+      leaf$mProfitRate[aPeriod] <- (price - cost) * yield * 1e9
     }
   } else {
     # TODO: Fix this to use future data
@@ -88,8 +88,15 @@ AgProductionTechnology_calcProfitRate <- function(aLandAllocator, aPeriod) {
     cost <- 0
     yield <- 1
     landNode <- aLandAllocator$mChild
+    temp <- 1
     for ( leaf in landNode$mChildren ) {
-      leaf$mProfitRate <- (price - cost) * yield * 1e9
+      leaf$mProfitRate[aPeriod] <- (price - cost) * yield * 1e9
+
+      # TEMP: Just for testing
+      if (temp == 1) {
+        leaf$mProfitRate[aPeriod] <- (price - cost) * yield * 1e9 * 2
+      }
+      temp <- temp + 1
     }
   }
 }

@@ -6,24 +6,24 @@
 #' @author KVC
 #' @export
 run_model <- function() {
-  # Initialize LandAllocator
+  # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION, 0, LAND_ALLOCATION)
 
-  # Loop through each year and run the model
+  # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
-  for(year in YEARS){
-    print(paste("Starting year:", year))
+  for(per in PERIODS){
+    print(paste("Starting period:", per))
 
     # First, call initCalc for AgProductionTechnology and LandAllocator
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
-    AgProductionTechnology_initCalc(mLandAllocator, year)
-    LandAllocator_initCalc(mLandAllocator, year)
+    AgProductionTechnology_initCalc(mLandAllocator, per)
+    LandAllocator_initCalc(mLandAllocator, per)
 
     # Next, call calcFinalLandAllocation for LandAllocator
     # TODO: Figure out when/what to call from AgProductionTechnology to make sure
     #       profits are calculated/sent before land is allocated
-    LandAllocator_calcFinalLandAllocation(mLandAllocator, year)
+    LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
   mLandAllocator$greet()
@@ -31,7 +31,7 @@ run_model <- function() {
   for( leaf in  mLandAllocator$mChild$mChildren ) {
     print(paste("DEBUG: profit rate is currently ", leaf$mProfitRate))
     print(paste("DEBUG: share is currently ", leaf$mShare))
-    print(paste("DEBUG: area is currently ", leaf$mLandAllocation))
+    print(paste("DEBUG: area is currently ", leaf$mLandAllocation[[2]]))
   }
 }
 

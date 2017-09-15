@@ -31,13 +31,13 @@ SectorUtils_normalizeLogShares <- function(aShares) {
   # Rescale and get normalization sum
   sum <- 0.0
   aShares %>%
-    select(-unnormalized.share) %>%
-    mutate(share = -1) ->
-    NORMALIZED_SHARES
+    rename(share = unnormalized.share) ->
+    normalizedShares
+
   i <- 1
-  while(i <= nrow(NORMALIZED_SHARES)) {
-    NORMALIZED_SHARES$share[i] <- NORMALIZED_SHARES$share[i] - lfac$lfac
-    sum <- sum + exp(NORMALIZED_SHARES$share[i])
+  while(i <= nrow(normalizedShares)) {
+    normalizedShares$share[i] <- normalizedShares$share[i] - lfac$lfac
+    sum <- sum + exp(normalizedShares$share[i])
     i <- i + 1
   }
 
@@ -46,16 +46,16 @@ SectorUtils_normalizeLogShares <- function(aShares) {
   norm <- log(sum)
   sum <- 0.0
   i <- 1
-  while(i <= nrow(NORMALIZED_SHARES)) {
-    NORMALIZED_SHARES$share[i] <- exp(NORMALIZED_SHARES$share[i] - norm) # Divide by norm constant and unlog
-    sum <- sum + NORMALIZED_SHARES$share[i] # Accumulate sum of normalizes shares (should be 1 when we are done)
+  while(i <= nrow(normalizedShares)) {
+    normalizedShares$share[i] <- exp(normalizedShares$share[i] - norm) # Divide by norm constant and unlog
+    sum <- sum + normalizedShares$share[i] # Accumulate sum of normalizes shares (should be 1 when we are done)
     i <- i + 1
   }
 
   # TODO: check to make sure sum is 1
 
   # Return normalized shares, and two parameters (unnormalizedSum, lfac) that are used to calculate node profit
-  return(list(normalizedShares = NORMALIZED_SHARES,
+  return(list(normalizedShares = normalizedShares,
            unnormalizedSum = unnormAdjustedSum,
            lfac = lfac$lfac))
 }

@@ -1,8 +1,8 @@
 # constants.R
 
 # Time-related parameters
-FINAL_CALIBRATION_PERIOD <- 2010
-YEARS <- c(2010, 2020)
+FINAL_CALIBRATION_PERIOD <- 1
+PERIODS <- 1:2
 
 # Threshold-related constants
 # TODO: Make sure these are consistent with GCAM

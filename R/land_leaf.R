@@ -15,10 +15,10 @@
 #' @author KVC September 2017
 LandLeaf <- function(aName, aLandAllocation) {
   mName = aName
-  mLandAllocation = aLandAllocation
-  mShare = NULL
+  mLandAllocation = list(`1` = aLandAllocation, `2` = aLandAllocation)
+  mShare = list(`1` = -1, `2` = -1)
   mShareWeight = NULL
-  mProfitRate = NULL
+  mProfitRate = list(`1` = -1, `2` = -1)
   greet = function() {
     cat(paste0("Hello, I am a LandLeaf named ", self$mName, ".\n"))
   }
@@ -58,9 +58,9 @@ LandLeaf_setInitShares <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
   # If there is no land allocation for the parent land type, set the share to a small number.
   # Otherwise, set the share of this node.
   if( aLandAllocationAbove <= 0) {
-    aLandLeaf$mShare <- SMALL_NUMBER
+    aLandLeaf$mShare[aPeriod] <- SMALL_NUMBER
   } else {
-    aLandLeaf$mShare <- aLandLeaf$mLandAllocation / aLandAllocationAbove
+    aLandLeaf$mShare[aPeriod] <- aLandLeaf$mLandAllocation[[aPeriod]] / aLandAllocationAbove
   }
 }
 
@@ -79,7 +79,9 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # The unnormalized share is used by the parent node to
   # calculate the leaf's share of the parent's land
   # TODO: Implement AbsoluteCostLogit
-  unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aLandLeaf$mShare, aLandLeaf$mProfitRate, aPeriod)
+  unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aLandLeaf$mShareWeight,
+                                                               aLandLeaf$mProfitRate[[aPeriod]],
+                                                               aPeriod)
 
   return(unNormalizedShare)
 }
@@ -100,11 +102,10 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
 LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
   # TODO: asserts?
   #   assert( mShare[ aPeriod ] >= 0 && mShare[ aPeriod ] <= 1 );
-
   if ( aLandAllocationAbove > 0.0 ) {
-    aLandLeaf$mLandAllocation <- aLandAllocationAbove * aLandLeaf$mShare
+    aLandLeaf$mLandAllocation[aPeriod] <- aLandAllocationAbove * aLandLeaf$mShare[[aPeriod]]
   } else {
-    aLandLeaf$mLandAllocation <- 0.0;
+    aLandLeaf$mLandAllocation[aPeriod] <- 0.0;
   }
 }
 
@@ -117,7 +118,8 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
 #' @author KVC September 2017
 LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT) {
   # TODO: move output cost to a member variable; implement absolute cost logit
-  aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandLeaf$mShare, aLandLeaf$mProfitRate,
+  aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandLeaf$mShare[[aPeriod]],
+                                                              aLandLeaf$mProfitRate[[aPeriod]],
                                                               aPeriod, NODE_PROFIT)
 
   # TODO: Implement this
