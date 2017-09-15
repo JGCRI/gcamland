@@ -28,6 +28,8 @@ run_model <- function() {
 
   mLandAllocator$greet()
   mLandAllocator$mChild$greet()
+
+  print(paste("DEBUG: share is currently ", mLandAllocator$mChild$mShare))
 }
 
 

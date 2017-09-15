@@ -4,12 +4,12 @@
 \alias{LandNode_initCalc}
 \title{LandNode_initCalc}
 \usage{
-LandNode_initCalc(aRegionName, aPeriod)
+LandNode_initCalc(aLandNode, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
-
 \item{aPeriod}{Model time period.}
+
+\item{aRegionName}{Region name.}
 }
 \description{
 LandNode_initCalc

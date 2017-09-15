@@ -4,14 +4,14 @@
 \alias{LandNode_calculateShareWeights}
 \title{LandNode_calculateShareWeights}
 \usage{
-LandNode_calculateShareWeights(aRegionName, aChoiceFnAbove, aPeriod)
+LandNode_calculateShareWeights(aLandNode, aChoiceFnAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region}
-
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Period.}
+
+\item{aRegionName}{Region}
 }
 \description{
 LandNode_calculateShareWeights

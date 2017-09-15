@@ -13,6 +13,7 @@ LandNode <- function(aName, aLogitExponent, aLandAllocation) {
   mName = aName
   mLogitExponent = aLogitExponent
   mLandAllocation = aLandAllocation
+  mShare = NULL
   greet = function() {
     cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))
   }
@@ -30,7 +31,7 @@ LandNode <- function(aName, aLogitExponent, aLandAllocation) {
 #'          Currently, this copies share weights forward and
 #'          calls initCalc on children.
 #' @author KVC September 2017
-LandNode_initCalc <- function(aRegionName, aPeriod) {
+LandNode_initCalc <- function(aLandNode, aPeriod) {
 #   // TODO: all kinds of things including error checking
 #   if ( aPeriod > 1 ) {
 #   // Copy share weights forward if new ones haven't been read in or computed
@@ -57,22 +58,14 @@ LandNode_initCalc <- function(aRegionName, aPeriod) {
 #' @import dplyr tidyr
 #' @importFrom readr write_csv
 #' @author KVC September 2017
-LandNode_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
+LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
   # Calculate the total land within this node.
   # TODO: make this more robust
-  nodeLandAllocation <- LANDNODE_CALDATA$area
+  nodeLandAllocation <- aLandNode$mLandAllocation
 
   # If there is no land allocation for the parent land type, set the share to a small number.
   # Otherwise, set the share of this node.
-  # TODO: Save this information somewhere
-  LANDNODE_CALDATA %>%
-    mutate(land_above = aLandAllocationAbove) %>%
-    mutate(share = if_else(land_above <=0, 0, area / land_above)) %>%
-    select(name, share) ->
-    LANDNODE_SHARES
-
-  # TODO: Change how we store data
-  write_csv(LANDNODE_SHARES, "./inst/extdata/temp-data/LANDNODE_SHARES.csv")
+  aLandNode$mShare <- nodeLandAllocation / aLandAllocationAbove
 
   # Call setInitShares on all children
   # TODO: Loop through somehow
@@ -91,12 +84,13 @@ LandNode_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Period.
 #' @author KVC September 2017
-LandNode_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
+LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Step 1. Calculate the unnormalized shares.
   # These calls need to be made to initiate recursion into lower nests even
   # if the current node will have fixed shares.
   # Note: these are the log( unnormalized shares )
   # TODO: loop over children
+  aRegionName <- "USA"
   UNNORMALIZED_SHARES <- LandLeaf_calcLandShares(aRegionName, aChoiceFnAbove, aPeriod)
 
   # Step 2. Normalize and set the share of each child
@@ -131,9 +125,11 @@ LandNode_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Period.
 #' @author KVC September 2017
-LandNode_calculateShareWeights <- function(aRegionName, aChoiceFnAbove, aPeriod) {
+LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # For testing, use separate implementations for LandLeaf and LandNode
-  LandNode_calculateShareWeight(aRegionName, aChoiceFnAbove, aPeriod)
+  LandNode_calculateShareWeight(aLandNode, aChoiceFnAbove, aPeriod)
+
+  aRegionName <- "USA"
   LandLeaf_calculateShareWeight(aRegionName, aChoiceFnAbove, aPeriod)
 
   # TODO: Figure this out
@@ -154,7 +150,7 @@ LandNode_calculateShareWeights <- function(aRegionName, aChoiceFnAbove, aPeriod)
 #' @param aAverageProfitRate Average profit rate of region or subregion.
 #' @param aPeriod model period.
 #' @author KVC September 2017
-LandNode_setUnmanagedLandProfitRate <- function(aRegionName, aAverageProfitRate, aPeriod) {
+LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, aPeriod) {
 # {
 #   double avgProfitRate = aAverageProfitRate;
 #   // If node is the root of a fixed land area nest ( typically a subregion )
@@ -184,7 +180,7 @@ LandNode_setUnmanagedLandProfitRate <- function(aRegionName, aAverageProfitRate,
 #' @param aPeriod Period.
 #' @importFrom readr read_csv write_csv
 #' @author KVC September 2017
-LandNode_calculateNodeProfitRates <- function(aRegionName, aAverageProfitRateAbove, aChoiceFnAbove, aPeriod) {
+LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove, aChoiceFnAbove, aPeriod) {
   avgProfitRate = -SMALL_NUMBER
 
   # If we have a valid profit rate above then we can calculate the implied profit rate this node
@@ -250,7 +246,7 @@ LandNode_calculateNodeProfitRates <- function(aRegionName, aAverageProfitRateAbo
 #' @param aLandAllocationAbove Land allocation of parent.
 #' @param aPeriod model period.
 #' @author KVC September 2017
-LandNode_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, aPeriod) {
+LandNode_calcLandAllocation <- function(aLandNode, aLandAllocationAbove, aPeriod) {
 #   assert( mShare[ aPeriod ] >= 0.0 && mShare[ aPeriod ] <= 1.0 );
 #
 #   // Calculate node land allocation
@@ -327,7 +323,7 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 #' @param aPeriod Model time period
 #' @importFrom readr read_csv
 #' @author KVC September 2017
-LandNode_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) {
+LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # TODO: handle data better
   PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv"))
   SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv"))

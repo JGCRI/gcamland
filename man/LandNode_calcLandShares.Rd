@@ -4,14 +4,14 @@
 \alias{LandNode_calcLandShares}
 \title{LandNode_calcLandShares}
 \usage{
-LandNode_calcLandShares(aRegionName, aChoiceFnAbove, aPeriod)
+LandNode_calcLandShares(aLandNode, aChoiceFnAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region}
-
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Period.}
+
+\item{aRegionName}{Region}
 }
 \description{
 LandNode_calcLandShares

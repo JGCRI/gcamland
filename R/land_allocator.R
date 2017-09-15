@@ -36,7 +36,7 @@ LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
 
   # Call land node's initCalc
   # TODO: loop over children
-  LandNode_initCalc(aLandAllocator$mRegionName, aPeriod)
+  LandNode_initCalc(aLandAllocator$mChild, aPeriod)
 }
 
 #' LandAllocator_calibrateLandAllocator
@@ -73,7 +73,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
 
-  LandNode_calculateNodeProfitRates(aLandAllocator$mRegionName, UNMANAGED_LAND_VALUE, "relative-cost", aPeriod)
+  LandNode_calculateNodeProfitRates(aLandAllocator$mChild, UNMANAGED_LAND_VALUE, "relative-cost", aPeriod)
 
   # /* Step 4. Calculate profit scalers. Because the calibration profit rate computed in Step 4
   # will most likely differ from the profit rate computed using the yield times price - cost, a
@@ -85,7 +85,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # All of the calibration is captured in the leaves, so the share profit scalers for nodes are
   # set equal to 1.  */
 
-  LandNode_calculateShareWeights(aLandAllocator$mRegionName, "relative-cost", aPeriod)
+  LandNode_calculateShareWeights(aLandAllocator$mChild, "relative-cost", aPeriod)
 }
 
 #' LandAllocator_setInitShares
@@ -97,7 +97,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
 LandAllocator_setInitShares <- function(aLandAllocator, aPeriod) {
   # Call setInitShares for nodes
   # TODO: set up loop over all land nodes
-  LandNode_setInitShares(aLandAllocator$mRegionName, LAND_ALLOCATION, aPeriod)
+  LandNode_setInitShares(aLandAllocator$mChild, LAND_ALLOCATION, aPeriod)
 }
 
 #' LandAllocator_calcLandShares
@@ -115,7 +115,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   # setUnmanagedLandProfitRate( aRegionName, mUnManagedLandValue, aPeriod );
 
   # Then, calculate land shares
-  LandNode_calcLandShares(aLandAllocator$mRegionName, "relative-cost", aPeriod)
+  LandNode_calcLandShares(aLandAllocator$mChild, "relative-cost", aPeriod)
 
   # This is the root node so its share is 100%.
   # mShare[ aPeriod ] = 1;

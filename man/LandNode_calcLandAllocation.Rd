@@ -4,14 +4,14 @@
 \alias{LandNode_calcLandAllocation}
 \title{LandNode_calcLandAllocation}
 \usage{
-LandNode_calcLandAllocation(aRegionName, aLandAllocationAbove, aPeriod)
+LandNode_calcLandAllocation(aLandNode, aLandAllocationAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
-
 \item{aLandAllocationAbove}{Land allocation of parent.}
 
 \item{aPeriod}{model period.}
+
+\item{aRegionName}{Region name.}
 }
 \description{
 LandNode_calcLandAllocation

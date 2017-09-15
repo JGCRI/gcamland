@@ -4,14 +4,14 @@
 \alias{LandNode_setUnmanagedLandProfitRate}
 \title{LandNode_setUnmanagedLandProfitRate}
 \usage{
-LandNode_setUnmanagedLandProfitRate(aRegionName, aAverageProfitRate, aPeriod)
+LandNode_setUnmanagedLandProfitRate(aLandNode, aAverageProfitRate, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
-
 \item{aAverageProfitRate}{Average profit rate of region or subregion.}
 
 \item{aPeriod}{model period.}
+
+\item{aRegionName}{Region name.}
 }
 \description{
 LandNode_setUnmanagedLandProfitRate

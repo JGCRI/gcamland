@@ -4,17 +4,17 @@
 \alias{LandNode_calculateNodeProfitRates}
 \title{LandNode_calculateNodeProfitRates}
 \usage{
-LandNode_calculateNodeProfitRates(aRegionName, aAverageProfitRateAbove,
+LandNode_calculateNodeProfitRates(aLandNode, aAverageProfitRateAbove,
   aChoiceFnAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region}
-
 \item{aAverageProfitRateAbove}{Average profit rate of the parent node.}
 
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Period.}
+
+\item{aRegionName}{Region}
 }
 \description{
 LandNode_calculateNodeProfitRates

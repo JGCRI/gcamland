@@ -4,14 +4,14 @@
 \alias{LandNode_setInitShares}
 \title{LandNode_setInitShares}
 \usage{
-LandNode_setInitShares(aRegionName, aLandAllocationAbove, aPeriod)
+LandNode_setInitShares(aLandNode, aLandAllocationAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region.}
-
 \item{aLandAllocationAbove}{Land allocation of the parent node}
 
 \item{aPeriod}{Model period}
+
+\item{aRegionName}{Region.}
 }
 \description{
 LandNode_setInitShares
