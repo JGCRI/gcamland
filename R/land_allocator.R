@@ -13,6 +13,7 @@ LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
   mRegionName = aRegionName
   mLogitExponent = aLogitExponent
   mLandAllocation = aLandAllocation
+  mShare = NULL
   mChild = LandNode("Crop", LOGIT_EXPONENT, LAND_ALLOCATION)
   greet = function() {
     cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
@@ -118,7 +119,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   LandNode_calcLandShares(aLandAllocator$mChild, "relative-cost", aPeriod)
 
   # This is the root node so its share is 100%.
-  # mShare[ aPeriod ] = 1;
+  aLandAllocator$mShare <- 1
 }
 
 #' LandAllocator_calcLandAllocation
@@ -129,9 +130,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
-# for ( unsigned int i = 0; i < mChildren.size(); ++i ){
-# mChildren[ i ]->calcLandAllocation( aRegionName, mLandAllocation[ aPeriod ], aPeriod );
-# }
+  LandNode_calcLandAllocation(aLandAllocator$mChild, aLandAllocator$mLandAllocation, aPeriod)
 }
 
 #' LandAllocator_calcFinalLandAllocation

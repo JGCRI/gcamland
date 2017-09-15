@@ -97,15 +97,14 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
 #' @param aPeriod Model period
 #' @author KVC September 2017
 LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
-#   assert( mShare[ aPeriod ] >= 0 &&
-#   mShare[ aPeriod ] <= 1 );
-#
-#   if ( aLandAllocationAbove > 0.0 ) {
-#   mLandAllocation[ aPeriod ] = aLandAllocationAbove * mShare[ aPeriod ];
-#   }
-#   else {
-#   mLandAllocation[ aPeriod ] = 0.0;
-#   }
+  # TODO: asserts?
+  #   assert( mShare[ aPeriod ] >= 0 && mShare[ aPeriod ] <= 1 );
+
+  if ( aLandAllocationAbove > 0.0 ) {
+    aLandLeaf$mLandAllocation <- aLandAllocationAbove * aLandLeaf$mShare
+  } else {
+    aLandLeaf$mLandAllocation <- 0.0;
+  }
 }
 
 #' LandLeaf_calculateShareWeight

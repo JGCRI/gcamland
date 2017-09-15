@@ -110,8 +110,6 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     i <- i + 1
   }
 
-  print(unNormalizedShares)
-
   # Step 2. Normalize and set the share of each child
   # The log( unnormalized ) shares will be normalizd after this call and it will
   # do it making an attempt to avoid numerical instabilities given the profit rates
@@ -263,18 +261,21 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
 #' @param aPeriod model period.
 #' @author KVC September 2017
 LandNode_calcLandAllocation <- function(aLandNode, aLandAllocationAbove, aPeriod) {
-#   assert( mShare[ aPeriod ] >= 0.0 && mShare[ aPeriod ] <= 1.0 );
-#
-#   // Calculate node land allocation
-#   double nodeLandAllocation = 0.0;
-#   if ( aLandAllocationAbove > 0.0 && mShare[ aPeriod ] > 0.0 ) {
-#     nodeLandAllocation = aLandAllocationAbove * mShare[ aPeriod ];
-#   }
-#
-#   // Call calcLandAllocation for each child
-#   for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
-#     mChildren[ i ]->calcLandAllocation( aRegionName, nodeLandAllocation, aPeriod );
-#   }
+  # TODO: asserts?
+  # assert( mShare[ aPeriod ] >= 0.0 && mShare[ aPeriod ] <= 1.0 );
+
+  # Calculate node land allocation
+  nodeLandAllocation <- 0.0
+  if ( aLandAllocationAbove > 0.0 && aLandNode$mShare > 0.0 ) {
+    nodeLandAllocation <- aLandAllocationAbove * aLandNode$mShare
+  }
+
+  aLandNode$mLandAllocation <- nodeLandAllocation
+
+  # Call calcLandAllocation for each child
+  for ( leaf in aLandNode$mChildren ) {
+    LandLeaf_calcLandAllocation( leaf, nodeLandAllocation, aPeriod )
+  }
 }
 
 #' LandNode_getObservedAverageProfitRate
