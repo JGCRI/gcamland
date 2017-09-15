@@ -22,6 +22,22 @@ LandNode
 \details{
 Initialize an Class called LandNode
 }
+\section{Fields}{
+
+\describe{
+\item{\code{mName}}{Node name}
+
+\item{\code{mLogitExponent}}{Logit exponent of the node}
+
+\item{\code{mLandAllocation}}{Land allocation for this node}
+
+\item{\code{mShare}}{Share of land allocated to this node}
+
+\item{\code{mShareWeight}}{Share weight of this node}
+
+\item{\code{mProfitRate}}{Profit rate of this node}
+}}
+
 \author{
 KVC September 2017
 }

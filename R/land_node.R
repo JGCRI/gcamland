@@ -6,6 +6,12 @@
 #' @param aName Node name
 #' @param aLogitExponent Logit exponent of the node
 #' @param aLandAllocation Land allocation for this node
+#' @field mName Node name
+#' @field mLogitExponent Logit exponent of the node
+#' @field mLandAllocation Land allocation for this node
+#' @field mShare Share of land allocated to this node
+#' @field mShareWeight Share weight of this node
+#' @field mProfitRate Profit rate of this node
 #'
 #' @return New, initialized LandNode
 #' @author KVC September 2017
@@ -14,6 +20,8 @@ LandNode <- function(aName, aLogitExponent, aLandAllocation) {
   mLogitExponent = aLogitExponent
   mLandAllocation = aLandAllocation
   mShare = NULL
+  mShareWeight = NULL
+  mProfitRate = NULL
   greet = function() {
     cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))
   }
@@ -69,6 +77,7 @@ LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
 
   # Call setInitShares on all children
   # TODO: Loop through somehow
+  aRegionName <- "USA"
   LandLeaf_setInitShares(aRegionName, nodeLandAllocation, aPeriod)
 }
 
@@ -174,7 +183,7 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
 #'
 #' @details Calculates profit rates at the node level using the
 #'          logit function calculations.
-#' @param aRegionName Region
+#' @param aLandNode Current land node
 #' @param aAverageProfitRateAbove Average profit rate of the parent node.
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Period.
@@ -187,9 +196,7 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
   # would have to recieve the share it did.  If not (such as at the root) we just use the
   # unmanaged land value.
   if(aAverageProfitRateAbove > 0.0) {
-    # TODO: Fix the way data is stored
-    LANDNODE_SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv"))
-    mShare <- LANDNODE_SHARES$share
+    mShare <- aLandNode$mShare
     if(mShare > 0.0) {
       avgProfitRate = RelativeCostLogit_calcImpliedCost(mShare, aAverageProfitRateAbove, aPeriod)
     } else if(aPeriod == FINAL_CALIBRATION_PERIOD) {
@@ -209,9 +216,7 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
     }
   }
 
-  # TODO: Figure out how to store data
-  tibble(name = "Land", profit = avgProfitRate) -> LANDNODE_PROFIT
-  write_csv(LANDNODE_PROFIT, "./inst/extdata/temp-data/LANDNODE_PROFIT.csv")
+  aLandNode$mProfitRate <- avgProfitRate
 
   # TODO: Store the profit rate which will be used during calibration when calculating share-weights, etc.
   # mProfitRate[ aPeriod ] = avgProfitRate;
@@ -324,12 +329,13 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 #' @importFrom readr read_csv
 #' @author KVC September 2017
 LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
-  # TODO: handle data better
-  PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv"))
-  SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv"))
-
+  # Calculate the share weight for the node
+  # TODO: implement absolute cost logit too
   # TODO: move output cost to a member variable
-  SHARE_WEIGHT <- RelativeCostLogit_calcShareWeight(SHARES$share, PROFIT$profit, aPeriod, UNMANAGED_LAND_VALUE)
+  aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandNode$mShare,
+                                                              aLandNode$mProfitRate,
+                                                              aPeriod,
+                                                              UNMANAGED_LAND_VALUE)
 
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
@@ -364,7 +370,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   #     }
   }
 
-  # Note: Node share weights should always be 1, so we aren't going to print them
+  # Note: Node share weights should always be 1
   # TODO: Write an assert to check this
 }
 

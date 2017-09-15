@@ -30,6 +30,8 @@ run_model <- function() {
   mLandAllocator$mChild$greet()
 
   print(paste("DEBUG: share is currently ", mLandAllocator$mChild$mShare))
+  print(paste("DEBUG: share weight is currently ", mLandAllocator$mChild$mShareWeight))
+  print(paste("DEBUG: profit rate is currently ", mLandAllocator$mChild$mProfitRate))
 }
 
 

@@ -8,13 +8,13 @@ LandNode_calculateNodeProfitRates(aLandNode, aAverageProfitRateAbove,
   aChoiceFnAbove, aPeriod)
 }
 \arguments{
+\item{aLandNode}{Current land node}
+
 \item{aAverageProfitRateAbove}{Average profit rate of the parent node.}
 
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Period.}
-
-\item{aRegionName}{Region}
 }
 \description{
 LandNode_calculateNodeProfitRates
