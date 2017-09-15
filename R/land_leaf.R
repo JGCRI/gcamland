@@ -28,10 +28,6 @@ LandLeaf_initCalc <- function(aRegionName, aPeriod ) {
 #' @importFrom readr write_csv
 #' @author KVC September 2017
 LandLeaf_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandLeaf_setInitShares for ", aRegionName, aPeriod))
-  }
-
   # If there is no land allocation for the parent land type, set the share to a small number.
   # Otherwise, set the share of this node.
   # TODO: Save this somehow/somewhere. Also, split into individual leafs
@@ -40,10 +36,6 @@ LandLeaf_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
     mutate(share = if_else(land_above <=0, 0, area / land_above)) %>%
     select(name, share) ->
     LANDLEAF_SHARES
-
-  if(DEBUG) {
-    print(LANDLEAF_SHARES)
-  }
 
   # TODO: Change how we store data
   write_csv(LANDLEAF_SHARES, "./inst/extdata/temp-data/LANDLEAF_SHARES.csv")
@@ -60,16 +52,12 @@ LandLeaf_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
 #' @return Unormalized land shares
 #' @author KVC September 2017
 LandLeaf_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandLeaf_calcLandShares for ", aRegionName, aPeriod))
-  }
-
   # Calculate the unnormalized share for this leaf
   # The unnormalized share is used by the parent node to
   # calculate the leaf's share of the parent's land
   # TODO: do this right
-  PROFIT <- read_csv("./inst/extdata/temp-data/LANDLEAF_PROFIT.csv")
-  SHARES <- read_csv("./inst/extdata/temp-data/LANDLEAF_SHARES.csv")
+  PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_PROFIT.csv"))
+  SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_SHARES.csv"))
 
   # TODO: move output cost to a member variable; move the loop over leafs somewhere else
   SHARES %>%
@@ -82,8 +70,6 @@ LandLeaf_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
     UNNORMALIZED_SHARES$unnormalized.share[i] <- RelativeCostLogit_calcUnnormalizedShare(SHARES$share[i], PROFIT$profit[i], aPeriod)
     i <- i + 1
   }
-
-  print(UNNORMALIZED_SHARES)
 
   return(UNNORMALIZED_SHARES)
 }
@@ -122,14 +108,10 @@ LandLeaf_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, aPeri
 #' @importFrom readr read_csv write_csv
 #' @author KVC September 2017
 LandLeaf_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandLeaf_calculateShareWeights for ", aRegionName, aPeriod))
-  }
-
   # TODO: handle data better
-  NODE_PROFIT <- read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv")
-  PROFIT <- read_csv("./inst/extdata/temp-data/LANDLEAF_PROFIT.csv")
-  SHARES <- read_csv("./inst/extdata/temp-data/LANDLEAF_SHARES.csv")
+  NODE_PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv"))
+  PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_PROFIT.csv"))
+  SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDLEAF_SHARES.csv"))
 
   # TODO: move output cost to a member variable; move the loop over leafs somewhere else
   SHARES %>%
@@ -175,8 +157,6 @@ LandLeaf_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) 
     #       }
     #     }
   }
-
-  print(SHARE_WEIGHT)
 
   write_csv(SHARE_WEIGHT, "./inst/extdata/temp-data/LANDLEAF_SHAREWEIGHT.csv")
 }

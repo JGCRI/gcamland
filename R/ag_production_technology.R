@@ -10,9 +10,6 @@
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 AgProductionTechnology_initCalc <- function(aRegionName, aPeriod) {
-  if(DEBUG){
-    print(paste("AgProductionTechnology_initCalc for ", aRegionName, aPeriod))
-  }
 #   // Compute tech change values for this period for both ag productivity and
 #   // the nonLandVariableCost.  Since technologies are distinct by vintage and don't
 #   // previous period technologies, need to save a previous period compounded cumulative
@@ -68,10 +65,6 @@ AgProductionTechnology_initCalc <- function(aRegionName, aPeriod) {
 #' @param aRegionName Region name.
 #' @author KVC September 2017
 AgProductionTechnology_calcProfitRate <- function(aRegionName, aPeriod) {
-  if(DEBUG){
-    print(paste("AgProductionTechnology_calcProfitRate for ", aRegionName, aPeriod))
-  }
-
   # TODO: Fix this to use read-in data and figure out future periods
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.
   # We multiply by 1e9 since profitRate initially is in $/m2
@@ -87,11 +80,6 @@ AgProductionTechnology_calcProfitRate <- function(aRegionName, aPeriod) {
       mutate(profit = (price - cost) * yield * 1e9) %>%
       select(name, profit) ->
       LANDLEAF_PROFIT
-  }
-
-
-  if(DEBUG) {
-    print(LANDLEAF_PROFIT)
   }
 
   # TODO: Change how we store data

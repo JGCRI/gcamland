@@ -29,10 +29,6 @@ LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
 #' @details Initial calculations needed for the land allocator.
 #' @author KVC September 2017
 LandAllocator_initCalc <- function(aRegionName, aPeriod) {
-  if(DEBUG){
-    print(paste("LandAllocator_InitCalc for ", aRegionName, aPeriod))
-  }
-
   if(aPeriod <= FINAL_CALIBRATION_PERIOD){
     LandAllocator_calibrateLandAllocator(aRegionName, aPeriod)
   }
@@ -51,10 +47,6 @@ LandAllocator_initCalc <- function(aRegionName, aPeriod) {
 #'          that will be used for scaling the profit rates for future year sharing
 #' @author KVC September 2017
 LandAllocator_calibrateLandAllocator <- function(aRegionName, aPeriod){
-  if(DEBUG){
-    print(paste("LandAllocator_calibrateLandAllocator for ", aRegionName, aPeriod))
-  }
-
   # /*  Step 1. Calculate and set initial land shares based on read in data for a
   # calibration period. */
   LandAllocator_setInitShares(aRegionName, 0, aPeriod)
@@ -103,10 +95,6 @@ LandAllocator_calibrateLandAllocator <- function(aRegionName, aPeriod){
 #' @details Calculates and sets initial land shares
 #' @author KVC September 2017
 LandAllocator_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandAllocator_setInitShares for ", aRegionName, aPeriod))
-  }
-
   # Call setInitShares for nodes
   # TODO: set up loop over all land nodes
   LandNode_setInitShares(aRegionName, LAND_ALLOCATION, aPeriod)
@@ -122,10 +110,6 @@ LandAllocator_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeri
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandAllocator_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandAllocator_calcLandShares for ", aRegionName, aPeriod))
-  }
-
   # First, set value of unmanaged land leaves
   # TODO: fix this so different regions can have different values
   # setUnmanagedLandProfitRate( aRegionName, mUnManagedLandValue, aPeriod );
@@ -159,10 +143,6 @@ LandAllocator_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, 
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandAllocator_calcFinalLandAllocation <- function(aRegionName, aPeriod) {
-  if(DEBUG){
-    print(paste("LandAllocator_calcFinalLandAllocation for ", aRegionName, aPeriod))
-  }
-
   # In calibration periods, check land area and set calibration values
   # TODO: Do we really need to do this twice? It also happens in initCalc
   if (aPeriod <= FINAL_CALIBRATION_PERIOD) {

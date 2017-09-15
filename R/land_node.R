@@ -36,10 +36,6 @@ LandNode_initCalc <- function(aRegionName, aPeriod) {
 #' @importFrom readr write_csv
 #' @author KVC September 2017
 LandNode_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandNode_setInitShares for ", aRegionName, aPeriod))
-  }
-
   # Calculate the total land within this node.
   # TODO: make this more robust
   nodeLandAllocation <- LANDNODE_CALDATA$area
@@ -52,10 +48,6 @@ LandNode_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
     mutate(share = if_else(land_above <=0, 0, area / land_above)) %>%
     select(name, share) ->
     LANDNODE_SHARES
-
-  if(DEBUG) {
-    print(LANDNODE_SHARES)
-  }
 
   # TODO: Change how we store data
   write_csv(LANDNODE_SHARES, "./inst/extdata/temp-data/LANDNODE_SHARES.csv")
@@ -78,10 +70,6 @@ LandNode_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandNode_calcLandShares for ", aRegionName, aPeriod))
-  }
-
   # Step 1. Calculate the unnormalized shares.
   # These calls need to be made to initiate recursion into lower nests even
   # if the current node will have fixed shares.
@@ -122,10 +110,6 @@ LandNode_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calculateShareWeights <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandNode_calculateShareWeights for ", aRegionName, aPeriod))
-  }
-
   # For testing, use separate implementations for LandLeaf and LandNode
   LandNode_calculateShareWeight(aRegionName, aChoiceFnAbove, aPeriod)
   LandLeaf_calculateShareWeight(aRegionName, aChoiceFnAbove, aPeriod)
@@ -179,10 +163,6 @@ LandNode_setUnmanagedLandProfitRate <- function(aRegionName, aAverageProfitRate,
 #' @importFrom readr read_csv write_csv
 #' @author KVC September 2017
 LandNode_calculateNodeProfitRates <- function(aRegionName, aAverageProfitRateAbove, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandNode_calculateNodeProfitRates for ", aRegionName, aPeriod))
-  }
-
   avgProfitRate = -SMALL_NUMBER
 
   # If we have a valid profit rate above then we can calculate the implied profit rate this node
@@ -190,7 +170,7 @@ LandNode_calculateNodeProfitRates <- function(aRegionName, aAverageProfitRateAbo
   # unmanaged land value.
   if(aAverageProfitRateAbove > 0.0) {
     # TODO: Fix the way data is stored
-    LANDNODE_SHARES <- read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv")
+    LANDNODE_SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv"))
     mShare <- LANDNODE_SHARES$share
     if(mShare > 0.0) {
       avgProfitRate = RelativeCostLogit_calcImpliedCost(mShare, aAverageProfitRateAbove, aPeriod)
@@ -210,8 +190,6 @@ LandNode_calculateNodeProfitRates <- function(aRegionName, aAverageProfitRateAbo
       avgProfitRate = UNMANAGED_LAND_VALUE
     }
   }
-
-  print(avgProfitRate)
 
   # TODO: Figure out how to store data
   tibble(name = "Land", profit = avgProfitRate) -> LANDNODE_PROFIT
@@ -328,13 +306,9 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 #' @importFrom readr read_csv
 #' @author KVC September 2017
 LandNode_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) {
-  if(DEBUG){
-    print(paste("LandNode_calculateShareWeight for ", aRegionName, aPeriod))
-  }
-
   # TODO: handle data better
-  PROFIT <- read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv")
-  SHARES <- read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv")
+  PROFIT <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_PROFIT.csv"))
+  SHARES <- suppressMessages(read_csv("./inst/extdata/temp-data/LANDNODE_SHARES.csv"))
 
   # TODO: move output cost to a member variable
   SHARE_WEIGHT <- RelativeCostLogit_calcShareWeight(SHARES$share, PROFIT$profit, aPeriod, UNMANAGED_LAND_VALUE)
@@ -371,8 +345,6 @@ LandNode_calculateShareWeight <- function(aRegionName, aChoiceFnAbove, aPeriod) 
   #       }
   #     }
   }
-
-  print(SHARE_WEIGHT)
 
   # Note: Node share weights should always be 1, so we aren't going to print them
   # TODO: Write an assert to check this

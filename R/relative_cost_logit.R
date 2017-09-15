@@ -14,10 +14,6 @@
 #' @return log of the unnormalized share.
 #' @author KVC September 2017
 RelativeCostLogit_calcUnnormalizedShare <- function(aShareWeight, aCost, aPeriod) {
-  if(DEBUG){
-    print(paste("RelativeCostLogit_calcUnnormalizedShare for ", aPeriod))
-  }
-
   # Zero share weight implies no share which is signaled by negative infinity.
   if (aShareWeight > 0.0) {
     logShareWeight <- log(aShareWeight)
@@ -91,10 +87,6 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aShareWeight, aCost, aPeriod
 #' @author KVC September 2017
 RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COST) {
   # TODO: Move OUTPUT_COST to be a member variable instead of passed in
-  if(DEBUG){
-    print(paste("RelativeCostLogit_calcShareWeight for ", aPeriod))
-  }
-
   # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
   cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
 
@@ -104,8 +96,6 @@ RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COS
   } else {
     SHARE_WEIGHT <- aShare * (OUTPUT_COST / cappedCost)^LOGIT_EXPONENT
   }
-
-  print(SHARE_WEIGHT)
 
   return(SHARE_WEIGHT)
 }
@@ -119,10 +109,6 @@ RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COS
 #' @return Node profit rate (called IMPLIED_COST in this method)
 #' @author KVC September 2017
 RelativeCostLogit_calcImpliedCost <- function(aShare, aCost, aPeriod) {
-  if(DEBUG){
-    print(paste("RelativeCostLogit_calcImpliedCost for ", aPeriod))
-  }
-
   # TODO: fix the way we store data
   if(LOGIT_EXPONENT == 0) {
     IMPLIED_COST <- aCost
@@ -135,8 +121,6 @@ RelativeCostLogit_calcImpliedCost <- function(aShare, aCost, aPeriod) {
     cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
     IMPLIED_COST <- cappedCost * (aShare ^ (1.0 / LOGIT_EXPONENT))
   }
-
-  print(IMPLIED_COST)
 
   return(IMPLIED_COST)
 }
