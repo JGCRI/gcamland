@@ -1,5 +1,27 @@
 # land_allocator.R
 
+#' LandAllocator
+#'
+#' @details Initialize an Class called LandAllocator
+#' @param aRegionName Region name
+#' @param aLogitExponent Logit exponent of the top level of the land allocator
+#' @param aLandAllocation Land allocation for this region
+#'
+#' @return New, initialized LandAllocator
+#' @author KVC September 2017
+LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
+  mRegionName = aRegionName
+  mLogitExponent = aLogitExponent
+  mLandAllocation = aLandAllocation
+  greet = function() {
+    cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
+  }
+
+  self <- environment()
+  class(self) <- "LandAllocator"
+  self
+}
+
 #' LandAllocator_initCalc
 #'
 #' @param aRegionName Name of the region

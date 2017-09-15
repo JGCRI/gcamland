@@ -6,6 +6,9 @@
 #' @author KVC
 #' @export
 run_model <- function() {
+  # Initialize LandAllocator
+  mLandAllocator <- LandAllocator(REGION, 0, LAND_ALLOCATION)
+
   # Loop through each year and run the model
   # TODO: put model running in a function, add loop on regions
   for(year in YEARS){
