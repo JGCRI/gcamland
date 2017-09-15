@@ -5,14 +5,10 @@
 #' @details Normalize log shares so they add up to one.
 #'          Also, calculate parameters used to compute node profit.
 #' @param aShares Unnormalized shares
-#' @return Normalized shares
+#' @return Normalized shares and parameters needed to calculate node profit
 #' @importFrom dplyr summarize
 #' @author KVC September 2017
 SectorUtils_normalizeLogShares <- function(aShares) {
-  if(DEBUG){
-    print("SectorUtils_normalizeLogShares")
-  }
-
   # First, find the log of the largest unnormalized share
   aShares %>%
     summarize(lfac = max(unnormalized.share)) ->
@@ -20,6 +16,7 @@ SectorUtils_normalizeLogShares <- function(aShares) {
 
   # Check for all zero prices
   if(lfac$lfac == -Inf) {
+    # TODO: Implement something here
 #     // In this case, set all shares to zero and return.
 #     // This is arguably wrong, but the rest of the code seems to expect it.
 #     for( size_t i = 0; i < alogShares.size(); ++i ) {
@@ -56,6 +53,8 @@ SectorUtils_normalizeLogShares <- function(aShares) {
   }
 
   # TODO: check to make sure sum is 1
+
+  # Return normalized shares, and two parameters (unnormalizedSum, lfac) that are used to calculate node profit
   return(list(normalizedShares = NORMALIZED_SHARES,
            unnormalizedSum = unnormAdjustedSum,
            lfac = lfac$lfac))

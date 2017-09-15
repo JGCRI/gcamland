@@ -33,9 +33,9 @@ LandLeaf <- function(aName, aLandAllocation) {
 #' @param aRegionName Name of the region
 #' @param aPeriod Current time period
 #' @details Initial calculations needed for the land leaf.
-#'          Currently, this just copies shareweights forward.
 #' @author KVC September 2017
 LandLeaf_initCalc <- function(aLandLeaf, aPeriod ) {
+  # TODO: Implement this if needed
 #   if ( aPeriod > 1 ) {
 #     // If leaf is a "new tech" get the scaler from its parent
 #     if ( !mShareWeight[ aPeriod ].isInited()) {
@@ -50,7 +50,7 @@ LandLeaf_initCalc <- function(aLandLeaf, aPeriod ) {
 #'          This method is called during the calibration process
 #'          so the shares set are prior to any calculations
 #'          of share weights.
-#' @param aRegionName Region.
+#' @param aLandLeaf Land leaf to perform calculations on
 #' @param aLandAllocationAbove Land allocation of the parent node
 #' @param aPeriod Model period
 #' @author KVC September 2017
@@ -69,7 +69,7 @@ LandLeaf_setInitShares <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
 #' @details This method implements the logit function. A land type's
 #'          share of land is based on its profit rate and the
 #'          distribution assumed for the parent node ( aLogitExpAbove )
-#' @param aRegionName Region.
+#' @param aLandLeaf Land leaf to perform calculations on
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Model period
 #' @return Unormalized land shares
@@ -78,6 +78,7 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # Calculate the unnormalized share for this leaf
   # The unnormalized share is used by the parent node to
   # calculate the leaf's share of the parent's land
+  # TODO: Implement AbsoluteCostLogit
   unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aLandLeaf$mShare, aLandLeaf$mProfitRate, aPeriod)
 
   return(unNormalizedShare)
@@ -92,7 +93,7 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
 #'          is called in every time period including calibration
 #'          periods. Thus, land in a calibration period is not
 #'          necessarily equal to read in values
-#' @param aRegionName Region name.
+#' @param aLandLeaf Land leaf to perform calculations on
 #' @param aLandAllocationAbove Land allocated to the parent node
 #' @param aPeriod Model period
 #' @author KVC September 2017
@@ -110,15 +111,16 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
 #' LandLeaf_calculateShareWeight
 #'
 #' @details Calculates share weights for land leafs
-#' @param aRegionName Region name
+#' @param aLandLeaf Land leaf to perform calculations on
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
 #' @author KVC September 2017
 LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT) {
-  # TODO: move output cost to a member variable
+  # TODO: move output cost to a member variable; implement absolute cost logit
   aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandLeaf$mShare, aLandLeaf$mProfitRate,
                                                               aPeriod, NODE_PROFIT)
 
+  # TODO: Implement this
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
   if(aPeriod == FINAL_CALIBRATION_PERIOD) {

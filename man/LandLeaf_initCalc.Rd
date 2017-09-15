@@ -16,7 +16,6 @@ LandLeaf_initCalc
 }
 \details{
 Initial calculations needed for the land leaf.
-         Currently, this just copies shareweights forward.
 }
 \author{
 KVC September 2017

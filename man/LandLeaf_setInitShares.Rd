@@ -7,11 +7,11 @@
 LandLeaf_setInitShares(aLandLeaf, aLandAllocationAbove, aPeriod)
 }
 \arguments{
+\item{aLandLeaf}{Land leaf to perform calculations on}
+
 \item{aLandAllocationAbove}{Land allocation of the parent node}
 
 \item{aPeriod}{Model period}
-
-\item{aRegionName}{Region.}
 }
 \description{
 LandLeaf_setInitShares

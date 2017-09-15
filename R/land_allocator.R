@@ -6,12 +6,17 @@
 #' @param aRegionName Region name
 #' @param aLogitExponent Logit exponent of the top level of the land allocator
 #' @param aLandAllocation Land allocation for this region
+#' @field mRegionName Region name
+#' @field mLogitExponent Logit exponent for the top level of the nest
+#' @field mLandAllocation Land allocation for this region
+#' @field mShare Share of land
+#' @field mChild Children of the LandAllocator (currently one LandNode only)
 #'
 #' @return New, initialized LandAllocator
 #' @author KVC September 2017
 LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
   mRegionName = aRegionName
-  mLogitExponent = aLogitExponent
+  mLogitExponent = aLogitExponent # TODO: do I need this?
   mLandAllocation = aLandAllocation
   mShare = NULL
   mChild = LandNode("Crop", LOGIT_EXPONENT, LAND_ALLOCATION)
@@ -57,7 +62,6 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # (which is also the marginal profit rate) for that region or land node subregion. This
   # is the only way the unmanaged land will have a profit rate at this point. It is implied
   # by the read in price of land.  */
-
   # TODO: Implement this so it uses read-in data and can differentiate by region
   # LandAllocator_setUnmanagedLandProfitRate(aRegionName, UNMANAGED_LAND_VALUE, aPeriod)
 
@@ -73,7 +77,6 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # are what the profit rates would have to be based on the actual shares, the logit exponent, and
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
-
   LandNode_calculateNodeProfitRates(aLandAllocator$mChild, UNMANAGED_LAND_VALUE, "relative-cost", aPeriod)
 
   # /* Step 4. Calculate profit scalers. Because the calibration profit rate computed in Step 4
@@ -85,7 +88,6 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   #
   # All of the calibration is captured in the leaves, so the share profit scalers for nodes are
   # set equal to 1.  */
-
   LandNode_calculateShareWeights(aLandAllocator$mChild, "relative-cost", aPeriod)
 }
 
@@ -152,10 +154,4 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
 
   # Calculate land allocation
   LandAllocator_calcLandAllocation(aLandAllocator, aPeriod)
-
- # // Calculate land-use change emissions but only to the end of this model
-# // period for performance reasons.
-# calcLUCEmissions( aRegionName,
-# aPeriod,
-# scenario->getModeltime()->getper_to_yr( aPeriod ) );
 }

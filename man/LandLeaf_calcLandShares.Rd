@@ -7,11 +7,11 @@
 LandLeaf_calcLandShares(aLandLeaf, aChoiceFnAbove, aPeriod)
 }
 \arguments{
+\item{aLandLeaf}{Land leaf to perform calculations on}
+
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Model period}
-
-\item{aRegionName}{Region.}
 }
 \value{
 Unormalized land shares

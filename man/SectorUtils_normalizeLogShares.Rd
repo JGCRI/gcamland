@@ -10,7 +10,7 @@ SectorUtils_normalizeLogShares(aShares)
 \item{aShares}{Unnormalized shares}
 }
 \value{
-Normalized shares
+Normalized shares and parameters needed to calculate node profit
 }
 \description{
 SectorUtils_normalizeLogShares

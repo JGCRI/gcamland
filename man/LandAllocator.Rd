@@ -22,6 +22,20 @@ LandAllocator
 \details{
 Initialize an Class called LandAllocator
 }
+\section{Fields}{
+
+\describe{
+\item{\code{mRegionName}}{Region name}
+
+\item{\code{mLogitExponent}}{Logit exponent for the top level of the nest}
+
+\item{\code{mLandAllocation}}{Land allocation for this region}
+
+\item{\code{mShare}}{Share of land}
+
+\item{\code{mChild}}{Children of the LandAllocator (currently one LandNode only)}
+}}
+
 \author{
 KVC September 2017
 }

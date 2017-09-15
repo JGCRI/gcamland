@@ -7,11 +7,11 @@
 LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT)
 }
 \arguments{
+\item{aLandLeaf}{Land leaf to perform calculations on}
+
 \item{aChoiceFnAbove}{Type of logit}
 
 \item{aPeriod}{Model time period}
-
-\item{aRegionName}{Region name}
 }
 \description{
 LandLeaf_calculateShareWeight

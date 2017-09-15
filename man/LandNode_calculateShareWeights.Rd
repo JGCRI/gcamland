@@ -7,11 +7,11 @@
 LandNode_calculateShareWeights(aLandNode, aChoiceFnAbove, aPeriod)
 }
 \arguments{
+\item{aLandNode}{Land node to perform calculations on}
+
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Period.}
-
-\item{aRegionName}{Region}
 }
 \description{
 LandNode_calculateShareWeights
