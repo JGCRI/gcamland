@@ -23,7 +23,7 @@ run_model <- function() {
     # Next, call calcFinalLandAllocation for LandAllocator
     # TODO: Figure out when/what to call from AgProductionTechnology to make sure
     #       profits are calculated/sent before land is allocated
-    LandAllocator_calcFinalLandAllocation(REGION, year)
+    LandAllocator_calcFinalLandAllocation(mLandAllocator, year)
   }
 
   mLandAllocator$greet()
