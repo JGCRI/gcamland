@@ -4,10 +4,10 @@
 \alias{LandAllocator_initCalc}
 \title{LandAllocator_initCalc}
 \usage{
-LandAllocator_initCalc(aRegionName, aPeriod)
+LandAllocator_initCalc(aLandAllocator, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Name of the region}
+\item{aLandAllocator}{The land allocator for this region}
 
 \item{aPeriod}{Current time period}
 }

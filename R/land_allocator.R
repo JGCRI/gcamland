@@ -13,6 +13,7 @@ LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
   mRegionName = aRegionName
   mLogitExponent = aLogitExponent
   mLandAllocation = aLandAllocation
+  mChild = LandNode("Crop", LOGIT_EXPONENT, LAND_ALLOCATION)
   greet = function() {
     cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
   }
@@ -24,32 +25,32 @@ LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
 
 #' LandAllocator_initCalc
 #'
-#' @param aRegionName Name of the region
+#' @param aLandAllocator The land allocator for this region
 #' @param aPeriod Current time period
 #' @details Initial calculations needed for the land allocator.
 #' @author KVC September 2017
-LandAllocator_initCalc <- function(aRegionName, aPeriod) {
+LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
   if(aPeriod <= FINAL_CALIBRATION_PERIOD){
-    LandAllocator_calibrateLandAllocator(aRegionName, aPeriod)
+    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
   }
 
   # Call land node's initCalc
   # TODO: loop over children
-  LandNode_initCalc(aRegionName, aPeriod)
+  LandNode_initCalc(aLandAllocator$mRegionName, aPeriod)
 }
 
 #' LandAllocator_calibrateLandAllocator
 #'
-#' @param aRegionName Region name.
+#' @param aLandAllocator Land allocator for this region
 #' @param aPeriod model period.
 #' @details Sets initial land shares, sets unmanaged land profit rates,
 #'          calculate calibration prfot rates, then calculates share profit scalers
 #'          that will be used for scaling the profit rates for future year sharing
 #' @author KVC September 2017
-LandAllocator_calibrateLandAllocator <- function(aRegionName, aPeriod){
+LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # /*  Step 1. Calculate and set initial land shares based on read in data for a
   # calibration period. */
-  LandAllocator_setInitShares(aRegionName, 0, aPeriod)
+  LandAllocator_setInitShares(aLandAllocator, aPeriod)
 
   # /* Step 2. Set the profit rate of unmanaged land leafs equal to the read in land price
   # (which is also the marginal profit rate) for that region or land node subregion. This
@@ -72,7 +73,7 @@ LandAllocator_calibrateLandAllocator <- function(aRegionName, aPeriod){
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
 
-  LandNode_calculateNodeProfitRates(aRegionName, UNMANAGED_LAND_VALUE, "relative-cost", aPeriod)
+  LandNode_calculateNodeProfitRates(aLandAllocator$mRegionName, UNMANAGED_LAND_VALUE, "relative-cost", aPeriod)
 
   # /* Step 4. Calculate profit scalers. Because the calibration profit rate computed in Step 4
   # will most likely differ from the profit rate computed using the yield times price - cost, a
@@ -84,20 +85,19 @@ LandAllocator_calibrateLandAllocator <- function(aRegionName, aPeriod){
   # All of the calibration is captured in the leaves, so the share profit scalers for nodes are
   # set equal to 1.  */
 
-  LandNode_calculateShareWeights(aRegionName, "relative-cost", aPeriod)
+  LandNode_calculateShareWeights(aLandAllocator$mRegionName, "relative-cost", aPeriod)
 }
 
 #' LandAllocator_setInitShares
 #'
-#' @param aRegionName Region name.
-#' @param aLandAllocationAbove Land allocation of the parent node.
+#' @param aLandAllocator Land allocator for this region.
 #' @param aPeriod model period.
 #' @details Calculates and sets initial land shares
 #' @author KVC September 2017
-LandAllocator_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeriod) {
+LandAllocator_setInitShares <- function(aLandAllocator, aPeriod) {
   # Call setInitShares for nodes
   # TODO: set up loop over all land nodes
-  LandNode_setInitShares(aRegionName, LAND_ALLOCATION, aPeriod)
+  LandNode_setInitShares(aLandAllocator$mRegionName, LAND_ALLOCATION, aPeriod)
 }
 
 #' LandAllocator_calcLandShares
@@ -105,17 +105,17 @@ LandAllocator_setInitShares <- function(aRegionName, aLandAllocationAbove, aPeri
 #' @details Calculates land shares.
 #'          Sets unmanaged profit rate, then calls land node's
 #'          calcLandShares. Also, sets root share to 1.
-#' @param aRegionName Region name.
+#' @param aLandAllocator Land allocator for this region
 #' @param aChoiceFnAbove Type of logit choice function for parent node.
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
-LandAllocator_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
+LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod) {
   # First, set value of unmanaged land leaves
   # TODO: fix this so different regions can have different values
   # setUnmanagedLandProfitRate( aRegionName, mUnManagedLandValue, aPeriod );
 
   # Then, calculate land shares
-  LandNode_calcLandShares(aRegionName, "relative-cost", aPeriod)
+  LandNode_calcLandShares(aLandAllocator$mRegionName, "relative-cost", aPeriod)
 
   # This is the root node so its share is 100%.
   # mShare[ aPeriod ] = 1;
@@ -125,11 +125,10 @@ LandAllocator_calcLandShares <- function(aRegionName, aChoiceFnAbove, aPeriod) {
 #'
 #' @details Initiates calculation of land allocation by
 #'          calling calcLandAllocation on all children
-#' @param aRegionName Region name.
-#' @param aLandAllocationAbove Land allocation of parent node.
+#' @param aLandAllocator Land allocator for this region
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
-LandAllocator_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, aPeriod) {
+LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
 # for ( unsigned int i = 0; i < mChildren.size(); ++i ){
 # mChildren[ i ]->calcLandAllocation( aRegionName, mLandAllocation[ aPeriod ], aPeriod );
 # }
@@ -139,25 +138,23 @@ LandAllocator_calcLandAllocation <- function(aRegionName, aLandAllocationAbove, 
 #'
 #' @details Initiates calculation of land allocation
 #'          Calls calibrateLandAllocator, calcLandShares, and calcLandAllocation
-#' @param aRegionName Region name.
+#' @param aLandAllocator Land allocator for this region.
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
-LandAllocator_calcFinalLandAllocation <- function(aRegionName, aPeriod) {
+LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
   # In calibration periods, check land area and set calibration values
   # TODO: Do we really need to do this twice? It also happens in initCalc
   if (aPeriod <= FINAL_CALIBRATION_PERIOD) {
-    LandAllocator_calibrateLandAllocator(aRegionName, aPeriod)
+    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
   }
 
   # Calculate land shares
- LandAllocator_calcLandShares(aRegionName, "relative-cost", aPeriod)
+  LandAllocator_calcLandShares(aLandAllocator, "relative-cost", aPeriod)
 
-# // Calculate land allocation
-# calcLandAllocation( aRegionName,
-# 0, // No land allocation above the root.
-# aPeriod );
-#
-# // Calculate land-use change emissions but only to the end of this model
+  # Calculate land allocation
+  LandAllocator_calcLandAllocation(aLandAllocator, aPeriod)
+
+ # // Calculate land-use change emissions but only to the end of this model
 # // period for performance reasons.
 # calcLUCEmissions( aRegionName,
 # aPeriod,

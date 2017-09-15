@@ -4,10 +4,10 @@
 \alias{LandAllocator_calcLandShares}
 \title{LandAllocator_calcLandShares}
 \usage{
-LandAllocator_calcLandShares(aRegionName, aChoiceFnAbove, aPeriod)
+LandAllocator_calcLandShares(aLandAllocator, aChoiceFnAbove, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
+\item{aLandAllocator}{Land allocator for this region}
 
 \item{aChoiceFnAbove}{Type of logit choice function for parent node.}
 

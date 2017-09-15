@@ -4,12 +4,10 @@
 \alias{LandAllocator_setInitShares}
 \title{LandAllocator_setInitShares}
 \usage{
-LandAllocator_setInitShares(aRegionName, aLandAllocationAbove, aPeriod)
+LandAllocator_setInitShares(aLandAllocator, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
-
-\item{aLandAllocationAbove}{Land allocation of the parent node.}
+\item{aLandAllocator}{Land allocator for this region.}
 
 \item{aPeriod}{model period.}
 }

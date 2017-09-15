@@ -4,10 +4,10 @@
 \alias{LandAllocator_calibrateLandAllocator}
 \title{LandAllocator_calibrateLandAllocator}
 \usage{
-LandAllocator_calibrateLandAllocator(aRegionName, aPeriod)
+LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
 }
 \arguments{
-\item{aRegionName}{Region name.}
+\item{aLandAllocator}{Land allocator for this region}
 
 \item{aPeriod}{model period.}
 }

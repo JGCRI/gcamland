@@ -1,5 +1,27 @@
 # land_node.R
 
+#' LandNode
+#'
+#' @details Initialize an Class called LandNode
+#' @param aName Node name
+#' @param aLogitExponent Logit exponent of the node
+#' @param aLandAllocation Land allocation for this node
+#'
+#' @return New, initialized LandNode
+#' @author KVC September 2017
+LandNode <- function(aName, aLogitExponent, aLandAllocation) {
+  mName = aName
+  mLogitExponent = aLogitExponent
+  mLandAllocation = aLandAllocation
+  greet = function() {
+    cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))
+  }
+
+  self <- environment()
+  class(self) <- "LandNode"
+  self
+}
+
 #' LandNode_initCalc
 #'
 #' @param aRegionName Region name.

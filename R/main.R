@@ -18,13 +18,16 @@ run_model <- function() {
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
     AgProductionTechnology_initCalc(REGION, year)
-    LandAllocator_initCalc(REGION, year)
+    LandAllocator_initCalc(mLandAllocator, year)
 
     # Next, call calcFinalLandAllocation for LandAllocator
     # TODO: Figure out when/what to call from AgProductionTechnology to make sure
     #       profits are calculated/sent before land is allocated
     LandAllocator_calcFinalLandAllocation(REGION, year)
   }
+
+  mLandAllocator$greet()
+  mLandAllocator$mChild$greet()
 }
 
 
