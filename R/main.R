@@ -26,13 +26,7 @@ run_model <- function() {
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
-  mLandAllocator$greet()
-  mLandAllocator$mChild$greet()
-  for( leaf in  mLandAllocator$mChild$mChildren ) {
-    print(paste("DEBUG: profit rate is currently ", leaf$mProfitRate))
-    print(paste("DEBUG: share is currently ", leaf$mShare))
-    print(paste("DEBUG: area is currently ", leaf$mLandAllocation[[2]]))
-  }
+  plot_LandAllocation(mLandAllocator)
 }
 
 
