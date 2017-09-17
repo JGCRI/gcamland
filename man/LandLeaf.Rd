@@ -32,6 +32,14 @@ Initialize an Class called LandLeaf
 \item{\code{mShareWeight}}{Share weight of this leaf}
 
 \item{\code{mProfitRate}}{Profit rate of this leaf}
+
+\item{\code{mCost}}{Non-land variable cost of this leaf}
+
+\item{\code{mYield}}{yield for this leaf}
+
+\item{\code{mNonLandCostTechChange}}{Technical change on the cost of this leaf}
+
+\item{\code{mAgProdChange}}{Technical change on yield for this leaf}
 }}
 
 \author{

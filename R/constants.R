@@ -3,6 +3,7 @@
 # Time-related parameters
 FINAL_CALIBRATION_PERIOD <- 1
 PERIODS <- 1:2
+TIMESTEP <- 5
 
 # Threshold-related constants
 # TODO: Make sure these are consistent with GCAM

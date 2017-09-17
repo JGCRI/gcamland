@@ -10,6 +10,10 @@
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
 #' @field mProfitRate Profit rate of this leaf
+#' @field mCost Non-land variable cost of this leaf
+#' @field mYield yield for this leaf
+#' @field mNonLandCostTechChange Technical change on the cost of this leaf
+#' @field mAgProdChange Technical change on yield for this leaf
 #'
 #' @return New, initialized LandLeaf
 #' @author KVC September 2017
@@ -19,6 +23,11 @@ LandLeaf <- function(aName, aLandAllocation) {
   mShare = list(`1` = -1, `2` = -1)
   mShareWeight = NULL
   mProfitRate = list(`1` = -1, `2` = -1)
+  # We are including cost, yield, and tech change here, rather than AgProductionTechnology for convenience
+  mCost = list(`1` = 0, `2` = 0)
+  mYield = list(`1` = 1, `2` = 0)
+  mNonLandCostTechChange = list(`1` = 0, `2` = 0)
+  mAgProdChange = list(`1` = 0, `2` = 0.02)
   greet = function() {
     cat(paste0("Hello, I am a LandLeaf named ", self$mName, ".\n"))
   }

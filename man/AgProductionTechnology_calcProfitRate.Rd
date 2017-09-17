@@ -4,10 +4,10 @@
 \alias{AgProductionTechnology_calcProfitRate}
 \title{AgProductionTechnology_calcProfitRate}
 \usage{
-AgProductionTechnology_calcProfitRate(aLandAllocator, aPeriod)
+AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod)
 }
 \arguments{
-\item{aLandAllocator}{Land allocator}
+\item{aLandLeaf}{Land leaf}
 
 \item{aPeriod}{Current model period}
 }

@@ -15,16 +15,21 @@ run_model <- function() {
   for(per in PERIODS){
     print(paste("Starting period:", per))
 
-    # First, call initCalc for AgProductionTechnology and LandAllocator
+    # First, call initCalc for AgProductionTechnology (via Sector) and LandAllocator
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
-    AgProductionTechnology_initCalc(mLandAllocator, per)
+    Sector_initCalc(mLandAllocator, per)
     LandAllocator_initCalc(mLandAllocator, per)
 
     # Next, call calcFinalLandAllocation for LandAllocator
     # TODO: Figure out when/what to call from AgProductionTechnology to make sure
     #       profits are calculated/sent before land is allocated
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
+  }
+
+  for ( leaf in mLandAllocator$mChild$mChildren ) {
+    print(paste("DEBUG: yield is ", leaf$mYield))
+    print(paste("DEBUG: profit is ", leaf$mProfitRate))
   }
 
   plot_LandAllocation(mLandAllocator)
