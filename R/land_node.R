@@ -23,8 +23,8 @@ LandNode <- function(aName, aLogitExponent, aLandAllocation) {
   mShare = NULL
   mShareWeight = NULL
   mProfitRate = NULL
-  mChildren = list(LandLeaf("Crop1", 100),
-                   LandLeaf("Crop2", 100)
+  mChildren = list(#LandLeaf("Crop1", 100),
+                   #LandLeaf("Crop2", 100)
                    )
   greet = function() {
     cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))

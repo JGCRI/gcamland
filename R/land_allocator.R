@@ -181,12 +181,12 @@ LandAllocator_readData <- function(aLandAllocator) {
       children <- list()
       while ( i <= nrow(currLand) ) {
         # Get data and initialize a new leaf
-        name <- currLand[i, c("LandLeaf")]
+        name <- currLand[[i, c("LandLeaf")]]
         land <- currLand[i, c("mLandAllocation")]
         newLeaf <- LandLeaf(name, land)
 
         # Add this leaf to the land allocator
-        children <- c(children, newLeaf)
+        aLandAllocator$mChild$mChildren[[i]] <- newLeaf
         i <- i + 1
       }
 
