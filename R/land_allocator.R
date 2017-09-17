@@ -155,3 +155,43 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
   # Calculate land allocation
   LandAllocator_calcLandAllocation(aLandAllocator, aPeriod)
 }
+
+#' LandAllocator_readData
+#'
+#' @details Read in calibration data for the land allocator
+#' @param aLandAllocator LandAllocator that needs data
+#' @importFrom readr read_csv
+#' @author KVC September 2017
+LandAllocator_readData <- function(aLandAllocator) {
+  land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/land_allocation.csv"))
+
+  # TODO: make this work on any land nest
+  # First, fill in land allocation for LandLeaf
+  for ( per in PERIODS ) {
+    # Only read in data for calibration periods
+    if ( per <= FINAL_CALIBRATION_PERIOD ) {
+      land.allocation %>%
+        filter(Period == per) ->
+        currLand
+
+      # Loop through all LandLeaf and fill in land allocation
+      # TODO: check that each leaf only exists once
+      # TODO: create leaf from this data (i.e., insert into mChildren dynamically)
+      i <- 1
+      children <- list()
+      while ( i <= nrow(currLand) ) {
+        # Get data and initialize a new leaf
+        name <- currLand[i, c("LandLeaf")]
+        land <- currLand[i, c("mLandAllocation")]
+        newLeaf <- LandLeaf(name, land)
+
+        # Add this leaf to the land allocator
+        children <- c(children, newLeaf)
+        i <- i + 1
+      }
+
+    # TODO: Figure this out. It doesn't work right now
+    }
+  }
+
+}

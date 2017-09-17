@@ -8,6 +8,7 @@
 run_model <- function() {
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION, 0, LAND_ALLOCATION)
+  LandAllocator_readData(mLandAllocator)
 
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
