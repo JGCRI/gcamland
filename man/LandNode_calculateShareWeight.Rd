@@ -7,11 +7,11 @@
 LandNode_calculateShareWeight(aLandNode, aChoiceFnAbove, aPeriod)
 }
 \arguments{
+\item{aLandNode}{Land node}
+
 \item{aChoiceFnAbove}{Type of logit}
 
 \item{aPeriod}{Model time period}
-
-\item{aRegionName}{Region name}
 }
 \description{
 LandNode_calculateShareWeight

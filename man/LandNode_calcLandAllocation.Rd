@@ -7,11 +7,11 @@
 LandNode_calcLandAllocation(aLandNode, aLandAllocationAbove, aPeriod)
 }
 \arguments{
+\item{aLandNode}{Land node}
+
 \item{aLandAllocationAbove}{Land allocation of parent.}
 
 \item{aPeriod}{model period.}
-
-\item{aRegionName}{Region name.}
 }
 \description{
 LandNode_calcLandAllocation

@@ -163,6 +163,10 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
 #' @importFrom readr read_csv
 #' @author KVC September 2017
 LandAllocator_readData <- function(aLandAllocator) {
+  # Silence package checks
+  Period <- NULL
+
+  # Read in land allocation data
   land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/land_allocation.csv"))
 
   # TODO: make this work on any land nest

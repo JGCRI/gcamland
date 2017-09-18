@@ -7,9 +7,9 @@
 AgProductionTechnology_initCalc(aLandLeaf, aPeriod)
 }
 \arguments{
-\item{aPeriod}{Model time period.}
+\item{aLandLeaf}{Land leaf}
 
-\item{aLandAllocator}{Land allocator}
+\item{aPeriod}{Model time period.}
 }
 \description{
 AgProductionTechnology_initCalc

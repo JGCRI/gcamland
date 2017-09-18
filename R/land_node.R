@@ -35,7 +35,7 @@ LandNode <- function(aName, aLogitExponent, aLandAllocation) {
 
 #' LandNode_initCalc
 #'
-#' @param aRegionName Region name.
+#' @param aLandNode Land node.
 #' @param aPeriod Model time period.
 #' @details Initial calculations for the land node.
 #'          Currently, this copies share weights forward and
@@ -153,7 +153,7 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #' @details Unmanaged land leafs have a base profit rate that
 #'          is equal to the average profit rate of that region
 #'          or subregion.
-#' @param aRegionName Region name.
+#' @param aLandNode Land node.
 #' @param aAverageProfitRate Average profit rate of region or subregion.
 #' @param aPeriod model period.
 #' @author KVC September 2017
@@ -244,7 +244,7 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
 #' @details Uses the land share and the allocation of land to
 #'          the parent node to calculate the allocation of this
 #'          node. CalculateLandShares must be called first.
-#' @param aRegionName Region name.
+#' @param aLandNode Land node
 #' @param aLandAllocationAbove Land allocation of parent.
 #' @param aPeriod model period.
 #' @author KVC September 2017
@@ -323,7 +323,7 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 #' LandNode_calculateShareWeight
 #'
 #' @details Calculates share weights for land nodes
-#' @param aRegionName Region name
+#' @param aLandNode Land node
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
 #' @author KVC September 2017

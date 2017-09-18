@@ -9,6 +9,9 @@
 #' @importFrom dplyr summarize
 #' @author KVC September 2017
 SectorUtils_normalizeLogShares <- function(aShares) {
+  # Silence package checks
+  unnormalized.share <- NULL
+
   # First, find the log of the largest unnormalized share
   aShares %>%
     summarize(lfac = max(unnormalized.share)) ->

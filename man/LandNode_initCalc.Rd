@@ -7,9 +7,9 @@
 LandNode_initCalc(aLandNode, aPeriod)
 }
 \arguments{
-\item{aPeriod}{Model time period.}
+\item{aLandNode}{Land node.}
 
-\item{aRegionName}{Region name.}
+\item{aPeriod}{Model time period.}
 }
 \description{
 LandNode_initCalc

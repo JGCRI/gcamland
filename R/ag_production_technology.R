@@ -6,7 +6,7 @@
 #'          Adjusts costs & yields for technical change, calculate
 #'          profit rate and make it available for the land allocator.
 #'          Note: this method must be called before LandAllocator initCalc
-#' @param aLandAllocator Land allocator
+#' @param aLandLeaf Land leaf
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {

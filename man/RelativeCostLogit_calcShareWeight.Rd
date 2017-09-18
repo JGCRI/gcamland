@@ -11,7 +11,9 @@ RelativeCostLogit_calcShareWeight(aShare, aCost, aPeriod, OUTPUT_COST)
 
 \item{aCost}{TODO}
 
-\item{aPeriod}{Model time period.}
+\item{aPeriod}{Model time period}
+
+\item{OUTPUT_COST}{Node profit}
 }
 \value{
 Share weight

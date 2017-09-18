@@ -82,11 +82,12 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aShareWeight, aCost, aPeriod
 #' @details Calculate the share weight using the relative cost logit
 #' @param aShare TODO
 #' @param aCost TODO
-#' @param aPeriod Model time period.
+#' @param aPeriod Model time period
+#' @param OUTPUT_COST Node profit
 #' @return Share weight
 #' @author KVC September 2017
 RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COST) {
-  # TODO: Move OUTPUT_COST to be a member variable instead of passed in
+  # TODO: Move OUTPUT_COST to be a member variable instead of passed in, document/name better
   # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
   cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
 

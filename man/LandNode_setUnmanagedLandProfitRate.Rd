@@ -7,11 +7,11 @@
 LandNode_setUnmanagedLandProfitRate(aLandNode, aAverageProfitRate, aPeriod)
 }
 \arguments{
+\item{aLandNode}{Land node.}
+
 \item{aAverageProfitRate}{Average profit rate of region or subregion.}
 
 \item{aPeriod}{model period.}
-
-\item{aRegionName}{Region name.}
 }
 \description{
 LandNode_setUnmanagedLandProfitRate

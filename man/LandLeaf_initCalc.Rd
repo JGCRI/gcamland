@@ -7,9 +7,9 @@
 LandLeaf_initCalc(aLandLeaf, aPeriod)
 }
 \arguments{
-\item{aPeriod}{Current time period}
+\item{aLandLeaf}{Land leaf}
 
-\item{aRegionName}{Name of the region}
+\item{aPeriod}{Current time period}
 }
 \description{
 LandLeaf_initCalc

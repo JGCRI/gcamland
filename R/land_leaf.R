@@ -39,7 +39,7 @@ LandLeaf <- function(aName, aLandAllocation) {
 
 #' LandLeaf_initCalc
 #'
-#' @param aRegionName Name of the region
+#' @param aLandLeaf Land leaf
 #' @param aPeriod Current time period
 #' @details Initial calculations needed for the land leaf.
 #' @author KVC September 2017
@@ -124,6 +124,7 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
 #' @param aLandLeaf Land leaf to perform calculations on
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
+#' @param NODE_PROFIT Profit rate of node (TODO: put this in the choice function)
 #' @author KVC September 2017
 LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT) {
   # TODO: move output cost to a member variable; implement absolute cost logit

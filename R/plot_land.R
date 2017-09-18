@@ -8,6 +8,9 @@
 #' @import ggplot2
 #' @export
 plot_LandAllocation <- function(aLandAllocator) {
+  # Silence package checks
+  period <- land.allocation <- name <- NULL
+
   # TODO: Figure out how to loop through bigger nests
   landNode <- aLandAllocator$mChild
 
