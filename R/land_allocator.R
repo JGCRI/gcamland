@@ -185,6 +185,8 @@ LandAllocator_readData <- function(aLandAllocator) {
         land <- currLand[i, c("mLandAllocation")]
         newLeaf <- LandLeaf(name, land)
 
+        # TODO: add a method to read-in yield, cost, tech change here
+
         # Add this leaf to the land allocator
         aLandAllocator$mChild$mChildren[[i]] <- newLeaf
         i <- i + 1
