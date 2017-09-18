@@ -5,7 +5,7 @@ context("globals")
 
 
 test_that("constants are capitalized correctly", {
-  ns <- getNamespace("gcamdata")
+  ns <- getNamespace("gcamland")
   objnames <- ls(ns, all.names = FALSE)
 
   for(oname in objnames) {
