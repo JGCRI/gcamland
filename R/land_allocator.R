@@ -19,7 +19,7 @@ LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
   mLogitExponent = aLogitExponent # TODO: do I need this?
   mLandAllocation = aLandAllocation
   mShare = NULL
-  mChild = LandNode("Crop", LOGIT_EXPONENT, LAND_ALLOCATION)
+  mChild = NULL
   greet = function() {
     cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
   }
@@ -174,13 +174,25 @@ LandAllocator_readData <- function(aLandAllocator) {
   for ( per in PERIODS ) {
     # Only read in data for calibration periods
     if ( per <= FINAL_CALIBRATION_PERIOD ) {
+       # First, loop through nodes and fill in land allocation
+      # TODO: create new nodes as we find them
+      land.allocation %>%
+        filter(Period == per) %>%
+        group_by(LandNode, Period) %>%
+        summarize(mLandAllocation = sum(mLandAllocation)) ->
+        currNodeLand
+
+      name <- currNodeLand[[c("LandNode")]]
+      land <- currNodeLand[[c("mLandAllocation")]]
+      newNode <- LandNode(name, LOGIT_EXPONENT, land)
+      aLandAllocator$mChild <- newNode
+
+      # Now, Loop through all LandLeaf and fill in land allocation
       land.allocation %>%
         filter(Period == per) ->
         currLand
 
-      # Loop through all LandLeaf and fill in land allocation
       # TODO: check that each leaf only exists once
-      # TODO: create leaf from this data (i.e., insert into mChildren dynamically)
       i <- 1
       children <- list()
       while ( i <= nrow(currLand) ) {
@@ -196,7 +208,8 @@ LandAllocator_readData <- function(aLandAllocator) {
         i <- i + 1
       }
 
-    # TODO: Figure this out. It doesn't work right now
+
+
     }
   }
 
