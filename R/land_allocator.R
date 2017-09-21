@@ -100,7 +100,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
 LandAllocator_setInitShares <- function(aLandAllocator, aPeriod) {
   # Call setInitShares for nodes
   # TODO: set up loop over all land nodes
-  LandNode_setInitShares(aLandAllocator$mChild, LAND_ALLOCATION, aPeriod)
+  LandNode_setInitShares(aLandAllocator$mChild, aLandAllocator$mLandAllocation, aPeriod)
 }
 
 #' LandAllocator_calcLandShares
@@ -170,11 +170,19 @@ LandAllocator_readData <- function(aLandAllocator) {
   land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/land_allocation.csv"))
 
   # TODO: make this work on any land nest
+  # TODO: make this work if you have multiple calibration periods
   # First, fill in land allocation for LandLeaf
   for ( per in PERIODS ) {
     # Only read in data for calibration periods
     if ( per <= FINAL_CALIBRATION_PERIOD ) {
-       # First, loop through nodes and fill in land allocation
+      # First, fill in total land allocation
+      land.allocation %>%
+        summarize(mLandAllocation = sum(mLandAllocation)) ->
+        totalLand
+
+      aLandAllocator$mLandAllocation <- totalLand
+
+      # Next, fill in land allocation for nodes
       # TODO: create new nodes as we find them
       land.allocation %>%
         filter(Period == per) %>%
