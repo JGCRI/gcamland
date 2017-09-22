@@ -164,7 +164,7 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
 #' @author KVC September 2017
 LandAllocator_readData <- function(aLandAllocator) {
   # Silence package checks
-  Period <- NULL
+  Period <- mLandAllocation <- NULL
 
   # Read in land allocation data
   land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/land_allocation.csv"))

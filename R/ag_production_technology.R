@@ -47,21 +47,27 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
 #'          Profit rate is in 1975$ per billion m2, so computation includes yield.
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Current model period
+#' @importFrom readr read_csv
 #' @author KVC September 2017
 AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
-  # TODO: Fix this to use read-in data and figure out future periods
+  # Silence package checks
+  Period <- Product <- NULL
+
+  # Read in prices
+  prices <- suppressMessages(read_csv("./inst/extdata/calibration-data/price.csv"))
+
+  # Get price for this leaf in this period only
+  prices %>%
+    filter(Period == aPeriod, Product == aLandLeaf$mName) ->
+    prices
+
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.
   # We multiply by 1e9 since profitRate initially is in $/m2
   # and the land allocator needs it in $/billion m2. This assumes yield is in kg/m2.
+  # TODO: Do I need to do something different for each?
   if(aPeriod <= FINAL_CALIBRATION_PERIOD) {
-    # Figure out how to read in price, cost, yield
-    price <- 1
-    aLandLeaf$mProfitRate[aPeriod] <- (price - aLandLeaf$mCost[[aPeriod]]) * aLandLeaf$mYield[[aPeriod]] * 1e9
+    aLandLeaf$mProfitRate[aPeriod] <- (prices[[c("mPrice")]] - aLandLeaf$mCost[[aPeriod]]) * aLandLeaf$mYield[[aPeriod]] * 1e9
   } else {
-    # TODO: Fix this to use future data
-    # TODO: allow for more than one node
-    # Figure out how to read in/differentiate price, cost, yield
-    price <- 1
-    aLandLeaf$mProfitRate[aPeriod] <- (price - aLandLeaf$mCost[[aPeriod]]) * aLandLeaf$mYield[[aPeriod]] * 1e9
+    aLandLeaf$mProfitRate[aPeriod] <- (prices[[c("mPrice")]] - aLandLeaf$mCost[[aPeriod]]) * aLandLeaf$mYield[[aPeriod]] * 1e9
   }
 }
