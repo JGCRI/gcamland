@@ -4,7 +4,8 @@
 \alias{RelativeCostLogit_calcShareWeight}
 \title{RelativeCostLogit_calcShareWeight}
 \usage{
-RelativeCostLogit_calcShareWeight(aShare, aCost, aPeriod, OUTPUT_COST)
+RelativeCostLogit_calcShareWeight(aChoiceFnAbove, aShare, aCost, aPeriod,
+  OUTPUT_COST)
 }
 \arguments{
 \item{aShare}{TODO}

@@ -4,7 +4,8 @@
 \alias{RelativeCostLogit_calcUnnormalizedShare}
 \title{RelativeCostLogit_calcUnnormalizedShare}
 \usage{
-RelativeCostLogit_calcUnnormalizedShare(aShareWeight, aCost, aPeriod)
+RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove, aShareWeight, aCost,
+  aPeriod)
 }
 \arguments{
 \item{aShareWeight}{share weight for the choice for which the share is being calculated.}

@@ -4,20 +4,18 @@
 #'
 #' @details Initialize an Class called LandAllocator
 #' @param aRegionName Region name
-#' @param aLogitExponent Logit exponent of the top level of the land allocator
-#' @param aLandAllocation Land allocation for this region
 #' @field mRegionName Region name
-#' @field mLogitExponent Logit exponent for the top level of the nest
+#' @field mChoiceFunction Logit type & exponent for the top level of the nest
 #' @field mLandAllocation Land allocation for this region
 #' @field mShare Share of land
 #' @field mChild Children of the LandAllocator (currently one LandNode only)
 #'
 #' @return New, initialized LandAllocator
 #' @author KVC September 2017
-LandAllocator <- function(aRegionName, aLogitExponent, aLandAllocation) {
+LandAllocator <- function(aRegionName) {
   mRegionName = aRegionName
-  mLogitExponent = aLogitExponent # TODO: do I need this?
-  mLandAllocation = aLandAllocation
+  mChoiceFunction = ChoiceFunction("relative-cost", 0)
+  mLandAllocation = NULL
   mShare = NULL
   mChild = NULL
   greet = function() {
@@ -77,7 +75,8 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # are what the profit rates would have to be based on the actual shares, the logit exponent, and
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
-  LandNode_calculateNodeProfitRates(aLandAllocator$mChild, UNMANAGED_LAND_VALUE, "relative-cost", aPeriod)
+  LandNode_calculateNodeProfitRates(aLandAllocator$mChild, UNMANAGED_LAND_VALUE,
+                                    aLandAllocator$mChoiceFunction, aPeriod)
 
   # /* Step 4. Calculate profit scalers. Because the calibration profit rate computed in Step 4
   # will most likely differ from the profit rate computed using the yield times price - cost, a
@@ -88,7 +87,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   #
   # All of the calibration is captured in the leaves, so the share profit scalers for nodes are
   # set equal to 1.  */
-  LandNode_calculateShareWeights(aLandAllocator$mChild, "relative-cost", aPeriod)
+  LandNode_calculateShareWeights(aLandAllocator$mChild, aLandAllocator$mChoiceFunction, aPeriod)
 }
 
 #' LandAllocator_setInitShares
@@ -118,7 +117,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   # setUnmanagedLandProfitRate( aRegionName, mUnManagedLandValue, aPeriod );
 
   # Then, calculate land shares
-  LandNode_calcLandShares(aLandAllocator$mChild, "relative-cost", aPeriod)
+  LandNode_calcLandShares(aLandAllocator$mChild, aLandAllocator$mChoiceFunction, aPeriod)
 
   # This is the root node so its share is 100%.
   aLandAllocator$mShare <- 1
@@ -150,7 +149,7 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
   }
 
   # Calculate land shares
-  LandAllocator_calcLandShares(aLandAllocator, "relative-cost", aPeriod)
+  LandAllocator_calcLandShares(aLandAllocator, aLandAllocator$mChoiceFunction, aPeriod)
 
   # Calculate land allocation
   LandAllocator_calcLandAllocation(aLandAllocator, aPeriod)
@@ -166,8 +165,9 @@ LandAllocator_readData <- function(aLandAllocator) {
   # Silence package checks
   Period <- mLandAllocation <- NULL
 
-  # Read in land allocation data
+  # Read in calibration data
   land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/land_allocation.csv"))
+  logit <- suppressMessages(read_csv("./inst/extdata/calibration-data/logit.csv"))
 
   # TODO: make this work on any land nest
   # TODO: make this work if you have multiple calibration periods
@@ -192,7 +192,16 @@ LandAllocator_readData <- function(aLandAllocator) {
 
       name <- currNodeLand[[c("LandNode")]]
       land <- currNodeLand[[c("mLandAllocation")]]
-      newNode <- LandNode(name, LOGIT_EXPONENT, land)
+
+      # Read in logit exponent for this node
+      logit %>%
+        filter(LandNode == name) ->
+        currLogit
+
+      exponent <- currLogit[[c("mLogitExponent")]]
+      choiceFunction <- ChoiceFunction("relative-cost", exponent)
+
+      newNode <- LandNode(name, choiceFunction, land)
       aLandAllocator$mChild <- newNode
 
       # Now, Loop through all LandLeaf and fill in land allocation

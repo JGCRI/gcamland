@@ -4,7 +4,7 @@
 \alias{RelativeCostLogit_calcImpliedCost}
 \title{RelativeCostLogit_calcImpliedCost}
 \usage{
-RelativeCostLogit_calcImpliedCost(aShare, aCost, aPeriod)
+RelativeCostLogit_calcImpliedCost(aChoiceFnAbove, aShare, aCost, aPeriod)
 }
 \arguments{
 \item{aShare}{TODO}

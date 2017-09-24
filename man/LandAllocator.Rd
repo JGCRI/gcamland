@@ -4,14 +4,10 @@
 \alias{LandAllocator}
 \title{LandAllocator}
 \usage{
-LandAllocator(aRegionName, aLogitExponent, aLandAllocation)
+LandAllocator(aRegionName)
 }
 \arguments{
 \item{aRegionName}{Region name}
-
-\item{aLogitExponent}{Logit exponent of the top level of the land allocator}
-
-\item{aLandAllocation}{Land allocation for this region}
 }
 \value{
 New, initialized LandAllocator
@@ -27,7 +23,7 @@ Initialize an Class called LandAllocator
 \describe{
 \item{\code{mRegionName}}{Region name}
 
-\item{\code{mLogitExponent}}{Logit exponent for the top level of the nest}
+\item{\code{mChoiceFunction}}{Logit type & exponent for the top level of the nest}
 
 \item{\code{mLandAllocation}}{Land allocation for this region}
 

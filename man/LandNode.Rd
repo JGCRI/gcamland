@@ -4,14 +4,14 @@
 \alias{LandNode}
 \title{LandNode}
 \usage{
-LandNode(aName, aLogitExponent, aLandAllocation)
+LandNode(aName, aChoiceFunction, aLandAllocation)
 }
 \arguments{
 \item{aName}{Node name}
 
-\item{aLogitExponent}{Logit exponent of the node}
-
 \item{aLandAllocation}{Land allocation for this node}
+
+\item{aLogitExponent}{Logit exponent of the node}
 }
 \value{
 New, initialized LandNode

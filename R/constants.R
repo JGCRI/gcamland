@@ -13,5 +13,4 @@ DBL_MIN <- 1e-15
 
 # Things that will eventually be read in
 UNMANAGED_LAND_VALUE <- 0.5
-LOGIT_EXPONENT <- 0.75
 REGION <- "USA"

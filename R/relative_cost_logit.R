@@ -1,5 +1,21 @@
 # relative_cost_logit.R
 
+#' ChoiceFunction
+#'
+#' @details Logit choice function, both type and exponent
+#' @param aType Type of logit (currently only "relative-cost" is supported)
+#' @param aLogitExponent Logt exponent
+#' @author KVC September 2017
+ChoiceFunction <- function(aType, aLogitExponent){
+  mType = aType
+  mLogitExponent = aLogitExponent
+
+  self <- environment()
+  class(self) <- "ChoiceFunction"
+  self
+
+}
+
 #' RelativeCostLogit_calcUnnormalizedShare
 #'
 #' @details Calculate the log of the numerator of the discrete choice (i.e., the unnormalized version)
@@ -13,7 +29,7 @@
 #' @param aPeriod model time period for the calculation.
 #' @return log of the unnormalized share.
 #' @author KVC September 2017
-RelativeCostLogit_calcUnnormalizedShare <- function(aShareWeight, aCost, aPeriod) {
+RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight, aCost, aPeriod) {
   # Zero share weight implies no share which is signaled by negative infinity.
   if (aShareWeight > 0.0) {
     logShareWeight <- log(aShareWeight)
@@ -25,7 +41,7 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aShareWeight, aCost, aPeriod
   cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
 
   # TODO: figure out how to store logit exponents
-  return(logShareWeight + LOGIT_EXPONENT * log(cappedCost))
+  return(logShareWeight + aChoiceFnAbove$mLogitExponent * log(cappedCost))
 }
 
 # double RelativeCostLogit::calcAverageCost( const double aUnnormalizedShareSum,
@@ -86,7 +102,7 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aShareWeight, aCost, aPeriod
 #' @param OUTPUT_COST Node profit
 #' @return Share weight
 #' @author KVC September 2017
-RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COST) {
+RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPeriod, OUTPUT_COST) {
   # TODO: Move OUTPUT_COST to be a member variable instead of passed in, document/name better
   # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
   cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
@@ -95,7 +111,7 @@ RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COS
   if (aShare == 0.0) {
     SHARE_WEIGHT <- 0.0
   } else {
-    SHARE_WEIGHT <- aShare * (OUTPUT_COST / cappedCost)^LOGIT_EXPONENT
+    SHARE_WEIGHT <- aShare * (OUTPUT_COST / cappedCost)^aChoiceFnAbove$mLogitExponent
   }
 
   return(SHARE_WEIGHT)
@@ -109,18 +125,18 @@ RelativeCostLogit_calcShareWeight <- function(aShare, aCost, aPeriod, OUTPUT_COS
 #' @param aPeriod Model time period
 #' @return Node profit rate (called IMPLIED_COST in this method)
 #' @author KVC September 2017
-RelativeCostLogit_calcImpliedCost <- function(aShare, aCost, aPeriod) {
+RelativeCostLogit_calcImpliedCost <- function(aChoiceFnAbove, aShare, aCost, aPeriod) {
   # TODO: fix the way we store data
-  if(LOGIT_EXPONENT == 0) {
+  if(aChoiceFnAbove$mLogitExponent == 0) {
     IMPLIED_COST <- aCost
-  } else if(aShare == 0.0 & LOGIT_EXPONENT < 0) {
+  } else if(aShare == 0.0 & aChoiceFnAbove$mLogitExponent < 0) {
     IMPLIED_COST <- LARGE_NUMBER
-  } else if(aShare == 0.0 & LOGIT_EXPONENT > 0) {
+  } else if(aShare == 0.0 & aChoiceFnAbove$mLogitExponent > 0) {
     IMPLIED_COST <- -LARGE_NUMBER
   } else {
      # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
     cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
-    IMPLIED_COST <- cappedCost * (aShare ^ (1.0 / LOGIT_EXPONENT))
+    IMPLIED_COST <- cappedCost * (aShare ^ (1.0 / aChoiceFnAbove$mLogitExponent))
   }
 
   return(IMPLIED_COST)

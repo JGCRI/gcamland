@@ -7,7 +7,7 @@
 #' @export
 run_model <- function() {
   # Initialize LandAllocator and read in calibration data
-  mLandAllocator <- LandAllocator(REGION, 0, -1)
+  mLandAllocator <- LandAllocator(REGION)
   LandAllocator_readData(mLandAllocator)
 
   # Loop through each period and run the model

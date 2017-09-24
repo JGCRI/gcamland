@@ -88,9 +88,14 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # The unnormalized share is used by the parent node to
   # calculate the leaf's share of the parent's land
   # TODO: Implement AbsoluteCostLogit
-  unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aLandLeaf$mShareWeight,
+  if( aChoiceFnAbove$mType == "relative-cost") {
+    unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove,
+                                                               aLandLeaf$mShareWeight,
                                                                aLandLeaf$mProfitRate[[aPeriod]],
                                                                aPeriod)
+  } else {
+    print( "ERROR: Invalid choice function in LandLeaf_calcLandShares" )
+  }
 
   return(unNormalizedShare)
 }
@@ -128,9 +133,14 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
 #' @author KVC September 2017
 LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT) {
   # TODO: move output cost to a member variable; implement absolute cost logit
-  aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandLeaf$mShare[[aPeriod]],
+  if( aChoiceFnAbove$mType == "relative-cost") {
+    aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+                                                              aLandLeaf$mShare[[aPeriod]],
                                                               aLandLeaf$mProfitRate[[aPeriod]],
                                                               aPeriod, NODE_PROFIT)
+  } else {
+    print("ERROR: Invalid choice function in LandLeaf_calculateShareWeight")
+  }
 
   # TODO: Implement this
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,

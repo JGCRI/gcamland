@@ -16,9 +16,9 @@
 #'
 #' @return New, initialized LandNode
 #' @author KVC September 2017
-LandNode <- function(aName, aLogitExponent, aLandAllocation) {
+LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
   mName = aName
-  mLogitExponent = aLogitExponent
+  mChoiceFunction = aChoiceFunction
   mLandAllocation = aLandAllocation
   mShare = NULL
   mShareWeight = NULL
@@ -102,7 +102,7 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   i <- 1
   unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
   for( leaf in aLandNode$mChildren ) {
-    unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(leaf, aChoiceFnAbove, aPeriod)
+    unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(leaf, aLandNode$mChoiceFunction, aPeriod)
     i <- i + 1
   }
 
@@ -144,7 +144,7 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   LandNode_calculateShareWeight(aLandNode, aChoiceFnAbove, aPeriod)
 
   for( leaf in aLandNode$mChildren ) {
-    LandLeaf_calculateShareWeight(leaf, aChoiceFnAbove, aPeriod, aLandNode$mProfitRate)
+    LandLeaf_calculateShareWeight(leaf, aLandNode$mChoiceFunction, aPeriod, aLandNode$mProfitRate)
   }
 }
 
@@ -195,7 +195,12 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
   if(aAverageProfitRateAbove > 0.0) {
     mShare <- aLandNode$mShare
     if(mShare > 0.0) {
-      avgProfitRate = RelativeCostLogit_calcImpliedCost(mShare, aAverageProfitRateAbove, aPeriod)
+      if( aChoiceFnAbove$mType == "relative-cost") {
+        avgProfitRate = RelativeCostLogit_calcImpliedCost(aChoiceFnAbove, mShare,
+                                                          aAverageProfitRateAbove, aPeriod)
+      } else{
+        print("ERROR: Invalid choice function in LandNode_calculateNodeProfitRates")
+      }
     } else if(aPeriod == FINAL_CALIBRATION_PERIOD) {
       # TODO: Implement future technologies
       # It may be the case that this node contains only "future" crop/technologies.  In this case
@@ -331,10 +336,15 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Calculate the share weight for the node
   # TODO: implement absolute cost logit too
   # TODO: move output cost to a member variable
-  aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aLandNode$mShare,
+  if( aChoiceFnAbove$mType == "relative-cost") {
+    aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+                                                              aLandNode$mShare,
                                                               aLandNode$mProfitRate,
                                                               aPeriod,
                                                               UNMANAGED_LAND_VALUE)
+  } else{
+    print("ERROR: Invalid choice function in LandNode_calculateShareWeight")
+  }
 
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
