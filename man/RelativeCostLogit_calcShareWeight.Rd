@@ -8,6 +8,8 @@ RelativeCostLogit_calcShareWeight(aChoiceFnAbove, aShare, aCost, aPeriod,
   OUTPUT_COST)
 }
 \arguments{
+\item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}
+
 \item{aShare}{TODO}
 
 \item{aCost}{TODO}

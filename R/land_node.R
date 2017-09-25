@@ -4,7 +4,7 @@
 #'
 #' @details Initialize an Class called LandNode
 #' @param aName Node name
-#' @param aLogitExponent Logit exponent of the node
+#' @param aChoiceFunction Choice function (logit type and exponent from node above)
 #' @param aLandAllocation Land allocation for this node
 #' @field mName Node name
 #' @field mLogitExponent Logit exponent of the node

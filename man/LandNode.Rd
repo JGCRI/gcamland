@@ -9,9 +9,9 @@ LandNode(aName, aChoiceFunction, aLandAllocation)
 \arguments{
 \item{aName}{Node name}
 
-\item{aLandAllocation}{Land allocation for this node}
+\item{aChoiceFunction}{Choice function (logit type and exponent from node above)}
 
-\item{aLogitExponent}{Logit exponent of the node}
+\item{aLandAllocation}{Land allocation for this node}
 }
 \value{
 New, initialized LandNode

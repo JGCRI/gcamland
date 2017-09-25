@@ -7,6 +7,8 @@
 RelativeCostLogit_calcImpliedCost(aChoiceFnAbove, aShare, aCost, aPeriod)
 }
 \arguments{
+\item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}
+
 \item{aShare}{TODO}
 
 \item{aCost}{TODO}

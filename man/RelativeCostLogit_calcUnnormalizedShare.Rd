@@ -8,6 +8,8 @@ RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove, aShareWeight, aCost,
   aPeriod)
 }
 \arguments{
+\item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}
+
 \item{aShareWeight}{share weight for the choice for which the share is being calculated.}
 
 \item{aCost}{cost for the choice for which the share is being calculated.}

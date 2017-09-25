@@ -24,6 +24,7 @@ ChoiceFunction <- function(aType, aLogitExponent){
 #'          Note: Negative costs can not be used in this logit formulation.  Instead the cost
 #'          the cost is capped at RelativeCostLogit::getMinCostThreshold.  This implies
 #'          no behavior once costs have crossed this threshold.
+#' @param aChoiceFnAbove Choice function (logit type and exponent from node above)
 #' @param aShareWeight share weight for the choice for which the share is being calculated.
 #' @param aCost cost for the choice for which the share is being calculated.
 #' @param aPeriod model time period for the calculation.
@@ -96,6 +97,7 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight
 #' RelativeCostLogit_calcShareWeight
 #'
 #' @details Calculate the share weight using the relative cost logit
+#' @param aChoiceFnAbove Choice function (logit type and exponent from node above)
 #' @param aShare TODO
 #' @param aCost TODO
 #' @param aPeriod Model time period
@@ -120,6 +122,7 @@ RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPe
 #' RelativeCostLogit_calcImpliedCost
 #'
 #' @details Calculate node profit rate (not sure why this is called "implied cost")
+#' @param aChoiceFnAbove Choice function (logit type and exponent from node above)
 #' @param aShare TODO
 #' @param aCost TODO
 #' @param aPeriod Model time period
