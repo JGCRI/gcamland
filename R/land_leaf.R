@@ -12,6 +12,7 @@
 #' @field mProfitRate Profit rate of this leaf
 #' @field mCost Non-land variable cost of this leaf
 #' @field mYield yield for this leaf
+#' @field mCalOutput calibrated-output for this leaf
 #' @field mNonLandCostTechChange Technical change on the cost of this leaf
 #' @field mAgProdChange Technical change on yield for this leaf
 #'
@@ -20,12 +21,13 @@
 LandLeaf <- function(aName, aLandAllocation) {
   mName = aName
   mLandAllocation = list(`1` = aLandAllocation, `2` = aLandAllocation)
-  mShare = list(`1` = -1, `2` = -1)
+  mShare = list()
   mShareWeight = NULL
-  mProfitRate = list(`1` = -1, `2` = -1)
+  mProfitRate = list()
   # We are including cost, yield, and tech change here, rather than AgProductionTechnology for convenience
   mCost = list(`1` = 0, `2` = 0)
-  mYield = list(`1` = 1, `2` = 0)
+  mYield = list()
+  mCalOutput = list() # Note: we read this in to calculate yield for consistency with C++
   mNonLandCostTechChange = list(`1` = 0, `2` = 0)
   mAgProdChange = list(`1` = 0, `2` = 0.02)
   greet = function() {
