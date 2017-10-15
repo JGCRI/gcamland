@@ -90,6 +90,7 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
 AgProductionTechnology_readData <- function(aLandLeaf) {
   # Read in data
   calOutput <- suppressMessages(read_csv("./inst/extdata/calibration-data/calOutput.csv"))
+  agProdChange <- suppressMessages(read_csv("./inst/extdata/calibration-data/ag_prodchange.csv"))
 
   # Get name of leaf
   name <- aLandLeaf$mName
@@ -103,10 +104,19 @@ AgProductionTechnology_readData <- function(aLandLeaf) {
         filter(Period == per, LandLeaf == name) ->
         currCalOutput
 
-      # Set calOutput
+      # Set calOutput and agProdChange
       aLandLeaf$mCalOutput[[per]] <- currCalOutput[[c("mCalOutput")]]
+
+      # Set data that shouldn't exist in the past to 0
+      # TODO: figure out a better system for this
+      aLandLeaf$mAgProdChange[[per]] <- 0
     } else{
       # Only read in technical change information for future periods
+      agProdChange %>%
+        filter(Period == per, LandLeaf == name) ->
+        currAgProdChange
+
+      aLandLeaf$mAgProdChange[[per]] <- currAgProdChange[[c("mAgProdChange")]]
 
       # Set data that shouldn't exist in the future to -1
       aLandLeaf$mCalOutput[[per]] <- -1
