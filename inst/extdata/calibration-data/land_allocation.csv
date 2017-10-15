@@ -1,7 +1,3 @@
 LandNode,LandLeaf,Period,mLandAllocation
-Crop,Crop1,1,100
-Crop,Crop1,2,100
-Crop,Crop2,1,100
-Crop,Crop2,2,100
-Crop,Crop3,1,100
-Crop,Crop3,2,100
+Crop,High,1,100
+Crop,Low,1,100

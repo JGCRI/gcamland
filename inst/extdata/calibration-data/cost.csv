@@ -1,7 +1,9 @@
 LandNode,LandLeaf,Period,mCost
-Crop,Crop1,1,0
-Crop,Crop1,2,0
-Crop,Crop2,1,0
-Crop,Crop2,2,0
-Crop,Crop3,1,0
-Crop,Crop3,2,0
+Crop,High,1,1
+Crop,Low,1,1
+Crop,High,2,1
+Crop,Low,2,1
+Crop,High,3,0.5
+Crop,Low,3,1
+Crop,High,4,1
+Crop,Low,4,1
