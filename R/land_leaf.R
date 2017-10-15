@@ -25,11 +25,11 @@ LandLeaf <- function(aName, aLandAllocation) {
   mShareWeight = NULL
   mProfitRate = list()
   # We are including cost, yield, and tech change here, rather than AgProductionTechnology for convenience
-  mCost = list(`1` = 0, `2` = 0)
+  mCost = list()
   mYield = list()
   mCalOutput = list() # Note: we read this in to calculate yield for consistency with C++
-  mNonLandCostTechChange = list(`1` = 0, `2` = 0)
-  mAgProdChange = list(`1` = 0, `2` = 0.02)
+  mNonLandCostTechChange = list()
+  mAgProdChange = list()
   greet = function() {
     cat(paste0("Hello, I am a LandLeaf named ", self$mName, ".\n"))
   }

@@ -91,6 +91,7 @@ AgProductionTechnology_readData <- function(aLandLeaf) {
   # Read in data
   calOutput <- suppressMessages(read_csv("./inst/extdata/calibration-data/calOutput.csv"))
   agProdChange <- suppressMessages(read_csv("./inst/extdata/calibration-data/ag_prodchange.csv"))
+  cost <- suppressMessages(read_csv("./inst/extdata/calibration-data/cost.csv"))
 
   # Get name of leaf
   name <- aLandLeaf$mName
@@ -110,6 +111,8 @@ AgProductionTechnology_readData <- function(aLandLeaf) {
       # Set data that shouldn't exist in the past to 0
       # TODO: figure out a better system for this
       aLandLeaf$mAgProdChange[[per]] <- 0
+      aLandLeaf$mNonLandCostTechChange[[per]] <- 0
+
     } else{
       # Only read in technical change information for future periods
       agProdChange %>%
@@ -120,7 +123,20 @@ AgProductionTechnology_readData <- function(aLandLeaf) {
 
       # Set data that shouldn't exist in the future to -1
       aLandLeaf$mCalOutput[[per]] <- -1
+
+      # Set data that we aren't going to read in to 0
+      # Note: we are including this parameter because it is in the C++ code, but GCAM doesn't use it
+      aLandLeaf$mNonLandCostTechChange[[per]] <- 0
+
     }
+
+    # Read in cost for all periods
+    cost %>%
+      filter(Period == per, LandLeaf == name) ->
+      currCost
+
+    aLandLeaf$mCost[[per]] <- currCost[[c("mCost")]]
+
   }
 
 }
