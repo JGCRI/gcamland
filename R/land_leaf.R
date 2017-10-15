@@ -20,7 +20,7 @@
 #' @author KVC September 2017
 LandLeaf <- function(aName, aLandAllocation) {
   mName = aName
-  mLandAllocation = list(`1` = aLandAllocation, `2` = aLandAllocation)
+  mLandAllocation = list()
   mShare = list()
   mShareWeight = NULL
   mProfitRate = list()
