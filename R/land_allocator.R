@@ -180,7 +180,8 @@ LandAllocator_readData <- function(aLandAllocator) {
   Period <- mLandAllocation <- NULL
 
   # Read in calibration data
-  land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/land_allocation.csv"))
+  mgd.land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/managed_land_allocation.csv"))
+  unmgd.land.allocation <- suppressMessages(read_csv("./inst/extdata/calibration-data/unmanaged_land_allocation.csv"))
   logit <- suppressMessages(read_csv("./inst/extdata/calibration-data/logit.csv"))
 
   # TODO: make this work on any land nest
@@ -189,6 +190,13 @@ LandAllocator_readData <- function(aLandAllocator) {
   for ( per in PERIODS ) {
     # Only read in data for calibration periods
     if ( per <= FINAL_CALIBRATION_PERIOD ) {
+      # First, put both managed & unmanaged land in the same
+      # tibble, so we can calculate land allocation for nodes and the allocator
+      unmgd.land.allocation %>%
+        rename(LandLeaf = UnmanagedLandLeaf) %>%
+        bind_rows(mgd.land.allocation) ->
+        land.allocation
+
       # First, fill in total land allocation
       land.allocation %>%
         summarize(mLandAllocation = sum(mLandAllocation)) ->
@@ -219,7 +227,7 @@ LandAllocator_readData <- function(aLandAllocator) {
       aLandAllocator$mChild <- newNode
 
       # Now, Loop through all LandLeaf and fill in land allocation
-      land.allocation %>%
+      mgd.land.allocation %>%
         filter(Period == per) ->
         currLand
 
@@ -241,8 +249,23 @@ LandAllocator_readData <- function(aLandAllocator) {
         i <- i + 1
       }
 
+      # Finally, Loop through all UnmanagedLandLeaf and fill in land allocation
+      unmgd.land.allocation %>%
+        filter(Period == per) ->
+        currLand
 
+      j <- 1
+      while ( j <= nrow(currLand) ) {
+        # Get data and initialize a new unmanaged leaf
+        name <- currLand[[j, c("UnmanagedLandLeaf")]]
+        land <- currLand[j, c("mLandAllocation")]
+        newLeaf <- UnmanagedLandLeaf(name)
+        newLeaf$mLandAllocation[[per]] <- land
 
+        # Add this leaf to the land allocator
+        aLandAllocator$mChild$mChildren[[j+i-1]] <- newLeaf
+        j <- j + 1
+      }
     }
   }
 

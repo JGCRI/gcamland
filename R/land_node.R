@@ -38,22 +38,19 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
 #' @param aLandNode Land node.
 #' @param aPeriod Model time period.
 #' @details Initial calculations for the land node.
-#'          Currently, this copies share weights forward and
-#'          calls initCalc on children.
+#'          Currently, this calls initCalc on children.
 #' @author KVC September 2017
 LandNode_initCalc <- function(aLandNode, aPeriod) {
-#   // TODO: all kinds of things including error checking
-#   if ( aPeriod > 1 ) {
-#   // Copy share weights forward if new ones haven't been read in or computed
-#   if ( !mShareWeight[ aPeriod ].isInited() ) {
-#     mShareWeight[ aPeriod ] = mShareWeight[ aPeriod - 1 ];
-#   }
-#   }
-#
-# // Call initCalc on any children
-# for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
-#   mChildren[ i ]->initCalc( aRegionName, aPeriod );
-# }
+  # TODO: all kinds of things including error checking
+
+  # Call initCalc on any children
+  for ( leaf in aLandNode$mChildren ) {
+    if ( class(leaf) == "LandLeaf" ) {
+      LandLeaf_initCalc(leaf, aPeriod)
+    } else {
+      UnmanagedLandLeaf_initCalc(leaf, aPeriod)
+    }
+  }
 }
 
 #' LandNode_setInitShares

@@ -27,6 +27,19 @@ UnmanagedLandLeaf <- function(aName) {
   self
 }
 
+#' UnmanagedLandLeaf_initCalc
+#'
+#' @param aUnmanagedLandLeaf Unmanaged land leaf
+#' @param aPeriod Current time period
+#' @details Initial calculations needed for the unmanagedland leaf.
+#' @author KVC September 2017
+UnmanagedLandLeaf_initCalc <- function(aUnmanagedLandLeaf, aPeriod ) {
+  if ( aPeriod > 1 ) {
+    UnmanagedLandLeaf_setUnmanagedLandProfitRate(aUnmanagedLandLeaf, aUnmanagedLandLeaf$mProfitRate[[1]], aPeriod)
+  }
+}
+
+
 #' UnmanagedLandLeaf_setUnmanagedLandProfitRate
 #'
 #' @param aUnmanagedLandLeaf Leaf to set profit rate for

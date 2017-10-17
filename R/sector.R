@@ -14,6 +14,8 @@ Sector_initCalc <- function( aLandAllocator, aPeriod ){
   # Note: C++ code calls subsector initialization, but I don't think we need that
   # TODO: make this more flexible to nesting structure
   for ( leaf in aLandAllocator$mChild$mChildren ) {
-    AgProductionTechnology_initCalc(leaf, aPeriod)
+    if (class(leaf) == "LandLeaf") {
+      AgProductionTechnology_initCalc(leaf, aPeriod)
+    }
   }
 }
