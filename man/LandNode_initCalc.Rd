@@ -16,8 +16,7 @@ LandNode_initCalc
 }
 \details{
 Initial calculations for the land node.
-         Currently, this copies share weights forward and
-         calls initCalc on children.
+         Currently, this calls initCalc on children.
 }
 \author{
 KVC September 2017
