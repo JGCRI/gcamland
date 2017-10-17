@@ -88,6 +88,9 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
 #' @param aLandLeaf Land leaf
 #' @author KVC September 2017
 AgProductionTechnology_readData <- function(aLandLeaf) {
+  # Silence package checks
+  Period <- NULL
+
   # Read in data
   calOutput <- suppressMessages(read_csv("./inst/extdata/calibration-data/calOutput.csv"))
   agProdChange <- suppressMessages(read_csv("./inst/extdata/calibration-data/ag_prodchange.csv"))
