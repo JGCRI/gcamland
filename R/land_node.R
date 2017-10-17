@@ -152,23 +152,30 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #'
 #' @details Unmanaged land leafs have a base profit rate that
 #'          is equal to the average profit rate of that region
-#'          or subregion.
+#'          or subregion. Loop through all children and set this.
 #' @param aLandNode Land node.
 #' @param aAverageProfitRate Average profit rate of region or subregion.
 #' @param aPeriod model period.
 #' @author KVC September 2017
 LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, aPeriod) {
-# {
-#   double avgProfitRate = aAverageProfitRate;
-#   // If node is the root of a fixed land area nest ( typically a subregion )
-#   // or the root of the entire land allocatory, then set the average profit
-#   // rate to the previously calculated value.
-#   if ( mUnManagedLandValue > 0.0 ) {
-#   avgProfitRate = mUnManagedLandValue;
-#   }
-#   else {
-#   mUnManagedLandValue = avgProfitRate;
-#   }
+  # TODO: Figure out if we need this part
+  # If node is the root of a fixed land area nest ( typically a subregion )
+  # or the root of the entire land allocatory, then set the average profit
+  # rate to the previously calculated value.
+  # if ( mUnManagedLandValue > 0.0 ) {
+  #   avgProfitRate = mUnManagedLandValue;
+  # }
+  # else {
+  #   mUnManagedLandValue = avgProfitRate;
+  # }
+
+  # Loop through all children and call setUnmanagedLandProfitRate
+  for( leaf in aLandNode$mChildren ) {
+    if (class(leaf) == "UnmanagedLandLeaf") {
+      UnmanagedLandLeaf_setUnmanagedLandProfitRate(leaf, aAverageProfitRate, aPeriod)
+    }
+  }
+
 #   for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
 #   // assign the unmanaged land value to this node and to children.
 #   mChildren[ i ]->setUnmanagedLandProfitRate( aRegionName, avgProfitRate, aPeriod );

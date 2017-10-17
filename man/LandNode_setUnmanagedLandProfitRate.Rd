@@ -19,7 +19,7 @@ LandNode_setUnmanagedLandProfitRate
 \details{
 Unmanaged land leafs have a base profit rate that
          is equal to the average profit rate of that region
-         or subregion.
+         or subregion. Loop through all children and set this.
 }
 \author{
 KVC September 2017

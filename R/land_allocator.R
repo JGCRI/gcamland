@@ -61,7 +61,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # is the only way the unmanaged land will have a profit rate at this point. It is implied
   # by the read in price of land.  */
   # TODO: Implement this so it uses read-in data and can differentiate by region
-  # LandAllocator_setUnmanagedLandProfitRate(aRegionName, UNMANAGED_LAND_VALUE, aPeriod)
+  LandAllocator_setUnmanagedLandProfitRate(aLandAllocator, UNMANAGED_LAND_VALUE, aPeriod)
 
   # /* For these steps to work, the profit rates of managed land leaves will have been computed before
   # this method call (i.e., calibrateLandAllocator) in the initCalc() of the agTechnology Class
@@ -153,6 +153,20 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
 
   # Calculate land allocation
   LandAllocator_calcLandAllocation(aLandAllocator, aPeriod)
+}
+
+#' LandAllocator_setUnmanagedLandProfitRate
+#'
+#' @param aLandAllocator Current land allocator
+#' @param aUnmanagedLandValue Value of unmanaged land
+#' @param aPeriod Current period
+#' @details Initalize setting the unmanaged land value in all unmanaged land leafs,
+#'          by calling `setUnmanagedLandProfitRate` on all children
+#' @author KVC October 2017
+LandAllocator_setUnmanagedLandProfitRate <- function(aLandAllocator, aUnmanagedLandValue, aPeriod) {
+  # Call on all children
+  # TODO: Make this flexible so we can have children that are nodes or leafs
+  LandNode_setUnmanagedLandProfitRate(aLandAllocator$mChild, aUnmanagedLandValue, aPeriod)
 }
 
 #' LandAllocator_readData
