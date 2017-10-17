@@ -4,12 +4,10 @@
 \alias{LandLeaf}
 \title{LandLeaf}
 \usage{
-LandLeaf(aName, aLandAllocation)
+LandLeaf(aName)
 }
 \arguments{
 \item{aName}{Leaf name}
-
-\item{aLandAllocation}{Land allocation for this leaf}
 }
 \value{
 New, initialized LandLeaf

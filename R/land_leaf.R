@@ -4,7 +4,6 @@
 #'
 #' @details Initialize an Class called LandLeaf
 #' @param aName Leaf name
-#' @param aLandAllocation Land allocation for this leaf
 #' @field mName Leaf name
 #' @field mLandAllocation Land allocation for this leaf
 #' @field mShare Share of land allocated to this leaf
@@ -18,7 +17,7 @@
 #'
 #' @return New, initialized LandLeaf
 #' @author KVC September 2017
-LandLeaf <- function(aName, aLandAllocation) {
+LandLeaf <- function(aName) {
   mName = aName
   mLandAllocation = list()
   mShare = list()
