@@ -19,6 +19,7 @@ PerfectExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #' @param aPeriod Current model period
 #' @details Calculate the expected price for a LandLeaf assuming
 #'          perfect expectations, i.e., expected = actual
+#' @importFrom readr read_csv
 #' @author KVC October 2017
 PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   # Read in prices

@@ -28,3 +28,12 @@ get_yr_to_per <- function(aYear) {
 get_per_to_yr <- function(aPer) {
   return(YEARS[[aPer]])
 }
+
+#' getStartYear
+#'
+#' @details Get model start year
+#' @return Year
+#' @author KVC October 2017
+getStartYear <- function() {
+  return(min(YEARS))
+}

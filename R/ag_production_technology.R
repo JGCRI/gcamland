@@ -56,16 +56,18 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
 #'          Profit rate is in 1975$ per billion m2, so computation includes yield.
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Current model period
-#' @importFrom readr read_csv
 #' @author KVC September 2017
 AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
   # Silence package checks
   Period <- Product <- NULL
 
   # Get expected profit rate
-  if ( EXPECTATION.TYPE == "Perfect" ) {
+  if(EXPECTATION.TYPE == "Perfect") {
     expectedPrice <- PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
     expectedYield <- PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+  } else if(EXPECTATION.TYPE == "Linear") {
+    expectedPrice <- LinearExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
+    expectedYield <- LinearExpectation_calcExpectedYield(aLandLeaf, aPeriod)
   }
 
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.

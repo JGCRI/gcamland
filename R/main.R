@@ -28,7 +28,7 @@ run_model <- function() {
   }
 
   for ( leaf in mLandAllocator$mChild$mChildren ) {
-    print(paste("DEBUG: profit is ", leaf$mProfit))
+    print(paste("DEBUG: profit is ", leaf$mProfitRate))
     print(paste("DEBUG: share is ", leaf$mShare))
     print(paste("DEBUG: share weight is ", leaf$mShareWeight))
   }
