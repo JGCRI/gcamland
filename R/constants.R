@@ -8,6 +8,7 @@ YEARS <- c(2010, 2020, 2030, 2040)
 
 # Expectation-related parameters (currently only "Perfect" is supported)
 EXPECTATION.TYPE <- "Perfect"
+LINEAR.YEARS <- 5
 
 # Threshold-related constants
 # TODO: Make sure these are consistent with GCAM

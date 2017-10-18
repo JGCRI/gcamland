@@ -24,7 +24,7 @@ plot_LandAllocation <- function(aLandAllocator) {
   for( leaf in landNode$mChildren ) {
     for (per in PERIODS) {
       allLand$name[i] <- leaf$mName
-      allLand$year[i] <- YEARS[[per]]
+      allLand$year[i] <- get_per_to_yr(per)
       allLand$land.allocation[i] <- leaf$mLandAllocation[[per]]
       i <- i + 1
     }
