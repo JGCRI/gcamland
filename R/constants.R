@@ -5,6 +5,9 @@ FINAL_CALIBRATION_PERIOD <- 1
 PERIODS <- 1:4
 TIMESTEP <- 5
 
+# Expectation-related parameters (currently only "Perfect" is supported)
+EXPECTATION.TYPE <- "Perfect"
+
 # Threshold-related constants
 # TODO: Make sure these are consistent with GCAM
 LARGE_NUMBER <- 1e9

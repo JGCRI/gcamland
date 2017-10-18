@@ -62,23 +62,16 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
   # Silence package checks
   Period <- Product <- NULL
 
-  # Read in prices
-  prices <- suppressMessages(read_csv("./inst/extdata/calibration-data/price.csv"))
-
-  # Get price for this leaf in this period only
-  prices %>%
-    filter(Period == aPeriod, Product == aLandLeaf$mName) ->
-    prices
+  # Get expected profit rate
+  if ( EXPECTATION.TYPE == "Perfect" ) {
+    expectedPrice <- PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
+    expectedYield <- PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+  }
 
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.
   # We multiply by 1e9 since profitRate initially is in $/m2
   # and the land allocator needs it in $/billion m2. This assumes yield is in kg/m2.
-  # TODO: Do I need to do something different for each?
-  if(aPeriod <= FINAL_CALIBRATION_PERIOD) {
-    aLandLeaf$mProfitRate[aPeriod] <- (prices[[c("mPrice")]] - aLandLeaf$mCost[[aPeriod]]) * aLandLeaf$mYield[[aPeriod]] * 1e9
-  } else {
-    aLandLeaf$mProfitRate[aPeriod] <- (prices[[c("mPrice")]] - aLandLeaf$mCost[[aPeriod]]) * aLandLeaf$mYield[[aPeriod]] * 1e9
-  }
+  aLandLeaf$mProfitRate[aPeriod] <- (expectedPrice - aLandLeaf$mCost[[aPeriod]]) * expectedYield * 1e9
 }
 
 #' AgProductionTechnology_readData
