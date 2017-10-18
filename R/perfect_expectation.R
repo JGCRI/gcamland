@@ -22,6 +22,9 @@ PerfectExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
+  # Silence package checks
+  Period <- Product <- NULL
+
   # Read in prices
   prices <- suppressMessages(read_csv("./inst/extdata/calibration-data/price.csv"))
 

@@ -17,9 +17,12 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
   # Note: you can never overwrite a positive cost with a zero cost. If the model sees a
   #       zero non-land cost, it will copy from the previous period.
   if ( aLandLeaf$mCost[[aPeriod]] == 0 && aPeriod > 1 ) {
+    # Get the length of the current time step
+    timestep <- get_timestep(aPeriod)
+
     # Adjust last period's variable cost by tech change
     aLandLeaf$mCost[aPeriod] = aLandLeaf$mCost[[aPeriod - 1]] /
-                                          ((1 + aLandLeaf$mNonLandCostTechChange[[aPeriod]]) ^ TIMESTEP)
+                                          ((1 + aLandLeaf$mNonLandCostTechChange[[aPeriod]]) ^ timestep)
   }
 
   # Note: C++ code says "Only do the ag productivity change calc if a calibration value is not read in that period"
