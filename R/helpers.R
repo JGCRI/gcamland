@@ -29,6 +29,22 @@ get_per_to_yr <- function(aPer) {
   return(YEARS[[aPer]])
 }
 
+#' get_timestep
+#'
+#' @param aPer Period to get timestep for
+#' @details Calculate the length of the timestep leading up to a particular period
+#' @return Years
+#' @author KVC October 2017
+get_timestep <- function(aPer) {
+  if(aPer > 1){
+    yrs <- YEARS[[aPer]] - YEARS[[aPer - 1]]
+  } else{
+    print("ERROR: Invalid period passed to get_timestep")
+  }
+
+  return(yrs)
+}
+
 #' getStartYear
 #'
 #' @details Get model start year

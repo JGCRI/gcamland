@@ -27,6 +27,9 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
   if( aLandLeaf$mCalOutput[[aPeriod]] != -1 ) {
     aLandLeaf$mYield[aPeriod] <- aLandLeaf$mCalOutput[[aPeriod]] / aLandLeaf$mLandAllocation[[aPeriod]]
   } else if( aPeriod > 1) {
+    # Get the length of the current time step
+    timestep <- get_timestep(aPeriod)
+
     # Unless a yield is read in for this period, get the previous period yield from the market info.
     # Note: you can never overwrite a positive yield with a zero yield. If the model sees a
     #       zero yield, it will copy from the previous period.
@@ -35,13 +38,13 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
       preYield <- aLandLeaf$mYield[[aPeriod-1]]
 
       # Adjust last period's variable cost by tech change
-      aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ TIMESTEP)
+      aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ timestep)
     } else if ( aLandLeaf$mYield[[aPeriod]] == 0 ) {
       # Yield has been set to zero
       preYield <- aLandLeaf$mYield[[aPeriod-1]]
 
       # Adjust last period's variable cost by tech change
-      aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ TIMESTEP)
+      aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ timestep)
     }
   }
 
