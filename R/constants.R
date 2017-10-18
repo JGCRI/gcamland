@@ -4,6 +4,7 @@
 FINAL_CALIBRATION_PERIOD <- 1
 PERIODS <- 1:4
 TIMESTEP <- 5
+YEARS <- c(2010, 2020, 2030, 2040)
 
 # Expectation-related parameters (currently only "Perfect" is supported)
 EXPECTATION.TYPE <- "Perfect"
