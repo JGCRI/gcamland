@@ -15,6 +15,7 @@ LARGE_NUMBER <- 1e9
 SMALL_NUMBER <- 1e-6
 DBL_MIN <- 1e-15
 
-# Things that will eventually be read in
+# Things that will eventually be removed
 UNMANAGED_LAND_VALUE <- 1e9
 REGION <- "USA"
+AEZ <- "AEZ10"

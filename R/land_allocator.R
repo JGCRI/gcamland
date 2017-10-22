@@ -309,9 +309,21 @@ LandAllocator_readData <- function(aLandAllocator) {
       aLandAllocator$mChildren[[1]] <- newNode
     }
   }
-
-  plot_Nest(aLandAllocator)
 }
+
+#' LandAllocator_setup
+#'
+#' @details Setup the land allocator. This includes
+#'          Reading in external data and organizing
+#'          it in the node, leaf, technology structure
+#' @param aLandAllocator LandAllocator that needs set up
+#' @author KVC October 2017
+LandAllocator_setup <- function(aLandAllocator) {
+  # Read in top-level information and save total land
+  data <- ReadData_LandAllocator(aLandAllocator$mRegionName)
+  aLandAllocator$mLandAllocation <- data[[c("landAllocation")]]
+}
+
 
 #' LandAllocator_addToNest
 #'

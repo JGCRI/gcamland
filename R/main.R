@@ -10,6 +10,9 @@ run_model <- function() {
   mLandAllocator <- LandAllocator(REGION)
   LandAllocator_readData(mLandAllocator)
 
+  TEMP <- LandAllocator(REGION)
+  LandAllocator_setup(TEMP)
+
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
   for(per in PERIODS){
@@ -27,12 +30,12 @@ run_model <- function() {
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
-  node <- mLandAllocator$mChildren[[1]]
-  for ( leaf in node$mChildren ) {
-    print(paste("DEBUG: profit is ", leaf$mProfitRate))
-    print(paste("DEBUG: share is ", leaf$mShare))
-    print(paste("DEBUG: share weight is ", leaf$mShareWeight))
-  }
+  # node <- mLandAllocator$mChildren[[1]]
+  # for ( leaf in node$mChildren ) {
+  #   print(paste("DEBUG: profit is ", leaf$mProfitRate))
+  #   print(paste("DEBUG: share is ", leaf$mShare))
+  #   print(paste("DEBUG: share weight is ", leaf$mShareWeight))
+  # }
 
   plot_LandAllocation(mLandAllocator)
   plot_Nest(mLandAllocator)
