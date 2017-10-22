@@ -10,8 +10,8 @@ run_model <- function() {
   mLandAllocator <- LandAllocator(REGION)
   LandAllocator_readData(mLandAllocator)
 
-  TEMP <- LandAllocator(REGION)
-  LandAllocator_setup(TEMP)
+  mLandAllocator <- LandAllocator(REGION)
+  LandAllocator_setup(mLandAllocator)
 
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions

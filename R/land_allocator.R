@@ -63,7 +63,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # is the only way the unmanaged land will have a profit rate at this point. It is implied
   # by the read in price of land.  */
   # TODO: Implement this so it uses read-in data and can differentiate by region
-  LandAllocator_setUnmanagedLandProfitRate(aLandAllocator, UNMANAGED_LAND_VALUE, aPeriod)
+  LandAllocator_setUnmanagedLandProfitRate(aLandAllocator, 0, aPeriod)
 
   # /* For these steps to work, the profit rates of managed land leaves will have been computed before
   # this method call (i.e., calibrateLandAllocator) in the initCalc() of the agTechnology Class
@@ -77,7 +77,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # are what the profit rates would have to be based on the actual shares, the logit exponent, and
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
-  LandAllocator_calculateNodeProfitRates(aLandAllocator, UNMANAGED_LAND_VALUE,
+  LandAllocator_calculateNodeProfitRates(aLandAllocator, 0,
                                     aLandAllocator$mChoiceFunction, aPeriod)
 
   # /* Step 4. Calculate profit scalers. Because the calibration profit rate computed in Step 4

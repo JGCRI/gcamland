@@ -9,6 +9,7 @@
 ChoiceFunction <- function(aType, aLogitExponent){
   mType = aType
   mLogitExponent = aLogitExponent
+  mOutputCost = NULL
 
   self <- environment()
   class(self) <- "ChoiceFunction"
@@ -45,32 +46,27 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight
   return(logShareWeight + aChoiceFnAbove$mLogitExponent * log(cappedCost))
 }
 
-# double RelativeCostLogit::calcAverageCost( const double aUnnormalizedShareSum,
-#                                            const double aLogShareFac,
-#                                            const int aPeriod ) const
-# {
-#   double ret;
-#   if( mLogitExponent[ aPeriod ] == 0.0 ) {
-#     // TODO: what to do with zero logit?
-#     ret = aUnnormalizedShareSum * exp( aLogShareFac ) * mOutputCost;
-#   }
-#   else if( aUnnormalizedShareSum == 0 && mLogitExponent[ aPeriod ] < 0 ) {
-#     // No Valid options and negative logit so return a large cost so a nested
-#     // logit would not want to choose this nest.
-#     ret = util::getLargeNumber();
-#   }
-#   else if( aUnnormalizedShareSum == 0 && mLogitExponent[ aPeriod ] > 0 ) {
-#     // No Valid options and positive logit so return a large negative cost
-#     // so a nested logit would not want to choose this nest.
-#     ret = -util::getLargeNumber();
-#   }
-#   else {
-#     ret = exp( aLogShareFac / mLogitExponent[ aPeriod ] )
-#     * pow( aUnnormalizedShareSum, 1.0 / mLogitExponent[ aPeriod ] );
-#   }
-#
-#   return ret;
-# }
+RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShareSum, aLogShareFac, aPeriod ) {
+
+  ret <- 0
+  if( aChoiceFunction$mLogitExponent == 0.0 ) {
+     # TODO: what to do with zero logit?
+     ret <- aUnnormalizedShareSum * exp( aLogShareFac ) * mOutputCost
+  } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0 ) {
+    # No Valid options and negative logit so return a large cost so a nested
+    # logit would not want to choose this nest.
+     ret <- util_getLargeNumber()
+  } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0  ) {
+    # No Valid options and positive logit so return a large negative cost
+    # so a nested logit would not want to choose this nest.
+    ret <- -util_getLargeNumber()
+  } else {
+     ret <- exp( aLogShareFac / aChoiceFunction$mLogitExponent ) *
+       ( aUnnormalizedShareSum ^ ( 1.0 / aChoiceFunction$mLogitExponent ))
+  }
+
+  return(ret)
+}
 
 # * \details  Given an an "anchor" choice with observed share and price and another choice
 # *           also with observed share and price, compute the inverse of the discrete choice function

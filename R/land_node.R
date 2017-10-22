@@ -20,10 +20,10 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
   mName = aName
   mChoiceFunction = aChoiceFunction
   mLandAllocation = aLandAllocation
-  mUnmanagedLandValue = NULL
+  mUnmanagedLandValue = 0.0
   mShare = NULL
   mShareWeight = NULL
-  mProfitRate = NULL
+  mProfitRate = list()
   mChildren = list()
   greet = function() {
     cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))
@@ -74,8 +74,12 @@ LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
   aLandNode$mShare <- nodeLandAllocation / aLandAllocationAbove
 
   # Call setInitShares on all children
-  for( leaf in aLandNode$mChildren ) {
-    LandLeaf_setInitShares(leaf, nodeLandAllocation, aPeriod)
+  for( child in aLandNode$mChildren ) {
+    if(class(child) == "LandNode") {
+      LandNode_setInitShares(child, nodeLandAllocation, aPeriod)
+    } else {
+      LandLeaf_setInitShares(child, nodeLandAllocation, aPeriod)
+    }
   }
 }
 
@@ -98,8 +102,12 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Note: these are the log( unnormalized shares )
   i <- 1
   unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
-  for( leaf in aLandNode$mChildren ) {
-    unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(leaf, aLandNode$mChoiceFunction, aPeriod)
+  for( child in aLandNode$mChildren ) {
+    if( class(child) == "LandNode") {
+      unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)
+    } else {
+      unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)
+    }
     i <- i + 1
   }
 
@@ -111,21 +119,29 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   normalizationInfo <- SectorUtils_normalizeLogShares( unNormalizedShares )
 
   i <- 1
-  for ( leaf in aLandNode$mChildren ) {
-    leaf$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
+  for ( child in aLandNode$mChildren ) {
+    child$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
     i <- i + 1
   }
 
-  # TODO: Complete this -- it is needed for further nesting
   # Step 3 Option (a) . compute node profit based on share denominator
-  #   mProfitRate[ aPeriod ] = mChoiceFn->calcAverageCost( unnormalizedSum.first, unnormalizedSum.second, aPeriod );
+  aLandNode$mProfitRate[aPeriod] <- RelativeCostLogit_calcAverageCost(aLandNode$mChoiceFunction, normalizationInfo$unnormalizedSum,
+                                                   normalizationInfo$lfac, aPeriod )
 
   # Step 4. Calculate the unnormalized share for this node, but here using the discrete choice of the
   # containing or parant node.  This will be used to determine this nodes share within its
   # parent node.
-  #   double unnormalizedShareAbove = aChoiceFnAbove->calcUnnormalizedShare( mShareWeight[ aPeriod ], mProfitRate[ aPeriod ], aPeriod );
+  # TODO: Implement AbsoluteCostLogit
+  if( aChoiceFnAbove$mType == "relative-cost") {
+    unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove,
+                                                                 aLandNode$mShareWeight,
+                                                                 aLandNode$mProfitRate[[aPeriod]],
+                                                                 aPeriod)
+  } else {
+    print( "ERROR: Invalid choice function in LandNode_calcLandShares" )
+  }
 
-  #   return unnormalizedShareAbove; // the unnormalized share of this node.
+  return(unNormalizedShare)
 }
 
 #' LandNode_calculateShareWeights
@@ -140,8 +156,12 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # For initial version, use separate implementations for LandLeaf and LandNode
   LandNode_calculateShareWeight(aLandNode, aChoiceFnAbove, aPeriod)
 
-  for( leaf in aLandNode$mChildren ) {
-    LandLeaf_calculateShareWeight(leaf, aLandNode$mChoiceFunction, aPeriod, aLandNode$mProfitRate)
+  for( child in aLandNode$mChildren ) {
+    if(class(child) == "LandNode") {
+      LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
+    } else {
+      LandLeaf_calculateShareWeight(child, aLandNode$mChoiceFunction, aPeriod, aLandNode$mProfitRate[[aPeriod]])
+    }
   }
 }
 
@@ -155,30 +175,24 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #' @param aPeriod model period.
 #' @author KVC September 2017
 LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, aPeriod) {
-  # TODO: Figure out if we need this part
   # If node is the root of a fixed land area nest ( typically a subregion )
   # or the root of the entire land allocatory, then set the average profit
-  # rate to the previously calculated value.
-  # if ( mUnManagedLandValue > 0.0 ) {
-  #   avgProfitRate = mUnManagedLandValue;
-  # }
-  # else {
-  #   mUnManagedLandValue = avgProfitRate;
-  # }
-
-  # Loop through all children and call setUnmanagedLandProfitRate
-  for( leaf in aLandNode$mChildren ) {
-    if (class(leaf) == "UnmanagedLandLeaf") {
-      UnmanagedLandLeaf_setUnmanagedLandProfitRate(leaf, aAverageProfitRate, aPeriod)
-    }
+  # to the unmanaged land value
+  if ( aLandNode$mUnmanagedLandValue > 0.0 ) {
+    avgProfitRate <- aLandNode$mUnmanagedLandValue
+  } else {
+    aLandNode$mUnmanagedLandValue <- aAverageProfitRate
+    avgProfitRate <- aAverageProfitRate
   }
 
-#   for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
-#   // assign the unmanaged land value to this node and to children.
-#   mChildren[ i ]->setUnmanagedLandProfitRate( aRegionName, avgProfitRate, aPeriod );
-#   }
-# }
-#
+  # Loop through all children and call setUnmanagedLandProfitRate
+  for( child in aLandNode$mChildren ) {
+    if (class(child) == "UnmanagedLandLeaf") {
+      UnmanagedLandLeaf_setUnmanagedLandProfitRate(child, avgProfitRate, aPeriod)
+    } else if (class(child) == "LandNode") {
+      LandNode_setUnmanagedLandProfitRate(child, avgProfitRate, aPeriod)
+    }
+  }
 }
 
 #' LandNode_calculateNodeProfitRates
@@ -218,23 +232,20 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
       #   }
       #   }
     } else {
-      avgProfitRate = UNMANAGED_LAND_VALUE
+      avgProfitRate <- aLandNode$mUnmanagedLandValue
     }
   }
 
-  aLandNode$mProfitRate <- avgProfitRate
+  aLandNode$mProfitRate[aPeriod] <- avgProfitRate
+  aLandNode$mChoiceFunction$mOutputCost <- avgProfitRate
 
-  # TODO: Store the profit rate which will be used during calibration when calculating share-weights, etc.
-  # mProfitRate[ aPeriod ] = avgProfitRate;
-  # mChoiceFn->setOutputCost( avgProfitRate );
-
-  # TODO: Deal with children
   # pass the node profit rate down to children and trigger their calculation
   # and pass down the logit exponent of this node
-  # for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
-  #   mChildren[ i ]->calculateNodeProfitRates( aRegionName, avgProfitRate,
-  #                                             mChoiceFn.get(), aPeriod );
-  # }
+  for ( child in aLandNode$mChildren ) {
+    if( class(child) == "LandNode") {
+      LandNode_calculateNodeProfitRates(child, avgProfitRate, aLandNode$mChoiceFunction, aPeriod)
+    }
+  }
 
   # TODO: implement a absolute cost logit option
   # Calculate a reasonable "base" profit rate to use set the scale for when
@@ -270,8 +281,12 @@ LandNode_calcLandAllocation <- function(aLandNode, aLandAllocationAbove, aPeriod
   aLandNode$mLandAllocation <- nodeLandAllocation
 
   # Call calcLandAllocation for each child
-  for ( leaf in aLandNode$mChildren ) {
-    LandLeaf_calcLandAllocation( leaf, nodeLandAllocation, aPeriod )
+  for ( child in aLandNode$mChildren ) {
+    if(class(child) == "LandNode"){
+      LandNode_calcLandAllocation( child, nodeLandAllocation, aPeriod )
+    } else {
+      LandLeaf_calcLandAllocation( child, nodeLandAllocation, aPeriod )
+    }
   }
 }
 
@@ -343,7 +358,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   if( aChoiceFnAbove$mType == "relative-cost") {
     aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandNode$mShare,
-                                                              aLandNode$mProfitRate,
+                                                              aLandNode$mProfitRate[[aPeriod]],
                                                               aPeriod,
                                                               UNMANAGED_LAND_VALUE)
   } else{

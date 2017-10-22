@@ -4,7 +4,7 @@
 \alias{Leaf_setup}
 \title{Leaf_setup}
 \usage{
-Leaf_setup(aLandAllocator, aRegionName, data, col.name)
+Leaf_setup(aLandAllocator, aRegionName, data, col.name, ag.data = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
