@@ -37,8 +37,8 @@ run_model <- function() {
   #   print(paste("DEBUG: share weight is ", leaf$mShareWeight))
   # }
 
-  plot_LandAllocation(mLandAllocator)
-  plot_Nest(mLandAllocator)
+  #plot_LandAllocation(mLandAllocator)
+  #plot_Nest(mLandAllocator)
 }
 
 

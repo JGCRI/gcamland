@@ -311,20 +311,6 @@ LandAllocator_readData <- function(aLandAllocator) {
   }
 }
 
-#' LandAllocator_setup
-#'
-#' @details Setup the land allocator. This includes
-#'          Reading in external data and organizing
-#'          it in the node, leaf, technology structure
-#' @param aLandAllocator LandAllocator that needs set up
-#' @author KVC October 2017
-LandAllocator_setup <- function(aLandAllocator) {
-  # Read in top-level information and save total land
-  data <- ReadData_LandAllocator(aLandAllocator$mRegionName)
-  aLandAllocator$mLandAllocation <- data[[c("landAllocation")]]
-}
-
-
 #' LandAllocator_addToNest
 #'
 #' @param aLandAllocator Land allocator
@@ -333,12 +319,13 @@ LandAllocator_setup <- function(aLandAllocator) {
 #'          in the land allocator.
 #' @author KVC October 2017
 LandAllocator_addToNest <- function(aLandAllocator, aNest) {
+  nest <- aNest
 
   # TODO: Make this loop over children once there are multiple
-  for( child in aLandAllocator$mChildren) {
+  for(child in aLandAllocator$mChildren) {
     tibble::tibble(parent = "root",
                    node = child$mName) %>%
-      bind_rows(aNest) ->
+      bind_rows(nest) ->
       nest
 
     # Now, call addToNest on each of the children

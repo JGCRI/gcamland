@@ -3,7 +3,7 @@
 # Time-related parameters
 FINAL_CALIBRATION_PERIOD <- 1
 PERIODS <- 1:4
-YEARS <- c(2010, 2020, 2030, 2040)
+YEARS <- c(1975, 1990, 2005, 2010)
 
 # Expectation-related parameters (currently only "Perfect" and "Linear" are supported)
 EXPECTATION.TYPE <- "Perfect"

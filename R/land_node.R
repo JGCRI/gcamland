@@ -20,6 +20,7 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
   mName = aName
   mChoiceFunction = aChoiceFunction
   mLandAllocation = aLandAllocation
+  mUnmanagedLandValue = NULL
   mShare = NULL
   mShareWeight = NULL
   mProfitRate = NULL
@@ -397,19 +398,18 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 
   nest <- aNest
 
-  for ( child in aLandNode$mChildren ) {
-    tibble::tibble(parent = aLandNode$mName,
-                   node = child$mName) %>%
+  for (child in aLandNode$mChildren) {
+    tibble::tibble(parent = aLandNode$mName[[1]],
+                   node = child$mName[[1]]) %>%
       bind_rows(nest) ->
       nest
 
     # Now, call addToNest on each of the child nodes
     # Note: we don't need to call this on children that are leafs
-    if( class(child) == "LandNode" ) {
+    if (class(child) == "LandNode") {
       nest <- LandNode_addToNest(child, nest)
     }
   }
 
   return(nest)
 }
-

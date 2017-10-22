@@ -177,3 +177,5 @@ LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NO
     #     }
   }
 }
+
+
