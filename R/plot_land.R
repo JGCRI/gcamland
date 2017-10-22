@@ -20,8 +20,6 @@ plot_Nest <- function(aLandAllocator) {
     filter(parent != "TEMP") ->
     nest
 
-  print(nest)
-
   # Convert to plottable format
   g <- graph.data.frame(nest)
 

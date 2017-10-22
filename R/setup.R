@@ -24,6 +24,26 @@ LandAllocator_setup <- function(aLandAllocator) {
   children.data <- ReadData_LN2_Node(aLandAllocator$mRegionName)
   LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandNode2")
 
+  # Read information on LandLeaf children of LN2 nodes
+  children.data <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandLeaf")
+
+  # Read information on UnmanagedLandLeaf children of LN2 nodes
+  children.data <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "UnmanagedLandLeaf")
+
+  # Read information on LN3 nodes
+  children.data <- ReadData_LN3_Node(aLandAllocator$mRegionName)
+  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandNode3")
+
+  # Read information on LandLeaf children of LN3 nodes
+  children.data <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandLeaf")
+
+  # Read information on UnmanagedLandLeaf children of LN2 nodes
+  children.data <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "UnmanagedLandLeaf")
+
   plot_Nest(aLandAllocator)
 
 }
@@ -121,6 +141,20 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name) {
     if (col.name == "UnmanagedLandLeaf") {
       # Create an UnmanagedLandLeaf
       newLeaf <- UnmanagedLandLeaf(temp[[col.name]])
+
+      # Get the names of the land nodes that are parents to this leaf
+      temp %>%
+        select(-region, -LandAllocatorRoot, -UnmanagedLandLeaf, -allocation, -year, -col.name) %>%
+        distinct() ->
+        parent.names
+    } else if (col.name == "LandLeaf") {
+      newLeaf <- LandLeaf(temp[[col.name]])
+
+      # Get the names of the land nodes that are parents to this leaf
+      temp %>%
+        select(-region, -LandAllocatorRoot, -LandLeaf, -allocation, -year, -col.name) %>%
+        distinct() ->
+        parent.names
     }
 
     # loop over years
@@ -135,12 +169,6 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name) {
       # Save land allocation
       newLeaf$mLandAllocation[[per]] <- curr[[c("allocation")]]
     }
-
-    # Get the names of the land nodes that are parents to this leaf
-    temp %>%
-      select(-region, -LandAllocatorRoot, -UnmanagedLandLeaf, -allocation, -year, -col.name) %>%
-      distinct() ->
-      parent.names
 
     # Now, add the leaf to the land allocator
     LandAllocator_addChild(aLandAllocator, newLeaf, parent.names)
