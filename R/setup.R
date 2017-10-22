@@ -13,7 +13,7 @@ LandAllocator_setup <- function(aLandAllocator) {
 
   # Read in top-level information and save total land
   data <- ReadData_LN0(aLandAllocator$mRegionName)
-  aLandAllocator$mLandAllocation <- data[[c("landAllocation")]]
+  aLandAllocator$mLandAllocation <- as.numeric(data[[c("landAllocation")]])
 
   # Read information on LN1 nodes (children of land allocator)
   children.data <- ReadData_LN1_Node(aLandAllocator$mRegionName)
@@ -70,12 +70,12 @@ LN1_setup <- function(aLandAllocator, aRegionName, data, col.name) {
       temp
 
     name <- temp[[col.name]]
-    exponent <- temp[[c("logit.exponent")]]
+    exponent <- as.numeric(temp[[c("logit.exponent")]])
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
     # Create the node
     newNode <- LandNode(name, choiceFunction, -1)
-    newNode$mUnmanagedLandValue <- temp[[c("unManagedLandValue")]]
+    newNode$mUnmanagedLandValue <- as.numeric(temp[[c("unManagedLandValue")]])
 
     # Add node to the list
     aLandAllocator$mChildren[[i]] <- newNode
@@ -103,7 +103,7 @@ LandNode_setup <- function(aLandAllocator, aRegionName, data, col.name) {
       temp
 
     name <- temp[[col.name]]
-    exponent <- temp[[c("logit.exponent")]]
+    exponent <- as.numeric(temp[[c("logit.exponent")]])
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
     # Create the node
@@ -173,7 +173,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NU
       per <- get_yr_to_per(y)
 
       # Save land allocation
-      newLeaf$mLandAllocation[[per]] <- curr[[c("allocation")]]
+      newLeaf$mLandAllocation[[per]] <- as.numeric(curr[[c("allocation")]])
     }
 
     # Now, add the leaf to the land allocator
@@ -260,7 +260,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
         currCalOutput
 
       # Set calOutput and agProdChange
-      aLandLeaf$mCalOutput[[per]] <- currCalOutput[[c("calOutputValue")]]
+      aLandLeaf$mCalOutput[[per]] <- as.numeric(currCalOutput[[c("calOutputValue")]])
 
       # Set data that shouldn't exist in the past to 0
       # TODO: figure out a better system for this
@@ -273,7 +273,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
         filter(year == y, AgProductionTechnology == name) ->
         currAgProdChange
 
-      aLandLeaf$mAgProdChange[[per]] <- currAgProdChange[[c("AgProdChange")]]
+      aLandLeaf$mAgProdChange[[per]] <- as.numeric(currAgProdChange[[c("AgProdChange")]])
 
       # Set data that shouldn't exist in the future to -1
       aLandLeaf$mCalOutput[[per]] <- -1
@@ -289,7 +289,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
       filter(year == y, AgProductionTechnology == name) ->
       currCost
 
-    aLandLeaf$mCost[[per]] <- currCost[[c("nonLandVariableCost")]]
+    aLandLeaf$mCost[[per]] <- as.numeric(currCost[[c("nonLandVariableCost")]])
 
   }
 
