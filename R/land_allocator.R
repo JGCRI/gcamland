@@ -8,7 +8,7 @@
 #' @field mChoiceFunction Logit type & exponent for the top level of the nest
 #' @field mLandAllocation Land allocation for this region
 #' @field mShare Share of land
-#' @field mChild Children of the LandAllocator (currently one LandNode only)
+#' @field mChildren Children of the LandAllocator
 #'
 #' @return New, initialized LandAllocator
 #' @author KVC September 2017
@@ -17,7 +17,7 @@ LandAllocator <- function(aRegionName) {
   mChoiceFunction = ChoiceFunction("relative-cost", 0)
   mLandAllocation = NULL
   mShare = NULL
-  mChild = NULL
+  mChildren = list()
   greet = function() {
     cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
   }
@@ -34,13 +34,15 @@ LandAllocator <- function(aRegionName) {
 #' @details Initial calculations needed for the land allocator.
 #' @author KVC September 2017
 LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
+  # Call land node's initCalc
+  for ( child in aLandAllocator$mChildren ) {
+    LandNode_initCalc(child, aPeriod)
+  }
+
   if(aPeriod <= FINAL_CALIBRATION_PERIOD){
     LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
   }
 
-  # Call land node's initCalc
-  # TODO: loop over children
-  LandNode_initCalc(aLandAllocator$mChild, aPeriod)
 }
 
 #' LandAllocator_calibrateLandAllocator
@@ -75,7 +77,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # are what the profit rates would have to be based on the actual shares, the logit exponent, and
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
-  LandNode_calculateNodeProfitRates(aLandAllocator$mChild, UNMANAGED_LAND_VALUE,
+  LandAllocator_calculateNodeProfitRates(aLandAllocator, UNMANAGED_LAND_VALUE,
                                     aLandAllocator$mChoiceFunction, aPeriod)
 
   # /* Step 4. Calculate profit scalers. Because the calibration profit rate computed in Step 4
@@ -87,7 +89,39 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   #
   # All of the calibration is captured in the leaves, so the share profit scalers for nodes are
   # set equal to 1.  */
-  LandNode_calculateShareWeights(aLandAllocator$mChild, aLandAllocator$mChoiceFunction, aPeriod)
+  LandAllocator_calculateShareWeights(aLandAllocator, aLandAllocator$mChoiceFunction, aPeriod)
+}
+
+
+#' LandAllocator_calculateNodeProfitRates
+#'
+#' @param aLandAllocator LandAllocator
+#' @param aUnmanagedLandValue Value of unmanaged land
+#' @param aChoiceFunction Choice function
+#' @param aPeriod Current model period
+#' @details Loops through all of the children of the aLandAllocator
+#'          and calls the calculateNodeProfitRates method on each
+#' @author KVC October 2017
+LandAllocator_calculateNodeProfitRates <- function(aLandAllocator, aUnmanagedLandValue, aChoiceFunction, aPeriod) {
+  # Loop through all children
+  for( child in aLandAllocator$mChildren ) {
+    LandNode_calculateNodeProfitRates(child, aUnmanagedLandValue, aChoiceFunction, aPeriod)
+  }
+}
+
+#' LandAllocator_calculateShareWeights
+#'
+#' @param aLandAllocator Land Allocator
+#' @param aChoiceFunction Choice function
+#' @param aPeriod Current time period
+#' @details Loop through all children of the land allocator and
+#'          call the calculateShareWeights method on each
+#' @author KVC October 2017
+LandAllocator_calculateShareWeights <- function(aLandAllocator, aChoiceFunction, aPeriod) {
+  # Loop through all children
+  for( child in aLandAllocator$mChildren ) {
+    LandNode_calculateShareWeights(child, aChoiceFunction, aPeriod)
+  }
 }
 
 #' LandAllocator_setInitShares
@@ -98,8 +132,9 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
 #' @author KVC September 2017
 LandAllocator_setInitShares <- function(aLandAllocator, aPeriod) {
   # Call setInitShares for nodes
-  # TODO: set up loop over all land nodes
-  LandNode_setInitShares(aLandAllocator$mChild, aLandAllocator$mLandAllocation, aPeriod)
+  for ( child in aLandAllocator$mChildren ) {
+    LandNode_setInitShares(child, aLandAllocator$mLandAllocation, aPeriod)
+  }
 }
 
 #' LandAllocator_calcLandShares
@@ -117,7 +152,9 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   # setUnmanagedLandProfitRate( aRegionName, mUnManagedLandValue, aPeriod );
 
   # Then, calculate land shares
-  LandNode_calcLandShares(aLandAllocator$mChild, aLandAllocator$mChoiceFunction, aPeriod)
+  for( child in aLandAllocator$mChildren ) {
+    LandNode_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
+  }
 
   # This is the root node so its share is 100%.
   aLandAllocator$mShare <- 1
@@ -131,7 +168,9 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
-  LandNode_calcLandAllocation(aLandAllocator$mChild, aLandAllocator$mLandAllocation, aPeriod)
+  for ( child in aLandAllocator$mChildren ) {
+    LandNode_calcLandAllocation(child, aLandAllocator$mLandAllocation, aPeriod)
+  }
 }
 
 #' LandAllocator_calcFinalLandAllocation
@@ -165,8 +204,9 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
 #' @author KVC October 2017
 LandAllocator_setUnmanagedLandProfitRate <- function(aLandAllocator, aUnmanagedLandValue, aPeriod) {
   # Call on all children
-  # TODO: Make this flexible so we can have children that are nodes or leafs
-  LandNode_setUnmanagedLandProfitRate(aLandAllocator$mChild, aUnmanagedLandValue, aPeriod)
+  for( child in aLandAllocator$mChildren ) {
+    LandNode_setUnmanagedLandProfitRate(child, aUnmanagedLandValue, aPeriod)
+  }
 }
 
 #' LandAllocator_readData
@@ -224,7 +264,6 @@ LandAllocator_readData <- function(aLandAllocator) {
       choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
       newNode <- LandNode(name, choiceFunction, land)
-      aLandAllocator$mChild <- newNode
 
       # Now, Loop through all LandLeaf and fill in land allocation
       mgd.land.allocation %>%
@@ -245,7 +284,7 @@ LandAllocator_readData <- function(aLandAllocator) {
         AgProductionTechnology_readData(newLeaf)
 
         # Add this leaf to the land allocator
-        aLandAllocator$mChild$mChildren[[i]] <- newLeaf
+        newNode$mChildren[[i]] <- newLeaf
         i <- i + 1
       }
 
@@ -263,12 +302,15 @@ LandAllocator_readData <- function(aLandAllocator) {
         newLeaf$mLandAllocation[[per]] <- land
 
         # Add this leaf to the land allocator
-        aLandAllocator$mChild$mChildren[[j+i-1]] <- newLeaf
+        newNode$mChildren[[j+i-1]] <- newLeaf
         j <- j + 1
       }
+
+      aLandAllocator$mChildren[[1]] <- newNode
     }
   }
 
+  plot_Nest(aLandAllocator)
 }
 
 #' LandAllocator_addToNest
@@ -281,13 +323,15 @@ LandAllocator_readData <- function(aLandAllocator) {
 LandAllocator_addToNest <- function(aLandAllocator, aNest) {
 
   # TODO: Make this loop over children once there are multiple
-  tibble::tibble(parent = "root",
-                 node = aLandAllocator$mChild$mName) %>%
-    bind_rows(aNest) ->
-    nest
+  for( child in aLandAllocator$mChildren) {
+    tibble::tibble(parent = "root",
+                   node = child$mName) %>%
+      bind_rows(aNest) ->
+      nest
 
-  # Now, call addToNest on each of the children
-  nest <- LandNode_addToNest(aLandAllocator$mChild, nest)
+    # Now, call addToNest on each of the children
+    nest <- LandNode_addToNest(child, nest)
+  }
 
   return(nest)
 }

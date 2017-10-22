@@ -27,7 +27,8 @@ run_model <- function() {
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
-  for ( leaf in mLandAllocator$mChild$mChildren ) {
+  node <- mLandAllocator$mChildren[[1]]
+  for ( leaf in node$mChildren ) {
     print(paste("DEBUG: profit is ", leaf$mProfitRate))
     print(paste("DEBUG: share is ", leaf$mShare))
     print(paste("DEBUG: share weight is ", leaf$mShareWeight))

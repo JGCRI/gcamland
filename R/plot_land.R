@@ -39,7 +39,7 @@ plot_LandAllocation <- function(aLandAllocator) {
   period <- land.allocation <- name <- year <- NULL
 
   # TODO: Figure out how to loop through bigger nests
-  landNode <- aLandAllocator$mChild
+  landNode <- aLandAllocator$mChildren[[1]]
 
   # Get data into a data frame
   tibble::tibble(name = rep(NA, length(landNode$mChildren)),

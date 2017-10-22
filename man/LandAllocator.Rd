@@ -29,7 +29,7 @@ Initialize an Class called LandAllocator
 
 \item{\code{mShare}}{Share of land}
 
-\item{\code{mChild}}{Children of the LandAllocator (currently one LandNode only)}
+\item{\code{mChildren}}{Children of the LandAllocator}
 }}
 
 \author{

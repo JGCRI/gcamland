@@ -42,7 +42,6 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
 #' @author KVC September 2017
 LandNode_initCalc <- function(aLandNode, aPeriod) {
   # TODO: all kinds of things including error checking
-
   # Call initCalc on any children
   for ( leaf in aLandNode$mChildren ) {
     if ( class(leaf) == "LandLeaf" ) {
