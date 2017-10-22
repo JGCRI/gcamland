@@ -259,3 +259,52 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
   return(data)
 }
 
+#' ReadData_AgProd
+#'
+#' @details Read in ag production data
+#' @param aRegionName Region to read data for
+#' @return All AgProductionTechnology information
+#' @importFrom readr read_csv
+#' @importFrom dplyr bind_rows
+#' @author KVC October 2017
+ReadData_AgProd <- function(aRegionName) {
+  # Read in data
+  suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_ag.csv", skip = 3)) %>%
+    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_For.csv", skip = 3))) %>%
+    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_Past.csv", skip = 3))) ->
+    calOutput
+  agProdChange <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgProdChange_ref.csv", skip = 3))
+  suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_ag.csv", skip = 3)) %>%
+    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_bio.csv", skip = 3))) %>%
+    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_For.csv", skip = 3))) ->
+    cost
+
+  # Filter data for the specified region
+  calOutput %>%
+    filter(region == aRegionName) ->
+    calOutput
+
+  agProdChange %>%
+    filter(region == aRegionName) ->
+    agProdChange
+
+  cost %>%
+    filter(region == aRegionName) ->
+    cost
+
+  # TEMP: Filter data for specified AEZ
+  calOutput %>%
+    filter(grepl(AEZ, AgSupplySubsector)) ->
+    calOutput
+
+  agProdChange %>%
+    filter(grepl(AEZ, AgSupplySubsector)) ->
+    agProdChange
+
+  cost %>%
+    filter(grepl(AEZ, AgSupplySubsector)) ->
+    cost
+
+  return(list(calOutput, agProdChange, cost))
+}
+
