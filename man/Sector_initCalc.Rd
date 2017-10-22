@@ -15,7 +15,7 @@ Sector_initCalc(aLandAllocator, aPeriod)
 Sector_initCalc
 }
 \details{
-Initializations related to the technology.
+Initializations related to the sector
          Note: we are storing technology parameters in the Leafs for
          convenience, but are leaving the technology/leaf calculations
          separate as they are in the C++ code.
