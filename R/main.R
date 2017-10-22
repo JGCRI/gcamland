@@ -34,6 +34,7 @@ run_model <- function() {
   }
 
   plot_LandAllocation(mLandAllocator)
+  plot_Nest(mLandAllocator)
 }
 
 

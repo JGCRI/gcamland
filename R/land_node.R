@@ -387,3 +387,30 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # TODO: Write an assert to check this
 }
 
+#' LandNode_addToNest
+#'
+#' @param aLandNode Land node
+#' @param aNest Current nest
+#' @details Determine all of the parent/child relationships
+#'          for this particular node.
+#' @author KVC October 2017
+LandNode_addToNest <- function(aLandNode, aNest) {
+
+  nest <- aNest
+
+  for ( child in aLandNode$mChildren ) {
+    tibble::tibble(parent = aLandNode$mName,
+                   node = child$mName) %>%
+      bind_rows(nest) ->
+      nest
+
+    # Now, call addToNest on each of the child nodes
+    # Note: we don't need to call this on children that are leafs
+    if( class(child) == "LandNode" ) {
+      nest <- LandNode_addToNest(child, nest)
+    }
+  }
+
+  return(nest)
+}
+

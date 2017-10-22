@@ -270,3 +270,25 @@ LandAllocator_readData <- function(aLandAllocator) {
   }
 
 }
+
+#' LandAllocator_addToNest
+#'
+#' @param aLandAllocator Land allocator
+#' @param aNest Current nest
+#' @details Determine all of the parent/child relationships
+#'          in the land allocator.
+#' @author KVC October 2017
+LandAllocator_addToNest <- function(aLandAllocator, aNest) {
+
+  # TODO: Make this loop over children once there are multiple
+  tibble::tibble(parent = "root",
+                 node = aLandAllocator$mChild$mName) %>%
+    bind_rows(aNest) ->
+    nest
+
+  # Now, call addToNest on each of the children
+  nest <- LandNode_addToNest(aLandAllocator$mChild, nest)
+
+  return(nest)
+}
+

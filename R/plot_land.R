@@ -1,5 +1,32 @@
 # plot_land.R
 
+#' plot_Nest
+#'
+#' @param aLandAllocator Land allocator
+#' @details Plot the nesting structure for the land allocator
+#' @importFrom igraph graph.data.frame
+#' @author KVC October 2017
+#' @export
+plot_Nest <- function(aLandAllocator) {
+
+  tibble::tibble(parent = "TEMP",
+                 node = "TEMP") -> nest
+
+  # Map out nest
+  nest <- LandAllocator_addToNest(aLandAllocator, nest)
+
+  # Remove temporary link
+  nest %>%
+    filter(parent != "TEMP") ->
+    nest
+
+  # Convert to plottable format
+  g <- graph.data.frame(nest)
+
+  # Plot graph
+  plot(g, layout = layout.reingold.tilford)
+}
+
 #' plot_LandAllocation
 #'
 #' @details Plots land allocation over time
