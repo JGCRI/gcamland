@@ -19,21 +19,23 @@ PerfectExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #' @param aPeriod Current model period
 #' @details Calculate the expected price for a LandLeaf assuming
 #'          perfect expectations, i.e., expected = actual
-#' @importFrom readr read_csv
 #' @author KVC October 2017
 PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   # Silence package checks
   Period <- Product <- NULL
 
   # Read in prices
-  prices <- suppressMessages(read_csv("./inst/extdata/calibration-data/price.csv"))
+  prices <- get_prices()
+
+  # Get year
+  y <- get_per_to_yr(aPeriod)
 
   # Get price for this leaf in this period only
   prices %>%
-    filter(Period == aPeriod, Product == aLandLeaf$mName) ->
+    filter(year == y, sector == aLandLeaf$mProductName[1]) ->
     prices
 
-  expectedPrice <- prices[[c("mPrice")]]
+  expectedPrice <- prices[[c("price")]]
 
   return(expectedPrice)
 }

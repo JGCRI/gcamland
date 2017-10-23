@@ -5,6 +5,7 @@
 #' @details Initialize an Class called LandLeaf
 #' @param aName Leaf name
 #' @field mName Leaf name
+#' @field mProductName Name of product produced by this leaf
 #' @field mLandAllocation Land allocation for this leaf
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
@@ -19,7 +20,9 @@
 #' @author KVC September 2017
 LandLeaf <- function(aName) {
   mName = aName
+  mProductName = NULL
   mLandAllocation = list()
+  mCalLandAllocation = list()
   mShare = list()
   mShareWeight = NULL
   mProfitRate = list()
@@ -70,7 +73,7 @@ LandLeaf_setInitShares <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
   if( aLandAllocationAbove <= 0) {
     aLandLeaf$mShare[aPeriod] <- SMALL_NUMBER
   } else {
-    aLandLeaf$mShare[aPeriod] <- aLandLeaf$mLandAllocation[[aPeriod]] / aLandAllocationAbove
+    aLandLeaf$mShare[aPeriod] <- aLandLeaf$mCalLandAllocation[[aPeriod]] / aLandAllocationAbove
   }
 }
 
@@ -124,6 +127,18 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
   }
 }
 
+#' LandLeaf_getCalLandAllocation
+#'
+#' @details Get the amount of land in a particular period
+#' @param aLandLeaf LandLeaf
+#' @param aPeriod Model Period
+#'
+#' @return Land allocation for this leaf in this time period
+#' @author KVC October 2017
+LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
+  return(aLandLeaf$mCalLandAllocation[[aPeriod]])
+}
+
 #' LandLeaf_calculateShareWeight
 #'
 #' @details Calculates share weights for land leafs
@@ -132,13 +147,13 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
 #' @param aPeriod Model time period
 #' @param NODE_PROFIT Profit rate of node (TODO: put this in the choice function)
 #' @author KVC September 2017
-LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT) {
+LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # TODO: move output cost to a member variable; implement absolute cost logit
   if( aChoiceFnAbove$mType == "relative-cost") {
     aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandLeaf$mShare[[aPeriod]],
                                                               aLandLeaf$mProfitRate[[aPeriod]],
-                                                              aPeriod, NODE_PROFIT)
+                                                              aPeriod)
   } else {
     print("ERROR: Invalid choice function in LandLeaf_calculateShareWeight")
   }

@@ -44,11 +44,13 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
 LandNode_initCalc <- function(aLandNode, aPeriod) {
   # TODO: all kinds of things including error checking
   # Call initCalc on any children
-  for ( leaf in aLandNode$mChildren ) {
-    if ( class(leaf) == "LandLeaf" ) {
-      LandLeaf_initCalc(leaf, aPeriod)
+  for ( child in aLandNode$mChildren ) {
+    if(class(child) == "LandNode") {
+      LandNode_initCalc(child, aPeriod)
+    } else if (class(child) == "LandLeaf") {
+      LandLeaf_initCalc(child, aPeriod)
     } else {
-      UnmanagedLandLeaf_initCalc(leaf, aPeriod)
+      UnmanagedLandLeaf_initCalc(child, aPeriod)
     }
   }
 }
@@ -67,7 +69,7 @@ LandNode_initCalc <- function(aLandNode, aPeriod) {
 LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
   # Calculate the total land within this node.
   # TODO: do we want to calculate this? we need to ensure it adds up somewhere
-  nodeLandAllocation <- aLandNode$mLandAllocation
+  nodeLandAllocation <- LandNode_getCalLandAllocation(aLandNode, aPeriod)
 
   # If there is no land allocation for the parent land type, set the share to a small number.
   # Otherwise, set the share of this node.
@@ -81,6 +83,28 @@ LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
       LandLeaf_setInitShares(child, nodeLandAllocation, aPeriod)
     }
   }
+}
+
+#' LandNode_getCalLandAllocation
+#'
+#' @details Calculates and returns total land allocation of a given type.
+#' @param aLandNode LandNode
+#' @param aPeriod Model period
+#'
+#' @return
+#' @author KVC October 2017
+LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
+  sum <- 0.0
+
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
+      sum <- sum + LandNode_getCalLandAllocation(child, aPeriod)
+    } else {
+      sum <- sum + LandLeaf_getCalLandAllocation(child, aPeriod)
+    }
+  }
+
+  return(sum)
 }
 
 #' LandNode_calcLandShares
@@ -160,7 +184,8 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     if(class(child) == "LandNode") {
       LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
-      LandLeaf_calculateShareWeight(child, aLandNode$mChoiceFunction, aPeriod, aLandNode$mProfitRate[[aPeriod]])
+
+      LandLeaf_calculateShareWeight(child, aLandNode$mChoiceFunction, aPeriod)
     }
   }
 }
@@ -205,7 +230,7 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove, aChoiceFnAbove, aPeriod) {
-  avgProfitRate = -SMALL_NUMBER
+  avgProfitRate <- aLandNode$mUnmanagedLandValue
 
   # If we have a valid profit rate above then we can calculate the implied profit rate this node
   # would have to recieve the share it did.  If not (such as at the root) we just use the
@@ -231,8 +256,6 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
       #     }
       #   }
       #   }
-    } else {
-      avgProfitRate <- aLandNode$mUnmanagedLandValue
     }
   }
 
@@ -354,13 +377,11 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Calculate the share weight for the node
   # TODO: implement absolute cost logit too
-  # TODO: move output cost to a member variable
   if( aChoiceFnAbove$mType == "relative-cost") {
     aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandNode$mShare,
                                                               aLandNode$mProfitRate[[aPeriod]],
-                                                              aPeriod,
-                                                              UNMANAGED_LAND_VALUE)
+                                                              aPeriod)
   } else{
     print("ERROR: Invalid choice function in LandNode_calculateShareWeight")
   }

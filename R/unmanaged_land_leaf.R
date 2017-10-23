@@ -34,9 +34,10 @@ UnmanagedLandLeaf <- function(aName) {
 #' @details Initial calculations needed for the unmanagedland leaf.
 #' @author KVC September 2017
 UnmanagedLandLeaf_initCalc <- function(aUnmanagedLandLeaf, aPeriod ) {
-  if ( aPeriod > 1 ) {
+  if (aPeriod > 1) {
     UnmanagedLandLeaf_setUnmanagedLandProfitRate(aUnmanagedLandLeaf, aUnmanagedLandLeaf$mProfitRate[[1]], aPeriod)
   }
+
 }
 
 
@@ -61,5 +62,5 @@ UnmanagedLandLeaf_setUnmanagedLandProfitRate <- function(aUnmanagedLandLeaf, aAv
   # TODO: Implement carbon subsidy so we can do UCT
   # mProfitRate[ aPeriod ] = max( adjustedProfitRate + getCarbonSubsidy( aRegionName, aPeriod ), 0.0 );
 
-  aUnmanagedLandLeaf$mProfitRate[[aPeriod]] <- aAverageProfitRate
+  aUnmanagedLandLeaf$mProfitRate[aPeriod] <- aAverageProfitRate
 }

@@ -50,7 +50,6 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #' @param aPeriod Current model period
 #' @details Calculate the expected price for a LandLeaf using
 #'          a linear extrapolation from recent history.
-#' @importFrom readr read_csv
 #' @importFrom stats lm predict
 #' @author KVC October 2017
 LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
@@ -58,7 +57,7 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   Period <- Product <- lm <- predict <- NULL
 
   # Read in prices
-  prices <- suppressMessages(read_csv("./inst/extdata/calibration-data/price.csv"))
+  prices <- get_prices()
 
   currYear <- get_per_to_yr(aPeriod)
   startYear <- currYear - LINEAR.YEARS
@@ -80,11 +79,12 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
       per <- get_yr_to_per(i)
     }
 
+    yr <- get_yr_to_per(per)
     prices %>%
-      filter(Period == per, Product == aLandLeaf$mName) ->
+      filter(year == yr, sector == aLandLeaf$mName[1]) ->
       curr.price
 
-    all.prices$price[all.prices$year == i] <- curr.price[[c("mPrice")]]
+    all.prices$price[all.prices$year == i] <- curr.price[[c("price")]]
 
     i <- i + 1
   }

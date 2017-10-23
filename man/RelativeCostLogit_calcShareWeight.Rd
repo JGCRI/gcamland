@@ -4,8 +4,7 @@
 \alias{RelativeCostLogit_calcShareWeight}
 \title{RelativeCostLogit_calcShareWeight}
 \usage{
-RelativeCostLogit_calcShareWeight(aChoiceFnAbove, aShare, aCost, aPeriod,
-  OUTPUT_COST)
+RelativeCostLogit_calcShareWeight(aChoiceFnAbove, aShare, aCost, aPeriod)
 }
 \arguments{
 \item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}

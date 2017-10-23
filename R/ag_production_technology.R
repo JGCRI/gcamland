@@ -27,16 +27,20 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
 
   # Note: C++ code says "Only do the ag productivity change calc if a calibration value is not read in that period"
   # TODO: Do we need to check for cal values?
-  if( aLandLeaf$mCalOutput[[aPeriod]] != -1 ) {
-    aLandLeaf$mYield[aPeriod] <- aLandLeaf$mCalOutput[[aPeriod]] / aLandLeaf$mLandAllocation[[aPeriod]]
-  } else if( aPeriod > 1) {
+  if(aLandLeaf$mCalOutput[[aPeriod]] != -1) {
+    if(aLandLeaf$mCalLandAllocation[[aPeriod]] > 0) {
+      aLandLeaf$mYield[aPeriod] <- aLandLeaf$mCalOutput[[aPeriod]] / aLandLeaf$mCalLandAllocation[[aPeriod]]
+    } else {
+      aLandLeaf$mYield[aPeriod] <- 0
+    }
+  } else if(aPeriod > 1) {
     # Get the length of the current time step
     timestep <- get_timestep(aPeriod)
 
     # Unless a yield is read in for this period, get the previous period yield from the market info.
     # Note: you can never overwrite a positive yield with a zero yield. If the model sees a
     #       zero yield, it will copy from the previous period.
-    if( length(aLandLeaf$mYield < aPeriod ) ) {
+    if( length(aLandLeaf$mYield) < aPeriod ) {
       # Yield has not been set
       preYield <- aLandLeaf$mYield[[aPeriod-1]]
 
@@ -49,6 +53,9 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
       # Adjust last period's variable cost by tech change
       aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ timestep)
     }
+  } else {
+    # Note: this isn't in the C++ code, but I seem to need something here
+    aLandLeaf$mYield[aPeriod] <- 0.0
   }
 
   # Calculate profit rate

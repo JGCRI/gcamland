@@ -18,7 +18,7 @@ SectorUtils_normalizeLogShares <- function(aShares) {
     lfac
 
   # Check for all zero prices
-  if(lfac$lfac == -Inf) {
+  if(is.na(lfac$lfac)) {
     # TODO: Implement something here
 #     // In this case, set all shares to zero and return.
 #     // This is arguably wrong, but the rest of the code seems to expect it.

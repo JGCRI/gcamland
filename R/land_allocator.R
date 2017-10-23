@@ -17,6 +17,7 @@ LandAllocator <- function(aRegionName) {
   mChoiceFunction = ChoiceFunction("relative-cost", 0)
   mLandAllocation = NULL
   mShare = NULL
+  mUnmanagedLandValue = 0.0
   mChildren = list()
   greet = function() {
     cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
@@ -77,6 +78,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   # are what the profit rates would have to be based on the actual shares, the logit exponent, and
   # the average profit of the containing node. These are equivalent to what was called "intrinsic
   # rates" in the 2008 version of the code based on Sands and Leimbech. */
+  aLandAllocator$mChoiceFunction$mOutputCost <- aLandAllocator$mUnmanagedLandValue
   LandAllocator_calculateNodeProfitRates(aLandAllocator, 0,
                                     aLandAllocator$mChoiceFunction, aPeriod)
 

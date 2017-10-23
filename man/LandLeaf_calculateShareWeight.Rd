@@ -4,7 +4,7 @@
 \alias{LandLeaf_calculateShareWeight}
 \title{LandLeaf_calculateShareWeight}
 \usage{
-LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod, NODE_PROFIT)
+LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf to perform calculations on}

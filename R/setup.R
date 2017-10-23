@@ -150,6 +150,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NU
         select(-region, -LandAllocatorRoot, -UnmanagedLandLeaf, -allocation, -year, -col.name) %>%
         distinct() ->
         parent.names
+
     } else if (col.name == "LandLeaf") {
       newLeaf <- LandLeaf(temp[[col.name]])
 
@@ -173,7 +174,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NU
       per <- get_yr_to_per(y)
 
       # Save land allocation
-      newLeaf$mLandAllocation[[per]] <- as.numeric(curr[[c("allocation")]])
+      newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
     }
 
     # Now, add the leaf to the land allocator
@@ -241,12 +242,17 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
   # Silence package checks
   Period <- NULL
 
+  # Separate data
   calOutput <- ag.data[[1]]
   agProdChange <- ag.data[[2]]
   cost <- ag.data[[3]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
+
+  # Set product name
+  # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
+  aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
 
   # Loop through all periods and read in data
   for ( y in YEARS ) {
@@ -260,12 +266,16 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
         currCalOutput
 
       # Set calOutput and agProdChange
-      aLandLeaf$mCalOutput[[per]] <- as.numeric(currCalOutput[[c("calOutputValue")]])
+      if( nrow(currCalOutput)) {
+        aLandLeaf$mCalOutput[per] <- as.numeric(currCalOutput[[c("calOutputValue")]])
+      } else {
+        # TODO: This was -1. Do we need to flag missing or is it okay to assume zero?
+        aLandLeaf$mCalOutput[per] <- -1
+      }
 
       # Set data that shouldn't exist in the past to 0
-      # TODO: figure out a better system for this
-      aLandLeaf$mAgProdChange[[per]] <- 0
-      aLandLeaf$mNonLandCostTechChange[[per]] <- 0
+      aLandLeaf$mAgProdChange[per] <- 0
+      aLandLeaf$mNonLandCostTechChange[per] <- 0
 
     } else{
       # Only read in technical change information for future periods
@@ -273,7 +283,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
         filter(year == y, AgProductionTechnology == name) ->
         currAgProdChange
 
-      aLandLeaf$mAgProdChange[[per]] <- as.numeric(currAgProdChange[[c("AgProdChange")]])
+      if(nrow(currAgProdChange)) {
+        aLandLeaf$mAgProdChange[per] <- as.numeric(currAgProdChange[[c("AgProdChange")]])
+      } else{
+        aLandLeaf$mAgProdChange[per] <- 0.0
+      }
 
       # Set data that shouldn't exist in the future to -1
       aLandLeaf$mCalOutput[[per]] <- -1
@@ -289,8 +303,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
       filter(year == y, AgProductionTechnology == name) ->
       currCost
 
-    aLandLeaf$mCost[[per]] <- as.numeric(currCost[[c("nonLandVariableCost")]])
-
+    if( nrow(currCost) ) {
+      aLandLeaf$mCost[[per]] <- as.numeric(currCost[[c("nonLandVariableCost")]])
+    } else {
+      aLandLeaf$mCost[[per]] <- 0
+    }
   }
 
 }

@@ -4,7 +4,7 @@
 #'
 #' @param aLandAllocator Land allocator
 #' @details Plot the nesting structure for the land allocator
-#' @importFrom igraph graph.data.frame
+#' @importFrom igraph graph.data.frame layout.reingold.tilford
 #' @author KVC October 2017
 #' @export
 plot_Nest <- function(aLandAllocator) {

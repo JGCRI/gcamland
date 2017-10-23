@@ -308,3 +308,24 @@ ReadData_AgProd <- function(aRegionName) {
   return(list(calOutput, agProdChange, cost))
 }
 
+#' get_prices
+#'
+#' @details Read in prices for all periods and return them
+#' @return Tibble containing prices by commodity and year
+#' @importFrom readr read_csv
+#' @importFrom tidyr gather
+#' @importFrom dplyr mutate
+#' @author KVC October 2017
+get_prices <- function() {
+  # Read data
+  prices <- suppressMessages(read_csv("./inst/extdata/gcam43-data/AgPrices.csv", skip = 1))
+
+  # Tidy data
+  prices %>%
+    select(-scenario, -Units) %>%
+    gather(year, price, -region, -sector) %>%
+    mutate(year = as.integer(year)) ->
+    prices
+
+  return(prices)
+}

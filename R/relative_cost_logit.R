@@ -51,7 +51,7 @@ RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShar
   ret <- 0
   if( aChoiceFunction$mLogitExponent == 0.0 ) {
      # TODO: what to do with zero logit?
-     ret <- aUnnormalizedShareSum * exp( aLogShareFac ) * mOutputCost
+     ret <- aUnnormalizedShareSum * exp( aLogShareFac ) * aChoiceFunction$mOutputCost
   } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0 ) {
     # No Valid options and negative logit so return a large cost so a nested
     # logit would not want to choose this nest.
@@ -100,8 +100,7 @@ RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShar
 #' @param OUTPUT_COST Node profit
 #' @return Share weight
 #' @author KVC September 2017
-RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPeriod, OUTPUT_COST) {
-  # TODO: Move OUTPUT_COST to be a member variable instead of passed in, document/name better
+RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPeriod) {
   # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
   cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
 
@@ -109,7 +108,7 @@ RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPe
   if (aShare == 0.0) {
     SHARE_WEIGHT <- 0.0
   } else {
-    SHARE_WEIGHT <- aShare * (OUTPUT_COST / cappedCost)^aChoiceFnAbove$mLogitExponent
+    SHARE_WEIGHT <- aShare * (aChoiceFnAbove$mOutputCost / cappedCost)^aChoiceFnAbove$mLogitExponent
   }
 
   return(SHARE_WEIGHT)
@@ -140,17 +139,6 @@ RelativeCostLogit_calcImpliedCost <- function(aChoiceFnAbove, aShare, aCost, aPe
 
   return(IMPLIED_COST)
 }
-
-#
-# void RelativeCostLogit::setOutputCost( const double aCost ) {
-#   // Negative costs are not allowed so they are instead capped at getMinCostThreshold()
-#   mOutputCost = std::max( aCost, getMinCostThreshold() );
-# }
-#
-# void RelativeCostLogit::setBaseCost( const double aBaseCost, const std::string &aFailMsg ) {
-#   // the relative cost logit does not utilize this parameter, so this function is a no-op
-# }
-#
 
 #' RelativeCostLogit_getMinCostThreshold
 #'

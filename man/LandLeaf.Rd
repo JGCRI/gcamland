@@ -23,6 +23,8 @@ Initialize an Class called LandLeaf
 \describe{
 \item{\code{mName}}{Leaf name}
 
+\item{\code{mProductName}}{Name of product produced by this leaf}
+
 \item{\code{mLandAllocation}}{Land allocation for this leaf}
 
 \item{\code{mShare}}{Share of land allocated to this leaf}
