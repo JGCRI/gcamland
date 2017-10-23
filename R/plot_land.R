@@ -38,24 +38,40 @@ plot_LandAllocation <- function(aLandAllocator) {
   # Silence package checks
   period <- land.allocation <- name <- year <- NULL
 
+  # Map out nest
+  tibble::tibble(parent = "TEMP",
+                 node = "TEMP") -> nest
+
+  LandAllocator_addToNest(aLandAllocator, nest) %>%
+    filter(parent != "TEMP") -> # Remove temporary link
+    nest
+
+  # Get a list of leafs
+  nodes <- unique(nest$parent)
+  nest %>%
+    filter(node %!in% nodes) ->
+    leafs
+
   # TODO: Figure out how to loop through bigger nests
   landNode <- aLandAllocator$mChildren[[1]]
 
   # Get data into a data frame
-  tibble::tibble(name = rep(NA, length(landNode$mChildren)),
-                 land.allocation = rep(NA, length(landNode$mChildren))) %>%
+  tibble::tibble(name = rep(NA, length(leafs$node)),
+                 land.allocation = rep(NA, length(leafs$node))) %>%
     repeat_add_columns(tibble::tibble(year = YEARS)) ->
     allLand
 
   i <- 1
-  for( leaf in landNode$mChildren ) {
+  for(leaf in leafs$node) {
     for (per in PERIODS) {
-      allLand$name[i] <- leaf$mName
+      allLand$name[i] <- leaf
       allLand$year[i] <- get_per_to_yr(per)
-      allLand$land.allocation[i] <- leaf$mLandAllocation[[per]]
+      allLand$land.allocation[i] <- LandAllocator_getLandAllocation(aLandAllocator, leaf, per)
       i <- i + 1
     }
   }
+
+  print(head(allLand))
 
   # Now, plot land allocation over time
   p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))

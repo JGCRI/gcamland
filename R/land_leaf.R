@@ -118,9 +118,6 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
 #' @param aPeriod Model period
 #' @author KVC September 2017
 LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
-  print(paste(aLandLeaf$mName[1]))
-  print(aLandAllocationAbove)
-
   # TODO: asserts?
   #   assert( mShare[ aPeriod ] >= 0 && mShare[ aPeriod ] <= 1 );
   if ( aLandAllocationAbove > 0.0 ) {

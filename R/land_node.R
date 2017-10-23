@@ -111,6 +111,29 @@ LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
   return(sum)
 }
 
+#' LandNode_getLandAllocation
+#'
+#' @details Calculates and returns total land allocation of a given type.
+#' @param aLandNode LandNode
+#' @param aPeriod Model period
+#'
+#' @return
+#' @author KVC October 2017
+LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
+  land <- 0.0
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
+      land <- land + LandNode_getLandAllocation(child, aName, aPeriod)
+    } else {
+      if(child$mName[1] == aName) {
+        land <- land + child$mLandAllocation[[aPeriod]]
+      }
+    }
+  }
+
+  return(land)
+}
+
 #' LandNode_calcLandShares
 #'
 #' @details Uses the logit formulation to calculate the share

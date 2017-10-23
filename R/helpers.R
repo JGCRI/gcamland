@@ -53,3 +53,14 @@ get_timestep <- function(aPer) {
 getStartYear <- function() {
   return(min(YEARS))
 }
+
+
+#' '%!in%'
+#'
+#' @param x list of things to exclude
+#' @param y full list
+#' @author KVC October 2017
+'%!in%' <- function( x, y ) {
+  !( '%in%'( x, y ) )
+}
+

@@ -234,6 +234,29 @@ LandAllocator_setUnmanagedLandProfitRate <- function(aLandAllocator, aUnmanagedL
   }
 }
 
+#' LandAllocator_getLandAllocation
+#'
+#' @details Calculates and returns total land allocation of a given type.
+#' @param aLandAllocator LandAllocator
+#' @param aPeriod Model period
+#'
+#' @return
+#' @author KVC October 2017
+LandAllocator_getLandAllocation <- function(aLandAllocator, aName, aPeriod) {
+  land <- 0.0
+  for(child in aLandAllocator$mChildren) {
+    if(class(child) == "LandNode") {
+      land <- land + LandNode_getLandAllocation(child, aName, aPeriod)
+    } else {
+      if(child$mName[1] == aName) {
+        land <- land + child$mLandAllocation[[aPeriod]]
+      }
+    }
+  }
+
+  return(land)
+}
+
 #' LandAllocator_readData
 #'
 #' @details Read in calibration data for the land allocator
