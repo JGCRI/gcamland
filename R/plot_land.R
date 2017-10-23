@@ -71,8 +71,6 @@ plot_LandAllocation <- function(aLandAllocator) {
     }
   }
 
-  print(head(allLand))
-
   # Now, plot land allocation over time
   p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))
   print(p)

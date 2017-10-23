@@ -174,7 +174,9 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NU
       per <- get_yr_to_per(y)
 
       # Save land allocation
-      newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
+      if (per <= FINAL_CALIBRATION_PERIOD) {
+        newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
+      }
     }
 
     # Now, add the leaf to the land allocator
