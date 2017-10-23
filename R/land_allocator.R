@@ -149,14 +149,37 @@ LandAllocator_setInitShares <- function(aLandAllocator, aPeriod) {
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod) {
-  # First, set value of unmanaged land leaves
-  # TODO: fix this so different regions can have different values
-  # setUnmanagedLandProfitRate( aRegionName, mUnManagedLandValue, aPeriod );
+  # Step 1. set value of unmanaged land leaves
+  LandAllocator_setUnmanagedLandProfitRate(aLandAllocator, aLandAllocator$mUnmanagedLandValue, aPeriod)
 
-  # Then, calculate land shares
+  # Step 2. Calculate the unnormalized shares.
+  # These calls need to be made to initiate recursion into lower nests even
+  # if the current node will have fixed shares.
+  # Note: these are the log( unnormalized shares )
+  i <- 1
+  unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandAllocator$mChildren)))
   for( child in aLandAllocator$mChildren ) {
-    LandNode_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
+    if( class(child) == "LandNode") {
+      unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
+    } else {
+      unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
+    }
+    i <- i + 1
   }
+
+  # Step 3. Normalize and set the share of each child
+  # The log( unnormalized ) shares will be normalizd after this call and it will
+  # do it making an attempt to avoid numerical instabilities given the profit rates
+  # may be large values.  The value returned is a pair<unnormalizedSum, log(scale factor)>
+  # again in order to try to make calculations in a numerically stable way.
+  normalizationInfo <- SectorUtils_normalizeLogShares( unNormalizedShares )
+
+  i <- 1
+  for ( child in aLandAllocator$mChildren ) {
+    child$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
+    i <- i + 1
+  }
+
 
   # This is the root node so its share is 100%.
   aLandAllocator$mShare <- 1
