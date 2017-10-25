@@ -10,7 +10,7 @@
 #' @author KVC October 2017
 LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
   # Silence package checks
-  lm <- predict <- NULL
+  sector <- year <- yield <- lm <- predict <- NULL
 
   currYear <- get_per_to_yr(aPeriod)
   startYear <- currYear - LINEAR.YEARS
@@ -54,7 +54,7 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #' @author KVC October 2017
 LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   # Silence package checks
-  Period <- Product <- lm <- predict <- NULL
+  sector <- lm <- predict <- year <- price <- NULL
 
   # Read in prices
   prices <- get_prices()

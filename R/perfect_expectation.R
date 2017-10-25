@@ -22,7 +22,7 @@ PerfectExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #' @author KVC October 2017
 PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   # Silence package checks
-  Period <- Product <- NULL
+  year <- sector <- NULL
 
   # Read in prices
   prices <- get_prices()

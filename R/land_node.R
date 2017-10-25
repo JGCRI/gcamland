@@ -95,7 +95,7 @@ LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
 #' @param aLandNode LandNode
 #' @param aPeriod Model period
 #'
-#' @return
+#' @return Calibrated land allocation for this node
 #' @author KVC October 2017
 LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
   sum <- 0.0
@@ -117,7 +117,7 @@ LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
 #' @param aLandNode LandNode
 #' @param aPeriod Model period
 #'
-#' @return
+#' @return Land allocation for this node
 #' @author KVC October 2017
 LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
   land <- 0.0
@@ -455,6 +455,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #' @param aNest Current nest
 #' @details Determine all of the parent/child relationships
 #'          for this particular node.
+#' @return Updated nest
 #' @author KVC October 2017
 LandNode_addToNest <- function(aLandNode, aNest) {
 

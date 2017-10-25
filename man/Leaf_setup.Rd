@@ -8,6 +8,14 @@ Leaf_setup(aLandAllocator, aRegionName, data, col.name, ag.data = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
+
+\item{aRegionName}{Region}
+
+\item{data}{Data needed for setting up this node}
+
+\item{col.name}{Column name with the parent}
+
+\item{ag.data}{Agricultural technology data}
 }
 \description{
 Leaf_setup

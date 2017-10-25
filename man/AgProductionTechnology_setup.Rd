@@ -8,6 +8,8 @@ AgProductionTechnology_setup(aLandLeaf, ag.data)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf}
+
+\item{ag.data}{Agricultural technology data}
 }
 \description{
 AgProductionTechnology_setup

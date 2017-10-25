@@ -240,7 +240,7 @@ LandAllocator_setUnmanagedLandProfitRate <- function(aLandAllocator, aUnmanagedL
 #' @param aLandAllocator LandAllocator
 #' @param aPeriod Model period
 #'
-#' @return
+#' @return Land allocation
 #' @author KVC October 2017
 LandAllocator_getLandAllocation <- function(aLandAllocator, aName, aPeriod) {
   land <- 0.0
@@ -263,6 +263,7 @@ LandAllocator_getLandAllocation <- function(aLandAllocator, aName, aPeriod) {
 #' @param aNest Current nest
 #' @details Determine all of the parent/child relationships
 #'          in the land allocator.
+#' @return Updated nest
 #' @author KVC October 2017
 LandAllocator_addToNest <- function(aLandAllocator, aNest) {
   nest <- aNest

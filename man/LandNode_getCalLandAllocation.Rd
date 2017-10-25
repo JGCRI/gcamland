@@ -11,6 +11,9 @@ LandNode_getCalLandAllocation(aLandNode, aPeriod)
 
 \item{aPeriod}{Model period}
 }
+\value{
+Calibrated land allocation for this node
+}
 \description{
 LandNode_getCalLandAllocation
 }

@@ -27,6 +27,9 @@
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN0 <- function(aRegionName) {
+  # Silence package checks
+  region <- land <- year.fillout <- logit.year.fillout <- NULL
+
   # Read in calibration data
   land <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN0_Land.csv", skip = 3))
   logit <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN0_Logit.csv", skip = 3))
@@ -55,6 +58,9 @@ ReadData_LN0 <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN1_Node <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN1_ValueLogit.csv", skip = 3))
 
@@ -81,6 +87,9 @@ ReadData_LN1_Node <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN1_LeafChildren <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN1_UnmgdAllocation.csv", skip = 3))
 
@@ -105,6 +114,9 @@ ReadData_LN1_LeafChildren <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN2_Node <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- year.fillout <- logit.year.fillout <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L212.LN2_Logit.csv", skip = 3))
 
@@ -131,10 +143,11 @@ ReadData_LN2_Node <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN2_LandLeaf <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L212.LN2_MgdAllocation.csv", skip = 3))
-
-  head(data)
 
   # Filter data for the specified region
   data %>%
@@ -158,10 +171,11 @@ ReadData_LN2_LandLeaf <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L212.LN2_UnmgdAllocation.csv", skip = 3))
-
-  head(data)
 
   # Filter data for the specified region
   data %>%
@@ -184,6 +198,9 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN3_Node <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- year.fillout <- logit.year.fillout <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_Logit.csv", skip = 3))
 
@@ -211,13 +228,14 @@ ReadData_LN3_Node <- function(aRegionName) {
 #' @importFrom dplyr bind_rows
 #' @author KVC October 2017
 ReadData_LN3_LandLeaf <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- NULL
+
   # Read in calibration data
   suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_MgdAllocation_crop.csv", skip = 3)) %>%
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_MgdAllocation_bio.csv", skip = 3))) %>%
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_MgdAllocation_noncrop.csv", skip = 3))) ->
     data
-
-  head(data)
 
   # Filter data for the specified region
   data %>%
@@ -241,10 +259,11 @@ ReadData_LN3_LandLeaf <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- AEZ <- NULL
+
   # Read in calibration data
   data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_UnmgdAllocation.csv", skip = 3))
-
-  head(data)
 
   # Filter data for the specified region
   data %>%
@@ -268,6 +287,9 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
 #' @importFrom dplyr bind_rows
 #' @author KVC October 2017
 ReadData_AgProd <- function(aRegionName) {
+  # Silence package checks
+  region <- AgSupplySubsector <- AEZ <- NULL
+
   # Read in data
   suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_ag.csv", skip = 3)) %>%
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_For.csv", skip = 3))) %>%
@@ -317,6 +339,9 @@ ReadData_AgProd <- function(aRegionName) {
 #' @importFrom dplyr mutate
 #' @author KVC October 2017
 get_prices <- function() {
+  # Silence package checks
+  region <- sector <- year <- price <- scenario <- Units <- NULL
+
   # Read data
   prices <- suppressMessages(read_csv("./inst/extdata/gcam43-data/AgPrices.csv", skip = 1))
 

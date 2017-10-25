@@ -11,6 +11,9 @@ LandNode_getLandAllocation(aLandNode, aName, aPeriod)
 
 \item{aPeriod}{Model period}
 }
+\value{
+Land allocation for this node
+}
 \description{
 LandNode_getLandAllocation
 }

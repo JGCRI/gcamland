@@ -8,6 +8,8 @@
 #' @author KVC October 2017
 #' @export
 plot_Nest <- function(aLandAllocator) {
+  # Silence package checks
+  parent <- plot <- NULL
 
   tibble::tibble(parent = "TEMP",
                  node = "TEMP") -> nest
@@ -36,7 +38,7 @@ plot_Nest <- function(aLandAllocator) {
 #' @export
 plot_LandAllocation <- function(aLandAllocator) {
   # Silence package checks
-  period <- land.allocation <- name <- year <- NULL
+  period <- land.allocation <- name <- year <- parent <- node <- NULL
 
   # Map out nest
   tibble::tibble(parent = "TEMP",

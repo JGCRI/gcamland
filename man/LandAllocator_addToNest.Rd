@@ -11,6 +11,9 @@ LandAllocator_addToNest(aLandAllocator, aNest)
 
 \item{aNest}{Current nest}
 }
+\value{
+Updated nest
+}
 \description{
 LandAllocator_addToNest
 }

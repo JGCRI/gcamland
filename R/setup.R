@@ -54,6 +54,9 @@ LandAllocator_setup <- function(aLandAllocator) {
 #'          reading in external data, creating LandNode1 nodes, and
 #'          creating any leafs with only one parent node.
 #' @param aLandAllocator LandAllocator that needs set up
+#' @param aRegionName Region
+#' @param data Data needed for setting up this node
+#' @param col.name Column name with the parent
 #' @author KVC October 2017
 LN1_setup <- function(aLandAllocator, aRegionName, data, col.name) {
 
@@ -83,14 +86,19 @@ LN1_setup <- function(aLandAllocator, aRegionName, data, col.name) {
 
 }
 
-
 #' LandNode_setup
 #'
 #' @details Setup a LandNode level of the land allocator. This includes
 #'          reading in external data, creating LandNode* nodes.
 #' @param aLandAllocator LandAllocator that needs set up
+#' @param aRegionName Region
+#' @param data Data needed for setting up this node
+#' @param col.name Column name with the parent
 #' @author KVC October 2017
 LandNode_setup <- function(aLandAllocator, aRegionName, data, col.name) {
+  # Silence package checks
+  region <- LandAllocatorRoot <- year.fillout <- logit.exponent <- NULL
+
   # Create each child node
   for(child.name in unique(data[[col.name]])){
     # Get data for the node
@@ -128,8 +136,14 @@ LandNode_setup <- function(aLandAllocator, aRegionName, data, col.name) {
 #' @details Setup land leafs for the land allocator. This includes
 #'          searching for the right parent, creating and creating leafs.
 #' @param aLandAllocator LandAllocator that needs set up
+#' @param aRegionName Region
+#' @param data Data needed for setting up this node
+#' @param col.name Column name with the parent
+#' @param ag.data Agricultural technology data
 #' @author KVC October 2017
 Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NULL) {
+  region <- LandAllocatorRoot <- allocation <- year <- NULL
+
   # Loop over all children in the data set
   for(child.name in unique(data[[col.name]])){
     # Get data for the leaf
@@ -236,10 +250,11 @@ LandNode_addChild <- function(aLandNode, aChild, aParentNames) {
 #'
 #' @details Setup technology (e.g., CalOutput, technical change, cost, etc.)
 #' @param aLandLeaf Land leaf
+#' @param ag.data Agricultural technology data
 #' @author KVC October 2017
 AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
   # Silence package checks
-  Period <- NULL
+  per <- year <- AgProductionTechnology <- NULL
 
   # Separate data
   calOutput <- ag.data[[1]]

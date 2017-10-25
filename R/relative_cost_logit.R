@@ -46,6 +46,17 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight
   return(logShareWeight + aChoiceFnAbove$mLogitExponent * log(cappedCost))
 }
 
+#' RelativeCostLogit_calcAverageCost
+#'
+#' @details Calculate node profit rate using information from the
+#'          normalization of children's shares. Note: we are using
+#'          the lingo in C++ GCAM which is not intuitive.
+#' @param aChoiceFunction Choice function
+#' @param aUnnormalizedShareSum Sum of unnormalized shares of children
+#' @param aLogShareFac lfac
+#' @param aPeriod Current model period
+#' @return Profit rate of the node
+#' @author KVC October 2017
 RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShareSum, aLogShareFac, aPeriod ) {
 
   ret <- 0
@@ -59,7 +70,7 @@ RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShar
   } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0  ) {
     # No Valid options and positive logit so return a large negative cost
     # so a nested logit would not want to choose this nest.
-    ret <- -util_getLargeNumber()
+    ret <- -LARGE_NUMBER
   } else {
      ret <- exp( aLogShareFac / aChoiceFunction$mLogitExponent ) *
        ( aUnnormalizedShareSum ^ ( 1.0 / aChoiceFunction$mLogitExponent ))

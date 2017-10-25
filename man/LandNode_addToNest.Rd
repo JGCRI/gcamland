@@ -11,6 +11,9 @@ LandNode_addToNest(aLandNode, aNest)
 
 \item{aNest}{Current nest}
 }
+\value{
+Updated nest
+}
 \description{
 LandNode_addToNest
 }
