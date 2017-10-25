@@ -52,8 +52,11 @@ plot_LandAllocation <- function(aLandAllocator) {
     filter(node %!in% nodes) ->
     leafs
 
-  # TODO: Figure out how to loop through bigger nests
-  landNode <- aLandAllocator$mChildren[[1]]
+  # Some leafs have the same parent node name. We need to add those
+  nest %>%
+    filter(parent == node) %>%
+    bind_rows(leafs) ->
+    leafs
 
   # Get data into a data frame
   tibble::tibble(name = rep(NA, length(leafs$node)),
