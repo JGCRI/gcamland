@@ -33,9 +33,9 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   # Get price for this leaf in this period only
   prices %>%
     filter(year == y, sector == aLandLeaf$mProductName[1]) ->
-    prices
+    currPrice
 
-  expectedPrice <- prices[[c("price")]]
+  expectedPrice <- currPrice[[c("price")]]
 
   return(expectedPrice)
 }
