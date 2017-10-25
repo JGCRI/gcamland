@@ -211,7 +211,6 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     if(class(child) == "LandNode") {
       LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
-
       LandLeaf_calculateShareWeight(child, aLandNode$mChoiceFunction, aPeriod)
     }
   }

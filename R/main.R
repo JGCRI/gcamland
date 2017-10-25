@@ -22,19 +22,7 @@ run_model <- function() {
     LandAllocator_initCalc(mLandAllocator, per)
 
     # Next, call calcFinalLandAllocation for LandAllocator
-    # TODO: Figure out when/what to call from AgProductionTechnology to make sure
-    #       profits are calculated/sent before land is allocated
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
-  }
-
-  node <- mLandAllocator$mChildren[[1]]
-  node2 <- node$mChildren[[1]]
-  node3 <- node2$mChildren[[2]]
-  for ( leaf in node3$mChildren ) {
-    print(paste("DEBUG: name is ", leaf$mName))
-    print(paste("DEBUG: profit is ", leaf$mProfitRate))
-     print(paste("DEBUG: share is ", leaf$mShare))
-     print(paste("DEBUG: share weight is ", leaf$mShareWeight))
   }
 
   plot_Nest(mLandAllocator)
