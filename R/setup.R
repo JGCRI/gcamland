@@ -46,9 +46,6 @@ LandAllocator_setup <- function(aLandAllocator) {
   # Read information on UnmanagedLandLeaf children of LN2 nodes
   children.data <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "UnmanagedLandLeaf")
-
-  plot_Nest(aLandAllocator)
-
 }
 
 #' LN1_setup

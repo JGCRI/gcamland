@@ -8,9 +8,6 @@
 run_model <- function() {
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION)
-  LandAllocator_readData(mLandAllocator)
-
-  mLandAllocator <- LandAllocator(REGION)
   LandAllocator_setup(mLandAllocator)
 
   # Loop through each period and run the model
@@ -30,15 +27,18 @@ run_model <- function() {
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
-  # node <- mLandAllocator$mChildren[[1]]
-  # for ( leaf in node$mChildren ) {
-  #   print(paste("DEBUG: profit is ", leaf$mProfitRate))
-  #   print(paste("DEBUG: share is ", leaf$mShare))
-  #   print(paste("DEBUG: share weight is ", leaf$mShareWeight))
-  # }
+  node <- mLandAllocator$mChildren[[1]]
+  node2 <- node$mChildren[[1]]
+  node3 <- node2$mChildren[[2]]
+  for ( leaf in node3$mChildren ) {
+    print(paste("DEBUG: name is ", leaf$mName))
+    print(paste("DEBUG: profit is ", leaf$mProfitRate))
+     print(paste("DEBUG: share is ", leaf$mShare))
+     print(paste("DEBUG: share weight is ", leaf$mShareWeight))
+  }
 
-  plot_LandAllocation(mLandAllocator)
   plot_Nest(mLandAllocator)
+  plot_LandAllocation(mLandAllocator)
 }
 
 
