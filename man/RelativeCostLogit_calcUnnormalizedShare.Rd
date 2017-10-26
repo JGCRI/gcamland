@@ -4,7 +4,7 @@
 \alias{RelativeCostLogit_calcUnnormalizedShare}
 \title{RelativeCostLogit_calcUnnormalizedShare}
 \usage{
-RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove, aShareWeight, aCost,
+RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove, aShareWeight, aProfit,
   aPeriod)
 }
 \arguments{
@@ -12,7 +12,7 @@ RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove, aShareWeight, aCost,
 
 \item{aShareWeight}{share weight for the choice for which the share is being calculated.}
 
-\item{aCost}{cost for the choice for which the share is being calculated.}
+\item{aProfit}{Profit for the choice for which the share is being calculated.}
 
 \item{aPeriod}{model time period for the calculation.}
 }
@@ -23,12 +23,14 @@ log of the unnormalized share.
 RelativeCostLogit_calcUnnormalizedShare
 }
 \details{
-Calculate the log of the numerator of the discrete choice (i.e., the unnormalized version)
-         function being used to calculate subsector shares in this sector.  The normalization
+Calculate the  numerator of the discrete choice (i.e., the unnormalized version)
+         function being used to calculate child shares in this node. The normalization
          factor will be calculated later.
-         Note: Negative costs can not be used in this logit formulation.  Instead the cost
-         the cost is capped at RelativeCostLogit::getMinCostThreshold.  This implies
-         no behavior once costs have crossed this threshold.
+         Note: Negative costs can not be used in this logit formulation. Instead,
+         the profit is capped at RelativeCostLogit::getMinCostThreshold.  This implies
+         no behavior once profits have crossed this threshold.
+         Note: this is modified to match the equations in GCAM4.3 (i.e., no log) but uses structure
+         from versions of GCAM with the absolute cost logit.
 }
 \author{
 KVC September 2017

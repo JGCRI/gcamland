@@ -139,14 +139,14 @@ LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
   return(aLandLeaf$mCalLandAllocation[[aPeriod]])
 }
 
-#' LandLeaf_calculateShareWeight
+#' LandLeaf_calculateShareWeights
 #'
 #' @details Calculates share weights for land leafs
 #' @param aLandLeaf Land leaf to perform calculations on
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
 #' @author KVC September 2017
-LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
+LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # TODO: move output cost to a member variable; implement absolute cost logit
   if( aChoiceFnAbove$mType == "relative-cost") {
     aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,

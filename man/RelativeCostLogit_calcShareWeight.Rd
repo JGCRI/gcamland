@@ -4,14 +4,14 @@
 \alias{RelativeCostLogit_calcShareWeight}
 \title{RelativeCostLogit_calcShareWeight}
 \usage{
-RelativeCostLogit_calcShareWeight(aChoiceFnAbove, aShare, aCost, aPeriod)
+RelativeCostLogit_calcShareWeight(aChoiceFnAbove, aShare, aProfit, aPeriod)
 }
 \arguments{
 \item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}
 
-\item{aShare}{TODO}
+\item{aShare}{Share leaf has of node's land}
 
-\item{aCost}{TODO}
+\item{aProfit}{Observed profit rate}
 
 \item{aPeriod}{Model time period}
 }

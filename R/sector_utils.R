@@ -1,64 +1,37 @@
 # sector_utils.R
 
-#' SectorUtils_normalizeLogShares
+#' SectorUtils_normalizeShares
 #'
-#' @details Normalize log shares so they add up to one.
-#'          Also, calculate parameters used to compute node profit.
+#' @details Normalize shares so they add up to one.
 #' @param aShares Unnormalized shares
 #' @return Normalized shares and parameters needed to calculate node profit
 #' @importFrom dplyr summarize
 #' @author KVC September 2017
-SectorUtils_normalizeLogShares <- function(aShares) {
+SectorUtils_normalizeShares <- function(aShares) {
   # Silence package checks
-  unnormalized.share <- NULL
+  unnormalized.share <- totalValue <- NULL
 
-  # First, find the log of the largest unnormalized share
+  # Calculate total
   aShares %>%
-    summarize(lfac = max(unnormalized.share)) ->
-    lfac
+    summarize(total = sum(unnormalized.share)) ->
+    totalValue
 
-  # Check for all zero prices
-  if(is.na(lfac$lfac)) {
-    # TODO: Implement something here
-#     // In this case, set all shares to zero and return.
-#     // This is arguably wrong, but the rest of the code seems to expect it.
-#     for( size_t i = 0; i < alogShares.size(); ++i ) {
-#       alogShares[ i ] = 0.0;
-#     }
-#     return make_pair( 0.0, 0.0 );
-  }
-
-  # In theory we could check for lfac == +Inf here, but in light of how the log
-  # shares are calculated, it would seem like that can't happen.
-
-  # Rescale and get normalization sum
-  sum <- 0.0
+  # Set up normalized share dataframe
   aShares %>%
     rename(share = unnormalized.share) ->
     normalizedShares
 
+  unnormalizedSum <- 0.0
   i <- 1
   while(i <= nrow(normalizedShares)) {
-    normalizedShares$share[i] <- normalizedShares$share[i] - lfac$lfac
-    sum <- sum + exp(normalizedShares$share[i])
-    i <- i + 1
-  }
-
-  # Double check the normalization
-  unnormAdjustedSum <- sum;
-  norm <- log(sum)
-  sum <- 0.0
-  i <- 1
-  while(i <= nrow(normalizedShares)) {
-    normalizedShares$share[i] <- exp(normalizedShares$share[i] - norm) # Divide by norm constant and unlog
-    sum <- sum + normalizedShares$share[i] # Accumulate sum of normalizes shares (should be 1 when we are done)
+    unnormalizedSum <- unnormalizedSum + normalizedShares$share[i]
+    normalizedShares$share[i] <- normalizedShares$share[i] / totalValue[[c("total")]]
     i <- i + 1
   }
 
   # TODO: check to make sure sum is 1
 
-  # Return normalized shares, and two parameters (unnormalizedSum, lfac) that are used to calculate node profit
+  # Return normalized shares
   return(list(normalizedShares = normalizedShares,
-           unnormalizedSum = unnormAdjustedSum,
-           lfac = lfac$lfac))
+              unnormalizedSum = unnormalizedSum))
 }

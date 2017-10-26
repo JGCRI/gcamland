@@ -163,12 +163,10 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     i <- i + 1
   }
 
-  # Step 2. Normalize and set the share of each child
-  # The log( unnormalized ) shares will be normalizd after this call and it will
-  # do it making an attempt to avoid numerical instabilities given the profit rates
-  # may be large values.  The value returned is a pair<unnormalizedSum, log(scale factor)>
-  # again in order to try to make calculations in a numerically stable way.
-  normalizationInfo <- SectorUtils_normalizeLogShares( unNormalizedShares )
+  # Step 2. Normalize and set the share of each child. Also calculate info for node profit
+  # The unnormalized shares will be normalizd after this call. Note: we
+  # are using the normalization method in GCAM4.3
+  normalizationInfo <- SectorUtils_normalizeShares( unNormalizedShares )
 
   i <- 1
   for ( child in aLandNode$mChildren ) {
@@ -176,19 +174,19 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     i <- i + 1
   }
 
-  # Step 3 Option (a) . compute node profit based on share denominator
-  aLandNode$mProfitRate[aPeriod] <- RelativeCostLogit_calcAverageCost(aLandNode$mChoiceFunction, normalizationInfo$unnormalizedSum,
-                                                   normalizationInfo$lfac, aPeriod )
+  # Step 3 Compute node profit based on unnormalized sum
+  if(aLandNode$mChoiceFunction$mLogitExponent > 0.0) {
+    aLandNode$mProfitRate[aPeriod] <- normalizationInfo$unnormalizedSum^(1.0 / aLandNode$mChoiceFunction$mLogitExponent)
+  } else{
+    aLandNode$mProfitRate[aPeriod] <- aLandNode$mUnmanagedLandValue
+  }
 
   # Step 4. Calculate the unnormalized share for this node, but here using the discrete choice of the
   # containing or parant node.  This will be used to determine this nodes share within its
   # parent node.
   # TODO: Implement AbsoluteCostLogit
   if( aChoiceFnAbove$mType == "relative-cost") {
-    unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove,
-                                                                 aLandNode$mShareWeight,
-                                                                 aLandNode$mProfitRate[[aPeriod]],
-                                                                 aPeriod)
+    unNormalizedShare <- (aLandNode$mShareWeight * aLandNode$mProfitRate[[aPeriod]])^aChoiceFnAbove$mLogitExponent
   } else {
     print( "ERROR: Invalid choice function in LandNode_calcLandShares" )
   }
@@ -200,19 +198,30 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #'
 #' @details Calculates share weights at the node level and calls
 #'          the share weight calculation for the node's children.
+#'          Note: this now blends the calculateCalibrationProfitRate and
+#'          calculateProfitScaler code in GCAM4.3. It will be helpful when
+#'          implementing an absolute cost logit.
 #' @param aLandNode Land node to perform calculations on
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
-  # For initial version, use separate implementations for LandLeaf and LandNode
-  LandNode_calculateShareWeight(aLandNode, aChoiceFnAbove, aPeriod)
+  aLandNode$mShareWeight <- 1
+
+  # Set node calibration profit as the output cost in the choice function
+  if(aChoiceFnAbove$mLogitExponent == 0.0) {
+    avgProfit <- aLandNode$mUnmanagedLandValue
+  } else {
+    avgProfit <- aLandNode$mShare[[aPeriod]]^(1.0 / aChoiceFnAbove$mLogitExponent)
+  }
+
+  aLandNode$mChoiceFunction$mOuputCost <- avgProfit
 
   for( child in aLandNode$mChildren ) {
     if(class(child) == "LandNode") {
       LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
-      LandLeaf_calculateShareWeight(child, aLandNode$mChoiceFunction, aPeriod)
+      LandLeaf_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     }
   }
 }

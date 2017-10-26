@@ -19,109 +19,49 @@ ChoiceFunction <- function(aType, aLogitExponent){
 
 #' RelativeCostLogit_calcUnnormalizedShare
 #'
-#' @details Calculate the log of the numerator of the discrete choice (i.e., the unnormalized version)
-#'          function being used to calculate subsector shares in this sector.  The normalization
+#' @details Calculate the  numerator of the discrete choice (i.e., the unnormalized version)
+#'          function being used to calculate child shares in this node. The normalization
 #'          factor will be calculated later.
-#'          Note: Negative costs can not be used in this logit formulation.  Instead the cost
-#'          the cost is capped at RelativeCostLogit::getMinCostThreshold.  This implies
-#'          no behavior once costs have crossed this threshold.
+#'          Note: Negative costs can not be used in this logit formulation. Instead,
+#'          the profit is capped at RelativeCostLogit::getMinCostThreshold.  This implies
+#'          no behavior once profits have crossed this threshold.
+#'          Note: this is modified to match the equations in GCAM4.3 (i.e., no log) but uses structure
+#'          from versions of GCAM with the absolute cost logit.
 #' @param aChoiceFnAbove Choice function (logit type and exponent from node above)
 #' @param aShareWeight share weight for the choice for which the share is being calculated.
-#' @param aCost cost for the choice for which the share is being calculated.
+#' @param aProfit Profit for the choice for which the share is being calculated.
 #' @param aPeriod model time period for the calculation.
 #' @return log of the unnormalized share.
 #' @author KVC September 2017
-RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight, aCost, aPeriod) {
-  # Zero share weight implies no share which is signaled by negative infinity.
-  if (aShareWeight > 0.0) {
-    logShareWeight <- log(aShareWeight)
-  } else {
-    logShareWeight <- -Inf
-  }
+RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight, aProfit, aPeriod) {
+  # Negative profits are not allowed so they are instead capped at getMinCostThreshold()
+  cappedProfit <- max(aProfit, RelativeCostLogit_getMinCostThreshold())
 
-  # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
-  cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
-
-  # TODO: figure out how to store logit exponents
-  return(logShareWeight + aChoiceFnAbove$mLogitExponent * log(cappedCost))
+  return(aShareWeight*cappedProfit^(aChoiceFnAbove$mLogitExponent))
 }
-
-#' RelativeCostLogit_calcAverageCost
-#'
-#' @details Calculate node profit rate using information from the
-#'          normalization of children's shares. Note: we are using
-#'          the lingo in C++ GCAM which is not intuitive.
-#' @param aChoiceFunction Choice function
-#' @param aUnnormalizedShareSum Sum of unnormalized shares of children
-#' @param aLogShareFac lfac
-#' @param aPeriod Current model period
-#' @return Profit rate of the node
-#' @author KVC October 2017
-RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShareSum, aLogShareFac, aPeriod ) {
-
-  ret <- 0
-  if( aChoiceFunction$mLogitExponent == 0.0 ) {
-     # TODO: what to do with zero logit?
-     ret <- aUnnormalizedShareSum * exp( aLogShareFac ) * aChoiceFunction$mOutputCost
-  } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0 ) {
-    # No Valid options and negative logit so return a large cost so a nested
-    # logit would not want to choose this nest.
-     ret <- LARGE_NUMBER
-  } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0  ) {
-    # No Valid options and positive logit so return a large negative cost
-    # so a nested logit would not want to choose this nest.
-    ret <- -LARGE_NUMBER
-  } else {
-     ret <- exp( aLogShareFac / aChoiceFunction$mLogitExponent ) *
-       ( aUnnormalizedShareSum ^ ( 1.0 / aChoiceFunction$mLogitExponent ))
-  }
-
-  return(ret)
-}
-
-# * \details  Given an an "anchor" choice with observed share and price and another choice
-# *           also with observed share and price, compute the inverse of the discrete choice function
-# *           to produce a share weight.
-# * \param aShare observed share for the current choice.
-# * \param aCost observed cost for the current choice.
-# * \param aAnchorShare observed share for the anchor choice.
-# * \param aAnchorCost observed cost for the anchor choice.
-# * \param aPeriod model time period for the calculation.
-# * \return share weight for the current choice.
-# */
-#   double RelativeCostLogit::calcShareWeight( const double aShare, const double aCost, const double aAnchorShare,
-#                                              const double aAnchorCost, const int aPeriod ) const
-# {
-#   // Negative costs are not allowed so they are instead capped at getMinCostThreshold()
-#   double cappedCost = std::max( aCost, getMinCostThreshold() );
-#   double cappedAnchorCost = std::max( aAnchorCost, getMinCostThreshold() );
-#
-#   return ( aShare / aAnchorShare ) * pow( cappedAnchorCost / cappedCost, mLogitExponent[ aPeriod ] );
-# }
-#
-
 
 #' RelativeCostLogit_calcShareWeight
 #'
 #' @details Calculate the share weight using the relative cost logit
 #' @param aChoiceFnAbove Choice function (logit type and exponent from node above)
-#' @param aShare TODO
-#' @param aCost TODO
+#' @param aShare Share leaf has of node's land
+#' @param aProfit Observed profit rate
 #' @param aPeriod Model time period
 #' @return Share weight
 #' @author KVC September 2017
-RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPeriod) {
+RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aProfit, aPeriod) {
   # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
-  cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
+  cappedProfit <- max(aProfit, RelativeCostLogit_getMinCostThreshold())
 
   # Guard against numerical instability in the pow when the share was zero anyway
   if (aShare == 0.0) {
-    SHARE_WEIGHT <- 0.0
+    sharewt <- 0.0
   } else {
-    SHARE_WEIGHT <- aShare * (aChoiceFnAbove$mOutputCost / cappedCost)^aChoiceFnAbove$mLogitExponent
+    calibrationProfit <- aChoiceFnAbove$mOutputCost * aShare^(1.0 / aChoiceFnAbove$mLogitExponent)
+    sharewt <- calibrationProfit / cappedProfit
   }
 
-  return(SHARE_WEIGHT)
+  return(sharewt)
 }
 
 #' RelativeCostLogit_calcImpliedCost

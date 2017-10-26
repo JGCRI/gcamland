@@ -19,6 +19,9 @@ LandNode_calculateShareWeights
 \details{
 Calculates share weights at the node level and calls
          the share weight calculation for the node's children.
+         Note: this now blends the calculateCalibrationProfitRate and
+         calculateProfitScaler code in GCAM4.3. It will be helpful when
+         implementing an absolute cost logit.
 }
 \author{
 KVC September 2017

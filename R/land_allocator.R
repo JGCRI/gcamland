@@ -172,14 +172,13 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   # do it making an attempt to avoid numerical instabilities given the profit rates
   # may be large values.  The value returned is a pair<unnormalizedSum, log(scale factor)>
   # again in order to try to make calculations in a numerically stable way.
-  normalizationInfo <- SectorUtils_normalizeLogShares( unNormalizedShares )
+  normalizationInfo <- SectorUtils_normalizeShares( unNormalizedShares )
 
   i <- 1
   for ( child in aLandAllocator$mChildren ) {
     child$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
     i <- i + 1
   }
-
 
   # This is the root node so its share is 100%.
   aLandAllocator$mShare <- 1
