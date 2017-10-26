@@ -37,7 +37,7 @@ RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight
   # Negative profits are not allowed so they are instead capped at getMinCostThreshold()
   cappedProfit <- max(aProfit, RelativeCostLogit_getMinCostThreshold())
 
-  return(aShareWeight*cappedProfit^(aChoiceFnAbove$mLogitExponent))
+  return((aShareWeight*cappedProfit)^(aChoiceFnAbove$mLogitExponent))
 }
 
 #' RelativeCostLogit_calcShareWeight
