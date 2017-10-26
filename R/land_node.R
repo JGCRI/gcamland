@@ -115,6 +115,7 @@ LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
 #'
 #' @details Calculates and returns total land allocation of a given type.
 #' @param aLandNode LandNode
+#' @param aName Name of leaf we want allocation for
 #' @param aPeriod Model period
 #'
 #' @return Land allocation for this node

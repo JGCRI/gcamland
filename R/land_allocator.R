@@ -236,8 +236,9 @@ LandAllocator_setUnmanagedLandProfitRate <- function(aLandAllocator, aUnmanagedL
 
 #' LandAllocator_getLandAllocation
 #'
-#' @details Calculates and returns total land allocation of a given type.
+#' @details Calculates and returns land allocation for a particular leaf
 #' @param aLandAllocator LandAllocator
+#' @param aName Name of leaf we want allocation for
 #' @param aPeriod Model period
 #'
 #' @return Land allocation

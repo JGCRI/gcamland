@@ -12,8 +12,6 @@ LandLeaf_calculateShareWeight(aLandLeaf, aChoiceFnAbove, aPeriod)
 \item{aChoiceFnAbove}{Type of logit}
 
 \item{aPeriod}{Model time period}
-
-\item{NODE_PROFIT}{Profit rate of node (TODO: put this in the choice function)}
 }
 \description{
 LandLeaf_calculateShareWeight

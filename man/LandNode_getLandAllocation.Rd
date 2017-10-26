@@ -9,6 +9,8 @@ LandNode_getLandAllocation(aLandNode, aName, aPeriod)
 \arguments{
 \item{aLandNode}{LandNode}
 
+\item{aName}{Name of leaf we want allocation for}
+
 \item{aPeriod}{Model period}
 }
 \value{

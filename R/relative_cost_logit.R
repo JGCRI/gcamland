@@ -66,7 +66,7 @@ RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShar
   } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0 ) {
     # No Valid options and negative logit so return a large cost so a nested
     # logit would not want to choose this nest.
-     ret <- util_getLargeNumber()
+     ret <- LARGE_NUMBER
   } else if( aUnnormalizedShareSum == 0 & aChoiceFunction$mLogitExponent < 0  ) {
     # No Valid options and positive logit so return a large negative cost
     # so a nested logit would not want to choose this nest.
@@ -108,7 +108,6 @@ RelativeCostLogit_calcAverageCost <- function(aChoiceFunction, aUnnormalizedShar
 #' @param aShare TODO
 #' @param aCost TODO
 #' @param aPeriod Model time period
-#' @param OUTPUT_COST Node profit
 #' @return Share weight
 #' @author KVC September 2017
 RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aCost, aPeriod) {

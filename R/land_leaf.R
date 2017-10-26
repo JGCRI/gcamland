@@ -145,7 +145,6 @@ LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
 #' @param aLandLeaf Land leaf to perform calculations on
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
-#' @param NODE_PROFIT Profit rate of node (TODO: put this in the choice function)
 #' @author KVC September 2017
 LandLeaf_calculateShareWeight <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # TODO: move output cost to a member variable; implement absolute cost logit

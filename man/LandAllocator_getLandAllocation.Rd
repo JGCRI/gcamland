@@ -9,6 +9,8 @@ LandAllocator_getLandAllocation(aLandAllocator, aName, aPeriod)
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
+\item{aName}{Name of leaf we want allocation for}
+
 \item{aPeriod}{Model period}
 }
 \value{
@@ -18,7 +20,7 @@ Land allocation
 LandAllocator_getLandAllocation
 }
 \details{
-Calculates and returns total land allocation of a given type.
+Calculates and returns land allocation for a particular leaf
 }
 \author{
 KVC October 2017
