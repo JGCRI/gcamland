@@ -65,7 +65,7 @@ LN1_setup <- function(aLandAllocator, aRegionName, data, col.name) {
   for(child.name in unique(data[[col.name]])){
     # Get data for the node
     data %>%
-      mutate_( col.name=as.name( col.name )) %>%
+      mutate_(col.name=as.name( col.name )) %>%
       filter(col.name == child.name) ->
       temp
 
