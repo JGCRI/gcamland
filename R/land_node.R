@@ -111,30 +111,6 @@ LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
   return(sum)
 }
 
-#' LandNode_getLandAllocation
-#'
-#' @details Calculates and returns total land allocation of a given type.
-#' @param aLandNode LandNode
-#' @param aName Name of leaf we want allocation for
-#' @param aPeriod Model period
-#'
-#' @return Land allocation for this node
-#' @author KVC October 2017
-LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
-  land <- 0.0
-  for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
-      land <- land + LandNode_getLandAllocation(child, aName, aPeriod)
-    } else {
-      if(child$mName[1] == aName) {
-        land <- land + child$mLandAllocation[[aPeriod]]
-      }
-    }
-  }
-
-  return(land)
-}
-
 #' LandNode_calcLandShares
 #'
 #' @details Uses the logit formulation to calculate the share
@@ -459,30 +435,3 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # TODO: Write an assert to check this
 }
 
-#' LandNode_addToNest
-#'
-#' @param aLandNode Land node
-#' @param aNest Current nest
-#' @details Determine all of the parent/child relationships
-#'          for this particular node.
-#' @return Updated nest
-#' @author KVC October 2017
-LandNode_addToNest <- function(aLandNode, aNest) {
-
-  nest <- aNest
-
-  for (child in aLandNode$mChildren) {
-    tibble::tibble(parent = aLandNode$mName[[1]],
-                   node = child$mName[[1]]) %>%
-      bind_rows(nest) ->
-      nest
-
-    # Now, call addToNest on each of the child nodes
-    # Note: we don't need to call this on children that are leafs
-    if (class(child) == "LandNode") {
-      nest <- LandNode_addToNest(child, nest)
-    }
-  }
-
-  return(nest)
-}

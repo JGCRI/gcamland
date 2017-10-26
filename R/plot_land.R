@@ -9,18 +9,10 @@
 #' @export
 plot_Nest <- function(aLandAllocator) {
   # Silence package checks
-  parent <- plot <- NULL
+  plot <- NULL
 
-  tibble::tibble(parent = "TEMP",
-                 node = "TEMP") -> nest
-
-  # Map out nest
-  nest <- LandAllocator_addToNest(aLandAllocator, nest)
-
-  # Remove temporary link
-  nest %>%
-    filter(parent != "TEMP") ->
-    nest
+  # Read nest
+  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
 
   # Convert to plottable format
   g <- graph.data.frame(nest)
@@ -34,47 +26,17 @@ plot_Nest <- function(aLandAllocator) {
 #' @details Plots land allocation over time
 #' @param aLandAllocator Land Allocator
 #' @author KVC September 2017
+#' @importFrom readr read_csv
 #' @import ggplot2
 #' @export
 plot_LandAllocation <- function(aLandAllocator) {
   # Silence package checks
-  period <- land.allocation <- name <- year <- parent <- node <- NULL
+  land.allocation <- year <- NULL
 
-  # Map out nest
-  tibble::tibble(parent = "TEMP",
-                 node = "TEMP") -> nest
+  # Read land allocation
+  allLand <- suppressMessages(read_csv("./outputs/landAllocation.csv"))
 
-  LandAllocator_addToNest(aLandAllocator, nest) %>%
-    filter(parent != "TEMP") -> # Remove temporary link
-    nest
-
-  # Get a list of leafs
-  nodes <- unique(nest$parent)
-  nest %>%
-    filter(node %!in% nodes) ->
-    leafs
-
-  # Some leafs have the same parent node name. We need to add those
-  nest %>%
-    filter(parent == node) %>%
-    bind_rows(leafs) ->
-    leafs
-
-  # Get data into a data frame
-  tibble::tibble(name = rep(NA, length(leafs$node)),
-                 land.allocation = rep(NA, length(leafs$node))) %>%
-    repeat_add_columns(tibble::tibble(year = YEARS)) ->
-    allLand
-
-  i <- 1
-  for(leaf in leafs$node) {
-    for (per in PERIODS) {
-      allLand$name[i] <- leaf
-      allLand$year[i] <- get_per_to_yr(per)
-      allLand$land.allocation[i] <- LandAllocator_getLandAllocation(aLandAllocator, leaf, per)
-      i <- i + 1
-    }
-  }
+  # TODO: add error message if output doesn't exist
 
   # Now, plot land allocation over time
   p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))
