@@ -25,16 +25,12 @@ run_model <- function() {
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
+  # Print Outputs
+  printOutput(mLandAllocator)
+
+  # Make figures
   plot_Nest(mLandAllocator)
   plot_LandAllocation(mLandAllocator)
-
-  node <- mLandAllocator$mChildren[[1]]
-  node2 <- node$mChildren[[1]]
-  node3 <- node2$mChildren[[1]]
-  for(child in node3$mChildren) {
-    print(paste(child$mName[1], "sharewt = ", child$mShareWeight, "share = ", child$mShare[[FINAL_CALIBRATION_PERIOD]]))
-  }
-
 }
 
 
