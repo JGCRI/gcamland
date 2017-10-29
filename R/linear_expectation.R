@@ -79,11 +79,11 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
       per <- get_yr_to_per(i)
     }
 
-    yr <- get_yr_to_per(per)
+    yr <- get_per_to_yr(per)
     if(aLandLeaf$mProductName[1] %in% unique(prices$sector)) {
       prices %>%
-        filter(year == y, sector == aLandLeaf$mProductName[1]) ->
-        currPrice
+        filter(year == yr, sector == aLandLeaf$mProductName[1]) ->
+        curr.price
 
       all.prices$price[all.prices$year == i] <- curr.price[[c("price")]]
     } else {
