@@ -4,7 +4,10 @@
 \alias{get_prices}
 \title{get_prices}
 \usage{
-get_prices()
+get_prices(aPeriod)
+}
+\arguments{
+\item{aPeriod}{Current model period (used only to determine whether prices need to be processed or read)}
 }
 \value{
 Tibble containing prices by commodity and year

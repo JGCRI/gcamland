@@ -25,7 +25,7 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   year <- sector <- NULL
 
   # Read in prices
-  prices <- get_prices()
+  prices <- get_prices(aPeriod)
 
   # Get year
   y <- get_per_to_yr(aPeriod)
