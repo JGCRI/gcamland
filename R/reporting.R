@@ -54,7 +54,18 @@ printLandAllocation <- function(aLandAllocator) {
     }
   }
 
-  write_csv(allLand, "./outputs/landAllocation.csv")
+  # Add information on scenario and expectation type
+  allLand$scenario <- SCENARIO
+  if(EXPECTATION.TYPE == "Linear") {
+    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
+
+  } else {
+    expectations <- EXPECTATION.TYPE
+  }
+  allLand$expectations <- expectations
+
+  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv")
+  write_csv(allLand, file)
 
 }
 
