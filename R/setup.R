@@ -8,6 +8,8 @@
 #' @param aLandAllocator LandAllocator that needs set up
 #' @author KVC October 2017
 LandAllocator_setup <- function(aLandAllocator) {
+  print("Initializing LandAllocator")
+
   # Read ag data -- we'll use this for all leafs
   ag.data <- ReadData_AgProd(aLandAllocator$mRegionName)
 
@@ -267,6 +269,9 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
   # Set product name
   # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
   aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
+  if(aLandLeaf$mProductName %in% BIOMASS_TYPES) {
+    aLandLeaf$mProductName <- "biomass"
+  }
 
   # Loop through all periods and read in data
   for ( y in YEARS ) {
