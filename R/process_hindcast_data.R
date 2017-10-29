@@ -90,6 +90,9 @@ get_hindcast_prices <- function(){
   fao_prices <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_prices.csv"))
   fao_prod <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_prod.csv"))
 
+  # Read in GDP deflator
+  gdp_deflator <- suppressMessages(read_csv("./inst/extdata/hindcast-data/gdp_deflator.csv", skip = 1))
+
   # Tidy data
   fao_prod %>%
     gather(year, prod, -FAO_country, -item) %>%
@@ -110,7 +113,11 @@ get_hindcast_prices <- function(){
     group_by(year, GCAM_commodity) %>%
     summarize(value = sum(value), prod = sum(prod)) %>%
     mutate(price = value / prod / 1000.0) %>%
-    ungroup() ->
+    ungroup() %>%
+    # Convert prices to 1975$
+    left_join(select(gdp_deflator, year, deflator), by="year") %>%
+    mutate(price = price / deflator) %>%
+    select(-deflator) ->
     fao_prices
 
   # Add prices for years prior to FAO data start
