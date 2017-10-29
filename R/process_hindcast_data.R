@@ -6,6 +6,9 @@
 #'          Aggregate to GCAM regions and commodities,
 #'          Compute & return AgProdChange in historical period
 #' @return AgProdChange in historical period
+#' @importFrom readr read_csv write_csv
+#' @importFrom tidyr gather
+#' @importFrom dplyr mutate select left_join filter
 #' @author KVC October 2017
 #' @export
 get_hindcast_AgProdChange <- function(){
@@ -49,6 +52,9 @@ get_hindcast_AgProdChange <- function(){
     filter(year %in% YEARS) %>%
     select(region, GCAM_commodity, year, yield) ->
     fao_Yield
+
+  # Print yields
+  write_csv("./outputs/hindcast_yield.csv")
 
   # Compute AgProdChange
   fao_Yield %>%
