@@ -69,10 +69,12 @@ ReadData_LN1_Node <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -98,10 +100,12 @@ ReadData_LN1_LeafChildren <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -126,10 +130,12 @@ ReadData_LN2_Node <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -154,10 +160,12 @@ ReadData_LN2_LandLeaf <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -182,10 +190,12 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -210,10 +220,12 @@ ReadData_LN3_Node <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -242,10 +254,12 @@ ReadData_LN3_LandLeaf <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -270,10 +284,12 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
     filter(region == aRegionName) ->
     data
 
-  # TEMP: Filter data for specified AEZ
-  data %>%
-    filter(grepl(AEZ, LandNode1)) ->
-    data
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
 
   return(data)
 }
@@ -314,18 +330,20 @@ ReadData_AgProd <- function(aRegionName) {
     filter(region == aRegionName) ->
     cost
 
-  # TEMP: Filter data for specified AEZ
-  calOutput %>%
-    filter(grepl(AEZ, AgSupplySubsector)) ->
-    calOutput
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    calOutput %>%
+      filter(grepl(AEZ, AgSupplySubsector)) ->
+      calOutput
 
-  agProdChange %>%
-    filter(grepl(AEZ, AgSupplySubsector)) ->
-    agProdChange
+    agProdChange %>%
+      filter(grepl(AEZ, AgSupplySubsector)) ->
+      agProdChange
 
-  cost %>%
-    filter(grepl(AEZ, AgSupplySubsector)) ->
-    cost
+    cost %>%
+      filter(grepl(AEZ, AgSupplySubsector)) ->
+      cost
+  }
 
   return(list(calOutput, agProdChange, cost))
 }

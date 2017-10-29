@@ -111,7 +111,7 @@ LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
 #'          leaf data
 #' @param aLandAllocator Land allocator
 #' @importFrom readr write_csv
-#' @author
+#' @author KVC October 2017
 printNest <- function(aLandAllocator) {
   # Silence package checks
   parent <- node <- NULL

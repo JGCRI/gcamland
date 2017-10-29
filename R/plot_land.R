@@ -43,3 +43,39 @@ plot_LandAllocation <- function(aLandAllocator) {
   print(p)
 
 }
+
+#' plot_RegionalLandAllocation
+#'
+#' @details Plots regional land allocation over time.
+#'          Aggregates land by region (i.e., adds all AEZs together)
+#'          and then plots land.
+#' @param aLandAllocator Land Allocator
+#' @author KVC September 2017
+#' @importFrom readr read_csv
+#' @importFrom tidyr separate
+#' @importFrom dplyr group_by summarize
+#' @import ggplot2
+#' @author KVC October 2017
+#' @export
+plot_RegionalLandAllocation <- function(aLandAllocator) {
+  # Silence package checks
+  land.allocation <- year <- land.type <- NULL
+
+  # Read land allocation
+  allLand <- suppressMessages(read_csv("./outputs/landAllocation.csv"))
+
+  # TODO: add error message if output doesn't exist
+
+  # Aggregate land
+  allLand %>%
+    separate(name, into=c("land.type", "AEZ"), sep="AEZ") %>%
+    group_by(land.type, year) %>%
+    summarize(land.allocation = sum(land.allocation)) ->
+    regionalLand
+
+  # Now, plot regional land allocation over time
+  p <- ggplot() + geom_area(data = regionalLand, aes(year, land.allocation, fill=land.type))
+  print(p)
+
+}
+

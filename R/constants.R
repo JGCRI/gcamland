@@ -20,4 +20,4 @@ DBL_MIN <- 1e-15
 # Things that will eventually be removed
 UNMANAGED_LAND_VALUE <- 1e9
 REGION <- "USA"
-AEZ <- "AEZ10"
+AEZ <- NULL
