@@ -162,7 +162,12 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # parent node.
   # TODO: Implement AbsoluteCostLogit
   if( aChoiceFnAbove$mType == "relative-cost") {
-    unNormalizedShare <- (aLandNode$mShareWeight * aLandNode$mProfitRate[[aPeriod]])^aChoiceFnAbove$mLogitExponent
+    # TODO: Check this
+    if(aLandNode$mShareWeight > 0) {
+      unNormalizedShare <- (aLandNode$mShareWeight * aLandNode$mProfitRate[[aPeriod]])^aChoiceFnAbove$mLogitExponent
+    } else {
+      unNormalizedShare <- 0
+    }
   } else {
     print( "ERROR: Invalid choice function in LandNode_calcLandShares" )
   }
@@ -182,7 +187,12 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
-  aLandNode$mShareWeight <- 1
+  # TODO: Figure out why this is needed.
+  if(aChoiceFnAbove$mLogitExponent == 0) {
+    aLandNode$mShareWeight <- aLandNode$mShare[[aPeriod]]
+  } else {
+    aLandNode$mShareWeight <- 1
+  }
 
   # Set node calibration profit as the output cost in the choice function
   if(aChoiceFnAbove$mLogitExponent == 0.0) {

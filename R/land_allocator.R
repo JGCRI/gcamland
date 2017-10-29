@@ -167,17 +167,13 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
     i <- i + 1
   }
 
-  # Step 3. Normalize and set the share of each child
-  # The log( unnormalized ) shares will be normalizd after this call and it will
-  # do it making an attempt to avoid numerical instabilities given the profit rates
-  # may be large values.  The value returned is a pair<unnormalizedSum, log(scale factor)>
-  # again in order to try to make calculations in a numerically stable way.
-  normalizationInfo <- SectorUtils_normalizeShares( unNormalizedShares )
-
-  i <- 1
+  # The land allocator has a logit exponent of zero, so
+  # we need to set shares to their read in values
   for ( child in aLandAllocator$mChildren ) {
-    child$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
-    i <- i + 1
+    if(aPeriod > FINAL_CALIBRATION_PERIOD) {
+      child$mShare[aPeriod] <- LandNode_getCalLandAllocation(child, FINAL_CALIBRATION_PERIOD) /
+                                                aLandAllocator$mLandAllocation
+    }
   }
 
   # This is the root node so its share is 100%.
