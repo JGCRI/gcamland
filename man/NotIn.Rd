@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers.R
 \name{\%!in\%}
 \alias{\%!in\%}
-\title{'%!in%'}
+\title{\%!in\%}
 \usage{
 x \%!in\% y
 }
@@ -12,7 +12,7 @@ x \%!in\% y
 \item{y}{full list}
 }
 \description{
-'%!in%'
+\%!in\%
 }
 \author{
 KVC October 2017

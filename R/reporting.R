@@ -20,6 +20,9 @@ printOutput <- function(aLandAllocator) {
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
 printLandAllocation <- function(aLandAllocator) {
+  # Silence package checks
+  node <- parent <- NULL
+
   # Read nest
   nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
 

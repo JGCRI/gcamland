@@ -9,6 +9,11 @@
 #' @author KVC October 2017
 #' @export
 get_hindcast_AgProdChange <- function(){
+  # Silence package checks
+  prod <- ha <- year <- value <- yield.x <- yield.y <- iso <- GCAM_region_ID <- region <-
+    GCAM_commodity <- FAO_country <- item <- na.omit <- prev_year <- yield <-
+    AgProdChange <- NULL
+
   # Read in mappings
   agluCtry <- suppressMessages(read_csv("./inst/extdata/mappings/AGLU_ctry.csv", skip = 3))
   iso_GCAM_regID <- suppressMessages(read_csv("./inst/extdata/mappings/iso_GCAM_regID.csv", skip = 3))
@@ -65,6 +70,10 @@ get_hindcast_AgProdChange <- function(){
 #' @author KVC October 2017
 #' @export
 get_hindcast_prices <- function(){
+  # Silence package checks
+  prod <- price <- year <- value <- price_fy <- UNIQUE_JOIN_FIELD <- na.omit <-
+    FAO_country <- GCAM_commodity <- item <- NULL
+
   # Read in mappings
   agluCtry <- suppressMessages(read_csv("./inst/extdata/mappings/AGLU_ctry.csv", skip = 3))
   iso_GCAM_regID <- suppressMessages(read_csv("./inst/extdata/mappings/iso_GCAM_regID.csv", skip = 3))

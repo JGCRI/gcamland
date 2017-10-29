@@ -31,7 +31,7 @@ plot_Nest <- function(aLandAllocator) {
 #' @export
 plot_LandAllocation <- function(aLandAllocator) {
   # Silence package checks
-  land.allocation <- year <- NULL
+  land.allocation <- year <- name <- NULL
 
   # Read land allocation
   allLand <- suppressMessages(read_csv("./outputs/landAllocation.csv"))
@@ -59,7 +59,7 @@ plot_LandAllocation <- function(aLandAllocator) {
 #' @export
 plot_RegionalLandAllocation <- function(aLandAllocator) {
   # Silence package checks
-  land.allocation <- year <- land.type <- NULL
+  land.allocation <- year <- land.type <- name <- NULL
 
   # Read land allocation
   allLand <- suppressMessages(read_csv("./outputs/landAllocation.csv"))

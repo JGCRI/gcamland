@@ -256,7 +256,7 @@ LandNode_addChild <- function(aLandNode, aChild, aParentNames) {
 #' @author KVC October 2017
 AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
   # Silence package checks
-  per <- year <- AgProductionTechnology <- NULL
+  per <- year <- AgProductionTechnology <- GCAM_commodity <- NULL
 
   # Separate data
   calOutput <- ag.data[[1]]
