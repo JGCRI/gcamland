@@ -114,7 +114,8 @@ get_hindcast_prices <- function(){
     left_join(fao_prices, by=c("GCAM_commodity", "year")) %>%
     left_join(fao_prices_fy, by=c("GCAM_commodity")) %>%
     mutate(price = if_else(is.na(price), price_fy, price)) %>%
-    select(GCAM_commodity, year, price) ->
+    select(GCAM_commodity, year, price) %>%
+    rename(sector = GCAM_commodity) ->
     fao_prices
 
   return(fao_prices)

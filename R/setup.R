@@ -301,11 +301,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
       if(SCENARIO == "Hindcast") {
         # We only have AgProdChange at region level for historical data
         agProdChange %>%
-          filter(year == y, GCAM_commodity == name) ->
+          filter(year == y, GCAM_commodity == aLandLeaf$mProductName[1]) ->
           currAgProdChange
       } else {
         agProdChange %>%
-          filter(year == y, AgProductionTechnology == aLandLeaf$mProductName[1]) ->
+          filter(year == y, AgProductionTechnology == name) ->
           currAgProdChange
       }
 
