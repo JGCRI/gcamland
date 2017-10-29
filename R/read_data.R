@@ -311,7 +311,7 @@ ReadData_AgProd <- function(aRegionName) {
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_For.csv", skip = 3))) %>%
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_Past.csv", skip = 3))) ->
     calOutput
-  agProdChange <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgProdChange_ref.csv", skip = 3))
+  agProdChange <- get_AgProdChange()
   suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_ag.csv", skip = 3)) %>%
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_bio.csv", skip = 3))) %>%
     bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_For.csv", skip = 3))) ->
@@ -379,3 +379,26 @@ get_prices <- function() {
 
   return(prices)
 }
+
+#' get_AgProdChange
+#'
+#' @details Read in AgProdChange for all periods and return them
+#' @return Tibble containing AgProdChange by commodity and year
+#' @importFrom readr read_csv
+#' @importFrom tidyr gather
+#' @importFrom dplyr mutate
+#' @author KVC October 2017
+get_AgProdChange <- function() {
+  # Silence package checks
+  region <- sector <- year <- price <- scenario <- Units <- NULL
+
+  # Read in data
+  if(SCENARIO == "Hindcast") {
+
+  } else {
+    agProdChange <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgProdChange_ref.csv", skip = 3))
+  }
+
+  return(agProdChange)
+}
+
