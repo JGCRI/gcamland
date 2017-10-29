@@ -1,7 +1,7 @@
 # constants.R
 
 # Set scenario
-SCENARIO <- "Reference"
+SCENARIO <- "Hindcast"
 
 # Time-related parameters
 if(SCENARIO == "Hindcast") {

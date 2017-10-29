@@ -298,9 +298,16 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
 
     } else{
       # Only read in technical change information for future periods
-      agProdChange %>%
-        filter(year == y, AgProductionTechnology == name) ->
-        currAgProdChange
+      if(SCENARIO == "Hindcast") {
+        # We only have AgProdChange at region level for historical data
+        agProdChange %>%
+          filter(year == y, GCAM_commodity == name) ->
+          currAgProdChange
+      } else {
+        agProdChange %>%
+          filter(year == y, AgProductionTechnology == aLandLeaf$mProductName[1]) ->
+          currAgProdChange
+      }
 
       if(nrow(currAgProdChange)) {
         aLandLeaf$mAgProdChange[per] <- as.numeric(currAgProdChange[[c("AgProdChange")]])

@@ -336,9 +336,12 @@ ReadData_AgProd <- function(aRegionName) {
       filter(grepl(AEZ, AgSupplySubsector)) ->
       calOutput
 
-    agProdChange %>%
-      filter(grepl(AEZ, AgSupplySubsector)) ->
-      agProdChange
+    if(SCENARIO != "Hindcast") {
+      # Hindcast data is only at the region level
+      agProdChange %>%
+        filter(grepl(AEZ, AgSupplySubsector)) ->
+        agProdChange
+    }
 
     cost %>%
       filter(grepl(AEZ, AgSupplySubsector)) ->
@@ -360,22 +363,20 @@ get_prices <- function() {
   # Silence package checks
   region <- sector <- year <- price <- scenario <- Units <- NULL
 
-  # Set file pathway
+  # Get prices
   if(SCENARIO == "Hindcast") {
-
+    prices <- get_hindcast_prices()
   } else {
     file <- paste("./inst/extdata/scenario-data/AgPrices_", SCENARIO, ".csv", sep="")
+    prices <- suppressMessages(read_csv(file, skip = 1))
+
+    # Tidy data
+    prices %>%
+      select(-scenario, -Units) %>%
+      gather(year, price, -region, -sector) %>%
+      mutate(year = as.integer(year)) ->
+      prices
   }
-
-  # Read data
-  prices <- suppressMessages(read_csv(file, skip = 1))
-
-  # Tidy data
-  prices %>%
-    select(-scenario, -Units) %>%
-    gather(year, price, -region, -sector) %>%
-    mutate(year = as.integer(year)) ->
-    prices
 
   return(prices)
 }
@@ -389,12 +390,9 @@ get_prices <- function() {
 #' @importFrom dplyr mutate
 #' @author KVC October 2017
 get_AgProdChange <- function() {
-  # Silence package checks
-  region <- sector <- year <- price <- scenario <- Units <- NULL
-
   # Read in data
   if(SCENARIO == "Hindcast") {
-
+    agProdChange <- get_hindcast_AgProdChange()
   } else {
     agProdChange <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgProdChange_ref.csv", skip = 3))
   }
