@@ -54,7 +54,7 @@ get_hindcast_AgProdChange <- function(){
     fao_Yield
 
   # Print yields
-  write_csv("./outputs/hindcast_yield.csv")
+  write_csv(fao_Yield, "./outputs/hindcast_yield.csv")
 
   # Compute AgProdChange
   fao_Yield %>%
