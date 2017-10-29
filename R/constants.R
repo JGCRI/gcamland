@@ -1,9 +1,19 @@
 # constants.R
 
+# Set scenario
+SCENARIO <- "Reference"
+
 # Time-related parameters
-FINAL_CALIBRATION_PERIOD <- 4
-HISTORY.YEARS <- c(1975, 1990, 2005, 2010)
-FUTURE.YEARS <- seq(2015, 2050, 5)
+if(SCENARIO == "Hindcast") {
+  FINAL_CALIBRATION_PERIOD <- 1
+  HISTORY.YEARS <- c(1975)
+  FUTURE.YEARS <- seq(1976, 2010, 1)
+} else {
+  FINAL_CALIBRATION_PERIOD <- 4
+  HISTORY.YEARS <- c(1975, 1990, 2005, 2010)
+  FUTURE.YEARS <- seq(2015, 2050, 5)
+}
+
 YEARS <- c(HISTORY.YEARS, FUTURE.YEARS)
 PERIODS <- 1:length(YEARS)
 
@@ -23,4 +33,4 @@ BIOMASS_TYPES <- c("biomass", "willow")
 # Things that will eventually be removed
 UNMANAGED_LAND_VALUE <- 1e9
 REGION <- "USA"
-AEZ <- NULL
+AEZ <- "AEZ10"

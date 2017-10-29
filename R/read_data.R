@@ -360,8 +360,15 @@ get_prices <- function() {
   # Silence package checks
   region <- sector <- year <- price <- scenario <- Units <- NULL
 
+  # Set file pathway
+  if(SCENARIO == "Hindcast") {
+
+  } else {
+    file <- paste("./inst/extdata/scenario-data/AgPrices_", SCENARIO, ".csv", sep="")
+  }
+
   # Read data
-  prices <- suppressMessages(read_csv("./inst/extdata/gcam43-data/AgPrices.csv", skip = 1))
+  prices <- suppressMessages(read_csv(file, skip = 1))
 
   # Tidy data
   prices %>%
