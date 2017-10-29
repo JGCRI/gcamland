@@ -33,8 +33,17 @@ plot_LandAllocation <- function(aLandAllocator) {
   # Silence package checks
   land.allocation <- year <- name <- NULL
 
+  # Get file name
+  if(EXPECTATION.TYPE == "Linear") {
+    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
+
+  } else {
+    expectations <- EXPECTATION.TYPE
+  }
+  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
+
   # Read land allocation
-  allLand <- suppressMessages(read_csv("./outputs/landAllocation.csv"))
+  allLand <- suppressMessages(read_csv(file))
 
   # TODO: add error message if output doesn't exist
 
@@ -61,8 +70,17 @@ plot_RegionalLandAllocation <- function(aLandAllocator) {
   # Silence package checks
   land.allocation <- year <- land.type <- name <- NULL
 
+  # Get file name
+  if(EXPECTATION.TYPE == "Linear") {
+    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
+
+  } else {
+    expectations <- EXPECTATION.TYPE
+  }
+  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
+
   # Read land allocation
-  allLand <- suppressMessages(read_csv("./outputs/landAllocation.csv"))
+  allLand <- suppressMessages(read_csv(file))
 
   # TODO: add error message if output doesn't exist
 

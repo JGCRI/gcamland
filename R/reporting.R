@@ -10,6 +10,7 @@
 printOutput <- function(aLandAllocator) {
   printNest(aLandAllocator)
   printLandAllocation(aLandAllocator)
+  printYield(aLandAllocator)
 }
 
 
@@ -64,7 +65,7 @@ printLandAllocation <- function(aLandAllocator) {
   }
   allLand$expectations <- expectations
 
-  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv")
+  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
   write_csv(allLand, file)
 
 }
@@ -197,3 +198,107 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 
   return(nest)
 }
+
+#' printYield
+#'
+#' @details Prints yield by land leaf
+#' @param aLandAllocator Land allocator
+#' @importFrom readr write_csv read_csv
+#' @author KVC October 2017
+printYield <- function(aLandAllocator) {
+  # Silence package checks
+  node <- parent <- NULL
+
+  # Read nest
+  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
+
+  # Get a list of leafs
+  nodes <- unique(nest$parent)
+  nest %>%
+    filter(node %!in% nodes) ->
+    leafs
+
+  # Some leafs have the same parent node name. We need to add those
+  nest %>%
+    filter(parent == node) %>%
+    bind_rows(leafs) ->
+    leafs
+
+  # Get data into a data frame
+  tibble::tibble(name = rep(NA, length(leafs$node)),
+                 yield = rep(NA, length(leafs$node))) %>%
+    repeat_add_columns(tibble::tibble(year = YEARS)) ->
+    allYield
+
+  i <- 1
+  for(leaf in leafs$node) {
+    for (per in PERIODS) {
+      allYield$name[i] <- leaf
+      allYield$year[i] <- get_per_to_yr(per)
+      allYield$yield[i] <- LandAllocator_getYield(aLandAllocator, leaf, per)
+      i <- i + 1
+    }
+  }
+
+  # Add information on scenario and expectation type
+  allYield$scenario <- SCENARIO
+  if(EXPECTATION.TYPE == "Linear") {
+    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
+
+  } else {
+    expectations <- EXPECTATION.TYPE
+  }
+  allYield$expectations <- expectations
+
+  write_csv(allYield, "./outputs/yield.csv")
+
+}
+
+#' LandAllocator_getYield
+#'
+#' @details Calculates and returns yield for a particular leaf
+#' @param aLandAllocator LandAllocator
+#' @param aName Name of leaf we want yield for
+#' @param aPeriod Model period
+#'
+#' @return Yield
+#' @author KVC October 2017
+LandAllocator_getYield <- function(aLandAllocator, aName, aPeriod) {
+  yield <- 0.0
+  for(child in aLandAllocator$mChildren) {
+    if(class(child) == "LandNode") {
+      yield <- yield + LandNode_getYield(child, aName, aPeriod)
+    } else if(class(child) == "LandLeaf") {
+      if(child$mName[1] == aName) {
+        yield <- yield + child$mYield[[aPeriod]]
+      }
+    }
+  }
+
+  return(yield)
+}
+
+#' LandNode_getYield
+#'
+#' @details Calculates and returns yield for a given leaf
+#' @param aLandNode LandNode
+#' @param aName Name of leaf we want yield for
+#' @param aPeriod Model period
+#'
+#' @return Yield for leaf named `aName`
+#' @author KVC October 2017
+LandNode_getYield <- function(aLandNode, aName, aPeriod) {
+  yield <- 0.0
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
+      yield <- yield + LandNode_getYield(child, aName, aPeriod)
+    } else if(class(child) == "LandLeaf") {
+      if(child$mName[1] == aName) {
+        yield <- yield + child$mYield[[aPeriod]]
+      }
+    }
+  }
+
+  return(yield)
+}
+
