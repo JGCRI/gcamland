@@ -4,16 +4,16 @@
 \alias{LN1_setup}
 \title{LN1_setup}
 \usage{
-LN1_setup(aLandAllocator, aRegionName, data, col.name)
+LN1_setup(aLandAllocator, aRegionName, aData, aColName)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
 
 \item{aRegionName}{Region}
 
-\item{data}{Data needed for setting up this node}
+\item{aData}{Data needed for setting up this node}
 
-\item{col.name}{Column name with the parent}
+\item{aColName}{Column name with the parent}
 }
 \description{
 LN1_setup

@@ -11,43 +11,43 @@ LandAllocator_setup <- function(aLandAllocator) {
   print("Initializing LandAllocator")
 
   # Read ag data -- we'll use this for all leafs
-  ag.data <- ReadData_AgProd(aLandAllocator$mRegionName)
+  agData <- ReadData_AgProd(aLandAllocator$mRegionName)
 
   # Read in top-level information and save total land
   data <- ReadData_LN0(aLandAllocator$mRegionName)
   aLandAllocator$mLandAllocation <- as.numeric(data[[c("landAllocation")]])
 
   # Read information on LN1 nodes (children of land allocator)
-  children.data <- ReadData_LN1_Node(aLandAllocator$mRegionName)
-  LN1_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandNode1")
+  childrenData <- ReadData_LN1_Node(aLandAllocator$mRegionName)
+  LN1_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode1")
 
   # Read information on leaf children of LN1 nodes
-  children.data <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName)
-  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "UnmanagedLandLeaf")
+  childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "UnmanagedLandLeaf")
 
   # Read information on LN2 nodes
-  children.data <- ReadData_LN2_Node(aLandAllocator$mRegionName)
-  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandNode2")
+  childrenData <- ReadData_LN2_Node(aLandAllocator$mRegionName)
+  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode2")
 
   # Read information on LandLeaf children of LN2 nodes
-  children.data <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
-  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandLeaf", ag.data)
+  childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandLeaf", agData)
 
   # Read information on UnmanagedLandLeaf children of LN2 nodes
-  children.data <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName)
-  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "UnmanagedLandLeaf")
+  childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "UnmanagedLandLeaf")
 
   # Read information on LN3 nodes
-  children.data <- ReadData_LN3_Node(aLandAllocator$mRegionName)
-  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandNode3")
+  childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName)
+  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode3")
 
   # Read information on LandLeaf children of LN3 nodes
-  children.data <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
-  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "LandLeaf", ag.data)
+  childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandLeaf", agData)
 
   # Read information on UnmanagedLandLeaf children of LN2 nodes
-  children.data <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
-  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, children.data, "UnmanagedLandLeaf")
+  childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "UnmanagedLandLeaf")
 }
 
 #' LN1_setup
@@ -57,21 +57,23 @@ LandAllocator_setup <- function(aLandAllocator) {
 #'          creating any leafs with only one parent node.
 #' @param aLandAllocator LandAllocator that needs set up
 #' @param aRegionName Region
-#' @param data Data needed for setting up this node
-#' @param col.name Column name with the parent
+#' @param aData Data needed for setting up this node
+#' @param aColName Column name with the parent
+#' @importFrom dplyr mutate_
 #' @author KVC October 2017
-LN1_setup <- function(aLandAllocator, aRegionName, data, col.name) {
+LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName) {
 
   # Create each child
   i <- 1
-  for(child.name in unique(data[[col.name]])){
+  for(childName in unique(aData[[aColName]])){
     # Get data for the node
-    data %>%
-      mutate_(col.name=as.name( col.name )) %>%
-      filter(col.name == child.name) ->
+    aData %>%
+      mutate_(aColName=as.name(aColName)) %>%
+      filter(aColName == childName) ->
       temp
 
-    name <- temp[[col.name]]
+    # Save values for arguments that need to be passed to the constructor
+    name <- temp[[aColName]]
     exponent <- as.numeric(temp[[c("logit.exponent")]])
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
@@ -85,31 +87,32 @@ LN1_setup <- function(aLandAllocator, aRegionName, data, col.name) {
     # Increment child counter
     i <- i + 1
   }
-
 }
 
 #' LandNode_setup
 #'
 #' @details Setup a LandNode level of the land allocator. This includes
-#'          reading in external data, creating LandNode* nodes.
+#'          reading in external data, creating LandNode nodes.
 #' @param aLandAllocator LandAllocator that needs set up
 #' @param aRegionName Region
-#' @param data Data needed for setting up this node
-#' @param col.name Column name with the parent
+#' @param aData Data needed for setting up this node
+#' @param aColumnName Column name with the parent
+#' @importFrom dplyr distinct
 #' @author KVC October 2017
-LandNode_setup <- function(aLandAllocator, aRegionName, data, col.name) {
+LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName) {
   # Silence package checks
   region <- LandAllocatorRoot <- year.fillout <- logit.exponent <- NULL
 
   # Create each child node
-  for(child.name in unique(data[[col.name]])){
+  for(childName in unique(aData[[aColumnName]])){
     # Get data for the node
-    data %>%
-      mutate_(col.name = as.name(col.name)) %>%
-      filter(col.name == child.name) ->
+    aData %>%
+      mutate_(aColumnName = as.name(aColumnName)) %>%
+      filter(aColumnName == childName) ->
       temp
 
-    name <- temp[[col.name]]
+    # Save values for arguments that need to be passed to the constructor
+    name <- temp[[aColumnName]]
     exponent <- as.numeric(temp[[c("logit.exponent")]])
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
@@ -118,18 +121,17 @@ LandNode_setup <- function(aLandAllocator, aRegionName, data, col.name) {
 
     # Get the names of the land nodes that are parents to this node
     temp %>%
-      select(-region, -LandAllocatorRoot, -year.fillout, -logit.exponent, -col.name) %>%
+      select(-region, -LandAllocatorRoot, -year.fillout, -logit.exponent, -aColumnName) %>%
       distinct() ->
-      parent.names
+      parentNames
 
     # Remove the node name from the parent list.
     # TODO: find a more elegant way of doing this
-    num.cols <- ncol(parent.names) - 1
-    parent.names <- parent.names[1:num.cols]
+    numCols <- ncol(parentNames) - 1
+    parentNames <- parentNames[1:numCols]
 
     # Now, add the leaf to the node allocator
-    LandAllocator_addChild(aLandAllocator, newNode, parent.names)
-
+    LandAllocator_addChild(aLandAllocator, newNode, parentNames)
   }
 }
 
@@ -139,46 +141,47 @@ LandNode_setup <- function(aLandAllocator, aRegionName, data, col.name) {
 #'          searching for the right parent, creating and creating leafs.
 #' @param aLandAllocator LandAllocator that needs set up
 #' @param aRegionName Region
-#' @param data Data needed for setting up this node
-#' @param col.name Column name with the parent
-#' @param ag.data Agricultural technology data
+#' @param aData Data needed for setting up this node
+#' @param aColName Column name with the parent
+#' @param aAgData Agricultural technology data
 #' @author KVC October 2017
-Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NULL) {
+Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName, aAgData = NULL) {
   region <- LandAllocatorRoot <- allocation <- year <- NULL
 
   # Loop over all children in the data set
-  for(child.name in unique(data[[col.name]])){
+  for(child.name in unique(aData[[aColName]])){
     # Get data for the leaf
-    data %>%
-      mutate_(col.name = as.name(col.name)) %>%
-      filter(col.name == child.name) ->
+    aData %>%
+      mutate_(aColName = as.name(aColName)) %>%
+      filter(aColName == child.name) ->
       temp
 
-    if (col.name == "UnmanagedLandLeaf") {
+    if(aColName == "UnmanagedLandLeaf") {
       # Create an UnmanagedLandLeaf
-      newLeaf <- UnmanagedLandLeaf(temp[[col.name]])
+      newLeaf <- UnmanagedLandLeaf(temp[[aColName]])
 
       # Get the names of the land nodes that are parents to this leaf
       temp %>%
-        select(-region, -LandAllocatorRoot, -UnmanagedLandLeaf, -allocation, -year, -col.name) %>%
+        select(-region, -LandAllocatorRoot, -UnmanagedLandLeaf, -allocation, -year, -aColName) %>%
         distinct() ->
-        parent.names
+        parentNames
 
-    } else if (col.name == "LandLeaf") {
-      newLeaf <- LandLeaf(temp[[col.name]])
+    } else if (aColName == "LandLeaf") {
+      newLeaf <- LandLeaf(temp[[aColName]])
 
       # Get the names of the land nodes that are parents to this leaf
       temp %>%
-        select(-region, -LandAllocatorRoot, -LandLeaf, -allocation, -year, -col.name) %>%
+        select(-region, -LandAllocatorRoot, -LandLeaf, -allocation, -year, -aColName) %>%
         distinct() ->
-        parent.names
+        parentNames
 
       # Read-in yield, cost, tech change
-      AgProductionTechnology_setup(newLeaf, ag.data)
+      AgProductionTechnology_setup(newLeaf, aAgData)
     }
 
-    # loop over years and add allocation
+    # Loop over years and add allocation
     for(y in YEARS) {
+      # Filter for current year
       temp %>%
         filter(year == y) ->
         curr
@@ -187,15 +190,14 @@ Leaf_setup <- function(aLandAllocator, aRegionName, data, col.name, ag.data = NU
       per <- get_yr_to_per(y)
 
       # Save land allocation
-      if (per <= FINAL_CALIBRATION_PERIOD) {
+      if(per <= FINAL_CALIBRATION_PERIOD) {
         newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
       }
     }
 
     # Now, add the leaf to the land allocator
-    LandAllocator_addChild(aLandAllocator, newLeaf, parent.names)
+    LandAllocator_addChild(aLandAllocator, newLeaf, parentNames)
   }
-
 }
 
 #' LandAllocator_addChild
@@ -252,16 +254,16 @@ LandNode_addChild <- function(aLandNode, aChild, aParentNames) {
 #'
 #' @details Setup technology (e.g., CalOutput, technical change, cost, etc.)
 #' @param aLandLeaf Land leaf
-#' @param ag.data Agricultural technology data
+#' @param aAgData Agricultural technology data
 #' @author KVC October 2017
-AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
+AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
   # Silence package checks
   per <- year <- AgProductionTechnology <- GCAM_commodity <- NULL
 
   # Separate data
-  calOutput <- ag.data[[1]]
-  agProdChange <- ag.data[[2]]
-  cost <- ag.data[[3]]
+  calOutput <- aAgData[[1]]
+  agProdChange <- aAgData[[2]]
+  cost <- aAgData[[3]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
@@ -274,28 +276,27 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
   }
 
   # Loop through all periods and read in data
-  for ( y in YEARS ) {
+  for(y in YEARS) {
     per <- get_yr_to_per(y)
 
     # Only read in mCalOutput data for calibration periods
-    if ( per <= FINAL_CALIBRATION_PERIOD ) {
+    if(per <= FINAL_CALIBRATION_PERIOD) {
       # Filter for this period/leaf combination
       calOutput %>%
         filter(year == y, AgProductionTechnology == name) ->
         currCalOutput
 
       # Set calOutput and agProdChange
-      if( nrow(currCalOutput)) {
+      if(nrow(currCalOutput)) {
         aLandLeaf$mCalOutput[per] <- as.numeric(currCalOutput[[c("calOutputValue")]])
       } else {
-        # TODO: This was -1. Do we need to flag missing or is it okay to assume zero?
+        # TODO: Do we need to flag missing or is it okay to set to -1?
         aLandLeaf$mCalOutput[per] <- -1
       }
 
       # Set data that shouldn't exist in the past to 0
       aLandLeaf$mAgProdChange[per] <- 0
       aLandLeaf$mNonLandCostTechChange[per] <- 0
-
     } else{
       # Only read in technical change information for future periods
       if(SCENARIO == "Hindcast") {
@@ -321,19 +322,18 @@ AgProductionTechnology_setup <- function(aLandLeaf, ag.data) {
       # Set data that we aren't going to read in to 0
       # Note: we are including this parameter because it is in the C++ code, but GCAM doesn't use it
       aLandLeaf$mNonLandCostTechChange[[per]] <- 0
-
     }
 
-    # Read in cost for all periods
+    # Filter cost for current year
     cost %>%
       filter(year == y, AgProductionTechnology == name) ->
       currCost
 
-    if( nrow(currCost) ) {
+    # Set cost in the LandLeaf
+    if(nrow(currCost)) {
       aLandLeaf$mCost[[per]] <- as.numeric(currCost[[c("nonLandVariableCost")]])
     } else {
       aLandLeaf$mCost[[per]] <- 0
     }
   }
-
 }

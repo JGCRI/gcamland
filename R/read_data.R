@@ -25,6 +25,7 @@
 #' @param aRegionName Region to read data for
 #' @return Land allocator data
 #' @importFrom readr read_csv
+#' @importFrom dplyr rename
 #' @author KVC October 2017
 ReadData_LN0 <- function(aRegionName) {
   # Silence package checks
@@ -116,6 +117,7 @@ ReadData_LN1_LeafChildren <- function(aRegionName) {
 #' @param aRegionName Region to read data for
 #' @return Data on level 2 nodes of the land allocator
 #' @importFrom readr read_csv
+#' @importFrom dplyr rename
 #' @author KVC October 2017
 ReadData_LN2_Node <- function(aRegionName) {
   # Silence package checks
@@ -206,6 +208,7 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
 #' @param aRegionName Region to read data for
 #' @return Data on level 3 nodes of the land allocator
 #' @importFrom readr read_csv
+#' @importFrom dplyr rename
 #' @author KVC October 2017
 ReadData_LN3_Node <- function(aRegionName) {
   # Silence package checks
@@ -301,6 +304,7 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
 #' @return All AgProductionTechnology information
 #' @importFrom readr read_csv
 #' @importFrom dplyr bind_rows
+#' @import tidyr
 #' @author KVC October 2017
 ReadData_AgProd <- function(aRegionName) {
   # Silence package checks
@@ -392,8 +396,6 @@ get_prices <- function(aPeriod) {
 #' @details Read in AgProdChange for all periods and return them
 #' @return Tibble containing AgProdChange by commodity and year
 #' @importFrom readr read_csv
-#' @importFrom tidyr gather
-#' @importFrom dplyr mutate
 #' @author KVC October 2017
 get_AgProdChange <- function() {
   # Read in data

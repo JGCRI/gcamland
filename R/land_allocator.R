@@ -8,6 +8,7 @@
 #' @field mChoiceFunction Logit type & exponent for the top level of the nest
 #' @field mLandAllocation Land allocation for this region
 #' @field mShare Share of land
+#' @field mUnmanagedLandValue Unmanaged land value for the allocator
 #' @field mChildren Children of the LandAllocator
 #'
 #' @return New, initialized LandAllocator
@@ -36,7 +37,7 @@ LandAllocator <- function(aRegionName) {
 #' @author KVC September 2017
 LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
   # Call land node's initCalc
-  for ( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     LandNode_initCalc(child, aPeriod)
   }
 
@@ -106,7 +107,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
 #' @author KVC October 2017
 LandAllocator_calculateNodeProfitRates <- function(aLandAllocator, aUnmanagedLandValue, aChoiceFunction, aPeriod) {
   # Loop through all children
-  for( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     LandNode_calculateNodeProfitRates(child, aUnmanagedLandValue, aChoiceFunction, aPeriod)
   }
 }
@@ -121,7 +122,7 @@ LandAllocator_calculateNodeProfitRates <- function(aLandAllocator, aUnmanagedLan
 #' @author KVC October 2017
 LandAllocator_calculateShareWeights <- function(aLandAllocator, aChoiceFunction, aPeriod) {
   # Loop through all children
-  for( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     LandNode_calculateShareWeights(child, aChoiceFunction, aPeriod)
   }
 }
@@ -134,7 +135,7 @@ LandAllocator_calculateShareWeights <- function(aLandAllocator, aChoiceFunction,
 #' @author KVC September 2017
 LandAllocator_setInitShares <- function(aLandAllocator, aPeriod) {
   # Call setInitShares for nodes
-  for ( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     LandNode_setInitShares(child, aLandAllocator$mLandAllocation, aPeriod)
   }
 }
@@ -158,8 +159,8 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   # Note: these are the log( unnormalized shares )
   i <- 1
   unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandAllocator$mChildren)))
-  for( child in aLandAllocator$mChildren ) {
-    if( class(child) == "LandNode") {
+  for(child in aLandAllocator$mChildren) {
+    if(class(child) == "LandNode") {
       unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
     } else {
       unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
@@ -169,7 +170,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
 
   # The land allocator has a logit exponent of zero, so
   # we need to set shares to their read in values
-  for ( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     if(aPeriod > FINAL_CALIBRATION_PERIOD) {
       child$mShare[aPeriod] <- LandNode_getCalLandAllocation(child, FINAL_CALIBRATION_PERIOD) /
                                                 aLandAllocator$mLandAllocation
@@ -188,7 +189,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
-  for ( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     LandNode_calcLandAllocation(child, aLandAllocator$mLandAllocation, aPeriod)
   }
 }
@@ -224,7 +225,7 @@ LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
 #' @author KVC October 2017
 LandAllocator_setUnmanagedLandProfitRate <- function(aLandAllocator, aUnmanagedLandValue, aPeriod) {
   # Call on all children
-  for( child in aLandAllocator$mChildren ) {
+  for(child in aLandAllocator$mChildren) {
     LandNode_setUnmanagedLandProfitRate(child, aUnmanagedLandValue, aPeriod)
   }
 }

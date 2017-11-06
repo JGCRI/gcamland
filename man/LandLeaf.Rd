@@ -27,6 +27,8 @@ Initialize an Class called LandLeaf
 
 \item{\code{mLandAllocation}}{Land allocation for this leaf}
 
+\item{\code{mCalLandAllocation}}{Calibration land allocation for this leaf}
+
 \item{\code{mShare}}{Share of land allocated to this leaf}
 
 \item{\code{mShareWeight}}{Share weight of this leaf}

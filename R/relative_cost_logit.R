@@ -14,7 +14,6 @@ ChoiceFunction <- function(aType, aLogitExponent){
   self <- environment()
   class(self) <- "ChoiceFunction"
   self
-
 }
 
 #' RelativeCostLogit_calcUnnormalizedShare
@@ -60,7 +59,7 @@ RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aProfit, a
   cappedProfit <- max(aProfit, RelativeCostLogit_getMinCostThreshold())
 
   # Guard against numerical instability in the pow when the share was zero anyway
-  if (aShare == 0.0) {
+  if(aShare == 0.0) {
     sharewt <- 0.0
   } else {
     if(aChoiceFnAbove$mLogitExponent > 0.0) {
@@ -78,26 +77,25 @@ RelativeCostLogit_calcShareWeight <- function(aChoiceFnAbove, aShare, aProfit, a
 #'
 #' @details Calculate node profit rate (not sure why this is called "implied cost")
 #' @param aChoiceFnAbove Choice function (logit type and exponent from node above)
-#' @param aShare TODO
-#' @param aCost TODO
+#' @param aShare share of node
+#' @param aCost default profit of node
 #' @param aPeriod Model time period
-#' @return Node profit rate (called IMPLIED_COST in this method)
+#' @return Node profit rate (called `impliedCost` in this method)
 #' @author KVC September 2017
 RelativeCostLogit_calcImpliedCost <- function(aChoiceFnAbove, aShare, aCost, aPeriod) {
-  # TODO: fix the way we store data
   if(aChoiceFnAbove$mLogitExponent == 0) {
-    IMPLIED_COST <- aCost
+    impliedCost <- aCost
   } else if(aShare == 0.0 & aChoiceFnAbove$mLogitExponent < 0) {
-    IMPLIED_COST <- LARGE_NUMBER
+    impliedCost <- LARGE_NUMBER
   } else if(aShare == 0.0 & aChoiceFnAbove$mLogitExponent > 0) {
-    IMPLIED_COST <- -LARGE_NUMBER
+    impliedCost <- -LARGE_NUMBER
   } else {
      # Negative costs are not allowed so they are instead capped at getMinCostThreshold()
     cappedCost <- max(aCost, RelativeCostLogit_getMinCostThreshold())
-    IMPLIED_COST <- cappedCost * (aShare ^ (1.0 / aChoiceFnAbove$mLogitExponent))
+    impliedCost <- cappedCost * (aShare ^ (1.0 / aChoiceFnAbove$mLogitExponent))
   }
 
-  return(IMPLIED_COST)
+  return(impliedCost)
 }
 
 #' RelativeCostLogit_getMinCostThreshold
@@ -106,6 +104,6 @@ RelativeCostLogit_calcImpliedCost <- function(aChoiceFnAbove, aShare, aCost, aPe
 #' @return The threshold value.
 #' @author KVC September 2017
 RelativeCostLogit_getMinCostThreshold <- function() {
-  MIN_COST <- 0.001
-  return(MIN_COST)
+  minCost <- 0.001
+  return(minCost)
 }

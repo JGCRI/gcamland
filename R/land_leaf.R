@@ -7,6 +7,7 @@
 #' @field mName Leaf name
 #' @field mProductName Name of product produced by this leaf
 #' @field mLandAllocation Land allocation for this leaf
+#' @field mCalLandAllocation Calibration land allocation for this leaf
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
 #' @field mProfitRate Profit rate of this leaf
@@ -47,7 +48,7 @@ LandLeaf <- function(aName) {
 #' @param aPeriod Current time period
 #' @details Initial calculations needed for the land leaf.
 #' @author KVC September 2017
-LandLeaf_initCalc <- function(aLandLeaf, aPeriod ) {
+LandLeaf_initCalc <- function(aLandLeaf, aPeriod) {
   # TODO: Implement this if needed
 #   if ( aPeriod > 1 ) {
 #     // If leaf is a "new tech" get the scaler from its parent
@@ -70,7 +71,7 @@ LandLeaf_initCalc <- function(aLandLeaf, aPeriod ) {
 LandLeaf_setInitShares <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
   # If there is no land allocation for the parent land type, set the share to a small number.
   # Otherwise, set the share of this node.
-  if( aLandAllocationAbove <= 0) {
+  if(aLandAllocationAbove <= 0) {
     aLandLeaf$mShare[aPeriod] <- SMALL_NUMBER
   } else {
     aLandLeaf$mShare[aPeriod] <- aLandLeaf$mCalLandAllocation[[aPeriod]] / aLandAllocationAbove
@@ -92,13 +93,13 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # The unnormalized share is used by the parent node to
   # calculate the leaf's share of the parent's land
   # TODO: Implement AbsoluteCostLogit
-  if( aChoiceFnAbove$mType == "relative-cost") {
+  if(aChoiceFnAbove$mType == "relative-cost") {
     unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove,
                                                                aLandLeaf$mShareWeight,
                                                                aLandLeaf$mProfitRate[[aPeriod]],
                                                                aPeriod)
   } else {
-    print( "ERROR: Invalid choice function in LandLeaf_calcLandShares" )
+    print("ERROR: Invalid choice function in LandLeaf_calcLandShares")
   }
 
   return(unNormalizedShare)
@@ -120,7 +121,7 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
 LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod) {
   # TODO: asserts?
   #   assert( mShare[ aPeriod ] >= 0 && mShare[ aPeriod ] <= 1 );
-  if ( aLandAllocationAbove > 0.0 ) {
+  if(aLandAllocationAbove > 0.0) {
     aLandLeaf$mLandAllocation[aPeriod] <- aLandAllocationAbove * aLandLeaf$mShare[[aPeriod]]
   } else {
     aLandLeaf$mLandAllocation[aPeriod] <- 0.0;

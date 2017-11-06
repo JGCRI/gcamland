@@ -27,9 +27,11 @@ Initialize an Class called LandNode
 \describe{
 \item{\code{mName}}{Node name}
 
-\item{\code{mLogitExponent}}{Logit exponent of the node}
+\item{\code{mChoiceFunction}}{Choice function (logit type and exponent) for this node}
 
 \item{\code{mLandAllocation}}{Land allocation for this node}
+
+\item{\code{mUnmanagedLandValue}}{Unmanaged land value in this node}
 
 \item{\code{mShare}}{Share of land allocated to this node}
 

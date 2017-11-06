@@ -29,6 +29,8 @@ Initialize an Class called LandAllocator
 
 \item{\code{mShare}}{Share of land}
 
+\item{\code{mUnmanagedLandValue}}{Unmanaged land value for the allocator}
+
 \item{\code{mChildren}}{Children of the LandAllocator}
 }}
 

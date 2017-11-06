@@ -9,14 +9,14 @@ RelativeCostLogit_calcImpliedCost(aChoiceFnAbove, aShare, aCost, aPeriod)
 \arguments{
 \item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}
 
-\item{aShare}{TODO}
+\item{aShare}{share of node}
 
-\item{aCost}{TODO}
+\item{aCost}{default profit of node}
 
 \item{aPeriod}{Model time period}
 }
 \value{
-Node profit rate (called IMPLIED_COST in this method)
+Node profit rate (called `impliedCost` in this method)
 }
 \description{
 RelativeCostLogit_calcImpliedCost

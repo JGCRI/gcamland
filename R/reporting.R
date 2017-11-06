@@ -42,7 +42,9 @@ printLandAllocation <- function(aLandAllocator) {
   # Get data into a data frame
   tibble::tibble(name = rep(NA, length(leafs$node)),
                  land.allocation = rep(NA, length(leafs$node))) %>%
-    repeat_add_columns(tibble::tibble(year = YEARS)) ->
+    mutate(uniqueJoinField = 1) %>%
+    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    select(-uniqueJoinField) ->
     allLand
 
   i <- 1
@@ -157,15 +159,18 @@ printNest <- function(aLandAllocator) {
 LandAllocator_addToNest <- function(aLandAllocator, aNest) {
   nest <- aNest
 
-  # TODO: Make this loop over children once there are multiple
+  # Loop over all of the children, adding the link and calling the child's LandNode_addToNest
   for(child in aLandAllocator$mChildren) {
     tibble::tibble(parent = "root",
                    node = child$mName) %>%
       bind_rows(nest) ->
       nest
 
-    # Now, call addToNest on each of the children
-    nest <- LandNode_addToNest(child, nest)
+    # Now, call addToNest on each of the child nodes
+    # Note: we don't need to call this on children that are leafs
+    if (class(child) == "LandNode") {
+      nest <- LandNode_addToNest(child, nest)
+    }
   }
 
   return(nest)
@@ -227,7 +232,9 @@ printYield <- function(aLandAllocator) {
   # Get data into a data frame
   tibble::tibble(name = rep(NA, length(leafs$node)),
                  yield = rep(NA, length(leafs$node))) %>%
-    repeat_add_columns(tibble::tibble(year = YEARS)) ->
+    mutate(uniqueJoinField = 1) %>%
+    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    select(-uniqueJoinField) ->
     allYield
 
   i <- 1

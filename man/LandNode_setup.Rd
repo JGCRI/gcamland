@@ -4,23 +4,23 @@
 \alias{LandNode_setup}
 \title{LandNode_setup}
 \usage{
-LandNode_setup(aLandAllocator, aRegionName, data, col.name)
+LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
 
 \item{aRegionName}{Region}
 
-\item{data}{Data needed for setting up this node}
+\item{aData}{Data needed for setting up this node}
 
-\item{col.name}{Column name with the parent}
+\item{aColumnName}{Column name with the parent}
 }
 \description{
 LandNode_setup
 }
 \details{
 Setup a LandNode level of the land allocator. This includes
-         reading in external data, creating LandNode* nodes.
+         reading in external data, creating LandNode nodes.
 }
 \author{
 KVC October 2017

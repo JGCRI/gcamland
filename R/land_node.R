@@ -7,8 +7,9 @@
 #' @param aChoiceFunction Choice function (logit type and exponent from node above)
 #' @param aLandAllocation Land allocation for this node
 #' @field mName Node name
-#' @field mLogitExponent Logit exponent of the node
+#' @field mChoiceFunction Choice function (logit type and exponent) for this node
 #' @field mLandAllocation Land allocation for this node
+#' @field mUnmanagedLandValue Unmanaged land value in this node
 #' @field mShare Share of land allocated to this node
 #' @field mShareWeight Share weight of this node
 #' @field mProfitRate Profit rate of this node
@@ -44,7 +45,7 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
 LandNode_initCalc <- function(aLandNode, aPeriod) {
   # TODO: all kinds of things including error checking
   # Call initCalc on any children
-  for ( child in aLandNode$mChildren ) {
+  for (child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
       LandNode_initCalc(child, aPeriod)
     } else if (class(child) == "LandLeaf") {
@@ -57,21 +58,19 @@ LandNode_initCalc <- function(aLandNode, aPeriod) {
 
 #' LandNode_setInitShares
 #'
-#' @details Calculates the share of land allocated to a node and calls
+#' @details Calculates the initial share of land allocated to a node and calls
 #'          a similar method for the node's children. This method is
 #'          called during the calibration process so the shares
 #'          set are prior to any calculations of share weights.
 #' @param aLandNode Land node to perform calculations on
 #' @param aLandAllocationAbove Land allocation of the parent node
 #' @param aPeriod Model period
-#' @import dplyr tidyr
 #' @author KVC September 2017
 LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
   # Calculate the total land within this node.
-  # TODO: do we want to calculate this? we need to ensure it adds up somewhere
   nodeLandAllocation <- LandNode_getCalLandAllocation(aLandNode, aPeriod)
 
-  # If there is no land allocation for the parent land type, set the share to a small number.
+  # If there is no land allocation for the parent land type, set the share to 0.
   # Otherwise, set the share of this node.
   if(aLandAllocationAbove > 0) {
     aLandNode$mShare[aPeriod] <- nodeLandAllocation / aLandAllocationAbove
@@ -130,8 +129,8 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Note: these are the log( unnormalized shares )
   i <- 1
   unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
-  for( child in aLandNode$mChildren ) {
-    if( class(child) == "LandNode") {
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
       unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
       unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)
@@ -142,11 +141,11 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Step 2. Normalize and set the share of each child. Also calculate info for node profit
   # The unnormalized shares will be normalizd after this call. Note: we
   # are using the normalization method in GCAM4.3
-  normalizationInfo <- SectorUtils_normalizeShares( unNormalizedShares )
+  normalizationInfo <- SectorUtils_normalizeShares(unNormalizedShares)
 
   i <- 1
   for ( child in aLandNode$mChildren ) {
-    child$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[ i ]
+    child$mShare[aPeriod] <- normalizationInfo$normalizedShares$share[i]
     i <- i + 1
   }
 
@@ -162,7 +161,6 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # parent node.
   # TODO: Implement AbsoluteCostLogit
   if( aChoiceFnAbove$mType == "relative-cost") {
-    # TODO: Check this
     if(aLandNode$mShareWeight > 0) {
       unNormalizedShare <- (aLandNode$mShareWeight * aLandNode$mProfitRate[[aPeriod]])^aChoiceFnAbove$mLogitExponent
     } else {
@@ -187,7 +185,7 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
-  # TODO: Figure out why this is needed.
+  # TODO: Figure out if this is needed and why.
   if(aChoiceFnAbove$mLogitExponent == 0) {
     aLandNode$mShareWeight <- aLandNode$mShare[[aPeriod]]
   } else {
@@ -201,9 +199,10 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     avgProfit <- aLandNode$mShare[[aPeriod]]^(1.0 / aChoiceFnAbove$mLogitExponent)
   }
 
+  # Set the output cost for this node as its average profit rate
   aLandNode$mChoiceFunction$mOuputCost <- avgProfit
 
-  for( child in aLandNode$mChildren ) {
+  for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
       LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
@@ -225,7 +224,7 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
   # If node is the root of a fixed land area nest ( typically a subregion )
   # or the root of the entire land allocatory, then set the average profit
   # to the unmanaged land value
-  if ( aLandNode$mUnmanagedLandValue > 0.0 ) {
+  if(aLandNode$mUnmanagedLandValue > 0.0) {
     avgProfitRate <- aLandNode$mUnmanagedLandValue
   } else {
     aLandNode$mUnmanagedLandValue <- aAverageProfitRate
@@ -233,7 +232,7 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
   }
 
   # Loop through all children and call setUnmanagedLandProfitRate
-  for( child in aLandNode$mChildren ) {
+  for(child in aLandNode$mChildren) {
     if (class(child) == "UnmanagedLandLeaf") {
       UnmanagedLandLeaf_setUnmanagedLandProfitRate(child, avgProfitRate, aPeriod)
     } else if (class(child) == "LandNode") {
@@ -252,6 +251,7 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
 #' @param aPeriod Period.
 #' @author KVC September 2017
 LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove, aChoiceFnAbove, aPeriod) {
+  # First, set average profit rate equal to unmanaged land value. This may be overwritten later.
   avgProfitRate <- aLandNode$mUnmanagedLandValue
 
   # If we have a valid profit rate above then we can calculate the implied profit rate this node
@@ -281,13 +281,14 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
     }
   }
 
+  # Set profit rate and output cost in choice function
   aLandNode$mProfitRate[aPeriod] <- avgProfitRate
   aLandNode$mChoiceFunction$mOutputCost <- avgProfitRate
 
-  # pass the node profit rate down to children and trigger their calculation
+  # Pass the node profit rate down to children and trigger their calculation
   # and pass down the logit exponent of this node
-  for ( child in aLandNode$mChildren ) {
-    if( class(child) == "LandNode") {
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
       LandNode_calculateNodeProfitRates(child, avgProfitRate, aLandNode$mChoiceFunction, aPeriod)
     }
   }
@@ -319,18 +320,19 @@ LandNode_calcLandAllocation <- function(aLandNode, aLandAllocationAbove, aPeriod
 
   # Calculate node land allocation
   nodeLandAllocation <- 0.0
-  if ( aLandAllocationAbove > 0.0 && aLandNode$mShare[[aPeriod]] > 0.0 ) {
+  if(aLandAllocationAbove > 0.0 && aLandNode$mShare[[aPeriod]] > 0.0) {
     nodeLandAllocation <- aLandAllocationAbove * aLandNode$mShare[[aPeriod]]
   }
 
+  # Set land allocation for the node
   aLandNode$mLandAllocation[aPeriod] <- nodeLandAllocation
 
   # Call calcLandAllocation for each child
-  for ( child in aLandNode$mChildren ) {
+  for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode"){
-      LandNode_calcLandAllocation( child, nodeLandAllocation, aPeriod )
+      LandNode_calcLandAllocation(child, nodeLandAllocation, aPeriod)
     } else {
-      LandLeaf_calcLandAllocation( child, nodeLandAllocation, aPeriod )
+      LandLeaf_calcLandAllocation(child, nodeLandAllocation, aPeriod)
     }
   }
 }
@@ -343,7 +345,6 @@ LandNode_calcLandAllocation <- function(aLandNode, aLandAllocationAbove, aPeriod
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
 LandNode_getObservedAverageProfitRate <- function(aProfitRate, aShare, aPeriod) {
-# {
 #   aProfitRate = 0.0;
 #   for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
 #     double currProfitRate;
@@ -399,7 +400,7 @@ LandNode_getChildWithHighestShare <- function(aPeriod) {
 LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Calculate the share weight for the node
   # TODO: implement absolute cost logit too
-  if( aChoiceFnAbove$mType == "relative-cost") {
+  if(aChoiceFnAbove$mType == "relative-cost") {
     aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandNode$mShare[[aPeriod]],
                                                               aLandNode$mProfitRate[[aPeriod]],
@@ -408,7 +409,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     print("ERROR: Invalid choice function in LandNode_calculateShareWeight")
   }
 
-  # if we are in the final calibration year and we have "ghost" share-weights to calculate,
+  # If we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
   if(aPeriod == FINAL_CALIBRATION_PERIOD) {
   #     double shareAdj = 1.0;

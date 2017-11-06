@@ -29,9 +29,9 @@ run_model <- function() {
   printOutput(mLandAllocator)
 
   # Make figures
-  plot_Nest(mLandAllocator)
-  plot_LandAllocation(mLandAllocator)
-  plot_RegionalLandAllocation(mLandAllocator)
+  plotNest(mLandAllocator)
+  plotLandAllocation(mLandAllocator)
+  plotRegionalLandAllocation(mLandAllocator)
 }
 
 

@@ -17,7 +17,7 @@ LandNode_setInitShares(aLandNode, aLandAllocationAbove, aPeriod)
 LandNode_setInitShares
 }
 \details{
-Calculates the share of land allocated to a node and calls
+Calculates the initial share of land allocated to a node and calls
          a similar method for the node's children. This method is
          called during the calibration process so the shares
          set are prior to any calculations of share weights.

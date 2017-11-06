@@ -1,13 +1,13 @@
 # plot_land.R
 
-#' plot_Nest
+#' plotNest
 #'
 #' @param aLandAllocator Land allocator
 #' @details Plot the nesting structure for the land allocator
 #' @importFrom igraph graph.data.frame layout.reingold.tilford
 #' @author KVC October 2017
 #' @export
-plot_Nest <- function(aLandAllocator) {
+plotNest <- function(aLandAllocator) {
   # Silence package checks
   plot <- NULL
 
@@ -21,7 +21,7 @@ plot_Nest <- function(aLandAllocator) {
   plot(g, layout = layout.reingold.tilford)
 }
 
-#' plot_LandAllocation
+#' plotLandAllocation
 #'
 #' @details Plots land allocation over time
 #' @param aLandAllocator Land Allocator
@@ -29,7 +29,7 @@ plot_Nest <- function(aLandAllocator) {
 #' @importFrom readr read_csv
 #' @import ggplot2
 #' @export
-plot_LandAllocation <- function(aLandAllocator) {
+plotLandAllocation <- function(aLandAllocator) {
   # Silence package checks
   land.allocation <- year <- name <- NULL
 
@@ -50,10 +50,9 @@ plot_LandAllocation <- function(aLandAllocator) {
   # Now, plot land allocation over time
   p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))
   print(p)
-
 }
 
-#' plot_RegionalLandAllocation
+#' plotRegionalLandAllocation
 #'
 #' @details Plots regional land allocation over time.
 #'          Aggregates land by region (i.e., adds all AEZs together)
@@ -66,7 +65,7 @@ plot_LandAllocation <- function(aLandAllocator) {
 #' @import ggplot2
 #' @author KVC October 2017
 #' @export
-plot_RegionalLandAllocation <- function(aLandAllocator) {
+plotRegionalLandAllocation <- function(aLandAllocator) {
   # Silence package checks
   land.allocation <- year <- land.type <- name <- NULL
 
@@ -94,6 +93,5 @@ plot_RegionalLandAllocation <- function(aLandAllocator) {
   # Now, plot regional land allocation over time
   p <- ggplot() + geom_area(data = regionalLand, aes(year, land.allocation, fill=land.type))
   print(p)
-
 }
 

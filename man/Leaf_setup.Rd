@@ -4,18 +4,18 @@
 \alias{Leaf_setup}
 \title{Leaf_setup}
 \usage{
-Leaf_setup(aLandAllocator, aRegionName, data, col.name, ag.data = NULL)
+Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aAgData = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
 
 \item{aRegionName}{Region}
 
-\item{data}{Data needed for setting up this node}
+\item{aData}{Data needed for setting up this node}
 
-\item{col.name}{Column name with the parent}
+\item{aColName}{Column name with the parent}
 
-\item{ag.data}{Agricultural technology data}
+\item{aAgData}{Agricultural technology data}
 }
 \description{
 Leaf_setup

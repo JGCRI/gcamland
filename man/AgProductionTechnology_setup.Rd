@@ -4,12 +4,12 @@
 \alias{AgProductionTechnology_setup}
 \title{AgProductionTechnology_setup}
 \usage{
-AgProductionTechnology_setup(aLandLeaf, ag.data)
+AgProductionTechnology_setup(aLandLeaf, aAgData)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf}
 
-\item{ag.data}{Agricultural technology data}
+\item{aAgData}{Agricultural technology data}
 }
 \description{
 AgProductionTechnology_setup
