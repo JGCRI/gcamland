@@ -40,6 +40,7 @@ get_hindcast_AgProdChange <- function(){
 
   # Join data and compute average yield
   faoHA %>%
+    filter(year %in% YEARS) %>%
     left_join(faoProd, by=c("FAO_country", "item", "year")) %>%
     left_join(select(agluCtry, FAO_country, iso), by="FAO_country") %>%
     left_join(select(iso_GCAM_regID, iso, GCAM_region_ID), by="iso") %>%
@@ -49,7 +50,6 @@ get_hindcast_AgProdChange <- function(){
     group_by(region, GCAM_commodity, year) %>%
     summarize(ha = sum(ha), prod = sum(prod)) %>%
     mutate(yield = prod / ha) %>%
-    filter(year %in% YEARS) %>%
     select(region, GCAM_commodity, year, yield) ->
     faoYield
 
@@ -111,16 +111,15 @@ get_hindcast_prices <- function(){
   faoPrices %>%
     left_join(faoProd, by=c("FAO_country", "item", "year")) %>%
     left_join(select(FAO_ag_items_PRODSTAT, item, GCAM_commodity), by="item") %>%
-    mutate(value = price * prod) %>%
-    na.omit() %>%
-    group_by(year, GCAM_commodity) %>%
-    summarize(value = sum(value), prod = sum(prod)) %>%
-    mutate(price = value / prod / 1000.0) %>%
-    ungroup() %>%
     # Convert prices to 1975$
     left_join(select(gdpDeflator, year, deflator), by="year") %>%
     mutate(price = price / deflator) %>%
-    select(-deflator) ->
+    replace_na(list(price = 0, prod = 0)) %>%
+    mutate(value = price * prod) %>%
+    group_by(year, GCAM_commodity) %>%
+    summarize(value = sum(value), prod = sum(prod)) %>%
+    mutate(price = value / prod / 1000.0) %>%
+    ungroup() ->
     faoPrices
 
   # Add prices for years prior to FAO data start
