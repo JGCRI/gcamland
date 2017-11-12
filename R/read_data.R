@@ -371,6 +371,11 @@ get_AgProdChange <- function() {
     agProdChange <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgProdChange_ref.csv", skip = 3))
   }
 
+  # Filter for years in model only
+  agProdChange %>%
+    filter(year %in% YEARS) ->
+    agProdChange
+
   return(agProdChange)
 }
 

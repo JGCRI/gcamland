@@ -25,6 +25,12 @@ get_prices <- function() {
       mutate(year = as.integer(year)) ->
       prices
   }
+
+  # Filter for only years included in model simulation (or those before start year)
+  prices %>%
+    filter(year <= max(YEARS)) ->
+    prices
+
   return(prices)
 }
 
