@@ -7,6 +7,7 @@
 #'          it in the node, leaf, technology structure
 #' @param aLandAllocator LandAllocator that needs set up
 #' @author KVC October 2017
+#' @export
 LandAllocator_setup <- function(aLandAllocator) {
   print("Initializing LandAllocator")
 
@@ -145,15 +146,21 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName) {
 #' @param aColName Column name with the parent
 #' @param aAgData Agricultural technology data
 #' @author KVC October 2017
+#' @export
 Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName, aAgData = NULL) {
   region <- LandAllocatorRoot <- allocation <- year <- NULL
+
+  # Set up column name used for filtering
+  aData %>%
+    mutate_(aColName = as.name(aColName)) ->
+    allData
 
   # Loop over all children in the data set
   for(childName in unique(aData[[aColName]])){
     # Get data for the leaf
-    aData %>%
-      mutate_(aColName = as.name(aColName)) %>%
-      filter(aColName == childName) ->
+    allData %>%
+      filter(aColName == childName) %>%
+      select(-region, -LandAllocatorRoot, -aColName) ->
       temp
 
     if(aColName == "UnmanagedLandLeaf") {
@@ -162,7 +169,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName, aAgData = N
 
       # Get the names of the land nodes that are parents to this leaf
       temp %>%
-        select(-region, -LandAllocatorRoot, -UnmanagedLandLeaf, -allocation, -year, -aColName) %>%
+        select(-UnmanagedLandLeaf, -allocation, -year) %>%
         distinct() ->
         parentNames
 
@@ -171,7 +178,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName, aAgData = N
 
       # Get the names of the land nodes that are parents to this leaf
       temp %>%
-        select(-region, -LandAllocatorRoot, -LandLeaf, -allocation, -year, -aColName) %>%
+        select(-LandLeaf, -allocation, -year) %>%
         distinct() ->
         parentNames
 
@@ -268,6 +275,26 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
 
+  # Filter data for current land leaf only
+  calOutput %>%
+    filter(AgProductionTechnology == name) ->
+    calOutput
+
+  if(SCENARIO == "Hindcast") {
+    # We only have AgProdChange at region level for historical data
+    agProdChange %>%
+      filter(GCAM_commodity == aLandLeaf$mProductName[1]) ->
+      agProdChange
+  } else {
+    agProdChange %>%
+      filter(AgProductionTechnology == name) ->
+      agProdChange
+  }
+
+  cost %>%
+    filter(AgProductionTechnology == name) ->
+    cost
+
   # Set product name
   # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
   aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
@@ -281,9 +308,9 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
 
     # Only read in mCalOutput data for calibration periods
     if(per <= FINAL_CALIBRATION_PERIOD) {
-      # Filter for this period/leaf combination
+      # Filter for this period combination
       calOutput %>%
-        filter(year == y, AgProductionTechnology == name) ->
+        filter(year == y) ->
         currCalOutput
 
       # Set calOutput and agProdChange
@@ -299,16 +326,9 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
       aLandLeaf$mNonLandCostTechChange[per] <- 0
     } else{
       # Only read in technical change information for future periods
-      if(SCENARIO == "Hindcast") {
-        # We only have AgProdChange at region level for historical data
-        agProdChange %>%
-          filter(year == y, GCAM_commodity == aLandLeaf$mProductName[1]) ->
-          currAgProdChange
-      } else {
-        agProdChange %>%
-          filter(year == y, AgProductionTechnology == name) ->
-          currAgProdChange
-      }
+      agProdChange %>%
+        filter(year == y) ->
+        currAgProdChange
 
       if(nrow(currAgProdChange)) {
         aLandLeaf$mAgProdChange[per] <- as.numeric(currAgProdChange[[c("AgProdChange")]])
@@ -326,7 +346,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
 
     # Filter cost for current year
     cost %>%
-      filter(year == y, AgProductionTechnology == name) ->
+      filter(year == y) ->
       currCost
 
     # Set cost in the LandLeaf

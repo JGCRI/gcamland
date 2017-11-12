@@ -13,6 +13,7 @@
 #'
 #' @return New, initialized LandAllocator
 #' @author KVC September 2017
+#' @export
 LandAllocator <- function(aRegionName) {
   mRegionName = aRegionName
   mChoiceFunction = ChoiceFunction("relative-cost", 0)

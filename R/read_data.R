@@ -242,6 +242,7 @@ ReadData_LN3_Node <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @importFrom dplyr bind_rows
 #' @author KVC October 2017
+#' @export
 ReadData_LN3_LandLeaf <- function(aRegionName) {
   # Silence package checks
   region <- LandNode1 <- NULL
@@ -306,6 +307,7 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
 #' @importFrom dplyr bind_rows
 #' @import tidyr
 #' @author KVC October 2017
+#' @export
 ReadData_AgProd <- function(aRegionName) {
   # Silence package checks
   region <- AgSupplySubsector <- NULL
