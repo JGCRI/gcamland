@@ -149,11 +149,11 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName, aAgData = N
   region <- LandAllocatorRoot <- allocation <- year <- NULL
 
   # Loop over all children in the data set
-  for(child.name in unique(aData[[aColName]])){
+  for(childName in unique(aData[[aColName]])){
     # Get data for the leaf
     aData %>%
       mutate_(aColName = as.name(aColName)) %>%
-      filter(aColName == child.name) ->
+      filter(aColName == childName) ->
       temp
 
     if(aColName == "UnmanagedLandLeaf") {

@@ -355,42 +355,6 @@ ReadData_AgProd <- function(aRegionName) {
   return(list(calOutput, agProdChange, cost))
 }
 
-#' get_prices
-#'
-#' @details Read in prices for all periods and return them
-#' @param aPeriod Current model period (used only to determine whether prices need to be processed or read)
-#' @return Tibble containing prices by commodity and year
-#' @importFrom readr read_csv
-#' @importFrom tidyr gather
-#' @importFrom dplyr mutate
-#' @author KVC October 2017
-get_prices <- function(aPeriod) {
-  # Silence package checks
-  region <- sector <- year <- price <- scenario <- Units <- NULL
-
-  # Get prices
-  if(aPeriod == 1) {
-    if(SCENARIO == "Hindcast") {
-      prices <- get_hindcast_prices()
-    } else {
-      file <- paste("./inst/extdata/scenario-data/AgPrices_", SCENARIO, ".csv", sep="")
-      prices <- suppressMessages(read_csv(file, skip = 1))
-
-      # Tidy data
-      prices %>%
-        select(-scenario, -Units) %>%
-        gather(year, price, -region, -sector) %>%
-        mutate(year = as.integer(year)) ->
-        prices
-    }
-    write_csv(prices, "./outputs/prices.csv")
-  } else {
-    prices <- suppressMessages(read_csv("./outputs/prices.csv"))
-  }
-
-  return(prices)
-}
-
 #' get_AgProdChange
 #'
 #' @details Read in AgProdChange for all periods and return them

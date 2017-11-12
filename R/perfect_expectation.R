@@ -24,15 +24,12 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
   # Silence package checks
   year <- sector <- NULL
 
-  # Read in prices
-  prices <- get_prices(aPeriod)
-
   # Get year
   y <- get_per_to_yr(aPeriod)
 
   # Get price for this leaf in this period only
-  if(aLandLeaf$mProductName[1] %in% unique(prices$sector)) {
-    prices %>%
+  if(aLandLeaf$mProductName[1] %in% unique(PRICES$sector)) {
+    PRICES %>%
       filter(year == y, sector == aLandLeaf$mProductName[1]) ->
       currPrice
 

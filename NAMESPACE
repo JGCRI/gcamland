@@ -2,6 +2,7 @@
 
 export(get_hindcast_AgProdChange)
 export(get_hindcast_prices)
+export(get_prices)
 export(plotLandAllocation)
 export(plotNest)
 export(plotRegionalLandAllocation)
