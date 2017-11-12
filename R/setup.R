@@ -275,6 +275,13 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
 
+  # Set product name
+  # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
+  aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
+  if(aLandLeaf$mProductName %in% BIOMASS_TYPES) {
+    aLandLeaf$mProductName <- "biomass"
+  }
+
   # Filter data for current land leaf only
   calOutput %>%
     filter(AgProductionTechnology == name) ->
@@ -294,13 +301,6 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
   cost %>%
     filter(AgProductionTechnology == name) ->
     cost
-
-  # Set product name
-  # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
-  aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
-  if(aLandLeaf$mProductName %in% BIOMASS_TYPES) {
-    aLandLeaf$mProductName <- "biomass"
-  }
 
   # Loop through all periods and read in data
   for(y in YEARS) {
