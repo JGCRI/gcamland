@@ -17,9 +17,10 @@ if(SCENARIO == "Hindcast") {
 YEARS <- c(HISTORY.YEARS, FUTURE.YEARS)
 PERIODS <- 1:length(YEARS)
 
-# Expectation-related parameters (currently only "Perfect" and "Linear" are supported)
-EXPECTATION.TYPE <- "Perfect"
+# Expectation-related parameters (currently only "Perfect", "Linear", and "Lagged" are supported)
+EXPECTATION.TYPE <- "Lagged"
 LINEAR.YEARS <- 5
+LAGGED.TAU <- 5
 
 # Threshold-related constants
 # TODO: Make sure these are consistent with GCAM

@@ -81,6 +81,9 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
   } else if(EXPECTATION.TYPE == "Linear") {
     expectedPrice <- LinearExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
     expectedYield <- LinearExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+  } else if(EXPECTATION.TYPE == "Lagged") {
+    expectedPrice <- LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
+    expectedYield <- LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod)
   }
 
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.

@@ -22,7 +22,8 @@ test_that("land area doesn't change over time", {
   # (as this code will be run in tests/testthat)
   if(EXPECTATION.TYPE == "Linear") {
     expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-
+  } else if (EXPECTATION.TYPE == "Lagged") {
+    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
   } else {
     expectations <- EXPECTATION.TYPE
   }

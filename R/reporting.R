@@ -64,7 +64,8 @@ printLandAllocation <- function(aLandAllocator) {
   allLand$scenario <- SCENARIO
   if(EXPECTATION.TYPE == "Linear") {
     expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-
+  } else if (EXPECTATION.TYPE == "Lagged") {
+    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
   } else {
     expectations <- EXPECTATION.TYPE
   }
@@ -343,7 +344,8 @@ printYield <- function(aLandAllocator) {
   allYield$scenario <- SCENARIO
   if(EXPECTATION.TYPE == "Linear") {
     expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-
+  } else if (EXPECTATION.TYPE == "Lagged") {
+    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
   } else {
     expectations <- EXPECTATION.TYPE
   }
@@ -448,7 +450,8 @@ printExpectedYield <- function(aLandAllocator) {
   allYield$scenario <- SCENARIO
   if(EXPECTATION.TYPE == "Linear") {
     expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-
+  } else if (EXPECTATION.TYPE == "Lagged") {
+    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
   } else {
     expectations <- EXPECTATION.TYPE
   }
