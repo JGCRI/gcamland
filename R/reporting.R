@@ -12,6 +12,7 @@ printOutput <- function(aLandAllocator) {
   printLandAllocation(aLandAllocator)
   printLandShares(aLandAllocator)
   printYield(aLandAllocator)
+  write_csv(EXPECTED_PRICES, "./outputs/expectedPrices.csv")
 }
 
 

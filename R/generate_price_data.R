@@ -117,3 +117,9 @@ get_hindcast_prices <- function(){
 #' @author Kate Calvin
 PRICES <- get_prices()
 
+#' EXPECTED_PRICES
+#'
+#' A tibble where expected prices can be stored
+#' @author Kate Calvin
+EXPECTED_PRICES <- PRICES
+

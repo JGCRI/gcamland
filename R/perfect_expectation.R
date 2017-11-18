@@ -39,5 +39,8 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
     expectedPrice <- 1
   }
 
+  # Save expected price data
+  EXPECTED_PRICES$price[year == y & sector == aLandLeaf$mProductName[1]] <- expectedPrice
+
   return(expectedPrice)
 }
