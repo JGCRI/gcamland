@@ -10,6 +10,7 @@
 printOutput <- function(aLandAllocator) {
   printNest(aLandAllocator)
   printLandAllocation(aLandAllocator)
+  printLandShares(aLandAllocator)
   printYield(aLandAllocator)
 }
 
@@ -120,6 +121,95 @@ LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
   return(land)
 }
 
+#' printLandShares
+#'
+#' @details Prints land share for all nodes and leafs
+#' @param aLandAllocator Land allocator
+#' @importFrom readr write_csv read_csv
+#' @author KVC November 2017
+printLandShares <- function(aLandAllocator) {
+  # Silence package checks
+  node <- parent <- NULL
+
+  # Set up a data frame
+  tibble::tibble(parent = "TEMP",
+                 name = "TEMP",
+                 share = NA) %>%
+    mutate(uniqueJoinField = 1) %>%
+    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    select(-uniqueJoinField) ->
+    allLandShares
+
+  # Loop over all periods and get shares
+  for ( per in PERIODS ) {
+    allLandShares <- LandAllocator_getLandShares(aLandAllocator, allLandShares, per)
+  }
+
+  # Remove temporary data & convert year to integer
+  allLandShares %>%
+    filter(parent != "TEMP") %>%
+    mutate(year = as.integer(year)) ->
+    allLandShares
+
+  # Write data to a file
+  write_csv(allLandShares, "./outputs/landShares.csv")
+
+}
+
+#' LandAllocator_getLandShares
+#'
+#' @details Calculates and returns land allocation for a particular leaf
+#' @param aLandAllocator LandAllocator
+#' @param aShares Table of shares to append information to
+#' @param aPeriod Model period
+#'
+#' @return Table of land shares
+#' @author KVC November 2017
+LandAllocator_getLandShares <- function(aLandAllocator, aShares, aPeriod) {
+
+  for(child in aLandAllocator$mChildren) {
+    if(class(child) == "LandNode") {
+      aShares <- LandNode_getLandShares(child, aShares, aPeriod)
+    } else {
+      TEMP <- tibble::tibble(parent = "root",
+                             name = child$mName[1],
+                             share = child$mShare[[aPeriod]],
+                             year = get_per_to_yr(aPeriod))
+      aShares %>%
+        bind_rows(TEMP) ->
+        aShares
+    }
+  }
+
+  return(aShares)
+}
+
+#' LandNode_getLandShares
+#'
+#' @details Calculates and returns land share for all children.
+#' @param aLandNode LandNode
+#' @param aShares Table of shares to add to
+#' @param aPeriod Model period
+#'
+#' @return Table of land shares
+#' @author KVC November 2017
+LandNode_getLandShares <- function(aLandNode, aShares, aPeriod) {
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
+      aShares <- LandNode_getLandShares(child, aShares, aPeriod)
+    } else {
+      TEMP <- tibble::tibble(parent = aLandNode$mName[1],
+                             name = child$mName[1],
+                             share = child$mShare[[aPeriod]],
+                             year = get_per_to_yr(aPeriod))
+      aShares %>%
+        bind_rows(TEMP) ->
+        aShares
+    }
+  }
+
+  return(aShares)
+}
 
 #' printNest
 #'
