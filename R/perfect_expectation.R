@@ -10,6 +10,9 @@
 PerfectExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
   expectedYield <- aLandLeaf$mYield[[aPeriod]]
 
+  # Save expected yield
+  aLandLeaf$mExpectedYield[aPeriod] <- expectedYield
+
   return(expectedYield)
 }
 

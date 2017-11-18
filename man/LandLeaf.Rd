@@ -39,6 +39,8 @@ Initialize an Class called LandLeaf
 
 \item{\code{mYield}}{yield for this leaf}
 
+\item{\code{mExpectedYield}}{expected yield for this leaf}
+
 \item{\code{mCalOutput}}{calibrated-output for this leaf}
 
 \item{\code{mNonLandCostTechChange}}{Technical change on the cost of this leaf}

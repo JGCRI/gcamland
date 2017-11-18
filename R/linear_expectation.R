@@ -41,6 +41,9 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
   model.lm <- lm(yield ~ year, data = all.yields)
   expectedYield <- predict(model.lm, newdata = data.frame(year = currYear))
 
+  # Save expected yield
+  aLandLeaf$mExpectedYield[aPeriod] <- expectedYield
+
   return(expectedYield)
 }
 
