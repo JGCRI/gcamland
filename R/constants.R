@@ -22,6 +22,16 @@ EXPECTATION.TYPE <- "Lagged"
 LINEAR.YEARS <- 5
 LAGGED.TAU <- 5
 
+# Naming information
+if(EXPECTATION.TYPE == "Linear") {
+  SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, LINEAR.YEARS, sep="")
+} else if (EXPECTATION.TYPE == "Lagged") {
+  SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, LAGGED.TAU, sep="")
+} else {
+  SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, sep="")
+}
+FILE.NAME <- SCENARIO.NAME
+
 # Threshold-related constants
 # TODO: Make sure these are consistent with GCAM
 LARGE_NUMBER <- 1e9

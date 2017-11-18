@@ -34,14 +34,7 @@ plotLandAllocation <- function(aLandAllocator) {
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  if(EXPECTATION.TYPE == "Linear") {
-    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-  } else if (EXPECTATION.TYPE == "Lagged") {
-    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
-  } else {
-    expectations <- EXPECTATION.TYPE
-  }
-  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
+  file <- paste("./outputs/land/landAllocation_", FILE.NAME, ".csv", sep="")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(file))
@@ -71,14 +64,7 @@ plotRegionalLandAllocation <- function(aLandAllocator) {
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  if(EXPECTATION.TYPE == "Linear") {
-    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-  } else if (EXPECTATION.TYPE == "Lagged") {
-    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
-  } else {
-    expectations <- EXPECTATION.TYPE
-  }
-  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
+  file <- paste("./outputs/land/landAllocation_", FILE.NAME, ".csv", sep="")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(file))

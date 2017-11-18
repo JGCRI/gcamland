@@ -32,7 +32,7 @@ test_that("land cover matches calibration data", {
 
     # Look for output data in outputs under top level
     # (as this code will be run in tests/testthat)
-    outputData <- read_csv("../../outputs/landAllocation_Reference_Perfect.csv")
+    outputData <- read_csv("../../outputs/land/landAllocation_Reference_Perfect.csv")
     outputData %>%
       # Filter for years we have comparison data
       filter(year %in% unique(compareData$year)) %>%

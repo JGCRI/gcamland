@@ -27,7 +27,7 @@ test_that("land area doesn't change over time", {
   } else {
     expectations <- EXPECTATION.TYPE
   }
-  file <- paste("../../outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
+  file <- paste("../../outputs/land/landAllocation_", SCENARIO.NAME, ".csv", sep="")
 
   outputData <- read_csv(file)
 

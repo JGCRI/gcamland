@@ -13,9 +13,22 @@ printOutput <- function(aLandAllocator) {
   printLandShares(aLandAllocator)
   printYield(aLandAllocator)
   printExpectedYield(aLandAllocator)
-  write_csv(EXPECTED_PRICES, "./outputs/expectedPrices.csv")
+  printExpectedPrices()
 }
 
+#' printExpectedPrices
+#' @details Print expected prices
+#'
+#' @author KVC November 2017
+printExpectedPrices <- function() {
+  EXPECTED_PRICES %>%
+    mutate(scenario = SCENARIO.NAME) ->
+    expectedPrices
+
+  file <- paste("./outputs/expectedPrice/expectedPrice_", FILE.NAME, ".csv", sep="")
+
+  write_csv(expectedPrices, file)
+}
 
 #' printLandAllocation
 #'
@@ -61,17 +74,9 @@ printLandAllocation <- function(aLandAllocator) {
   }
 
   # Add information on scenario and expectation type
-  allLand$scenario <- SCENARIO
-  if(EXPECTATION.TYPE == "Linear") {
-    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-  } else if (EXPECTATION.TYPE == "Lagged") {
-    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
-  } else {
-    expectations <- EXPECTATION.TYPE
-  }
-  allLand$expectations <- expectations
+  allLand$scenario <- SCENARIO.NAME
 
-  file <- paste("./outputs/landAllocation_", SCENARIO, "_", expectations, ".csv", sep="")
+  file <- paste("./outputs/land/landAllocation_", FILE.NAME, ".csv", sep="")
   write_csv(allLand, file)
 
 }
@@ -341,15 +346,7 @@ printYield <- function(aLandAllocator) {
   }
 
   # Add information on scenario and expectation type
-  allYield$scenario <- SCENARIO
-  if(EXPECTATION.TYPE == "Linear") {
-    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-  } else if (EXPECTATION.TYPE == "Lagged") {
-    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
-  } else {
-    expectations <- EXPECTATION.TYPE
-  }
-  allYield$expectations <- expectations
+  allYield$scenario <- SCENARIO.NAME
 
   write_csv(allYield, "./outputs/yield.csv")
 
@@ -447,18 +444,11 @@ printExpectedYield <- function(aLandAllocator) {
   }
 
   # Add information on scenario and expectation type
-  allYield$scenario <- SCENARIO
-  if(EXPECTATION.TYPE == "Linear") {
-    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-  } else if (EXPECTATION.TYPE == "Lagged") {
-    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
-  } else {
-    expectations <- EXPECTATION.TYPE
-  }
-  allYield$expectations <- expectations
+  allYield$scenario <- SCENARIO.NAME
 
-  write_csv(allYield, "./outputs/expectedYield.csv")
-
+  # Save information
+  file <- paste("./outputs/expectedYield/expectedYield_", FILE.NAME, ".csv", sep="")
+  write_csv(allYield, file)
 }
 
 #' LandAllocator_getExpectedYield
