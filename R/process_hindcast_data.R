@@ -6,7 +6,7 @@
 #'          Aggregate to GCAM regions and commodities,
 #'          Compute & return AgProdChange in historical period
 #' @return AgProdChange in historical period
-#' @importFrom readr read_csv write_csv
+#' @import readr
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate select left_join filter
 #' @author KVC October 2017
@@ -24,13 +24,14 @@ get_hindcast_AgProdChange <- function(){
   FAO_ag_items_PRODSTAT <- suppressMessages(read_csv("./inst/extdata/mappings/FAO_ag_items_PRODSTAT.csv", skip = 3))
 
   # Read production & harvested area (we'll calculate yield from this so we can aggregate)
-  faoHA <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_ha.csv"))
+  faoHA <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_ha.csv",
+                                     col_types = cols(.default = "c")))
   faoProd <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_prod.csv"))
 
   # Tidy data
   faoHA %>%
     gather(year, ha, -FAO_country, -item) %>%
-    mutate(year = as.integer(year)) ->
+    mutate(year = as.integer(year), ha = as.integer(ha)) ->
     faoHA
 
   faoProd %>%
