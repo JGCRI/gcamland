@@ -26,9 +26,11 @@ run_model <- function() {
   }
 
   # Print Outputs
+  print("All model periods complete. Starting output.")
   printOutput(mLandAllocator)
 
   # Make figures
+  print("Plotting diagnostic figures.")
   plotNest(mLandAllocator)
   plotLandAllocation(mLandAllocator)
   plotRegionalLandAllocation(mLandAllocator)
