@@ -35,12 +35,9 @@ LAGGED.TAU <- 5
 # **************************************************************************************************************
 # * Logit information
 LOGIT.USE.DEFAULT <- TRUE
-if( !LOGIT.USE.DEFAULT ) {
-  LOGIT.AGROFOREST <- 2
-  LOGIT.AGROFOREST_NONPASTURE <- 2.5
-  LOGIT.CROPLAND <- 1.75
-}
-
+LOGIT.AGROFOREST <- 2
+LOGIT.AGROFOREST_NONPASTURE <- 2.5
+LOGIT.CROPLAND <- 1.75
 
 # **************************************************************************************************************
 # * Scenario & file naming information

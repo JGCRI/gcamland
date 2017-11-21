@@ -64,3 +64,36 @@ getStartYear <- function() {
 '%!in%' <- function(x, y) {
   !('%in%'(x, y))
 }
+
+#' getScenName
+#'
+#' @details Get the scenario name to use in ensemble runs
+#' @param aScenName Scenario base name
+#' @param aExpectation Expectation type
+#' @param aYears Years for Lagged or Linear expectations (NULL for Perfect)
+#' @param aAgFor Logit exponent for AgroForestLand
+#' @param aAgForNonPast Logit exponent for AgroForestLand_NonPasture
+#' @param aCrop Logit exponent for Cropland
+#'
+#' @return Scenario name
+#' @author KVC November 2017
+getScenName <- function(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, aCrop) {
+  # Add expectation information
+  if(aExpectation == "Linear") {
+    scenNameAdj <- paste(aScenName, "_", aExpectation, aYears, sep="")
+  } else if (aExpectation == "Lagged") {
+    scenNameAdj <- paste(aScenName, "_", aExpectation, aYears, sep="")
+  } else {
+    scenNameAdj <- paste(aScenName, "_", aExpectation, sep="")
+  }
+
+  # Add logit info
+  scenNameAdj <- paste(scenNameAdj, "_AgroForest", aAgFor, sep="")
+  scenNameAdj <- paste(scenNameAdj, "_AgroForestNonPasture", aAgForNonPast, sep="")
+  scenNameAdj <- paste(scenNameAdj, "_Cropland", aCrop, sep="")
+
+  return(scenNameAdj)
+}
+
+
+
