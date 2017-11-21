@@ -30,7 +30,7 @@ run_model <- function() {
   printOutput(mLandAllocator)
 
   # Make figures
-  if(MAKE_PLOTS) {
+  if(MAKE.PLOTS) {
     print("Plotting diagnostic figures.")
     plotNest(mLandAllocator)
     plotLandAllocation(mLandAllocator)
