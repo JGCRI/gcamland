@@ -6,6 +6,10 @@
 SCENARIO <- "Hindcast"
 
 # **************************************************************************************************************
+# * Run configuration settings
+MAKE.PLOTS <- TRUE
+
+# **************************************************************************************************************
 # * Time-related parameters
 if(SCENARIO == "Hindcast") {
   FINAL_CALIBRATION_PERIOD <- 1

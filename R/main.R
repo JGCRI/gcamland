@@ -30,10 +30,12 @@ run_model <- function() {
   printOutput(mLandAllocator)
 
   # Make figures
-  print("Plotting diagnostic figures.")
-  plotNest(mLandAllocator)
-  plotLandAllocation(mLandAllocator)
-  plotRegionalLandAllocation(mLandAllocator)
+  if(MAKE_PLOTS) {
+    print("Plotting diagnostic figures.")
+    plotNest(mLandAllocator)
+    plotLandAllocation(mLandAllocator)
+    plotRegionalLandAllocation(mLandAllocator)
+  }
 }
 
 
