@@ -1,9 +1,12 @@
 # constants.R
 
+# **************************************************************************************************************
+# * Scenario type
 # Set scenario
 SCENARIO <- "Hindcast"
 
-# Time-related parameters
+# **************************************************************************************************************
+# * Time-related parameters
 if(SCENARIO == "Hindcast") {
   FINAL_CALIBRATION_PERIOD <- 1
   HISTORY.YEARS <- c(1975)
@@ -14,15 +17,19 @@ if(SCENARIO == "Hindcast") {
   FUTURE.YEARS <- seq(2015, 2050, 5)
 }
 
+# Concatenate years
 YEARS <- c(HISTORY.YEARS, FUTURE.YEARS)
 PERIODS <- 1:length(YEARS)
 
-# Expectation-related parameters (currently only "Perfect", "Linear", and "Lagged" are supported)
+# **************************************************************************************************************
+# * Expectation-related parameters
+# Currently only "Perfect", "Linear", and "Lagged" are supported)
 EXPECTATION.TYPE <- "Lagged"
 LINEAR.YEARS <- 5
 LAGGED.TAU <- 5
 
-# Logit information
+# **************************************************************************************************************
+# * Logit information
 LOGIT.USE.DEFAULT <- TRUE
 if( !LOGIT.USE.DEFAULT ) {
   LOGIT.AGROFOREST <- 2
@@ -31,7 +38,9 @@ if( !LOGIT.USE.DEFAULT ) {
 }
 
 
-# Scenario naming information
+# **************************************************************************************************************
+# * Scenario & file naming information
+# Add expectation information
 if(EXPECTATION.TYPE == "Linear") {
   SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, LINEAR.YEARS, sep="")
 } else if (EXPECTATION.TYPE == "Lagged") {
@@ -50,15 +59,18 @@ if( !LOGIT.USE.DEFAULT ) {
 # Set file name
 FILE.NAME <- SCENARIO.NAME
 
-# Threshold-related constants
+# **************************************************************************************************************
+# * Threshold-related constants
 # TODO: Make sure these are consistent with GCAM
 LARGE_NUMBER <- 1e9
 SMALL_NUMBER <- 1e-6
 DBL_MIN <- 1e-15
 
-# Types of biomass crops
+# **************************************************************************************************************
+# * Types of biomass crops
 BIOMASS_TYPES <- c("biomass", "willow")
 
-# Things that will eventually be removed
+# **************************************************************************************************************
+# * Things that will eventually be removed
 REGION <- "USA"
 AEZ <- NULL
