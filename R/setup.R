@@ -75,7 +75,12 @@ LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName) {
 
     # Save values for arguments that need to be passed to the constructor
     name <- temp[[aColName]]
-    exponent <- as.numeric(temp[[c("logit.exponent")]])
+    if ( !LOGIT.USE.DEFAULT & grepl("AgroForestLand", childName)) {
+      exponent <- LOGIT.AGROFOREST
+    } else {
+      exponent <- as.numeric(temp[[c("logit.exponent")]])
+    }
+
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
     # Create the node
@@ -115,6 +120,13 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName) {
     # Save values for arguments that need to be passed to the constructor
     name <- temp[[aColumnName]]
     exponent <- as.numeric(temp[[c("logit.exponent")]])
+    if ( !LOGIT.USE.DEFAULT & grepl("AgroForestLand_NonPasture", childName)) {
+      exponent <- LOGIT.AGROFOREST_NONPASTURE
+    } else if ( !LOGIT.USE.DEFAULT & grepl("Cropland", childName) ) {
+      exponent <- LOGIT.CROPLAND
+    } else {
+      exponent <- as.numeric(temp[[c("logit.exponent")]])
+    }
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
     # Create the node

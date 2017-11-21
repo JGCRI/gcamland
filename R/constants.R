@@ -22,7 +22,16 @@ EXPECTATION.TYPE <- "Lagged"
 LINEAR.YEARS <- 5
 LAGGED.TAU <- 5
 
-# Naming information
+# Logit information
+LOGIT.USE.DEFAULT <- TRUE
+if( !LOGIT.USE.DEFAULT ) {
+  LOGIT.AGROFOREST <- 2
+  LOGIT.AGROFOREST_NONPASTURE <- 2.5
+  LOGIT.CROPLAND <- 1.75
+}
+
+
+# Scenario naming information
 if(EXPECTATION.TYPE == "Linear") {
   SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, LINEAR.YEARS, sep="")
 } else if (EXPECTATION.TYPE == "Lagged") {
@@ -30,6 +39,15 @@ if(EXPECTATION.TYPE == "Linear") {
 } else {
   SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, sep="")
 }
+
+# Add logit info
+if( !LOGIT.USE.DEFAULT ) {
+  SCENARIO.NAME <- paste(SCENARIO.NAME, "_AgroForest", LOGIT.AGROFOREST, sep="")
+  SCENARIO.NAME <- paste(SCENARIO.NAME, "_AgroForestNonPasture", LOGIT.AGROFOREST_NONPASTURE, sep="")
+  SCENARIO.NAME <- paste(SCENARIO.NAME, "_Cropland", LOGIT.CROPLAND, sep="")
+}
+
+# Set file name
 FILE.NAME <- SCENARIO.NAME
 
 # Threshold-related constants
