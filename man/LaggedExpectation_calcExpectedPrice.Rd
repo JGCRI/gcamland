@@ -10,6 +10,8 @@ LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
 \item{aLandLeaf}{LandLeaf to calculate expected price for}
 
 \item{aPeriod}{Current model period}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 LaggedExpectation_calcExpectedPrice

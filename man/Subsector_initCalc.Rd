@@ -10,6 +10,8 @@ Subsector_initCalc(aLandNode, aPeriod, aScenarioInfo)
 \item{aLandNode}{Land node to perform initializations on}
 
 \item{aPeriod}{Current model time period}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 Subsector_initCalc

@@ -10,6 +10,8 @@ AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod, aScenarioInfo)
 \item{aLandLeaf}{Land leaf}
 
 \item{aPeriod}{Current model period}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 AgProductionTechnology_calcProfitRate

@@ -8,6 +8,8 @@ plotLandAllocation(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land Allocator}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 plotLandAllocation

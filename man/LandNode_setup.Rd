@@ -14,6 +14,8 @@ LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo)
 \item{aData}{Data needed for setting up this node}
 
 \item{aColumnName}{Column name with the parent}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 LandNode_setup

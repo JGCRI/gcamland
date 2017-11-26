@@ -8,6 +8,8 @@ LandAllocator_setup(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 LandAllocator_setup

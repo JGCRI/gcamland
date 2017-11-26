@@ -10,6 +10,8 @@ Sector_initCalc(aLandAllocator, aPeriod, aScenarioInfo)
 \item{aLandAllocator}{Land allocator to perform initializations on}
 
 \item{aPeriod}{Current model time period}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 Sector_initCalc

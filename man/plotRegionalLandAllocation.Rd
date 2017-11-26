@@ -8,6 +8,8 @@ plotRegionalLandAllocation(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land Allocator}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 plotRegionalLandAllocation
@@ -18,7 +20,5 @@ Plots regional land allocation over time.
          and then plots land.
 }
 \author{
-KVC September 2017
-
 KVC October 2017
 }

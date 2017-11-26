@@ -10,6 +10,8 @@ LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
 \item{aLandLeaf}{LandLeaf to calculate expected yield for}
 
 \item{aPeriod}{Current model period}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 LaggedExpectation_calcExpectedYield

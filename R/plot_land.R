@@ -25,6 +25,7 @@ plotNest <- function(aLandAllocator) {
 #'
 #' @details Plots land allocation over time
 #' @param aLandAllocator Land Allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 #' @importFrom readr read_csv
 #' @import ggplot2
@@ -52,7 +53,7 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 #'          Aggregates land by region (i.e., adds all AEZs together)
 #'          and then plots land.
 #' @param aLandAllocator Land Allocator
-#' @author KVC September 2017
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @importFrom readr read_csv
 #' @importFrom tidyr separate
 #' @importFrom dplyr group_by summarize

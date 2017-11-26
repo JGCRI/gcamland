@@ -8,6 +8,7 @@
 #'          separate as they are in the C++ code.
 #' @param aLandAllocator Land allocator to perform initializations on
 #' @param aPeriod Current model time period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 Sector_initCalc <- function(aLandAllocator, aPeriod, aScenarioInfo){
   # Loop through the land allocator
@@ -24,6 +25,7 @@ Sector_initCalc <- function(aLandAllocator, aPeriod, aScenarioInfo){
 #'          This is a departure from how the C++ code works.
 #' @param aLandNode Land node to perform initializations on
 #' @param aPeriod Current model time period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 Subsector_initCalc <- function(aLandNode, aPeriod, aScenarioInfo){
   # loop through children

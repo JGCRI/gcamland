@@ -4,6 +4,7 @@
 #'
 #' @param aLandLeaf LandLeaf to calculate expected yield for
 #' @param aPeriod Current model period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @details Calculate the expected yield for a LandLeaf using
 #'          a linear extrapolation from recent history.
 #' @importFrom stats lm predict
@@ -51,6 +52,7 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
 #'
 #' @param aLandLeaf LandLeaf to calculate expected price for
 #' @param aPeriod Current model period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @details Calculate the expected price for a LandLeaf using
 #'          a linear extrapolation from recent history.
 #' @importFrom stats lm predict

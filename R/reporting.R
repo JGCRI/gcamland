@@ -6,6 +6,7 @@
 #'
 #' @details Prints all outputs
 #' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC October 2017
 printOutput <- function(aLandAllocator, aScenarioInfo) {
   printNest(aLandAllocator)
@@ -17,8 +18,9 @@ printOutput <- function(aLandAllocator, aScenarioInfo) {
 }
 
 #' printExpectedPrices
-#' @details Print expected prices
 #'
+#' @details Print expected prices
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
 printExpectedPrices <- function(aScenarioInfo) {
   EXPECTED_PRICES %>%
@@ -34,11 +36,12 @@ printExpectedPrices <- function(aScenarioInfo) {
 #'
 #' @details Prints land allocation by land leaf
 #' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
 printLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
-  node <- parent <- NULL
+  node <- parent <- uniqueJoinField <- NULL
 
   # Read nest
   nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
@@ -137,7 +140,7 @@ LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
 #' @author KVC November 2017
 printLandShares <- function(aLandAllocator) {
   # Silence package checks
-  node <- parent <- NULL
+  node <- parent <- uniqueJoinField <- year <- NULL
 
   # Set up a data frame
   tibble::tibble(parent = "TEMP",
@@ -306,11 +309,12 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 #'
 #' @details Prints yield by land leaf
 #' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
 printYield <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
-  node <- parent <- NULL
+  node <- parent <- uniqueJoinField <- NULL
 
   # Read nest
   nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
@@ -404,11 +408,12 @@ LandNode_getYield <- function(aLandNode, aName, aPeriod) {
 #'
 #' @details Prints expected yield by land leaf
 #' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
 printExpectedYield <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
-  node <- parent <- NULL
+  node <- parent <- uniqueJoinField <- NULL
 
   # Read nest
   nest <- suppressMessages(read_csv("./outputs/landNest.csv"))

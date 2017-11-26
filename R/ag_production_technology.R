@@ -8,6 +8,7 @@
 #'          Note: this method must be called before LandAllocator initCalc
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Model time period.
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Compute tech change values for this period for both ag productivity and
@@ -69,6 +70,7 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
 #'          Profit rate is in 1975$ per billion m2, so computation includes yield.
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Current model period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks

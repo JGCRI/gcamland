@@ -20,14 +20,7 @@ test_that("land area doesn't change over time", {
   # Get output data
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  if(EXPECTATION.TYPE == "Linear") {
-    expectations <- paste(EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-  } else if (EXPECTATION.TYPE == "Lagged") {
-    expectations <- paste(EXPECTATION.TYPE, LAGGED.TAU, sep="")
-  } else {
-    expectations <- EXPECTATION.TYPE
-  }
-  file <- paste("../../outputs/land/landAllocation_", SCENARIO.NAME, ".csv", sep="")
+  file <- paste("../../outputs/land/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv", sep="")
 
   outputData <- read_csv(file)
 

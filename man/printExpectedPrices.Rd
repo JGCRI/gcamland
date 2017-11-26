@@ -6,6 +6,9 @@
 \usage{
 printExpectedPrices(aScenarioInfo)
 }
+\arguments{
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+}
 \description{
 printExpectedPrices
 }

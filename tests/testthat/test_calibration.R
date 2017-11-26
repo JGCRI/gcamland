@@ -18,7 +18,7 @@ test_that("land cover matches calibration data", {
   }
 
   # For now, only test normal GCAM config
-  if( SCENARIO == "Reference" & EXPECTATION.TYPE == "Perfect") {
+  if( SCENARIO.INFO$mScenario == "Reference" & SCENARIO.INFO$mExpectationType == "Perfect") {
     # Get comparison data
     compareData <- read_csv("./comparison-data/LandAllocation_Reference.csv", skip = 1)
     compareData %>%

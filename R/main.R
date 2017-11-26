@@ -89,6 +89,7 @@ run_ensembles <- function() {
 #' run_model
 #'
 #' @details Loops through all years and runs the land model.
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC
 #' @export
 run_model <- function(aScenarioInfo) {

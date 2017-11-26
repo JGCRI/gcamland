@@ -6,6 +6,9 @@
 \usage{
 run_model(aScenarioInfo)
 }
+\arguments{
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+}
 \description{
 run_model
 }

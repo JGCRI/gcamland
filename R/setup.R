@@ -6,6 +6,7 @@
 #'          Reading in external data and organizing
 #'          it in the node, leaf, technology structure
 #' @param aLandAllocator LandAllocator that needs set up
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC October 2017
 #' @export
 LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
@@ -60,6 +61,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
 #' @param aRegionName Region
 #' @param aData Data needed for setting up this node
 #' @param aColName Column name with the parent
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @importFrom dplyr mutate_
 #' @author KVC October 2017
 LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo) {
@@ -103,6 +105,7 @@ LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName, aScenarioInf
 #' @param aRegionName Region
 #' @param aData Data needed for setting up this node
 #' @param aColumnName Column name with the parent
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @importFrom dplyr distinct
 #' @author KVC October 2017
 LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo) {

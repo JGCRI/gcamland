@@ -364,6 +364,9 @@ ReadData_AgProd <- function(aRegionName) {
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 get_AgProdChange <- function() {
+  # Silence package checks
+  year <- NULL
+
   # Read in data
   if(SCENARIO == "Hindcast") {
     agProdChange <- get_hindcast_AgProdChange()

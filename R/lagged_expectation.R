@@ -2,11 +2,12 @@
 
 #' LaggedExpectation_calcExpectedYield
 #'
-#' @param aLandLeaf LandLeaf to calculate expected yield for
-#' @param aPeriod Current model period
 #' @details Calculate the expected yield for a LandLeaf using
 #'          a lagged approach -- use previous expectation + fraction
 #'          of new information.
+#' @param aLandLeaf LandLeaf to calculate expected yield for
+#' @param aPeriod Current model period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
 LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
@@ -45,11 +46,12 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
 
 #' LaggedExpectation_calcExpectedPrice
 #'
-#' @param aLandLeaf LandLeaf to calculate expected price for
-#' @param aPeriod Current model period
 #' @details Calculate the expected price for a LandLeaf using
 #'          a lagged approach -- use previous expectation + fraction
 #'          of new information.
+#' @param aLandLeaf LandLeaf to calculate expected price for
+#' @param aPeriod Current model period
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
 LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInfo){
   # Silence package checks

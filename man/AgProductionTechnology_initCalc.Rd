@@ -10,6 +10,8 @@ AgProductionTechnology_initCalc(aLandLeaf, aPeriod, aScenarioInfo)
 \item{aLandLeaf}{Land leaf}
 
 \item{aPeriod}{Model time period.}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 AgProductionTechnology_initCalc
