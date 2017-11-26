@@ -99,7 +99,7 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   expectedPrice <- predict(model.lm, newdata = data.frame(year = currYear))
 
   # Save expected price data
-  EXPECTED_PRICES$price[year == y & sector == aLandLeaf$mProductName[1]] <- expectedPrice
+  EXPECTED_PRICES$price[year == currYear & sector == aLandLeaf$mProductName[1]] <- expectedPrice
 
   return(expectedPrice)
 }
