@@ -4,7 +4,7 @@
 \alias{LaggedExpectation_calcExpectedYield}
 \title{LaggedExpectation_calcExpectedYield}
 \usage{
-LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{LandLeaf to calculate expected yield for}

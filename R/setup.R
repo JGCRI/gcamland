@@ -8,7 +8,7 @@
 #' @param aLandAllocator LandAllocator that needs set up
 #' @author KVC October 2017
 #' @export
-LandAllocator_setup <- function(aLandAllocator) {
+LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
   print("Initializing LandAllocator")
 
   # Read ag data -- we'll use this for all leafs
@@ -20,7 +20,7 @@ LandAllocator_setup <- function(aLandAllocator) {
 
   # Read information on LN1 nodes (children of land allocator)
   childrenData <- ReadData_LN1_Node(aLandAllocator$mRegionName)
-  LN1_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode1")
+  LN1_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode1", aScenarioInfo)
 
   # Read information on leaf children of LN1 nodes
   childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName)
@@ -28,7 +28,7 @@ LandAllocator_setup <- function(aLandAllocator) {
 
   # Read information on LN2 nodes
   childrenData <- ReadData_LN2_Node(aLandAllocator$mRegionName)
-  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode2")
+  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode2", aScenarioInfo)
 
   # Read information on LandLeaf children of LN2 nodes
   childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
@@ -40,7 +40,7 @@ LandAllocator_setup <- function(aLandAllocator) {
 
   # Read information on LN3 nodes
   childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName)
-  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode3")
+  LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData, "LandNode3", aScenarioInfo)
 
   # Read information on LandLeaf children of LN3 nodes
   childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
@@ -62,7 +62,7 @@ LandAllocator_setup <- function(aLandAllocator) {
 #' @param aColName Column name with the parent
 #' @importFrom dplyr mutate_
 #' @author KVC October 2017
-LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName) {
+LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo) {
 
   # Create each child
   i <- 1
@@ -75,8 +75,8 @@ LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName) {
 
     # Save values for arguments that need to be passed to the constructor
     name <- temp[[aColName]]
-    if ( !LOGIT.USE.DEFAULT & grepl("AgroForestLand", childName)) {
-      exponent <- LOGIT.AGROFOREST
+    if ( !aScenarioInfo$mLogitUseDefault & grepl("AgroForestLand", childName)) {
+      exponent <- aScenarioInfo$mLogitAgroForest
     } else {
       exponent <- as.numeric(temp[[c("logit.exponent")]])
     }
@@ -105,7 +105,7 @@ LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName) {
 #' @param aColumnName Column name with the parent
 #' @importFrom dplyr distinct
 #' @author KVC October 2017
-LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName) {
+LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo) {
   # Silence package checks
   region <- LandAllocatorRoot <- year.fillout <- logit.exponent <- NULL
 
@@ -120,10 +120,10 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName) {
     # Save values for arguments that need to be passed to the constructor
     name <- temp[[aColumnName]]
     exponent <- as.numeric(temp[[c("logit.exponent")]])
-    if ( !LOGIT.USE.DEFAULT & grepl("AgroForestLand_NonPasture", childName)) {
-      exponent <- LOGIT.AGROFOREST_NONPASTURE
-    } else if ( !LOGIT.USE.DEFAULT & grepl("Cropland", childName) ) {
-      exponent <- LOGIT.CROPLAND
+    if ( !aScenarioInfo$mLogitUseDefault & grepl("AgroForestLand_NonPasture", childName)) {
+      exponent <- aScenarioInfo$mLogitAgroForest_NonPasture
+    } else if ( !aScenarioInfo$mLogitUseDefault & grepl("Cropland", childName) ) {
+      exponent <- aScenarioInfo$mLogitCropland
     } else {
       exponent <- as.numeric(temp[[c("logit.exponent")]])
     }

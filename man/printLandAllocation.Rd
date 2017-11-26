@@ -4,7 +4,7 @@
 \alias{printLandAllocation}
 \title{printLandAllocation}
 \usage{
-printLandAllocation(aLandAllocator)
+printLandAllocation(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}

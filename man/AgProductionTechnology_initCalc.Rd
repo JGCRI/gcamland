@@ -4,7 +4,7 @@
 \alias{AgProductionTechnology_initCalc}
 \title{AgProductionTechnology_initCalc}
 \usage{
-AgProductionTechnology_initCalc(aLandLeaf, aPeriod)
+AgProductionTechnology_initCalc(aLandLeaf, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf}

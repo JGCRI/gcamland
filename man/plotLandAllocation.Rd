@@ -4,7 +4,7 @@
 \alias{plotLandAllocation}
 \title{plotLandAllocation}
 \usage{
-plotLandAllocation(aLandAllocator)
+plotLandAllocation(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land Allocator}

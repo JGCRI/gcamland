@@ -4,7 +4,7 @@
 \alias{LN1_setup}
 \title{LN1_setup}
 \usage{
-LN1_setup(aLandAllocator, aRegionName, aData, aColName)
+LN1_setup(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}

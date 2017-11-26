@@ -4,7 +4,7 @@
 \alias{printYield}
 \title{printYield}
 \usage{
-printYield(aLandAllocator)
+printYield(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}

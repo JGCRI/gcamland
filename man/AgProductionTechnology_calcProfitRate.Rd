@@ -4,7 +4,7 @@
 \alias{AgProductionTechnology_calcProfitRate}
 \title{AgProductionTechnology_calcProfitRate}
 \usage{
-AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod)
+AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf}

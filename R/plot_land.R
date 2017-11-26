@@ -29,12 +29,12 @@ plotNest <- function(aLandAllocator) {
 #' @importFrom readr read_csv
 #' @import ggplot2
 #' @export
-plotLandAllocation <- function(aLandAllocator) {
+plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  file <- paste("./outputs/land/landAllocation_", FILE.NAME, ".csv", sep="")
+  file <- paste("./outputs/land/landAllocation_", aScenarioInfo$mFileName, ".csv", sep="")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(file))
@@ -59,12 +59,12 @@ plotLandAllocation <- function(aLandAllocator) {
 #' @import ggplot2
 #' @author KVC October 2017
 #' @export
-plotRegionalLandAllocation <- function(aLandAllocator) {
+plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  file <- paste("./outputs/land/landAllocation_", FILE.NAME, ".csv", sep="")
+  file <- paste("./outputs/land/landAllocation_", aScenarioInfo$mFileName, ".csv", sep="")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(file))

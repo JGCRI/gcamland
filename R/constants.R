@@ -26,41 +26,6 @@ YEARS <- c(HISTORY.YEARS, FUTURE.YEARS)
 PERIODS <- 1:length(YEARS)
 
 # **************************************************************************************************************
-# * Expectation-related parameters
-# Currently only "Perfect", "Linear", and "Lagged" are supported)
-EXPECTATION.TYPE <- "Lagged"
-LINEAR.YEARS <- 5
-LAGGED.TAU <- 5
-
-# **************************************************************************************************************
-# * Logit information
-LOGIT.USE.DEFAULT <- TRUE
-LOGIT.AGROFOREST <- 2
-LOGIT.AGROFOREST_NONPASTURE <- 2.5
-LOGIT.CROPLAND <- 1.75
-
-# **************************************************************************************************************
-# * Scenario & file naming information
-# Add expectation information
-if(EXPECTATION.TYPE == "Linear") {
-  SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, LINEAR.YEARS, sep="")
-} else if (EXPECTATION.TYPE == "Lagged") {
-  SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, LAGGED.TAU, sep="")
-} else {
-  SCENARIO.NAME <- paste(SCENARIO, "_", EXPECTATION.TYPE, sep="")
-}
-
-# Add logit info
-if( !LOGIT.USE.DEFAULT ) {
-  SCENARIO.NAME <- paste(SCENARIO.NAME, "_AgroForest", LOGIT.AGROFOREST, sep="")
-  SCENARIO.NAME <- paste(SCENARIO.NAME, "_AgroForestNonPasture", LOGIT.AGROFOREST_NONPASTURE, sep="")
-  SCENARIO.NAME <- paste(SCENARIO.NAME, "_Cropland", LOGIT.CROPLAND, sep="")
-}
-
-# Set file name
-FILE.NAME <- SCENARIO.NAME
-
-# **************************************************************************************************************
 # * Threshold-related constants
 # TODO: Make sure these are consistent with GCAM
 LARGE_NUMBER <- 1e9

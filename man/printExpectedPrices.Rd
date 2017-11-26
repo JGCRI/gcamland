@@ -4,7 +4,7 @@
 \alias{printExpectedPrices}
 \title{printExpectedPrices}
 \usage{
-printExpectedPrices()
+printExpectedPrices(aScenarioInfo)
 }
 \description{
 printExpectedPrices

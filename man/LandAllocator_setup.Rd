@@ -4,7 +4,7 @@
 \alias{LandAllocator_setup}
 \title{LandAllocator_setup}
 \usage{
-LandAllocator_setup(aLandAllocator)
+LandAllocator_setup(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}

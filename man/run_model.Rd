@@ -4,7 +4,7 @@
 \alias{run_model}
 \title{run_model}
 \usage{
-run_model()
+run_model(aScenarioInfo)
 }
 \description{
 run_model

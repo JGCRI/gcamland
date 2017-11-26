@@ -4,7 +4,7 @@
 \alias{Subsector_initCalc}
 \title{Subsector_initCalc}
 \usage{
-Subsector_initCalc(aLandNode, aPeriod)
+Subsector_initCalc(aLandNode, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandNode}{Land node to perform initializations on}

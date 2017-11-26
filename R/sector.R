@@ -9,10 +9,10 @@
 #' @param aLandAllocator Land allocator to perform initializations on
 #' @param aPeriod Current model time period
 #' @author KVC September 2017
-Sector_initCalc <- function(aLandAllocator, aPeriod){
+Sector_initCalc <- function(aLandAllocator, aPeriod, aScenarioInfo){
   # Loop through the land allocator
   for(child in aLandAllocator$mChildren) {
-    Subsector_initCalc(child, aPeriod)
+    Subsector_initCalc(child, aPeriod, aScenarioInfo)
   }
 }
 
@@ -25,14 +25,14 @@ Sector_initCalc <- function(aLandAllocator, aPeriod){
 #' @param aLandNode Land node to perform initializations on
 #' @param aPeriod Current model time period
 #' @author KVC September 2017
-Subsector_initCalc <- function(aLandNode, aPeriod){
+Subsector_initCalc <- function(aLandNode, aPeriod, aScenarioInfo){
   # loop through children
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      Subsector_initCalc(child, aPeriod)
+      Subsector_initCalc(child, aPeriod, aScenarioInfo)
     } else if (class(child) == "LandLeaf") {
       # If this is a leaf, call the AgProductionTechnology method
-      AgProductionTechnology_initCalc(child, aPeriod)
+      AgProductionTechnology_initCalc(child, aPeriod, aScenarioInfo)
     }
   }
 }

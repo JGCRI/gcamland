@@ -4,7 +4,7 @@
 \alias{Sector_initCalc}
 \title{Sector_initCalc}
 \usage{
-Sector_initCalc(aLandAllocator, aPeriod)
+Sector_initCalc(aLandAllocator, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator to perform initializations on}

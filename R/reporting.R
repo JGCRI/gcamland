@@ -7,25 +7,25 @@
 #' @details Prints all outputs
 #' @param aLandAllocator Land allocator
 #' @author KVC October 2017
-printOutput <- function(aLandAllocator) {
+printOutput <- function(aLandAllocator, aScenarioInfo) {
   printNest(aLandAllocator)
-  printLandAllocation(aLandAllocator)
+  printLandAllocation(aLandAllocator, aScenarioInfo)
   printLandShares(aLandAllocator)
-  printYield(aLandAllocator)
-  printExpectedYield(aLandAllocator)
-  printExpectedPrices()
+  printYield(aLandAllocator, aScenarioInfo)
+  printExpectedYield(aLandAllocator, aScenarioInfo)
+  printExpectedPrices(aScenarioInfo)
 }
 
 #' printExpectedPrices
 #' @details Print expected prices
 #'
 #' @author KVC November 2017
-printExpectedPrices <- function() {
+printExpectedPrices <- function(aScenarioInfo) {
   EXPECTED_PRICES %>%
-    mutate(scenario = SCENARIO.NAME) ->
+    mutate(scenario = aScenarioInfo$mScenarioName) ->
     expectedPrices
 
-  file <- paste("./outputs/expectedPrice/expectedPrice_", FILE.NAME, ".csv", sep="")
+  file <- paste("./outputs/expectedPrice/expectedPrice_", aScenarioInfo$mFileName, ".csv", sep="")
 
   write_csv(expectedPrices, file)
 }
@@ -36,7 +36,7 @@ printExpectedPrices <- function() {
 #' @param aLandAllocator Land allocator
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printLandAllocation <- function(aLandAllocator) {
+printLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   node <- parent <- NULL
 
@@ -74,9 +74,9 @@ printLandAllocation <- function(aLandAllocator) {
   }
 
   # Add information on scenario and expectation type
-  allLand$scenario <- SCENARIO.NAME
+  allLand$scenario <- aScenarioInfo$mScenarioName
 
-  file <- paste("./outputs/land/landAllocation_", FILE.NAME, ".csv", sep="")
+  file <- paste("./outputs/land/landAllocation_", aScenarioInfo$mFileName, ".csv", sep="")
   write_csv(allLand, file)
 
 }
@@ -308,7 +308,7 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 #' @param aLandAllocator Land allocator
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printYield <- function(aLandAllocator) {
+printYield <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   node <- parent <- NULL
 
@@ -346,7 +346,7 @@ printYield <- function(aLandAllocator) {
   }
 
   # Add information on scenario and expectation type
-  allYield$scenario <- SCENARIO.NAME
+  allYield$scenario <- aScenarioInfo$mScenarioName
 
   write_csv(allYield, "./outputs/yield.csv")
 
@@ -406,7 +406,7 @@ LandNode_getYield <- function(aLandNode, aName, aPeriod) {
 #' @param aLandAllocator Land allocator
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printExpectedYield <- function(aLandAllocator) {
+printExpectedYield <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   node <- parent <- NULL
 
@@ -444,10 +444,10 @@ printExpectedYield <- function(aLandAllocator) {
   }
 
   # Add information on scenario and expectation type
-  allYield$scenario <- SCENARIO.NAME
+  allYield$scenario <- aScenarioInfo$mScenarioName
 
   # Save information
-  file <- paste("./outputs/expectedYield/expectedYield_", FILE.NAME, ".csv", sep="")
+  file <- paste("./outputs/expectedYield/expectedYield_", aScenarioInfo$mFileName, ".csv", sep="")
   write_csv(allYield, file)
 }
 

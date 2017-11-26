@@ -8,15 +8,15 @@
 #'          a linear extrapolation from recent history.
 #' @importFrom stats lm predict
 #' @author KVC October 2017
-LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
+LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
   sector <- year <- yield <- lm <- predict <- NULL
 
   currYear <- get_per_to_yr(aPeriod)
-  startYear <- currYear - LINEAR.YEARS
+  startYear <- currYear - aScenarioInfo$mLinearYears
 
   # Create a tibble with yields and years
-  tibble(yield = rep(-1, LINEAR.YEARS),
+  tibble(yield = rep(-1, aScenarioInfo$mLinearYears),
          year = seq(from=startYear, to=(currYear - 1), by=1)) ->
     all.yields
 
@@ -55,15 +55,15 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #'          a linear extrapolation from recent history.
 #' @importFrom stats lm predict
 #' @author KVC October 2017
-LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
+LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInfo){
   # Silence package checks
   sector <- lm <- predict <- year <- price <- NULL
 
   currYear <- get_per_to_yr(aPeriod)
-  startYear <- currYear - LINEAR.YEARS
+  startYear <- currYear - aScenarioInfo$mLinearYears
 
   # Create a tibble with yields and years
-  tibble(price = rep(-1, LINEAR.YEARS),
+  tibble(price = rep(-1, aScenarioInfo$mLinearYears),
          year = seq(from=startYear, to=(currYear - 1), by=1)) ->
     all.prices
 

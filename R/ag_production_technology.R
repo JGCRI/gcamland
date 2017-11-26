@@ -9,7 +9,7 @@
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Model time period.
 #' @author KVC September 2017
-AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
+AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Compute tech change values for this period for both ag productivity and
   # the nonLandVariableCost.
 
@@ -59,7 +59,7 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
   }
 
   # Calculate profit rate
-  AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod)
+  AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod, aScenarioInfo)
 }
 
 #' AgProductionTechnology_calcProfitRate
@@ -70,20 +70,20 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod) {
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Current model period
 #' @author KVC September 2017
-AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod) {
+AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
   Period <- Product <- NULL
 
   # Get expected profit rate
-  if(EXPECTATION.TYPE == "Perfect") {
+  if(aScenarioInfo$mExpectationType == "Perfect") {
     expectedPrice <- PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
     expectedYield <- PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod)
-  } else if(EXPECTATION.TYPE == "Linear") {
-    expectedPrice <- LinearExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
-    expectedYield <- LinearExpectation_calcExpectedYield(aLandLeaf, aPeriod)
-  } else if(EXPECTATION.TYPE == "Lagged") {
-    expectedPrice <- LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
-    expectedYield <- LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+  } else if(aScenarioInfo$mExpectationType == "Linear") {
+    expectedPrice <- LinearExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
+    expectedYield <- LinearExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
+  } else if(aScenarioInfo$mExpectationType == "Lagged") {
+    expectedPrice <- LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
+    expectedYield <- LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
   }
 
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.

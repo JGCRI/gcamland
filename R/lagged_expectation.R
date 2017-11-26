@@ -8,7 +8,7 @@
 #'          a lagged approach -- use previous expectation + fraction
 #'          of new information.
 #' @author KVC November 2017
-LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
+LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
   sector <- year <- yield <- lm <- predict <- NULL
 
@@ -35,7 +35,7 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
   }
 
   # Calculate expected yield
-  expectedYield <- previousExpectation + (time / LAGGED.TAU) * newInformation
+  expectedYield <- previousExpectation + (time / aScenarioInfo$mLaggedYears) * newInformation
 
   # Save expected yield
   aLandLeaf$mExpectedYield[aPeriod] <- expectedYield
@@ -51,7 +51,7 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod) {
 #'          a lagged approach -- use previous expectation + fraction
 #'          of new information.
 #' @author KVC November 2017
-LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
+LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInfo){
   # Silence package checks
   sector <- lm <- predict <- year <- price <- NULL
 
@@ -92,7 +92,7 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod){
     }
 
     # Calculate expected price
-    expectedPrice <- previousExpectation + (time / LAGGED.TAU) * newInformation
+    expectedPrice <- previousExpectation + (time / aScenarioInfo$mLaggedYears) * newInformation
   } else {
     expectedPrice <- 1
   }

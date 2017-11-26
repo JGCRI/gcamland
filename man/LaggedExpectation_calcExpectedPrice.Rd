@@ -4,7 +4,7 @@
 \alias{LaggedExpectation_calcExpectedPrice}
 \title{LaggedExpectation_calcExpectedPrice}
 \usage{
-LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
+LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{LandLeaf to calculate expected price for}

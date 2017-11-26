@@ -6,17 +6,6 @@
 #' @author KVC November 2017
 #' @export
 run_ensembles <- function() {
-  # Save all information
-  currFileName <- FILE.NAME
-  currScenName <- SCENARIO.NAME
-  currLogitOption <- LOGIT.USE.DEFAULT
-  currAgFor <- LOGIT.AGROFOREST
-  currAgForNonPast <- LOGIT.AGROFOREST_NONPASTURE
-  currCrop <- LOGIT.CROPLAND
-  currExpectationType <- EXPECTATION.TYPE
-  currTau <- LAGGED.TAU
-  currLinYears <- LINEAR.YEARS
-
   # Set options for ensembles
   levels.AGROFOREST <- c(1)
   levels.AGROFOREST_NONPASTURE <- c(1)
@@ -27,69 +16,73 @@ run_ensembles <- function() {
   # Set a counter to use for file names
   i <- 0
 
-  # Set logit to use read in values (default currently not supported in these loops)
-  LOGIT.USE.DEFAULT <- FALSE
-
   # Loop over all LOGIT.AGROFOREST options
   for(agFor in levels.AGROFOREST) {
-    LOGIT.AGROFOREST <- agFor
-
     # Loop over all levels.AGROFOREST_NONPASTURE options
     for(agForNonPast in levels.AGROFOREST_NONPASTURE) {
-      LOGIT.AGROFOREST_NONPASTURE <- agForNonPast
-
       # Loop over all levels.CROPLAND
       for(crop in levels.CROPLAND) {
-        LOGIT.CROPLAND <- crop
-
         # Run Perfect expectations
-        EXPECTATION.TYPE <- "Perfect"
-        SCENARIO.NAME <- getScenName(SCENARIO, EXPECTATION.TYPE, NULL, LOGIT.AGROFOREST,
-                                     LOGIT.AGROFOREST_NONPASTURE, LOGIT.CROPLAND)
-        FILE.NAME <- i
-        print(paste("Starting run number ", FILE.NAME, ":", SCENARIO.NAME))
-        run_model()
+        scenName <- getScenName(SCENARIO, "Perfect", NULL, agFor, agForNonPast, crop)
+
+        currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
+                                      aExpectationType = "Perfect",
+                                      aLinearYears = NULL,
+                                      aLaggedYears = NULL,
+                                      aLogitUseDefault = FALSE,
+                                      aLogitAgroForest = agFor,
+                                      aLogitAgroForest_NonPasture = agForNonPast,
+                                      aLogitCropland = crop,
+                                      aScenarioName = scenName,
+                                      aFileName = i)
+
+        print(paste("Starting run number ", currScenInfo$mFileName, ":", currScenInfo$mScenarioName))
+        run_model(currScenInfo)
         i <- i + 1
 
         # Loop over all TAU options and run Lagged
         for(tau in levels.TAU) {
-          EXPECTATION.TYPE <- "Lagged"
-          LAGGED.TAU <- tau
-          SCENARIO.NAME <- getScenName(SCENARIO, EXPECTATION.TYPE, tau, LOGIT.AGROFOREST,
-                                       LOGIT.AGROFOREST_NONPASTURE, LOGIT.CROPLAND)
-          FILE.NAME <- i
-          print(paste("Starting run number ", FILE.NAME, ":", SCENARIO.NAME))
-          run_model()
+          scenName <- getScenName(SCENARIO, "Lagged", tau, agFor, agForNonPast, crop)
+
+          currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
+                                       aExpectationType = "Lagged",
+                                       aLinearYears = NULL,
+                                       aLaggedYears = tau,
+                                       aLogitUseDefault = FALSE,
+                                       aLogitAgroForest = agFor,
+                                       aLogitAgroForest_NonPasture = agForNonPast,
+                                       aLogitCropland = crop,
+                                       aScenarioName = scenName,
+                                       aFileName = i)
+
+          print(paste("Starting run number ", currScenInfo$mFileName, ":", currScenInfo$mScenarioName))
+          run_model(currScenInfo)
           i <- i + 1
         }
 
         # Loop over all LINYEARS options and run Linear
         for(linyears in levels.LINYEARS) {
-          EXPECTATION.TYPE <- "Lagged"
-          LINEAR.YEARS <- linyears
-          SCENARIO.NAME <- getScenName(SCENARIO, EXPECTATION.TYPE, linyears, LOGIT.AGROFOREST,
-                                       LOGIT.AGROFOREST_NONPASTURE, LOGIT.CROPLAND)
-          FILE.NAME <- i
-          print(paste("Starting run number ", FILE.NAME, ":", SCENARIO.NAME))
-          run_model()
+          scenName <- getScenName(SCENARIO, "Linear", linyears, agFor, agForNonPast, crop)
+
+          currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
+                                       aExpectationType = "Linear",
+                                       aLinearYears = linyears,
+                                       aLaggedYears = NULL,
+                                       aLogitUseDefault = FALSE,
+                                       aLogitAgroForest = agFor,
+                                       aLogitAgroForest_NonPasture = agForNonPast,
+                                       aLogitCropland = crop,
+                                       aScenarioName = scenName,
+                                       aFileName = i)
+
+          print(paste("Starting run number ", currScenInfo$mFileName, ":", currScenInfo$mScenarioName))
+          run_model(currScenInfo)
           i <- i + 1
         }
       }
     }
 
   }
-
-
-  # Reset information
-  FILE.NAME <- currFileName
-  SCENARIO.NAME <- currScenName
-  LOGIT.USE.DEFAULT <- currLogitOption
-  LOGIT.AGROFOREST <- currAgFor
-  LOGIT.AGROFOREST_NONPASTURE <- currAgForNonPast
-  LOGIT.CROPLAND <- currCrop
-  EXPECTATION.TYPE <- currExpectationType
-  LAGGED.TAU <- currTau
-  LINEAR.YEARS <- currLinYears
 }
 
 
@@ -98,10 +91,10 @@ run_ensembles <- function() {
 #' @details Loops through all years and runs the land model.
 #' @author KVC
 #' @export
-run_model <- function() {
+run_model <- function(aScenarioInfo) {
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION)
-  LandAllocator_setup(mLandAllocator)
+  LandAllocator_setup(mLandAllocator, aScenarioInfo)
 
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
@@ -111,7 +104,7 @@ run_model <- function() {
     # First, call initCalc for AgProductionTechnology (via Sector) and LandAllocator
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
-    Sector_initCalc(mLandAllocator, per)
+    Sector_initCalc(mLandAllocator, per, aScenarioInfo)
     LandAllocator_initCalc(mLandAllocator, per)
 
     # Next, call calcFinalLandAllocation for LandAllocator
@@ -120,14 +113,14 @@ run_model <- function() {
 
   # Print Outputs
   print("All model periods complete. Starting output.")
-  printOutput(mLandAllocator)
+  printOutput(mLandAllocator, aScenarioInfo)
 
   # Make figures
   if(MAKE.PLOTS) {
     print("Plotting diagnostic figures.")
     plotNest(mLandAllocator)
-    plotLandAllocation(mLandAllocator)
-    plotRegionalLandAllocation(mLandAllocator)
+    plotLandAllocation(mLandAllocator, aScenarioInfo)
+    plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
   }
 }
 
