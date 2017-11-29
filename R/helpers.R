@@ -55,12 +55,11 @@ getStartYear <- function() {
 }
 
 
-#' \%!in\%
-#'
-#' @param x list of things to exclude
-#' @param y full list
-#' @rdname NotIn
-#' @author KVC October 2017
+# %!in%
+#
+# @param x list of things to exclude
+# @param y full list
+# @author KVC October 2017
 '%!in%' <- function(x, y) {
   !('%in%'(x, y))
 }
