@@ -4,14 +4,12 @@
 \alias{LandNode_getLandShares}
 \title{LandNode_getLandShares}
 \usage{
-LandNode_getLandShares(aLandNode, aShares, aPeriod)
+LandNode_getLandShares(aLandNode, aShares)
 }
 \arguments{
 \item{aLandNode}{LandNode}
 
 \item{aShares}{Table of shares to add to}
-
-\item{aPeriod}{Model period}
 }
 \value{
 Table of land shares

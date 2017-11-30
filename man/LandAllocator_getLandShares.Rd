@@ -4,14 +4,12 @@
 \alias{LandAllocator_getLandShares}
 \title{LandAllocator_getLandShares}
 \usage{
-LandAllocator_getLandShares(aLandAllocator, aShares, aPeriod)
+LandAllocator_getLandShares(aLandAllocator, aShares)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
 \item{aShares}{Table of shares to append information to}
-
-\item{aPeriod}{Model period}
 }
 \value{
 Table of land shares

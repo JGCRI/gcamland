@@ -4,17 +4,15 @@
 \alias{LandAllocator_getLandAllocation}
 \title{LandAllocator_getLandAllocation}
 \usage{
-LandAllocator_getLandAllocation(aLandAllocator, aName, aPeriod)
+LandAllocator_getLandAllocation(aLandAllocator, allLand)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
-\item{aName}{Name of leaf we want allocation for}
-
-\item{aPeriod}{Model period}
+\item{allLand}{Data frame to fill in land allocation}
 }
 \value{
-Land allocation
+Land allocation table
 }
 \description{
 LandAllocator_getLandAllocation

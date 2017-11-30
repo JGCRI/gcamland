@@ -59,22 +59,14 @@ printLandAllocation <- function(aLandAllocator, aScenarioInfo) {
     leafs
 
   # Get data into a data frame
-  tibble::tibble(name = rep(NA, length(leafs$node)),
+  tibble::tibble(name = leafs$node,
                  land.allocation = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
     full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allLand
 
-  i <- 1
-  for(leaf in leafs$node) {
-    for (per in PERIODS) {
-      allLand$name[i] <- leaf
-      allLand$year[i] <- get_per_to_yr(per)
-      allLand$land.allocation[i] <- LandAllocator_getLandAllocation(aLandAllocator, leaf, per)
-      i <- i + 1
-    }
-  }
+  allLand <- LandAllocator_getLandAllocation(aLandAllocator, allLand)
 
   # Add information on scenario and expectation type
   allLand$scenario <- aScenarioInfo$mScenarioName
@@ -88,48 +80,61 @@ printLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 #'
 #' @details Calculates and returns land allocation for a particular leaf
 #' @param aLandAllocator LandAllocator
-#' @param aName Name of leaf we want allocation for
-#' @param aPeriod Model period
+#' @param allLand Data frame to fill in land allocation
 #'
-#' @return Land allocation
+#' @return Land allocation table
 #' @author KVC October 2017
-LandAllocator_getLandAllocation <- function(aLandAllocator, aName, aPeriod) {
-  land <- 0.0
+LandAllocator_getLandAllocation <- function(aLandAllocator, allLand) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      land <- land + LandNode_getLandAllocation(child, aName, aPeriod)
+      allLand <- LandNode_getLandAllocation(child, allLand)
     } else {
-      if(child$mName[1] == aName) {
-        land <- land + child$mLandAllocation[[aPeriod]]
-      }
+      allLand <- LandLeaf_getLandAllocation(child, allLand)
     }
   }
 
-  return(land)
+  return(allLand)
 }
 
 #' LandNode_getLandAllocation
 #'
-#' @details Calculates and returns total land allocation of a given type.
+#' @details Calculates and returns total land allocation for types and periods
 #' @param aLandNode LandNode
-#' @param aName Name of leaf we want allocation for
-#' @param aPeriod Model period
+#' @param allLand Data frame to fill in land allocation
 #'
-#' @return Land allocation for this node
+#' @return Land allocation table
 #' @author KVC October 2017
-LandNode_getLandAllocation <- function(aLandNode, aName, aPeriod) {
-  land <- 0.0
+LandNode_getLandAllocation <- function(aLandNode, allLand) {
+
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      land <- land + LandNode_getLandAllocation(child, aName, aPeriod)
+      allLand <- LandNode_getLandAllocation(child, allLand)
     } else {
-      if(child$mName[1] == aName) {
-        land <- land + child$mLandAllocation[[aPeriod]]
-      }
+      allLand <- LandLeaf_getLandAllocation(child, allLand)
     }
   }
 
-  return(land)
+  return(allLand)
+}
+
+#' LandLeaf_getLandAllocation
+#'
+#' @details Calculates and returns total land allocation for types and periods
+#' @param aLandLeaf LandLeaf
+#' @param allLand Data frame to fill in land allocation
+#'
+#' @return Land allocation table
+#' @author KVC October 2017
+LandLeaf_getLandAllocation <- function(aLandLeaf, allLand) {
+
+  for(per in PERIODS) {
+    currName <- aLandLeaf$mName[1]
+    currYear <- get_per_to_yr(per)
+    allLand$land.allocation[allLand$year == currYear &
+                              allLand$name == currName] <- aLandLeaf$mLandAllocation[[per]]
+  }
+
+  return(allLand)
 }
 
 #' printLandShares
@@ -142,24 +147,37 @@ printLandShares <- function(aLandAllocator) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- year <- NULL
 
-  # Set up a data frame
-  tibble::tibble(parent = "TEMP",
-                 name = "TEMP",
-                 share = NA) %>%
+  # Read nest
+  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
+
+  # Get a list of leafs
+  nodes <- unique(nest$parent)
+  nest %>%
+    filter(node %!in% nodes) ->
+    leafs
+
+  # Some leafs have the same parent node name. We need to add those
+  nest %>%
+    filter(parent == node) %>%
+    bind_rows(leafs) ->
+    leafs
+
+  # Get data into a data frame
+  tibble::tibble(parent = leafs$parent,
+                 name = leafs$node,
+                 share = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
     full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allLandShares
 
   # Loop over all periods and get shares
-  for ( per in PERIODS ) {
-    allLandShares <- LandAllocator_getLandShares(aLandAllocator, allLandShares, per)
-  }
+  allLandShares <- LandAllocator_getLandShares(aLandAllocator, allLandShares)
 
-  # Remove temporary data & convert year to integer
+  # Convert year to integer
   allLandShares %>%
-    filter(parent != "TEMP") %>%
-    mutate(year = as.integer(year)) ->
+    mutate(year = as.integer(year),
+           share = as.numeric(share)) ->
     allLandShares
 
   # Write data to a file
@@ -172,23 +190,23 @@ printLandShares <- function(aLandAllocator) {
 #' @details Calculates and returns land allocation for a particular leaf
 #' @param aLandAllocator LandAllocator
 #' @param aShares Table of shares to append information to
-#' @param aPeriod Model period
 #'
 #' @return Table of land shares
 #' @author KVC November 2017
-LandAllocator_getLandShares <- function(aLandAllocator, aShares, aPeriod) {
+LandAllocator_getLandShares <- function(aLandAllocator, aShares) {
 
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      aShares <- LandNode_getLandShares(child, aShares, aPeriod)
+      aShares <- LandNode_getLandShares(child, aShares)
     } else {
-      TEMP <- tibble::tibble(parent = "root",
-                             name = child$mName[1],
-                             share = child$mShare[[aPeriod]],
-                             year = get_per_to_yr(aPeriod))
-      aShares %>%
-        bind_rows(TEMP) ->
-        aShares
+      for(per in PERIODS) {
+        currParent <- "root"
+        currName <- child$mName[1]
+        currYear <- get_per_to_yr(per)
+        aShares$share[aShares$year == currYear &
+                        aShares$name == currName &
+                        aShares$parent == currParent] <- child$mShare[[per]]
+      }
     }
   }
 
@@ -200,22 +218,22 @@ LandAllocator_getLandShares <- function(aLandAllocator, aShares, aPeriod) {
 #' @details Calculates and returns land share for all children.
 #' @param aLandNode LandNode
 #' @param aShares Table of shares to add to
-#' @param aPeriod Model period
 #'
 #' @return Table of land shares
 #' @author KVC November 2017
-LandNode_getLandShares <- function(aLandNode, aShares, aPeriod) {
+LandNode_getLandShares <- function(aLandNode, aShares) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      aShares <- LandNode_getLandShares(child, aShares, aPeriod)
+      aShares <- LandNode_getLandShares(child, aShares)
     } else {
-      TEMP <- tibble::tibble(parent = aLandNode$mName[1],
-                             name = child$mName[1],
-                             share = child$mShare[[aPeriod]],
-                             year = get_per_to_yr(aPeriod))
-      aShares %>%
-        bind_rows(TEMP) ->
-        aShares
+      for(per in PERIODS) {
+        currParent <- aLandNode$mName[1]
+        currName <- child$mName[1]
+        currYear <- get_per_to_yr(per)
+        aShares$share[aShares$year == currYear &
+                        aShares$name == currName &
+                        aShares$parent == currParent] <- child$mShare[[per]]
+      }
     }
   }
 

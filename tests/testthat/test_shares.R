@@ -17,7 +17,7 @@ test_that("shares for all nodes add to 1", {
     x
   }
 
-  outputData <- read_csv("../../outputs/landShares.csv")
+  outputData <- read_csv("../../outputs/landShares.csv", col_types = "ccdi")
 
   # Aggregate to nodes
   outputData %>%
