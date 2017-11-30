@@ -5,7 +5,7 @@ Version: 0.9.0
 Author: Katherine Calvin
 Maintainer: Katherine Calvin <katherine.calvin@pnnl.gov>
 Description: Allocates land among a variety of uses following the methodology in GCAM (github.com/jgcri/gcam-core).
-License: MIT
+License: MIT + file LICENSE
 Depends: R (>= 2.10)
 Imports:
     assertthat (>= 0.2),
