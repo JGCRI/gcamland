@@ -4,23 +4,21 @@
 \alias{LandNode_getExpectedYield}
 \title{LandNode_getExpectedYield}
 \usage{
-LandNode_getExpectedYield(aLandNode, aName, aPeriod)
+LandNode_getExpectedYield(aLandNode, aData)
 }
 \arguments{
 \item{aLandNode}{LandNode}
 
-\item{aName}{Name of leaf we want expected yield for}
-
-\item{aPeriod}{Model period}
+\item{aData}{Data table to store expected yield}
 }
 \value{
-Expected yield for leaf named `aName`
+Expected yield data
 }
 \description{
 LandNode_getExpectedYield
 }
 \details{
-Calculates and returns expected yield for a given leaf
+Calculates and returns expected yield for leafs in this node
 }
 \author{
 KVC October 2017

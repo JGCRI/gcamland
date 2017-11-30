@@ -4,23 +4,21 @@
 \alias{LandAllocator_getExpectedYield}
 \title{LandAllocator_getExpectedYield}
 \usage{
-LandAllocator_getExpectedYield(aLandAllocator, aName, aPeriod)
+LandAllocator_getExpectedYield(aLandAllocator, aData)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
-\item{aName}{Name of leaf we want expected yield for}
-
-\item{aPeriod}{Model period}
+\item{aData}{Data table to store expected yield}
 }
 \value{
-Expected yield
+Expected yield data
 }
 \description{
 LandAllocator_getExpectedYield
 }
 \details{
-Calculates and returns expected yield for a particular leaf
+Calculates and returns expected yield for all leafs
 }
 \author{
 KVC October 2017

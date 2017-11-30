@@ -4,23 +4,21 @@
 \alias{LandAllocator_getYield}
 \title{LandAllocator_getYield}
 \usage{
-LandAllocator_getYield(aLandAllocator, aName, aPeriod)
+LandAllocator_getYield(aLandAllocator, aData)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
-\item{aName}{Name of leaf we want yield for}
-
-\item{aPeriod}{Model period}
+\item{aData}{Table to store data in}
 }
 \value{
-Yield
+Yield for all leafs
 }
 \description{
 LandAllocator_getYield
 }
 \details{
-Calculates and returns yield for a particular leaf
+Calculates and returns yield for all leafs
 }
 \author{
 KVC October 2017

@@ -350,22 +350,14 @@ printYield <- function(aLandAllocator, aScenarioInfo) {
     leafs
 
   # Get data into a data frame
-  tibble::tibble(name = rep(NA, length(leafs$node)),
+  tibble::tibble(name = leafs$node,
                  yield = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
     full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allYield
 
-  i <- 1
-  for(leaf in leafs$node) {
-    for (per in PERIODS) {
-      allYield$name[i] <- leaf
-      allYield$year[i] <- get_per_to_yr(per)
-      allYield$yield[i] <- LandAllocator_getYield(aLandAllocator, leaf, per)
-      i <- i + 1
-    }
-  }
+  allYield <- LandAllocator_getYield(aLandAllocator, allYield)
 
   # Add information on scenario and expectation type
   allYield$scenario <- aScenarioInfo$mScenarioName
@@ -376,50 +368,60 @@ printYield <- function(aLandAllocator, aScenarioInfo) {
 
 #' LandAllocator_getYield
 #'
-#' @details Calculates and returns yield for a particular leaf
+#' @details Calculates and returns yield for all leafs
 #' @param aLandAllocator LandAllocator
-#' @param aName Name of leaf we want yield for
-#' @param aPeriod Model period
+#' @param aData Table to store data in
 #'
-#' @return Yield
+#' @return Yield for all leafs
 #' @author KVC October 2017
-LandAllocator_getYield <- function(aLandAllocator, aName, aPeriod) {
-  yield <- 0.0
+LandAllocator_getYield <- function(aLandAllocator, aData) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      yield <- yield + LandNode_getYield(child, aName, aPeriod)
+      aData <- LandNode_getYield(child, aData)
     } else if(class(child) == "LandLeaf") {
-      if(child$mName[1] == aName) {
-        yield <- yield + child$mYield[[aPeriod]]
-      }
+      aData <- LandLeaf_getYield(child, aData)
     }
   }
 
-  return(yield)
+  return(aData)
 }
 
 #' LandNode_getYield
 #'
-#' @details Calculates and returns yield for a given leaf
+#' @details Calculates and returns yield for all leafs in a node
 #' @param aLandNode LandNode
-#' @param aName Name of leaf we want yield for
-#' @param aPeriod Model period
+#' @param aData Table to store data in
 #'
-#' @return Yield for leaf named `aName`
+#' @return Yield for all leafs in the node
 #' @author KVC October 2017
-LandNode_getYield <- function(aLandNode, aName, aPeriod) {
-  yield <- 0.0
+LandNode_getYield <- function(aLandNode, aData) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      yield <- yield + LandNode_getYield(child, aName, aPeriod)
+      aData <- LandNode_getYield(child, aData)
     } else if(class(child) == "LandLeaf") {
-      if(child$mName[1] == aName) {
-        yield <- yield + child$mYield[[aPeriod]]
-      }
+      aData <- LandLeaf_getYield(child, aData)
     }
   }
 
-  return(yield)
+  return(aData)
+}
+
+#' LandLeaf_getYield
+#'
+#' @details Calculates and returns yield for this leaf
+#' @param aLandLeaf LandLeaf
+#' @param aData Table to store data in
+#'
+#' @return Yield for all leafs in the node
+#' @author KVC October 2017
+LandLeaf_getYield <- function(aLandLeaf, aData) {
+  for(per in PERIODS) {
+    currName <- aLandLeaf$mName[1]
+    currYear <- get_per_to_yr(per)
+    aData$yield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mYield[[per]]
+  }
+
+  return(aData)
 }
 
 #' printExpectedYield
@@ -449,22 +451,14 @@ printExpectedYield <- function(aLandAllocator, aScenarioInfo) {
     leafs
 
   # Get data into a data frame
-  tibble::tibble(name = rep(NA, length(leafs$node)),
+  tibble::tibble(name = leafs$node,
                  expectedYield = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
     full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allYield
 
-  i <- 1
-  for(leaf in leafs$node) {
-    for (per in PERIODS) {
-      allYield$name[i] <- leaf
-      allYield$year[i] <- get_per_to_yr(per)
-      allYield$expectedYield[i] <- LandAllocator_getExpectedYield(aLandAllocator, leaf, per)
-      i <- i + 1
-    }
-  }
+  allYield <- LandAllocator_getExpectedYield(aLandAllocator, allYield)
 
   # Add information on scenario and expectation type
   allYield$scenario <- aScenarioInfo$mScenarioName
@@ -476,49 +470,58 @@ printExpectedYield <- function(aLandAllocator, aScenarioInfo) {
 
 #' LandAllocator_getExpectedYield
 #'
-#' @details Calculates and returns expected yield for a particular leaf
+#' @details Calculates and returns expected yield for all leafs
 #' @param aLandAllocator LandAllocator
-#' @param aName Name of leaf we want expected yield for
-#' @param aPeriod Model period
+#' @param aData Data table to store expected yield
 #'
-#' @return Expected yield
+#' @return Expected yield data
 #' @author KVC October 2017
-LandAllocator_getExpectedYield <- function(aLandAllocator, aName, aPeriod) {
-  yield <- 0.0
+LandAllocator_getExpectedYield <- function(aLandAllocator, aData) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      yield <- yield + LandNode_getExpectedYield(child, aName, aPeriod)
+      aData <- LandNode_getExpectedYield(child, aData)
     } else if(class(child) == "LandLeaf") {
-      if(child$mName[1] == aName) {
-        yield <- yield + child$mExpectedYield[[aPeriod]]
-      }
+      aData <- LandLeaf_getExpectedYield(child, aData)
     }
   }
 
-  return(yield)
+  return(aData)
 }
 
 #' LandNode_getExpectedYield
 #'
-#' @details Calculates and returns expected yield for a given leaf
+#' @details Calculates and returns expected yield for leafs in this node
 #' @param aLandNode LandNode
-#' @param aName Name of leaf we want expected yield for
-#' @param aPeriod Model period
+#' @param aData Data table to store expected yield
 #'
-#' @return Expected yield for leaf named `aName`
+#' @return Expected yield data
 #' @author KVC October 2017
-LandNode_getExpectedYield <- function(aLandNode, aName, aPeriod) {
-  yield <- 0.0
+LandNode_getExpectedYield <- function(aLandNode, aData) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      yield <- yield + LandNode_getExpectedYield(child, aName, aPeriod)
+      aData <- LandNode_getExpectedYield(child, aData)
     } else if(class(child) == "LandLeaf") {
-      if(child$mName[1] == aName) {
-        yield <- yield + child$mExpectedYield[[aPeriod]]
-      }
+      aData <- LandLeaf_getExpectedYield(child, aData)
     }
   }
 
-  return(yield)
+  return(aData)
 }
 
+#' LandLeaf_getExpectedYield
+#'
+#' @details Calculates and returns expected yield for this leaf
+#' @param aLandLeaf LandLeaf
+#' @param aData Table to store data in
+#'
+#' @return Expected yield data
+#' @author KVC October 2017
+LandLeaf_getExpectedYield <- function(aLandLeaf, aData) {
+  for(per in PERIODS) {
+    currName <- aLandLeaf$mName[1]
+    currYear <- get_per_to_yr(per)
+    aData$expectedYield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedYield[[per]]
+  }
+
+  return(aData)
+}
