@@ -15,6 +15,7 @@ printOutput <- function(aLandAllocator, aScenarioInfo) {
   printYield(aLandAllocator, aScenarioInfo)
   printExpectedYield(aLandAllocator, aScenarioInfo)
   printExpectedPrices(aScenarioInfo)
+  printPrices()
 }
 
 #' printExpectedPrices
@@ -30,6 +31,14 @@ printExpectedPrices <- function(aScenarioInfo) {
   file <- paste("./outputs/expectedPrice/expectedPrice_", aScenarioInfo$mFileName, ".csv", sep="")
 
   write_csv(expectedPrices, file)
+}
+
+#' printPrices
+#'
+#' @details Print prices
+#' @author KVC November 2017
+printPrices <- function() {
+  write_csv(PRICES, "./outputs/prices.csv")
 }
 
 #' printLandAllocation
