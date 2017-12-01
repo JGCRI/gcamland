@@ -57,10 +57,7 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
       prevYear <- get_per_to_yr(aPeriod - 1)
 
       # Get previous expectation
-      EXPECTED_PRICES %>%
-        filter(year == prevYear, sector == aLandLeaf$mProductName[1]) ->
-        currExpectedPrice
-      previousExpectation <- currExpectedPrice[[c("price")]]
+      previousExpectation <- aLandLeaf$mExpectedPrice[[aPeriod-1]]
 
       # Get new information (i.e., last years actual price)
       PRICES %>%
@@ -84,8 +81,7 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   }
 
   # Save expected price data
-  yr <- get_per_to_yr(aPeriod)
-  EXPECTED_PRICES$price[year == yr & sector == aLandLeaf$mProductName[1]] <<- expectedPrice
+  aLandLeaf$mExpectedPrice[aPeriod] <- expectedPrice
 
   return(expectedPrice)
 }

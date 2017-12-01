@@ -116,10 +116,3 @@ get_hindcast_prices <- function(){
 #' A tibble with all of the prices for the model
 #' @author Kate Calvin
 PRICES <- get_prices()
-
-#' EXPECTED_PRICES
-#'
-#' A tibble where expected prices can be stored
-#' @author Kate Calvin
-EXPECTED_PRICES <- PRICES
-

@@ -14,23 +14,8 @@ printOutput <- function(aLandAllocator, aScenarioInfo) {
   printLandShares(aLandAllocator)
   printYield(aLandAllocator, aScenarioInfo)
   printExpectedYield(aLandAllocator, aScenarioInfo)
-  printExpectedPrices(aScenarioInfo)
+  printExpectedPrice(aLandAllocator, aScenarioInfo)
   printPrices()
-}
-
-#' printExpectedPrices
-#'
-#' @details Print expected prices
-#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
-#' @author KVC November 2017
-printExpectedPrices <- function(aScenarioInfo) {
-  EXPECTED_PRICES %>%
-    mutate(scenario = aScenarioInfo$mScenarioName) ->
-    expectedPrices
-
-  file <- paste("./outputs/expectedPrice/expectedPrice_", aScenarioInfo$mFileName, ".csv", sep="")
-
-  write_csv(expectedPrices, file)
 }
 
 #' printPrices
@@ -530,6 +515,109 @@ LandLeaf_getExpectedYield <- function(aLandLeaf, aData) {
     currName <- aLandLeaf$mName[1]
     currYear <- get_per_to_yr(per)
     aData$expectedYield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedYield[[per]]
+  }
+
+  return(aData)
+}
+
+
+#' printExpectedPrice
+#'
+#' @details Prints expected price by land leaf
+#' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @importFrom readr write_csv read_csv
+#' @author KVC October 2017
+printExpectedPrice <- function(aLandAllocator, aScenarioInfo) {
+  # Silence package checks
+  node <- parent <- uniqueJoinField <- NULL
+
+  # Read nest
+  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
+
+  # Get a list of leafs
+  nodes <- unique(nest$parent)
+  nest %>%
+    filter(node %!in% nodes) ->
+    leafs
+
+  # Some leafs have the same parent node name. We need to add those
+  nest %>%
+    filter(parent == node) %>%
+    bind_rows(leafs) ->
+    leafs
+
+  # Get data into a data frame
+  tibble::tibble(name = leafs$node,
+                 expectedPrice = rep(NA, length(leafs$node))) %>%
+    mutate(uniqueJoinField = 1) %>%
+    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    select(-uniqueJoinField) ->
+    allPrice
+
+  allPrice <- LandAllocator_getExpectedPrice(aLandAllocator, allPrice)
+
+  # Add information on scenario and expectation type
+  allPrice$scenario <- aScenarioInfo$mScenarioName
+
+  # Save information
+  file <- paste("./outputs/expectedPrice/expectedPrice_", aScenarioInfo$mFileName, ".csv", sep="")
+  write_csv(allPrice, file)
+}
+
+#' LandAllocator_getExpectedPrice
+#'
+#' @details Calculates and returns expected price for all leafs
+#' @param aLandAllocator LandAllocator
+#' @param aData Data table to store expected price
+#'
+#' @return Expected price data
+#' @author KVC October 2017
+LandAllocator_getExpectedPrice <- function(aLandAllocator, aData) {
+  for(child in aLandAllocator$mChildren) {
+    if(class(child) == "LandNode") {
+      aData <- LandNode_getExpectedPrice(child, aData)
+    } else if(class(child) == "LandLeaf") {
+      aData <- LandLeaf_getExpectedPrice(child, aData)
+    }
+  }
+
+  return(aData)
+}
+
+#' LandNode_getExpectedPrice
+#'
+#' @details Calculates and returns expected price for leafs in this node
+#' @param aLandNode LandNode
+#' @param aData Data table to store expected price
+#'
+#' @return Expected price data
+#' @author KVC November 2017
+LandNode_getExpectedPrice <- function(aLandNode, aData) {
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
+      aData <- LandNode_getExpectedPrice(child, aData)
+    } else if(class(child) == "LandLeaf") {
+      aData <- LandLeaf_getExpectedPrice(child, aData)
+    }
+  }
+
+  return(aData)
+}
+
+#' LandLeaf_getExpectedPrice
+#'
+#' @details Calculates and returns expected price for this leaf
+#' @param aLandLeaf LandLeaf
+#' @param aData Table to store data in
+#'
+#' @return Expected price data
+#' @author KVC November 2017
+LandLeaf_getExpectedPrice <- function(aLandLeaf, aData) {
+  for(per in PERIODS) {
+    currName <- aLandLeaf$mName[1]
+    currYear <- get_per_to_yr(per)
+    aData$expectedPrice[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedPrice[[per]]
   }
 
   return(aData)
