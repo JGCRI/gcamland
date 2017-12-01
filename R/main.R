@@ -3,16 +3,16 @@
 #' run_ensembles
 #'
 #' @details Loop over a large parameter set and run the offline land model
-#' @import foreach
+#' @import foreach doParallel
 #' @author KVC November 2017
 #' @export
 run_ensembles <- function() {
   # Set options for ensembles
-  levels.AGROFOREST <- c(1)
-  levels.AGROFOREST_NONPASTURE <- c(1)
-  levels.CROPLAND <- c(1)
-  levels.LAGSHARE <- c(0.1, 0.9)
-  levels.LINYEARS <- c(1, 10)
+  levels.AGROFOREST <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
+  levels.AGROFOREST_NONPASTURE <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
+  levels.CROPLAND <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
+  levels.LAGSHARE <- c(0.1, 0.25, 0,5, 0.75, 0.9)
+  levels.LINYEARS <- c(1, 5, 10, 15)
 
   # Set a counter to use for file names
   i <- 1
@@ -85,7 +85,10 @@ run_ensembles <- function() {
   }
 
   # Loop over all scenario configurations and run the model
-  foreach(obj = scenObjects) %do% run_model(obj)
+  foreach(obj = scenObjects) %dopar% {
+    print(paste0("Starting simulation: ", obj$mFileName))
+    # run_model(obj)
+  }
 }
 
 
@@ -96,8 +99,6 @@ run_ensembles <- function() {
 #' @author KVC
 #' @export
 run_model <- function(aScenarioInfo) {
-  print(paste0("Starting simulation: ", aScenarioInfo$mFileName))
-
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION)
   LandAllocator_setup(mLandAllocator, aScenarioInfo)
