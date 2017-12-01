@@ -3,6 +3,7 @@
 #' run_ensembles
 #'
 #' @details Loop over a large parameter set and run the offline land model
+#' @import foreach
 #' @author KVC November 2017
 #' @export
 run_ensembles <- function() {
@@ -14,7 +15,10 @@ run_ensembles <- function() {
   levels.LINYEARS <- c(1, 10)
 
   # Set a counter to use for file names
-  i <- 0
+  i <- 1
+
+  # Set up a list to store scenario information objects
+  scenObjects <- list()
 
   # Loop over all LOGIT.AGROFOREST options
   for(agFor in levels.AGROFOREST) {
@@ -36,8 +40,7 @@ run_ensembles <- function() {
                                       aScenarioName = scenName,
                                       aFileName = i)
 
-        print(paste("Starting run number ", currScenInfo$mFileName, ":", currScenInfo$mScenarioName))
-        run_model(currScenInfo)
+        scenObjects[[i]] <- currScenInfo
         i <- i + 1
 
         # Loop over all TAU options and run Lagged
@@ -55,15 +58,13 @@ run_ensembles <- function() {
                                        aScenarioName = scenName,
                                        aFileName = i)
 
-          print(paste("Starting run number ", currScenInfo$mFileName, ":", currScenInfo$mScenarioName))
-          run_model(currScenInfo)
+          scenObjects[[i]] <- currScenInfo
           i <- i + 1
         }
 
         # Loop over all LINYEARS options and run Linear
         for(linyears in levels.LINYEARS) {
           scenName <- getScenName(SCENARIO, "Linear", linyears, agFor, agForNonPast, crop)
-
           currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
                                        aExpectationType = "Linear",
                                        aLinearYears = linyears,
@@ -75,14 +76,16 @@ run_ensembles <- function() {
                                        aScenarioName = scenName,
                                        aFileName = i)
 
-          print(paste("Starting run number ", currScenInfo$mFileName, ":", currScenInfo$mScenarioName))
-          run_model(currScenInfo)
+          scenObjects[[i]] <- currScenInfo
           i <- i + 1
         }
       }
     }
 
   }
+
+  # Loop over all scenario configurations and run the model
+  foreach(obj = scenObjects) %do% run_model(obj)
 }
 
 
@@ -93,6 +96,8 @@ run_ensembles <- function() {
 #' @author KVC
 #' @export
 run_model <- function(aScenarioInfo) {
+  print(paste0("Starting simulation: ", aScenarioInfo$mFileName))
+
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION)
   LandAllocator_setup(mLandAllocator, aScenarioInfo)
