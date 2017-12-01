@@ -10,7 +10,7 @@ run_ensembles <- function() {
   levels.AGROFOREST <- c(1)
   levels.AGROFOREST_NONPASTURE <- c(1)
   levels.CROPLAND <- c(1)
-  levels.TAU <- c(1, 10)
+  levels.LAGSHARE <- c(0.1, 0.9)
   levels.LINYEARS <- c(1, 10)
 
   # Set a counter to use for file names
@@ -28,7 +28,7 @@ run_ensembles <- function() {
         currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
                                       aExpectationType = "Perfect",
                                       aLinearYears = NULL,
-                                      aLaggedYears = NULL,
+                                      aLaggedShareOld = NULL,
                                       aLogitUseDefault = FALSE,
                                       aLogitAgroForest = agFor,
                                       aLogitAgroForest_NonPasture = agForNonPast,
@@ -41,13 +41,13 @@ run_ensembles <- function() {
         i <- i + 1
 
         # Loop over all TAU options and run Lagged
-        for(tau in levels.TAU) {
-          scenName <- getScenName(SCENARIO, "Lagged", tau, agFor, agForNonPast, crop)
+        for(share in levels.LAGSHARE) {
+          scenName <- getScenName(SCENARIO, "Lagged", share, agFor, agForNonPast, crop)
 
           currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
                                        aExpectationType = "Lagged",
                                        aLinearYears = NULL,
-                                       aLaggedYears = tau,
+                                       aLaggedShareOld = share,
                                        aLogitUseDefault = FALSE,
                                        aLogitAgroForest = agFor,
                                        aLogitAgroForest_NonPasture = agForNonPast,
@@ -67,7 +67,7 @@ run_ensembles <- function() {
           currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
                                        aExpectationType = "Linear",
                                        aLinearYears = linyears,
-                                       aLaggedYears = NULL,
+                                       aLaggedShareOld = NULL,
                                        aLogitUseDefault = FALSE,
                                        aLogitAgroForest = agFor,
                                        aLogitAgroForest_NonPasture = agForNonPast,

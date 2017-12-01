@@ -4,7 +4,7 @@
 #' @details Contains all information needed to describe a scenario
 #' @param aScenario Scenario name
 #' @param aExpectationType Expectation type
-#' @param aLaggedYears Years for lagged expectations
+#' @param aLaggedShareOld Share of old expectations included in current expectation
 #' @param aLinearYears Years for linear expectations
 #' @param aLogitUseDefault Boolean indicating whether to use default logits
 #' @param aLogitAgroForest AgroForest logit exponent (assuming mLogitUseDefault == FALSE)
@@ -18,7 +18,7 @@
 ScenarioInfo <- function(aScenario = NULL,
                          # Currently only "Perfect", "Linear", and "Lagged" ExpectationType are supported
                          aExpectationType = NULL,
-                         aLaggedYears = NULL,
+                         aLaggedShareOld = NULL,
                          aLinearYears = NULL,
                          aLogitUseDefault = NULL,
                          aLogitAgroForest = NULL,
@@ -28,7 +28,7 @@ ScenarioInfo <- function(aScenario = NULL,
                          aFileName = NULL) {
   mScenario <- aScenario
   mExpectationType <- aExpectationType
-  mLaggedYears <- aLaggedYears
+  mLaggedShareOld <- aLaggedShareOld
   mLinearYears <- aLinearYears
   mLogitUseDefault <- aLogitUseDefault
   mLogitAgroForest <- aLogitAgroForest
@@ -50,10 +50,10 @@ ScenarioInfo <- function(aScenario = NULL,
 SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
                               aExpectationType = "Lagged",
                               aLinearYears = NULL,
-                              aLaggedYears = 5,
+                              aLaggedShareOld = 0.5,
                               aLogitUseDefault = TRUE,
                               aLogitAgroForest = NULL,
                               aLogitAgroForest_NonPasture = NULL,
                               aLogitCropland = NULL,
-                              aScenarioName = paste(SCENARIO, "_", "Lagged", 5, sep=""),
-                              aFileName = paste(SCENARIO, "_", "Lagged", 5, sep=""))
+                              aScenarioName = paste(SCENARIO, "_", "Lagged", 0.5, sep=""),
+                              aFileName = paste(SCENARIO, "_", "Lagged", 0.5, sep=""))

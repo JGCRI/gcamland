@@ -5,7 +5,7 @@
 \title{ScenarioInfo}
 \usage{
 ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
-  aLaggedYears = NULL, aLinearYears = NULL, aLogitUseDefault = NULL,
+  aLaggedShareOld = NULL, aLinearYears = NULL, aLogitUseDefault = NULL,
   aLogitAgroForest = NULL, aLogitAgroForest_NonPasture = NULL,
   aLogitCropland = NULL, aScenarioName = NULL, aFileName = NULL)
 }
@@ -14,7 +14,7 @@ ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
 
 \item{aExpectationType}{Expectation type}
 
-\item{aLaggedYears}{Years for lagged expectations}
+\item{aLaggedShareOld}{Share of old expectations included in current expectation}
 
 \item{aLinearYears}{Years for linear expectations}
 

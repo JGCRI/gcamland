@@ -28,15 +28,9 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     newInformation <- aLandLeaf$mYield[[aPeriod]]
   }
 
-  # Get length of time that has happened since last decision
-  if ( aPeriod > 1 ) {
-    time <- get_timestep(aPeriod)
-  } else {
-    time <- 1
-  }
-
   # Calculate expected yield
-  expectedYield <- previousExpectation + (time / aScenarioInfo$mLaggedYears) * newInformation
+  expectedYield <- aScenarioInfo$mLaggedShareOld * previousExpectation +
+      (1 - aScenarioInfo$mLaggedShareOld) * newInformation
 
   # Save expected yield
   aLandLeaf$mExpectedYield[aPeriod] <- expectedYield
@@ -58,50 +52,40 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   sector <- lm <- predict <- year <- price <- NULL
 
   if(aLandLeaf$mProductName[1] %in% unique(PRICES$sector)) {
-    # Get previous expectation
+    # Calculate expectations
     if ( aPeriod > 1 ) {
-      yr <- get_per_to_yr(aPeriod - 1)
+      prevYear <- get_per_to_yr(aPeriod - 1)
+
+      # Get previous expectation
       EXPECTED_PRICES %>%
-        filter(year == yr, sector == aLandLeaf$mProductName[1]) ->
+        filter(year == prevYear, sector == aLandLeaf$mProductName[1]) ->
         currExpectedPrice
       previousExpectation <- currExpectedPrice[[c("price")]]
-    } else {
-      # If we don't have data, then use current price
-      yr <- get_per_to_yr(aPeriod)
+
+      # Get new information (i.e., last years actual price)
       PRICES %>%
-        filter(year == yr, sector == aLandLeaf$mProductName[1]) ->
+        filter(year == prevYear, sector == aLandLeaf$mProductName[1]) ->
         currPrice
-      previousExpectation <- currPrice[[c("price")]]
-    }
+      newInformation <- currPrice[[c("price")]]
 
-    # Get new information (the price that has happened since last decision)
-    if ( aPeriod > 1 ) {
-      yr <- get_per_to_yr(aPeriod - 1)
+      # Calculate expected price
+      expectedPrice <- aScenarioInfo$mLaggedShareOld * previousExpectation +
+                              (1 - aScenarioInfo$mLaggedShareOld) * newInformation
     } else {
-      # If we don't have data, then use current price
-      yr <- get_per_to_yr(aPeriod)
+      # If we don't have data, then use current price as expectation
+      currYear <- get_per_to_yr(aPeriod)
+      PRICES %>%
+        filter(year == currYear, sector == aLandLeaf$mProductName[1]) ->
+        currPrice
+      expectedPrice <- currPrice[[c("price")]]
     }
-    PRICES %>%
-      filter(year == yr, sector == aLandLeaf$mProductName[1]) ->
-      currPrice
-    newInformation <- currPrice[[c("price")]]
-
-    # Get length of time that has happened since last decision
-    if ( aPeriod > 1 ) {
-      time <- get_timestep(aPeriod)
-    } else {
-      time <- 1
-    }
-
-    # Calculate expected price
-    expectedPrice <- previousExpectation + (time / aScenarioInfo$mLaggedYears) * newInformation
   } else {
     expectedPrice <- 1
   }
 
   # Save expected price data
   yr <- get_per_to_yr(aPeriod)
-  EXPECTED_PRICES$price[year == yr & sector == aLandLeaf$mProductName[1]] <- expectedPrice
+  EXPECTED_PRICES$price[year == yr & sector == aLandLeaf$mProductName[1]] <<- expectedPrice
 
   return(expectedPrice)
 }
