@@ -15,8 +15,8 @@ get_prices <- function() {
   if(SCENARIO == "Hindcast") {
     prices <- get_hindcast_prices()
   } else {
-    file <- paste("./inst/extdata/scenario-data/AgPrices_", SCENARIO, ".csv", sep="")
-    prices <- suppressMessages(read_csv(file, skip = 1))
+    file <- paste("./scenario-data/AgPrices_", SCENARIO, ".csv", sep="")
+    prices <- suppressMessages(read_csv(system.file("extdata", file, package = "gcamland"), skip = 1))
 
     # Tidy data
     prices %>%
@@ -50,17 +50,17 @@ get_hindcast_prices <- function(){
     FAO_country <- GCAM_commodity <- item <- deflator <- NULL
 
   # Read in mappings
-  agluCtry <- suppressMessages(read_csv("./inst/extdata/mappings/AGLU_ctry.csv", skip = 3))
-  iso_GCAM_regID <- suppressMessages(read_csv("./inst/extdata/mappings/iso_GCAM_regID.csv", skip = 3))
-  GCAM_region_names <- suppressMessages(read_csv("./inst/extdata/mappings/GCAM_region_names.csv", skip = 3))
-  FAO_ag_items_PRODSTAT <- suppressMessages(read_csv("./inst/extdata/mappings/FAO_ag_items_PRODSTAT.csv", skip = 3))
+  agluCtry <- suppressMessages(read_csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3))
+  iso_GCAM_regID <- suppressMessages(read_csv(system.file("extdata", "./mappings/iso_GCAM_regID.csv", package = "gcamland"), skip = 3))
+  GCAM_region_names <- suppressMessages(read_csv(system.file("extdata", "./mappings/GCAM_region_names.csv", package = "gcamland"), skip = 3))
+  FAO_ag_items_PRODSTAT <- suppressMessages(read_csv(system.file("extdata", "./mappings/FAO_ag_items_PRODSTAT.csv", package = "gcamland"), skip = 3))
 
   # Read prices & production (we'll weight prices by production when we can aggregate)
-  faoPrices <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_prices.csv"))
-  faoProd <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_prod.csv"))
+  faoPrices <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/fao_prices.csv", package = "gcamland")))
+  faoProd <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/fao_prod.csv", package = "gcamland")))
 
   # Read in GDP deflator
-  gdpDeflator <- suppressMessages(read_csv("./inst/extdata/hindcast-data/gdp_deflator.csv", skip = 1))
+  gdpDeflator <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/gdp_deflator.csv", package = "gcamland"), skip = 1))
 
   # Tidy data
   faoProd %>%

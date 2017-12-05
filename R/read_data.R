@@ -32,8 +32,8 @@ ReadData_LN0 <- function(aRegionName) {
   region <- land <- year.fillout <- logit.year.fillout <- NULL
 
   # Read in calibration data
-  land <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN0_Land.csv", skip = 3))
-  logit <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN0_Logit.csv", skip = 3))
+  land <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L211.LN0_Land.csv", package = "gcamland"), skip = 3))
+  logit <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L211.LN0_Logit.csv", package = "gcamland"), skip = 3))
 
   # Join all data into a single frame
   logit %>%
@@ -63,7 +63,7 @@ ReadData_LN1_Node <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN1_ValueLogit.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L211.LN1_ValueLogit.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -94,7 +94,7 @@ ReadData_LN1_LeafChildren <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L211.LN1_UnmgdAllocation.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L211.LN1_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -124,7 +124,7 @@ ReadData_LN2_Node <- function(aRegionName) {
   region <- LandNode1 <- year.fillout <- logit.year.fillout <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L212.LN2_Logit.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L212.LN2_Logit.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -155,7 +155,7 @@ ReadData_LN2_LandLeaf <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L212.LN2_MgdAllocation.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L212.LN2_MgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -185,7 +185,7 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L212.LN2_UnmgdAllocation.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L212.LN2_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -215,7 +215,7 @@ ReadData_LN3_Node <- function(aRegionName) {
   region <- LandNode1 <- year.fillout <- logit.year.fillout <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_Logit.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_Logit.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -248,9 +248,9 @@ ReadData_LN3_LandLeaf <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_MgdAllocation_crop.csv", skip = 3)) %>%
-    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_MgdAllocation_bio.csv", skip = 3))) %>%
-    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_MgdAllocation_noncrop.csv", skip = 3))) ->
+  suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_MgdAllocation_crop.csv", package = "gcamland"), skip = 3)) %>%
+    bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_MgdAllocation_bio.csv", package = "gcamland"), skip = 3))) %>%
+    bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_MgdAllocation_noncrop.csv", package = "gcamland"), skip = 3))) ->
     data
 
   # Filter data for the specified region
@@ -281,7 +281,7 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L213.LN3_UnmgdAllocation.csv", skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -313,14 +313,14 @@ ReadData_AgProd <- function(aRegionName) {
   region <- AgSupplySubsector <- NULL
 
   # Read in data
-  suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_ag.csv", skip = 3)) %>%
-    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_For.csv", skip = 3))) %>%
-    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L201.AgProduction_Past.csv", skip = 3))) ->
+  suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgProduction_ag.csv", package = "gcamland"), skip = 3)) %>%
+    bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgProduction_For.csv", package = "gcamland"), skip = 3))) %>%
+    bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgProduction_Past.csv", package = "gcamland"), skip = 3))) ->
     calOutput
   agProdChange <- get_AgProdChange()
-  suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_ag.csv", skip = 3)) %>%
-    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_bio.csv", skip = 3))) %>%
-    bind_rows(suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgCost_For.csv", skip = 3))) ->
+  suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_ag.csv", package = "gcamland"), skip = 3)) %>%
+    bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
+    bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
     cost
 
   # Filter data for the specified region
@@ -371,7 +371,7 @@ get_AgProdChange <- function() {
   if(SCENARIO == "Hindcast") {
     agProdChange <- get_hindcast_AgProdChange()
   } else {
-    agProdChange <- suppressMessages(read_csv("./inst/extdata/gcam43-data/L205.AgProdChange_ref.csv", skip = 3))
+    agProdChange <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgProdChange_ref.csv", package = "gcamland"), skip = 3))
   }
 
   # Filter for years in model only

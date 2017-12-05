@@ -18,15 +18,15 @@ get_hindcast_AgProdChange <- function(){
     AgProdChange <- NULL
 
   # Read in mappings
-  agluCtry <- suppressMessages(read_csv("./inst/extdata/mappings/AGLU_ctry.csv", skip = 3))
-  iso_GCAM_regID <- suppressMessages(read_csv("./inst/extdata/mappings/iso_GCAM_regID.csv", skip = 3))
-  GCAM_region_names <- suppressMessages(read_csv("./inst/extdata/mappings/GCAM_region_names.csv", skip = 3))
-  FAO_ag_items_PRODSTAT <- suppressMessages(read_csv("./inst/extdata/mappings/FAO_ag_items_PRODSTAT.csv", skip = 3))
+  agluCtry <- suppressMessages(read_csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3))
+  iso_GCAM_regID <- suppressMessages(read_csv(system.file("extdata", "./mappings/iso_GCAM_regID.csv", package = "gcamland"), skip = 3))
+  GCAM_region_names <- suppressMessages(read_csv(system.file("extdata", "./mappings/GCAM_region_names.csv", package = "gcamland"), skip = 3))
+  FAO_ag_items_PRODSTAT <- suppressMessages(read_csv(system.file("extdata", "./mappings/FAO_ag_items_PRODSTAT.csv", package = "gcamland"), skip = 3))
 
   # Read production & harvested area (we'll calculate yield from this so we can aggregate)
-  faoHA <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_ha.csv",
+  faoHA <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/fao_ha.csv", package = "gcamland"),
                                      col_types = cols(.default = "c")))
-  faoProd <- suppressMessages(read_csv("./inst/extdata/hindcast-data/fao_prod.csv"))
+  faoProd <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/fao_prod.csv", package = "gcamland")))
 
   # Tidy data
   faoHA %>%
