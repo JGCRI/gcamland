@@ -8,6 +8,9 @@
 #' @author KVC November 2017
 #' @export
 run_ensembles <- function(aOutputDir = "./outputs") {
+  # Silence package checks
+  obj <- NULL
+
   # Set options for ensembles
   levels.AGROFOREST <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
   levels.AGROFOREST_NONPASTURE <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)

@@ -140,7 +140,7 @@ LandLeaf_getLandAllocation <- function(aLandLeaf, allLand) {
 #' @author KVC November 2017
 printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
-  node <- parent <- uniqueJoinField <- year <- NULL
+  node <- parent <- uniqueJoinField <- year <-share <- NULL
 
   # Get a list of leafs
   nodes <- unique(aNest$parent)
