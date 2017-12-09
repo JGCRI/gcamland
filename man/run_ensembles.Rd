@@ -4,7 +4,10 @@
 \alias{run_ensembles}
 \title{run_ensembles}
 \usage{
-run_ensembles()
+run_ensembles(aOutputDir = "./outputs")
+}
+\arguments{
+\item{aOutputDir}{Output directory}
 }
 \description{
 run_ensembles

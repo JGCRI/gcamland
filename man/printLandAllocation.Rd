@@ -4,12 +4,14 @@
 \alias{printLandAllocation}
 \title{printLandAllocation}
 \usage{
-printLandAllocation(aLandAllocator, aScenarioInfo)
+printLandAllocation(aLandAllocator, aScenarioInfo, aNest)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aNest}{Nest to fill in}
 }
 \description{
 printLandAllocation

@@ -11,6 +11,9 @@ printNest(aLandAllocator, aScenarioInfo)
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
+\value{
+Nest structure
+}
 \description{
 printNest
 }

@@ -4,12 +4,14 @@
 \alias{printYield}
 \title{printYield}
 \usage{
-printYield(aLandAllocator, aScenarioInfo)
+printYield(aLandAllocator, aScenarioInfo, aNest)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aNest}{Land allocator nest}
 }
 \description{
 printYield

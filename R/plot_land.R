@@ -12,9 +12,8 @@ plotNest <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   plot <- NULL
 
-  # Read nest
-  file <- paste0(aScenarioInfo$aOutputDir, "/landNest.csv")
-  nest <- suppressMessages(read_csv(normalizePath(file)))
+  # Get nest
+  nest <- printNest(aLandAllocator, aScenarioInfo)
 
   # Convert to plottable format
   g <- graph.data.frame(nest)

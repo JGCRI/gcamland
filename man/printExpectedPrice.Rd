@@ -4,12 +4,14 @@
 \alias{printExpectedPrice}
 \title{printExpectedPrice}
 \usage{
-printExpectedPrice(aLandAllocator, aScenarioInfo)
+printExpectedPrice(aLandAllocator, aScenarioInfo, aNest)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aNest}{Land allocator nest}
 }
 \description{
 printExpectedPrice

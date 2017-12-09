@@ -9,12 +9,12 @@
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC October 2017
 printOutput <- function(aLandAllocator, aScenarioInfo) {
-  printNest(aLandAllocator, aScenarioInfo)
-  printLandAllocation(aLandAllocator, aScenarioInfo)
-  printLandShares(aLandAllocator, aScenarioInfo)
-  printYield(aLandAllocator, aScenarioInfo)
-  printExpectedYield(aLandAllocator, aScenarioInfo)
-  printExpectedPrice(aLandAllocator, aScenarioInfo)
+  nest <- printNest(aLandAllocator, aScenarioInfo)
+  printLandAllocation(aLandAllocator, aScenarioInfo, nest)
+  printLandShares(aLandAllocator, aScenarioInfo, nest)
+  printYield(aLandAllocator, aScenarioInfo, nest)
+  printExpectedYield(aLandAllocator, aScenarioInfo, nest)
+  printExpectedPrice(aLandAllocator, aScenarioInfo, nest)
   printPrices(aScenarioInfo)
 }
 
@@ -33,23 +33,21 @@ printPrices <- function(aScenarioInfo) {
 #' @details Prints land allocation by land leaf
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aNest Nest to fill in
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printLandAllocation <- function(aLandAllocator, aScenarioInfo) {
+printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
-  # Read nest
-  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
-
   # Get a list of leafs
-  nodes <- unique(nest$parent)
-  nest %>%
+  nodes <- unique(aNest$parent)
+  aNest %>%
     filter(node %!in% nodes) ->
     leafs
 
   # Some leafs have the same parent node name. We need to add those
-  nest %>%
+  aNest %>%
     filter(parent == node) %>%
     bind_rows(leafs) ->
     leafs
@@ -137,23 +135,21 @@ LandLeaf_getLandAllocation <- function(aLandLeaf, allLand) {
 #' @details Prints land share for all nodes and leafs
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aNest Current land nest
 #' @importFrom readr write_csv read_csv
 #' @author KVC November 2017
-printLandShares <- function(aLandAllocator, aScenarioInfo) {
+printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- year <- NULL
 
-  # Read nest
-  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
-
   # Get a list of leafs
-  nodes <- unique(nest$parent)
-  nest %>%
+  nodes <- unique(aNest$parent)
+  aNest %>%
     filter(node %!in% nodes) ->
     leafs
 
   # Some leafs have the same parent node name. We need to add those
-  nest %>%
+  aNest %>%
     filter(parent == node) %>%
     bind_rows(leafs) ->
     leafs
@@ -243,6 +239,7 @@ LandNode_getLandShares <- function(aLandNode, aShares) {
 #'          leaf data
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @return Nest structure
 #' @importFrom readr write_csv
 #' @author KVC October 2017
 printNest <- function(aLandAllocator, aScenarioInfo) {
@@ -263,6 +260,9 @@ printNest <- function(aLandAllocator, aScenarioInfo) {
   # Write to file
   file <- paste0(aScenarioInfo$aOutputDir, "/landNest.csv")
   write_csv(nest, normalizePath(file))
+
+  # Return the current nest
+  return(nest)
 }
 
 
@@ -327,23 +327,21 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 #' @details Prints yield by land leaf
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aNest Land allocator nest
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printYield <- function(aLandAllocator, aScenarioInfo) {
+printYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
-  # Read nest
-  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
-
   # Get a list of leafs
-  nodes <- unique(nest$parent)
-  nest %>%
+  nodes <- unique(aNest$parent)
+  aNest %>%
     filter(node %!in% nodes) ->
     leafs
 
   # Some leafs have the same parent node name. We need to add those
-  nest %>%
+  aNest %>%
     filter(parent == node) %>%
     bind_rows(leafs) ->
     leafs
@@ -429,23 +427,21 @@ LandLeaf_getYield <- function(aLandLeaf, aData) {
 #' @details Prints expected yield by land leaf
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aNest Land allocator nest
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printExpectedYield <- function(aLandAllocator, aScenarioInfo) {
+printExpectedYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
-  # Read nest
-  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
-
   # Get a list of leafs
-  nodes <- unique(nest$parent)
-  nest %>%
+  nodes <- unique(aNest$parent)
+  aNest %>%
     filter(node %!in% nodes) ->
     leafs
 
   # Some leafs have the same parent node name. We need to add those
-  nest %>%
+  aNest %>%
     filter(parent == node) %>%
     bind_rows(leafs) ->
     leafs
@@ -532,23 +528,21 @@ LandLeaf_getExpectedYield <- function(aLandLeaf, aData) {
 #' @details Prints expected price by land leaf
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aNest Land allocator nest
 #' @importFrom readr write_csv read_csv
 #' @author KVC October 2017
-printExpectedPrice <- function(aLandAllocator, aScenarioInfo) {
+printExpectedPrice <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
-  # Read nest
-  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
-
   # Get a list of leafs
-  nodes <- unique(nest$parent)
-  nest %>%
+  nodes <- unique(aNest$parent)
+  aNest %>%
     filter(node %!in% nodes) ->
     leafs
 
   # Some leafs have the same parent node name. We need to add those
-  nest %>%
+  aNest %>%
     filter(parent == node) %>%
     bind_rows(leafs) ->
     leafs
