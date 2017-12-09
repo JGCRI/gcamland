@@ -17,33 +17,35 @@ test_that("land cover matches calibration data", {
     x
   }
 
-  # For now, only test normal GCAM config
-  if( SCENARIO.INFO$mScenario == "Reference" & SCENARIO.INFO$mExpectationType == "Perfect") {
-    # Get comparison data
-    compareData <- read_csv("./comparison-data/LandAllocation_Reference.csv", skip = 1)
-    compareData %>%
-      rename(name = `land-allocation`) %>%
-      gather(year, land.allocation, -scenario, -region, -name, -Units) %>%
-      mutate(year = as.integer(year)) %>%
-      filter(region == REGION, year %in% YEARS) %>%
-      filter(year <= YEARS[FINAL_CALIBRATION_PERIOD]) %>%
-      select(name, year, land.allocation) ->
-      compareData
+  # Run the model to generate outputs
+  run_model(SCENARIO.INFO)
 
-    # Look for output data in outputs under top level
-    # (as this code will be run in tests/testthat)
-    outputData <- read_csv("../../outputs/land/landAllocation_Reference_Perfect.csv")
-    outputData %>%
-      # Filter for years we have comparison data
-      filter(year %in% unique(compareData$year)) %>%
-      select(name, year, land.allocation) ->
-      outputData
+  # Get comparison data
+  compareData <- read_csv("./comparison-data/LandAllocation_Reference.csv", skip = 1)
+  compareData %>%
+    rename(name = `land-allocation`) %>%
+    gather(year, land.allocation, -scenario, -region, -name, -Units) %>%
+    mutate(year = as.integer(year)) %>%
+    filter(region == REGION, year %in% YEARS) %>%
+    filter(year <= YEARS[FINAL_CALIBRATION_PERIOD]) %>%
+    select(name, year, land.allocation) ->
+    compareData
 
-    expect_identical(dim(outputData), dim(compareData),
-                     info = paste("Dimensions are not the same for base year land allocation"))
+  # Look for output data in outputs under top level
+  # (as this code will be run in tests/testthat)
+  file <- paste0("./outputs/land/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
+  outputData <- read_csv(normalizePath(file))
 
-    expect_equivalent(round_df(outputData), round_df(compareData),
-                      info = paste("base year land allocation doesn't match"))
-  }
+  outputData %>%
+    # Filter for years we have comparison data
+    filter(year %in% unique(compareData$year)) %>%
+    select(name, year, land.allocation) ->
+    outputData
+
+  expect_identical(dim(outputData), dim(compareData),
+                   info = paste("Dimensions are not the same for base year land allocation"))
+
+  expect_equivalent(round_df(outputData), round_df(compareData),
+                    info = paste("base year land allocation doesn't match"))
 
 })

@@ -2,6 +2,8 @@
 
 context("landarea")
 
+library(readr)
+
 test_that("land area doesn't change over time", {
   # Finally, test (NB rounding numeric columns to a sensible number of
   # digits; otherwise spurious mismatches occur)
@@ -20,9 +22,8 @@ test_that("land area doesn't change over time", {
   # Get output data
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  file <- paste("../../outputs/land/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv", sep="")
-
-  outputData <- read_csv(file)
+  file <- paste0("./outputs/land/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
+  outputData <- read_csv(normalizePath(file))
 
   # Aggregate to regions
   outputData %>%

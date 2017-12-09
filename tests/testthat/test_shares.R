@@ -2,6 +2,8 @@
 
 context("shares")
 
+library(readr)
+
 test_that("shares for all nodes add to 1", {
   # Finally, test (NB rounding numeric columns to a sensible number of
   # digits; otherwise spurious mismatches occur)
@@ -17,7 +19,9 @@ test_that("shares for all nodes add to 1", {
     x
   }
 
-  outputData <- read_csv("../../outputs/landShares.csv", col_types = "ccdi")
+  # Get outputs
+  file <- normalizePath(file.path("./outputs/landShares.csv"))
+  outputData <- read_csv(file, col_types = "ccdi")
 
   # Aggregate to nodes
   outputData %>%
