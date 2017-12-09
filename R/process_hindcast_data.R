@@ -54,8 +54,10 @@ get_hindcast_AgProdChange <- function(){
     select(region, GCAM_commodity, year, yield) ->
     faoYield
 
-  # Print yields
-  write_csv(faoYield, "./outputs/hindcast_yield.csv")
+  # # Print yields
+  # file.path <- normalizePath(aScenarioInfo$aOutputDir)
+  # file <- paste0(file.path, "hindcast_yield.csv")
+  # write_csv(faoYield, file)
 
   # Compute AgProdChange
   faoYield %>%

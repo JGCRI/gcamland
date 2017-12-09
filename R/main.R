@@ -3,10 +3,11 @@
 #' run_ensembles
 #'
 #' @details Loop over a large parameter set and run the offline land model
+#' @param aOutputDir Output directory
 #' @import foreach doParallel
 #' @author KVC November 2017
 #' @export
-run_ensembles <- function() {
+run_ensembles <- function(aOutputDir = "./outputs") {
   # Set options for ensembles
   levels.AGROFOREST <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
   levels.AGROFOREST_NONPASTURE <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
@@ -38,7 +39,8 @@ run_ensembles <- function() {
                                       aLogitAgroForest_NonPasture = agForNonPast,
                                       aLogitCropland = crop,
                                       aScenarioName = scenName,
-                                      aFileName = i)
+                                      aFileName = i,
+                                      aOutputDir = aOutputDir)
 
         scenObjects[[i]] <- currScenInfo
         i <- i + 1
@@ -56,7 +58,8 @@ run_ensembles <- function() {
                                        aLogitAgroForest_NonPasture = agForNonPast,
                                        aLogitCropland = crop,
                                        aScenarioName = scenName,
-                                       aFileName = i)
+                                       aFileName = i,
+                                       aOutputDir = aOutputDir)
 
           scenObjects[[i]] <- currScenInfo
           i <- i + 1
@@ -74,7 +77,8 @@ run_ensembles <- function() {
                                        aLogitAgroForest_NonPasture = agForNonPast,
                                        aLogitCropland = crop,
                                        aScenarioName = scenName,
-                                       aFileName = i)
+                                       aFileName = i,
+                                       aOutputDir = aOutputDir)
 
           scenObjects[[i]] <- currScenInfo
           i <- i + 1
@@ -87,7 +91,7 @@ run_ensembles <- function() {
   # Loop over all scenario configurations and run the model
   foreach(obj = scenObjects) %dopar% {
     print(paste0("Starting simulation: ", obj$mFileName))
-    # run_model(obj)
+    run_model(obj)
   }
 }
 
@@ -125,7 +129,7 @@ run_model <- function(aScenarioInfo) {
   # Make figures
   if(MAKE.PLOTS) {
     print("Plotting diagnostic figures.")
-    plotNest(mLandAllocator)
+    plotNest(mLandAllocator, aScenarioInfo)
     plotLandAllocation(mLandAllocator, aScenarioInfo)
     plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
   }

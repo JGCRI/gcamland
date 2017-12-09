@@ -7,7 +7,8 @@
 ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
   aLaggedShareOld = NULL, aLinearYears = NULL, aLogitUseDefault = NULL,
   aLogitAgroForest = NULL, aLogitAgroForest_NonPasture = NULL,
-  aLogitCropland = NULL, aScenarioName = NULL, aFileName = NULL)
+  aLogitCropland = NULL, aScenarioName = NULL, aFileName = NULL,
+  aOutputDir = "./outputs")
 }
 \arguments{
 \item{aScenario}{Scenario name}
@@ -29,6 +30,8 @@ ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
 \item{aScenarioName}{Complete scenario name, with expectations & logit info}
 
 \item{aFileName}{File name}
+
+\item{aOutputDir}{Output directory}
 }
 \value{
 New ScenarioInfo object

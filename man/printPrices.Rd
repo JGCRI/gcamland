@@ -4,7 +4,10 @@
 \alias{printPrices}
 \title{printPrices}
 \usage{
-printPrices()
+printPrices(aScenarioInfo)
+}
+\arguments{
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 printPrices

@@ -4,10 +4,12 @@
 \alias{plotNest}
 \title{plotNest}
 \usage{
-plotNest(aLandAllocator)
+plotNest(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 plotNest

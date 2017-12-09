@@ -12,6 +12,7 @@
 #' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
+#' @param aOutputDir Output directory
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
@@ -25,7 +26,8 @@ ScenarioInfo <- function(aScenario = NULL,
                          aLogitAgroForest_NonPasture = NULL,
                          aLogitCropland = NULL,
                          aScenarioName = NULL,
-                         aFileName = NULL) {
+                         aFileName = NULL,
+                         aOutputDir = "./outputs") {
   mScenario <- aScenario
   mExpectationType <- aExpectationType
   mLaggedShareOld <- aLaggedShareOld
@@ -36,6 +38,7 @@ ScenarioInfo <- function(aScenario = NULL,
   mLogitCropland <- aLogitCropland
   mScenarioName <- aScenarioName
   mFileName <- aFileName
+  mOutputDir <- aOutputDir
 
   self <- environment()
   class(self) <- "ScenarioInfo"

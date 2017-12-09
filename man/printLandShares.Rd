@@ -4,10 +4,12 @@
 \alias{printLandShares}
 \title{printLandShares}
 \usage{
-printLandShares(aLandAllocator)
+printLandShares(aLandAllocator, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
 printLandShares

@@ -3,16 +3,18 @@
 #' plotNest
 #'
 #' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @details Plot the nesting structure for the land allocator
 #' @importFrom igraph graph.data.frame layout.reingold.tilford
 #' @author KVC October 2017
 #' @export
-plotNest <- function(aLandAllocator) {
+plotNest <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   plot <- NULL
 
   # Read nest
-  nest <- suppressMessages(read_csv("./outputs/landNest.csv"))
+  file <- paste0(aScenarioInfo$aOutputDir, "/landNest.csv")
+  nest <- suppressMessages(read_csv(normalizePath(file)))
 
   # Convert to plottable format
   g <- graph.data.frame(nest)
@@ -35,10 +37,10 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  file <- paste("./outputs/land/landAllocation_", aScenarioInfo$mFileName, ".csv", sep="")
+  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
 
   # Read land allocation
-  allLand <- suppressMessages(read_csv(file))
+  allLand <- suppressMessages(read_csv(normalizePath(file)))
 
   # TODO: add error message if output doesn't exist
 
@@ -65,10 +67,10 @@ plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  file <- paste("./outputs/land/landAllocation_", aScenarioInfo$mFileName, ".csv", sep="")
+  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
 
   # Read land allocation
-  allLand <- suppressMessages(read_csv(file))
+  allLand <- suppressMessages(read_csv(normalizePath(file)))
 
   # TODO: add error message if output doesn't exist
 
