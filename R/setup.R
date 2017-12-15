@@ -125,7 +125,7 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
     exponent <- as.numeric(temp[[c("logit.exponent")]])
     if ( !aScenarioInfo$mLogitUseDefault & grepl("AgroForestLand_NonPasture", childName)) {
       exponent <- aScenarioInfo$mLogitAgroForest_NonPasture
-    } else if ( !aScenarioInfo$mLogitUseDefault & grepl("Cropland", childName) ) {
+    } else if ( !aScenarioInfo$mLogitUseDefault & grepl("CropLand", childName) ) {
       exponent <- aScenarioInfo$mLogitCropland
     } else {
       exponent <- as.numeric(temp[[c("logit.exponent")]])

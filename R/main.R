@@ -15,7 +15,7 @@ run_ensembles <- function(aOutputDir = "./outputs") {
   levels.AGROFOREST <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
   levels.AGROFOREST_NONPASTURE <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
   levels.CROPLAND <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
-  levels.LAGSHARE <- c(0.1, 0.25, 0,5, 0.75, 0.9)
+  levels.LAGSHARE <- c(0.1, 0.25, 0.5, 0.75, 0.9)
   levels.LINYEARS <- c(1, 5, 10, 15)
 
   # Set a counter to use for file names
