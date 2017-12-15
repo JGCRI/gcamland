@@ -123,7 +123,7 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
     # Save values for arguments that need to be passed to the constructor
     name <- temp[[aColumnName]]
     exponent <- as.numeric(temp[[c("logit.exponent")]])
-    if ( !aScenarioInfo$mLogitUseDefault & grepl("AgroForestLand_NonPasture", childName)) {
+    if ( !aScenarioInfo$mLogitUseDefault & grepl("AgroForest_NonPasture", childName)) {
       exponent <- aScenarioInfo$mLogitAgroForest_NonPasture
     } else if ( !aScenarioInfo$mLogitUseDefault & grepl("CropLand", childName) ) {
       exponent <- aScenarioInfo$mLogitCropland
