@@ -22,8 +22,9 @@ test_that("land area doesn't change over time", {
   # Get output data
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  file <- paste0("./outputs/land/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
-  outputData <- read_csv(normalizePath(file))
+  path <- normalizePath(file.path("./outputs/land/"))
+  file <- paste0(path, "/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
+  outputData <- read_csv(file)
 
   # Aggregate to regions
   outputData %>%

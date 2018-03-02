@@ -20,7 +20,8 @@ test_that("shares for all nodes add to 1", {
   }
 
   # Get outputs
-  file <- normalizePath(file.path("./outputs/landShares.csv"))
+  path <- normalizePath(file.path("./outputs/"))
+  file <- paste0(path, "/landShares.csv")
   outputData <- read_csv(file, col_types = "ccdi")
 
   # Aggregate to nodes

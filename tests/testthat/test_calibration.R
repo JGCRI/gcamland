@@ -18,6 +18,13 @@ test_that("land cover matches calibration data", {
   }
 
   # Run the model to generate outputs
+  path <- normalizePath(file.path("./outputs/"))
+  if(!dir.exists(path)) {
+    dir.create(path)
+    dir.create(normalizePath(file.path(paste0(path, "/land/"))))
+    dir.create(normalizePath(file.path(paste0(path, "/expectedYield/"))))
+    dir.create(normalizePath(file.path(paste0(path, "/expectedPrice/"))))
+  }
   run_model(SCENARIO.INFO)
 
   # Get comparison data
@@ -33,8 +40,9 @@ test_that("land cover matches calibration data", {
 
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  file <- paste0("./outputs/land/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
-  outputData <- read_csv(normalizePath(file))
+  path <- normalizePath(file.path("./outputs/land/"))
+  file <- paste0(path, "/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
+  outputData <- read_csv(file)
 
   outputData %>%
     # Filter for years we have comparison data
