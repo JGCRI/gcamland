@@ -65,8 +65,9 @@ printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Add information on scenario and expectation type
   allLand$scenario <- aScenarioInfo$mScenarioName
 
-  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
-  write_csv(allLand, normalizePath(file))
+  path <- normalizePath(paste0(aScenarioInfo$aOutputDir, "/land/"))
+  file <- paste0(path, "/landAllocation_", aScenarioInfo$mFileName, ".csv")
+  write_csv(allLand, file)
 }
 
 #' LandAllocator_getLandAllocation
@@ -173,8 +174,9 @@ printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
     allLandShares
 
   # Write data to a file
-  file <- paste0(aScenarioInfo$aOutputDir, "/landShares.csv")
-  write_csv(allLandShares, normalizePath(file))
+  path <- normalizePath(aScenarioInfo$aOutputDir)
+  file <- paste0(path,"/landShares.csv")
+  write_csv(allLandShares, file)
 }
 
 #' LandAllocator_getLandShares
@@ -258,8 +260,9 @@ printNest <- function(aLandAllocator, aScenarioInfo) {
     nest
 
   # Write to file
-  file <- paste0(aScenarioInfo$aOutputDir, "/landNest.csv")
-  write_csv(nest, normalizePath(file))
+  path <- normalizePath(aScenarioInfo$aOutputDir)
+  file <- paste0(path, "/landNest.csv")
+  write_csv(nest, file)
 
   # Return the current nest
   return(nest)
@@ -360,8 +363,9 @@ printYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   allYield$scenario <- aScenarioInfo$mScenarioName
 
   # Write to file
-  file <- paste0(aScenarioInfo$aOutputDir, "/yield.csv")
-  write_csv(allYield, normalizePath(file))
+  path <- normalizePath(aScenarioInfo$aOutputDir)
+  file <- paste0(path, "/yield.csv")
+  write_csv(allYield, file)
 }
 
 #' LandAllocator_getYield
@@ -460,8 +464,9 @@ printExpectedYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   allYield$scenario <- aScenarioInfo$mScenarioName
 
   # Write to file
-  file <- paste0(aScenarioInfo$aOutputDir, "/expectedYield/expectedYield_", aScenarioInfo$mFileName, ".csv")
-  write_csv(allYield, normalizePath(file))
+  path <- normalizePath(paste0(aScenarioInfo$aOutputDir, "/expectedYield/"))
+  file <- paste0(path, "/expectedYield_", aScenarioInfo$mFileName, ".csv")
+  write_csv(allYield, file)
 }
 
 #' LandAllocator_getExpectedYield
@@ -561,8 +566,9 @@ printExpectedPrice <- function(aLandAllocator, aScenarioInfo, aNest) {
   allPrice$scenario <- aScenarioInfo$mScenarioName
 
   # Write to file
-  file <- paste0(aScenarioInfo$aOutputDir, "/expectedPrice/expectedPrice_", aScenarioInfo$mFileName, ".csv")
-  write_csv(allPrice, normalizePath(file))
+  path <- normalizePath(paste0(aScenarioInfo$aOutputDir, "/expectedPrice/"))
+  file <- paste0(path, "/expectedPrice_", aScenarioInfo$mFileName, ".csv")
+  write_csv(allPrice, file)
 }
 
 #' LandAllocator_getExpectedPrice
