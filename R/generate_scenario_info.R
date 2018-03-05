@@ -51,12 +51,12 @@ ScenarioInfo <- function(aScenario = NULL,
 #' @export
 #' @author Kate Calvin
 SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
-                              aExpectationType = "Lagged",
+                              aExpectationType = "Perfect",
                               aLinearYears = NULL,
-                              aLaggedShareOld = 0.5,
+                              aLaggedShareOld = NULL,
                               aLogitUseDefault = TRUE,
                               aLogitAgroForest = NULL,
                               aLogitAgroForest_NonPasture = NULL,
                               aLogitCropland = NULL,
-                              aScenarioName = paste(SCENARIO, "_", "Lagged", 0.5, sep=""),
-                              aFileName = paste(SCENARIO, "_", "Lagged", 0.5, sep=""))
+                              aScenarioName = paste(SCENARIO, "_", "Perfect", sep=""),
+                              aFileName = paste(SCENARIO, "_", "Perfect", sep=""))
