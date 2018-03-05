@@ -20,10 +20,10 @@ test_that("land cover matches calibration data", {
   # Run the model to generate outputs
   path <- normalizePath(file.path("./outputs/"))
   if(!dir.exists(path)) {
-    dir.create(path)
-    dir.create(normalizePath(file.path(paste0(path, "/land/"))))
-    dir.create(normalizePath(file.path(paste0(path, "/expectedYield/"))))
-    dir.create(normalizePath(file.path(paste0(path, "/expectedPrice/"))))
+    dir.create(path, showWarnings = FALSE)
+    dir.create(normalizePath(file.path(paste0(path, "land/"))), showWarnings = FALSE)
+    dir.create(normalizePath(file.path(paste0(path, "expectedYield/"))), showWarnings = FALSE)
+    dir.create(normalizePath(file.path(paste0(path, "expectedPrice/"))), showWarnings = FALSE)
   }
   run_model(SCENARIO.INFO)
 
