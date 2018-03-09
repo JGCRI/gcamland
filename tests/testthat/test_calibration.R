@@ -28,26 +28,24 @@ test_that("land cover matches calibration data", {
   run_model(SCENARIO.INFO)
 
   # Get comparison data
-  compareData <- read_csv("./comparison-data/LandAllocation_Reference.csv", skip = 1)
+  compareData <- read_csv("./comparison-data/HistLandAllocation.csv")
   compareData %>%
-    rename(name = `land-allocation`) %>%
-    gather(year, land.allocation, -scenario, -region, -name, -Units) %>%
-    mutate(year = as.integer(year)) %>%
-    filter(region == REGION, year %in% YEARS) %>%
-    filter(year <= YEARS[FINAL_CALIBRATION_PERIOD]) %>%
-    select(name, year, land.allocation) ->
+    filter(region == REGION, year <= YEARS[FINAL_CALIBRATION_PERIOD]) ->
     compareData
 
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
   path <- normalizePath(file.path("./outputs/land/"))
   file <- paste0(path, "/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
-  outputData <- read_csv(file)
+  read_csv(file) %>%
+    mutate(region = REGION) ->
+    outputData
 
-  outputData %>%
-    # Filter for years we have comparison data
-    filter(year %in% unique(compareData$year)) %>%
-    select(name, year, land.allocation) ->
+  compareData %>%
+    select(-land.allocation) %>%
+    left_join(outputData, by=c("region", "year", "name")) %>%
+    replace_na(list(land.allocation = 0)) %>%
+    select(-scenario) ->
     outputData
 
   expect_identical(dim(outputData), dim(compareData),
