@@ -57,7 +57,7 @@ test_that("yield expectation calculation works", {
   # Next, create a temp scenarioInfo object with the right parameters
   tempScen <- ScenarioInfo()
   tempScen$mLaggedShareOld <- 0.5
-  tempScen$mLinearYears <- 1
+  tempScen$mLinearYears <- 2
 
   # Now, calculate expectations using all methods
   perfectYield <- PerfectExpectation_calcExpectedYield(testLeaf, 4)
