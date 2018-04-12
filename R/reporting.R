@@ -24,8 +24,8 @@ printOutput <- function(aLandAllocator, aScenarioInfo) {
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
 printPrices <- function(aScenarioInfo) {
-  file <- paste(aScenarioInfo$aOutputDir, "prices.csv", sep="/")
-  write_csv(PRICES, normalizePath(file))
+  file <- file.path(aScenarioInfo$aOutputDir, "prices.csv")
+  write_csv(PRICES, file)
 }
 
 #' printLandAllocation
