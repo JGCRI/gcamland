@@ -29,7 +29,6 @@ plotNest <- function(aLandAllocator, aScenarioInfo) {
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 #' @importFrom readr read_csv
-#' @import ggplot2
 #' @export
 plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
@@ -44,13 +43,7 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # TODO: add error message if output doesn't exist
 
   # Now, plot land allocation over time
-  p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))
-
-  ## TODO:  Consider returning the plot instead of printing it.  That gives the user the
-  ##        option of either printing it or saving it for later, as well as providing a
-  ##        useful return value.  (The return value of print.ggplot is probably not
-  ##        useful for most users.)
-  print(p)
+  ggplot2::ggplot() + ggplot2::geom_area(data = allLand, ggplot2::aes(year, land.allocation, fill=name))
 }
 
 #' plotRegionalLandAllocation
@@ -63,7 +56,6 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 #' @importFrom readr read_csv
 #' @importFrom tidyr separate
 #' @importFrom dplyr group_by summarize
-#' @import ggplot2
 #' @author KVC October 2017
 #' @export
 plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
@@ -86,9 +78,6 @@ plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
     regionalLand
 
   # Now, plot regional land allocation over time
-  p <- ggplot() + geom_area(data = regionalLand, aes(year, land.allocation, fill=land.type))
-
-  ## TODO:  return plot instead of printing it.
-  print(p)
+  ggplot2::ggplot() + ggplot2::geom_area(data = regionalLand, ggplot2::aes(year, land.allocation, fill=land.type))
 }
 
