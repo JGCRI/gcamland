@@ -39,7 +39,7 @@ get_timestep <- function(aPer) {
   if(aPer > 1){
     yrs <- YEARS[[aPer]] - YEARS[[aPer - 1]]
   } else{
-    print("ERROR: Invalid period passed to get_timestep")
+    stop("Invalid period passed to get_timestep")
   }
 
   return(yrs)

@@ -2,6 +2,11 @@
 
 context("calibration")
 
+basepath <- file.path(tempdir(), "outputs")
+test.info <- SCENARIO.INFO
+test.info$mOutputDir <- basepath
+
+
 test_that("land cover matches calibration data", {
   # Finally, test (NB rounding numeric columns to a sensible number of
   # digits; otherwise spurious mismatches occur)
@@ -18,14 +23,14 @@ test_that("land cover matches calibration data", {
   }
 
   # Run the model to generate outputs
-  path <- normalizePath(file.path("./outputs/"))
+  path <- basepath
   if(!dir.exists(path)) {
-    dir.create(path, showWarnings = FALSE)
-    dir.create(normalizePath(file.path(paste0(path, "land/"))), showWarnings = FALSE)
-    dir.create(normalizePath(file.path(paste0(path, "expectedYield/"))), showWarnings = FALSE)
-    dir.create(normalizePath(file.path(paste0(path, "expectedPrice/"))), showWarnings = FALSE)
+    dir.create(path)
+    dir.create(file.path(path, "land"))
+    dir.create(file.path(path, "expectedYield"))
+    dir.create(file.path(path, "expectedPrice"))
   }
-  run_model(SCENARIO.INFO)
+  run_model(test.info)
 
   # Get comparison data
   compareData <- read_csv("./comparison-data/HistLandAllocation.csv")
@@ -35,8 +40,8 @@ test_that("land cover matches calibration data", {
 
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  path <- normalizePath(file.path("./outputs/land/"))
-  file <- paste0(path, "/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
+  path <- file.path(basepath,"land")
+  file <- file.path(path, paste0("landAllocation_", test.info$mScenarioName, ".csv"))
   read_csv(file) %>%
     mutate(region = REGION) ->
     outputData

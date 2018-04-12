@@ -29,14 +29,13 @@ plotNest <- function(aLandAllocator, aScenarioInfo) {
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 #' @importFrom readr read_csv
-#' @import ggplot2
 #' @export
 plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # Silence package checks
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
+  file <- paste0(aScenarioInfo$mOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(normalizePath(file)))
@@ -44,8 +43,7 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   # TODO: add error message if output doesn't exist
 
   # Now, plot land allocation over time
-  p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))
-  print(p)
+  ggplot2::ggplot() + ggplot2::geom_area(data = allLand, ggplot2::aes(year, land.allocation, fill=name))
 }
 
 #' plotRegionalLandAllocation
@@ -58,7 +56,6 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 #' @importFrom readr read_csv
 #' @importFrom tidyr separate
 #' @importFrom dplyr group_by summarize
-#' @import ggplot2
 #' @author KVC October 2017
 #' @export
 plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
@@ -66,7 +63,7 @@ plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
+  file <- paste0(aScenarioInfo$mOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(normalizePath(file)))
@@ -81,7 +78,6 @@ plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
     regionalLand
 
   # Now, plot regional land allocation over time
-  p <- ggplot() + geom_area(data = regionalLand, aes(year, land.allocation, fill=land.type))
-  print(p)
+  ggplot2::ggplot() + ggplot2::geom_area(data = regionalLand, ggplot2::aes(year, land.allocation, fill=land.type))
 }
 

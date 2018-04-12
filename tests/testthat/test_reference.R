@@ -2,6 +2,8 @@
 
 context("reference")
 
+basepath <- file.path(tempdir(), "outputs")
+
 test_that("land cover matches reference values", {
   # Finally, test (NB rounding numeric columns to a sensible number of
   # digits; otherwise spurious mismatches occur)
@@ -27,8 +29,8 @@ test_that("land cover matches reference values", {
 
     # Look for output data in outputs under top level
     # (as this code will be run in tests/testthat)
-    path <- normalizePath(file.path("./outputs/land/"))
-    file <- paste0(path, "/landAllocation_", SCENARIO.INFO$mScenarioName, ".csv")
+    path <- file.path(basepath,"land")
+    file <- file.path(path, paste0("landAllocation_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
       mutate(region = REGION) ->
       outputData

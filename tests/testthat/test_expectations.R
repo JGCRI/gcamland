@@ -2,6 +2,8 @@
 
 context("yield expectations")
 
+basepath <- file.path(tempdir(), "outputs")
+
 test_that("perfect expectations about yield are calculated correctly", {
   # Finally, test (NB rounding numeric columns to a sensible number of
   # digits; otherwise spurious mismatches occur)
@@ -21,13 +23,13 @@ test_that("perfect expectations about yield are calculated correctly", {
   if (SCENARIO.INFO$mExpectationType == "Perfect") {
 
     # Get actual data
-    path <- normalizePath(file.path("./outputs/"))
-    file <- paste0(path, "/yield.csv")
+    path <- basepath
+    file <- file.path(path, "yield.csv")
     actualData <- read_csv(file)
 
     # Get expected data
-    path <- normalizePath(file.path("./outputs/expectedYield/"))
-    file <- paste0(path, "/expectedYield_", SCENARIO.INFO$mScenarioName, ".csv")
+    path <- file.path(basepath, "expectedYield")
+    file <- file.path(path, paste0("expectedYield_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
       rename(yield = expectedYield) ->
       expectedData
@@ -57,7 +59,7 @@ test_that("yield expectation calculation works", {
   # Next, create a temp scenarioInfo object with the right parameters
   tempScen <- ScenarioInfo()
   tempScen$mLaggedShareOld <- 0.5
-  tempScen$mLinearYears <- 1
+  tempScen$mLinearYears <- 2
 
   # Now, calculate expectations using all methods
   perfectYield <- PerfectExpectation_calcExpectedYield(testLeaf, 4)

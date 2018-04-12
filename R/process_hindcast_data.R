@@ -55,7 +55,7 @@ get_hindcast_AgProdChange <- function(){
     faoYield
 
   # # Print yields
-  # file.path <- normalizePath(aScenarioInfo$aOutputDir)
+  # file.path <- normalizePath(aScenarioInfo$mOutputDir)
   # file <- paste0(file.path, "hindcast_yield.csv")
   # write_csv(faoYield, file)
 
