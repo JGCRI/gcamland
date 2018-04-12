@@ -45,6 +45,11 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 
   # Now, plot land allocation over time
   p <- ggplot() + geom_area(data = allLand, aes(year, land.allocation, fill=name))
+
+  ## TODO:  Consider returning the plot instead of printing it.  That gives the user the
+  ##        option of either printing it or saving it for later, as well as providing a
+  ##        useful return value.  (The return value of print.ggplot is probably not
+  ##        useful for most users.)
   print(p)
 }
 
@@ -82,6 +87,8 @@ plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 
   # Now, plot regional land allocation over time
   p <- ggplot() + geom_area(data = regionalLand, aes(year, land.allocation, fill=land.type))
+
+  ## TODO:  return plot instead of printing it.
   print(p)
 }
 

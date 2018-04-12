@@ -93,7 +93,7 @@ run_ensembles <- function(aOutputDir = "./outputs") {
 
   # Loop over all scenario configurations and run the model
   foreach(obj = scenObjects) %dopar% {
-    print(paste0("Starting simulation: ", obj$mFileName))
+    message("Starting simulation: ", obj$mFileName)
     run_model(obj)
   }
 }
@@ -113,7 +113,7 @@ run_model <- function(aScenarioInfo) {
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
   for(per in PERIODS){
-    print(paste("Starting period:", per))
+    message("Starting period: ", per)
 
     # First, call initCalc for AgProductionTechnology (via Sector) and LandAllocator
     # Note: AgProductionTechnology must be called first so profits
@@ -126,12 +126,12 @@ run_model <- function(aScenarioInfo) {
   }
 
   # Print Outputs
-  print("All model periods complete. Starting output.")
+  message("All model periods complete. Starting output.")
   printOutput(mLandAllocator, aScenarioInfo)
 
   # Make figures
   if(MAKE.PLOTS) {
-    print("Plotting diagnostic figures.")
+    message("Plotting diagnostic figures.")
     plotNest(mLandAllocator, aScenarioInfo)
     plotLandAllocation(mLandAllocator, aScenarioInfo)
     plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
