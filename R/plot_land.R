@@ -36,7 +36,7 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
+  file <- paste0(aScenarioInfo$mOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(normalizePath(file)))
@@ -71,7 +71,7 @@ plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$aOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
+  file <- paste0(aScenarioInfo$mOutputDir, "/land/landAllocation_", aScenarioInfo$mFileName, ".csv")
 
   # Read land allocation
   allLand <- suppressMessages(read_csv(normalizePath(file)))

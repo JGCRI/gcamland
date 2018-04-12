@@ -4,6 +4,8 @@ context("shares")
 
 library(readr)
 
+basepath <- file.path(tempdir(), "outputs")
+
 test_that("shares for all nodes add to 1", {
   # Finally, test (NB rounding numeric columns to a sensible number of
   # digits; otherwise spurious mismatches occur)
@@ -20,8 +22,8 @@ test_that("shares for all nodes add to 1", {
   }
 
   # Get outputs
-  path <- normalizePath(file.path("./outputs/"))
-  file <- paste0(path, "/landShares.csv")
+  path <- basepath
+  file <- file.path(path, "landShares.csv")
   outputData <- read_csv(file, col_types = "ccdi")
 
   # Aggregate to nodes
