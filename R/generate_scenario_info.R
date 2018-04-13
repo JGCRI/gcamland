@@ -28,26 +28,29 @@ ScenarioInfo <- function(aScenario = NULL,
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs") {
-  mScenario <- aScenario
-  mExpectationType <- aExpectationType
-  mLaggedShareOld <- aLaggedShareOld
-  mLinearYears <- aLinearYears
-  mLogitUseDefault <- aLogitUseDefault
-  mLogitAgroForest <- aLogitAgroForest
-  mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
-  mLogitCropland <- aLogitCropland
-  mScenarioName <- aScenarioName
-  mFileName <- aFileName
-  mOutputDir <- aOutputDir
 
-  self <- environment()
+  self <- new.env()
   class(self) <- "ScenarioInfo"
+
+  self$mScenario <- aScenario
+  self$mExpectationType <- aExpectationType
+  self$mLaggedShareOld <- aLaggedShareOld
+  self$mLinearYears <- aLinearYears
+  self$mLogitUseDefault <- aLogitUseDefault
+  self$mLogitAgroForest <- aLogitAgroForest
+  self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
+  self$mLogitCropland <- aLogitCropland
+  self$mScenarioName <- aScenarioName
+  self$mFileName <- aFileName
+  self$mOutputDir <- aOutputDir
+
   self
 }
 
 #' SCENARIO.INFO
 #'
-#' A tibble with scenario info for the default
+#' A \code{ScenarioInfo} object with parameters for the default scenario.
+#'
 #' @export
 #' @author Kate Calvin
 SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
