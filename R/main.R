@@ -35,7 +35,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
   levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
   levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- scl(rn[,4], limits.LINYEARS)  # reuse rn[,4] because lagshare and linyears are mutually exclusive
+  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because lagshare and linyears are mutually exclusive
 
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
