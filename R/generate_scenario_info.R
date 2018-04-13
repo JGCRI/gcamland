@@ -1,7 +1,17 @@
 
-#' ScenarioInfo
+#' ScenarioInfo constructor
 #'
-#' @details Contains all information needed to describe a scenario
+#' Create a structure that ontains all information needed to describe a
+#' scenario.
+#'
+#' Most of the parameters are self-explanatory.  The \code{Obsvar} parameter
+#' is a little unusual, in that it plays no role in the model calculations; it
+#' only enters into the likelihood function.  Fitting this parameter allows us
+#' to estimate how much of the variation in the observed data isn't captured by
+#' our model.  This variation could be because of irreducible uncertainty (e.g.,
+#' measurement error in the observed data), or it could be an indicator that
+#' there is some behavior that our model is failing to capture.
+#'
 #' @param aScenario Scenario name
 #' @param aExpectationType Expectation type
 #' @param aLaggedShareOld Share of old expectations included in current expectation
@@ -9,7 +19,9 @@
 #' @param aLogitUseDefault Boolean indicating whether to use default logits
 #' @param aLogitAgroForest AgroForest logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
-#' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault == FALSE)
+#' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
+#' FALSE)
+#' @param aObsvar Observed data variance.
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
 #' @param aOutputDir Output directory
@@ -27,6 +39,7 @@ ScenarioInfo <- function(aScenario = NULL,
                          aLogitAgroForest = NULL,
                          aLogitAgroForest_NonPasture = NULL,
                          aLogitCropland = NULL,
+                         aObsvar = 1.0,
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs",
@@ -43,6 +56,7 @@ ScenarioInfo <- function(aScenario = NULL,
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
   self$mLogitCropland <- aLogitCropland
+  self$mObsvar <- aObsvar
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir

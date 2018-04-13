@@ -18,7 +18,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   # Silence package checks
   obj <- NULL
 
-  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
+  NPARAM <- 5   # There are actually 5 parameters, but only one of lagshare
                 # or linyears is used in a single model design.
 
   ## Set options for ensembles
@@ -28,6 +28,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   limits.CROPLAND <- c(0.1, 10)
   limits.LAGSHARE <- c(0.1, 0.9)
   limits.LINYEARS <- round(c(1, 15))
+  limits.OBSVAR <- c(0.01, 1)           # Interpreted as a fraction of the
+                                        # per-crop variance.
 
   rn <- randtoolbox::sobol(N, NPARAM)
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
@@ -35,12 +37,15 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
   levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
   levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because lagshare and linyears are mutually exclusive
+  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
+                                        # lagshare and linyears are mutually
+                                        # exclusive
+  levels.OBSVAR <- scl(rn[,5], limits.OBSVAR)
 
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS,
+                     levels.LAGSHARE, levels.LINYEARS, levels.OBSVAR,
                      seq_along(levels.AGROFOREST), aOutputDir) %>%
     unlist(recursive=FALSE)
 
@@ -69,7 +74,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
 #' @param outdir Name of the output directory
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
-gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, serialnum, aOutputDir)
+gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
+                                obsvar, serialnum, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(SCENARIO, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -82,6 +88,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, seri
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
+                           aObsvar = obsvar,
                            aScenarioName = scenName,
                            aFileName = sprintf("Perf_%04d", serialnum),
                            aOutputDir = aOutputDir)
@@ -98,6 +105,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, seri
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aObsvar = obsvar,
                           aScenarioName = scenName,
                           aFileName = sprintf("Lag_%04d", serialnum),
                           aOutputDir = aOutputDir)
@@ -113,6 +121,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, seri
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aObsvar = obsvar,
                           aScenarioName = scenName,
                           aFileName = sprintf("Lin_%04d", serialnum),
                           aOutputDir = aOutputDir)
