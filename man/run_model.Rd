@@ -2,21 +2,20 @@
 % Please edit documentation in R/main.R
 \name{run_model}
 \alias{run_model}
-\title{run_model}
+\title{Run the GCAM land model}
 \usage{
 run_model(aScenarioInfo, aPeriods = PERIODS)
 }
 \arguments{
-\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations.}
+
+\item{aPeriods}{Integer vector of periods to run.}
 }
 \value{
-Name of the output directory
+Name of the output directory for the run.
 }
 \description{
-run_model
-}
-\details{
-Loops through all years and runs the land model.
+Loop through all years and run the land model.
 }
 \author{
 KVC

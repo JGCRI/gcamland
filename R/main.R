@@ -1,101 +1,55 @@
 # main.R
 
-#' run_ensembles
+#' Run an ensemble of offline land models
 #'
-#' @details Loop over a large parameter set and run the offline land model
+#' Parameter combinations are selected by generating a quasi-random
+#' sequence and mapping it to a specified range for each parameter.
+#' Then, each parameter set is run through the offline land model in
+#' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
+#' parameter sets are selected, then 3N scenarios are run.)
+#'
+#' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
+#' @return List of ScenarioInfo objects for the ensemble members
 #' @import foreach doParallel
 #' @author KVC November 2017
 #' @export
-run_ensembles <- function(aOutputDir = "./outputs") {
+run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   # Silence package checks
   obj <- NULL
 
-  # Set options for ensembles
-  levels.AGROFOREST <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
-  levels.AGROFOREST_NONPASTURE <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
-  levels.CROPLAND <- c(0.1, 0.25, 0.5, 1.25, 2.5, 5, 10)
-  levels.LAGSHARE <- c(0.1, 0.25, 0.5, 0.75, 0.9)
-  levels.LINYEARS <- c(1, 5, 10, 15)
+  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
+                # or linyears is used in a single model design.
 
-  # Set a counter to use for file names
-  i <- 1
+  ## Set options for ensembles
+  ## min and max values for each parameter
+  limits.AGROFOREST <- c(0.1, 10)
+  limits.AGROFOREST_NONPASTURE <- c(0.1, 10)
+  limits.CROPLAND <- c(0.1, 10)
+  limits.LAGSHARE <- c(0.1, 0.9)
+  limits.LINYEARS <- round(c(1, 15))
+
+  rn <- randtoolbox::sobol(N, NPARAM)
+  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
+  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
+  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
+  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
+  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
+  levels.LINYEARS <- scl(rn[,4], limits.LINYEARS)  # reuse rn[,4] because lagshare and linyears are mutually exclusive
 
   # Set up a list to store scenario information objects
-  scenObjects <- list()
-
-  # Loop over all LOGIT.AGROFOREST options
-  for(agFor in levels.AGROFOREST) {
-    # Loop over all levels.AGROFOREST_NONPASTURE options
-    for(agForNonPast in levels.AGROFOREST_NONPASTURE) {
-      # Loop over all levels.CROPLAND
-      for(crop in levels.CROPLAND) {
-        # Run Perfect expectations
-        scenName <- getScenName(SCENARIO, "Perfect", NULL, agFor, agForNonPast, crop)
-
-        currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
-                                      aExpectationType = "Perfect",
-                                      aLinearYears = NULL,
-                                      aLaggedShareOld = NULL,
-                                      aLogitUseDefault = FALSE,
-                                      aLogitAgroForest = agFor,
-                                      aLogitAgroForest_NonPasture = agForNonPast,
-                                      aLogitCropland = crop,
-                                      aScenarioName = scenName,
-                                      aFileName = i,
-                                      aOutputDir = aOutputDir)
-
-        scenObjects[[i]] <- currScenInfo
-        i <- i + 1
-
-        # Loop over all TAU options and run Lagged
-        for(share in levels.LAGSHARE) {
-          scenName <- getScenName(SCENARIO, "Lagged", share, agFor, agForNonPast, crop)
-
-          currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
-                                       aExpectationType = "Lagged",
-                                       aLinearYears = NULL,
-                                       aLaggedShareOld = share,
-                                       aLogitUseDefault = FALSE,
-                                       aLogitAgroForest = agFor,
-                                       aLogitAgroForest_NonPasture = agForNonPast,
-                                       aLogitCropland = crop,
-                                       aScenarioName = scenName,
-                                       aFileName = i,
-                                       aOutputDir = aOutputDir)
-
-          scenObjects[[i]] <- currScenInfo
-          i <- i + 1
-        }
-
-        # Loop over all LINYEARS options and run Linear
-        for(linyears in levels.LINYEARS) {
-          scenName <- getScenName(SCENARIO, "Linear", linyears, agFor, agForNonPast, crop)
-          currScenInfo <- ScenarioInfo(aScenario = SCENARIO,
-                                       aExpectationType = "Linear",
-                                       aLinearYears = linyears,
-                                       aLaggedShareOld = NULL,
-                                       aLogitUseDefault = FALSE,
-                                       aLogitAgroForest = agFor,
-                                       aLogitAgroForest_NonPasture = agForNonPast,
-                                       aLogitCropland = crop,
-                                       aScenarioName = scenName,
-                                       aFileName = i,
-                                       aOutputDir = aOutputDir)
-
-          scenObjects[[i]] <- currScenInfo
-          i <- i + 1
-        }
-      }
-    }
-
-  }
+  scenObjects <- Map(gen_ensemble_member,
+                     levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
+                     levels.LAGSHARE, levels.LINYEARS,
+                     seq_along(levels.AGROFOREST), aOutputDir) %>%
+    unlist(recursive=FALSE)
 
   # Loop over all scenario configurations and run the model
   foreach(obj = scenObjects) %dopar% {
     message("Starting simulation: ", obj$mFileName)
     run_model(obj)
   }
+  invisible(scenObjects)
 }
 
 #' Generate the ensemble members for a single set of parameters
@@ -165,11 +119,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, seri
 }
 
 
-#' run_model
+#' Run the GCAM land model
 #'
-#' @details Loops through all years and runs the land model.
-#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
-#' @return Name of the output directory
+#' Loop through all years and run the land model.
+#'
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
+#' @param aPeriods Integer vector of periods to run.
+#' @return Name of the output directory for the run.
 #' @author KVC
 #' @export
 run_model <- function(aScenarioInfo, aPeriods=PERIODS) {
