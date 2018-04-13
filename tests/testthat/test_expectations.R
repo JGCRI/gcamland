@@ -4,46 +4,6 @@ context("yield expectations")
 
 basepath <- file.path(tempdir(), "outputs")
 
-test_that("perfect expectations about yield are calculated correctly", {
-  # Finally, test (NB rounding numeric columns to a sensible number of
-  # digits; otherwise spurious mismatches occur)
-  # Also first converts integer columns to numeric (otherwise test will
-  # fail when comparing <int> and <dbl> columns)
-  DIGITS <- 1
-  round_df <- function(x, digits = DIGITS) {
-    integer_columns <- sapply(x, class) == "integer"
-    x[integer_columns] <- lapply(x[integer_columns], as.numeric)
-
-    numeric_columns <- sapply(x, class) == "numeric"
-    x[numeric_columns] <- round(x[numeric_columns], digits)
-    x
-  }
-
-  # With perfect expectations, yield should match expected yield exactly
-  if (SCENARIO.INFO$mExpectationType == "Perfect") {
-
-    # Get actual data
-    path <- basepath
-    file <- file.path(path, "yield.csv")
-    actualData <- read_csv(file)
-
-    # Get expected data
-    path <- file.path(basepath, "expectedYield")
-    file <- file.path(path, paste0("expectedYield_", SCENARIO.INFO$mScenarioName, ".csv"))
-    read_csv(file) %>%
-      rename(yield = expectedYield) ->
-      expectedData
-
-    expect_identical(dim(actualData), dim(expectedData),
-                     info = paste("Dimensions are not the same for expected yield with perfect expectations"))
-
-    expect_equivalent(round_df(actualData), round_df(expectedData),
-                      info = paste("Expected yield doesn't match actual yield"))
-
-  }
-
-})
-
 # Note: these tests ensure all calculations work in a simple case
 test_that("yield expectation calculation works", {
   # First, create a land leaf

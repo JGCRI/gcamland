@@ -10,7 +10,7 @@
 #' @author KVC October 2017
 #' @export
 LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
-  print("Initializing LandAllocator")
+  message("Initializing LandAllocator")
 
   # Read ag data -- we'll use this for all leafs
   agData <- ReadData_AgProd(aLandAllocator$mRegionName)
@@ -371,4 +371,32 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData) {
       aLandLeaf$mCost[[per]] <- 0
     }
   }
+}
+
+#' Required subdirectories for output directory
+#' @keywords internal
+REQD.SUBDIRS <- c("land","expectedYield","expectedPrice")
+
+
+#' Set up output directories
+#'
+#' Check the existence of the output directory (supplied as an argument) and its
+#' required subdirectories (generated internally).  If any do not exist, create them.
+#' Failure to create any of the required directories is a fatal error.
+#'
+#' @param outdir Name of the output directory
+#' @return Normalized name of the output directory (invisibly)
+#' @export
+outdir_setup <- function(outdir)
+{
+    alldirs <- c(outdir, file.path(outdir, REQD.SUBDIRS))
+    for(dir in alldirs[!dir.exists(alldirs)]) {
+        dir.create(dir)
+    }
+    if(!all(dir.exists(alldirs))) {
+        fail <- paste(alldirs[!dir.exists(alldirs)], collapse=", ")
+        stop("Unable to create the following directories: ", fail)
+    }
+
+    invisible(normalizePath(outdir))
 }
