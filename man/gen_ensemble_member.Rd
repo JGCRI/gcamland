@@ -8,9 +8,11 @@ gen_ensemble_member(agFor, agForNonPast, crop, share, linyears, serialnum,
   aOutputDir)
 }
 \arguments{
-\item{agFor}{The logit exponent the ag/forest(?) nest}
+\item{agFor}{The logit exponent the ag/forest nest, which controls
+competition between pasture and all other arable land.}
 
-\item{agForNonPast}{The logit exponent for the non-pasture(?) nest}
+\item{agForNonPast}{The logit exponent for the non-pasture nest, which
+controls competition between crops, grass/shrub, and forest.}
 
 \item{crop}{The logit exponent for the crop nest}
 
@@ -28,6 +30,6 @@ List of three ScenarioInfo objects
 \description{
 This generates one each of the Perfect, Lagged, and Linear scenario types
 using the input parameters.  The return value is a list of the three
-ScenarioInfo objects for the scenarios generated.
+\code{ScenarioInfo} objects for the scenarios generated.
 }
 \keyword{internal}

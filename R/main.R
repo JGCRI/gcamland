@@ -56,10 +56,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
 #'
 #' This generates one each of the Perfect, Lagged, and Linear scenario types
 #' using the input parameters.  The return value is a list of the three
-#' ScenarioInfo objects for the scenarios generated.
+#' \code{ScenarioInfo} objects for the scenarios generated.
 #'
-#' @param agFor The logit exponent the ag/forest(?) nest
-#' @param agForNonPast The logit exponent for the non-pasture(?) nest
+#' @param agFor The logit exponent the ag/forest nest, which controls
+#' competition between pasture and all other arable land.
+#' @param agForNonPast The logit exponent for the non-pasture nest, which
+#' controls competition between crops, grass/shrub, and forest.
 #' @param crop The logit exponent for the crop nest
 #' @param share The share parameter for the lagged model
 #' @param linyears The number of years parameter for the linear model
@@ -101,7 +103,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, seri
                           aOutputDir = aOutputDir)
 
 
-  # Loop over all LINYEARS options and run Linear
+  ## Linear scenario
   scenName <- getScenName(SCENARIO, "Linear", linyears, agFor, agForNonPast, crop)
   linscen <- ScenarioInfo(aScenario = SCENARIO,
                           aExpectationType = "Linear",
