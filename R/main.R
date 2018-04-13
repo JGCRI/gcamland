@@ -98,21 +98,96 @@ run_ensembles <- function(aOutputDir = "./outputs") {
   }
 }
 
+#' Generate the ensemble members for a single set of parameters
+#'
+#' This generates one each of the Perfect, Lagged, and Linear scenario types
+#' using the input parameters.  The return value is a list of the three
+#' ScenarioInfo objects for the scenarios generated.
+#'
+#' @param agFor The logit exponent the ag/forest(?) nest
+#' @param agForNonPast The logit exponent for the non-pasture(?) nest
+#' @param crop The logit exponent for the crop nest
+#' @param share The share parameter for the lagged model
+#' @param linyears The number of years parameter for the linear model
+#' @param serialnum A serial number for generating unique file names
+#' @param outdir Name of the output directory
+#' @return List of three ScenarioInfo objects
+#' @keywords internal
+gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears, serialnum, aOutputDir)
+{
+  ## Perfect expectations scenario
+  scenName <- getScenName(SCENARIO, "Perfect", NULL, agFor, agForNonPast, crop)
+
+  perfscen <- ScenarioInfo(aScenario = SCENARIO,
+                           aExpectationType = "Perfect",
+                           aLinearYears = NULL,
+                           aLaggedShareOld = NULL,
+                           aLogitUseDefault = FALSE,
+                           aLogitAgroForest = agFor,
+                           aLogitAgroForest_NonPasture = agForNonPast,
+                           aLogitCropland = crop,
+                           aScenarioName = scenName,
+                           aFileName = sprintf("Perf_%04d", serialnum),
+                           aOutputDir = aOutputDir)
+
+
+  ## Lagged scenario
+  scenName <- getScenName(SCENARIO, "Lagged", share, agFor, agForNonPast, crop)
+
+  lagscen <- ScenarioInfo(aScenario = SCENARIO,
+                          aExpectationType = "Lagged",
+                          aLinearYears = NULL,
+                          aLaggedShareOld = share,
+                          aLogitUseDefault = FALSE,
+                          aLogitAgroForest = agFor,
+                          aLogitAgroForest_NonPasture = agForNonPast,
+                          aLogitCropland = crop,
+                          aScenarioName = scenName,
+                          aFileName = sprintf("Lag_%04d", serialnum),
+                          aOutputDir = aOutputDir)
+
+
+  # Loop over all LINYEARS options and run Linear
+  scenName <- getScenName(SCENARIO, "Linear", linyears, agFor, agForNonPast, crop)
+  linscen <- ScenarioInfo(aScenario = SCENARIO,
+                          aExpectationType = "Linear",
+                          aLinearYears = linyears,
+                          aLaggedShareOld = NULL,
+                          aLogitUseDefault = FALSE,
+                          aLogitAgroForest = agFor,
+                          aLogitAgroForest_NonPasture = agForNonPast,
+                          aLogitCropland = crop,
+                          aScenarioName = scenName,
+                          aFileName = sprintf("Lin_%04d", serialnum),
+                          aOutputDir = aOutputDir)
+
+  list(perfscen, lagscen, linscen)
+}
+
 
 #' run_model
 #'
 #' @details Loops through all years and runs the land model.
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @return Name of the output directory
 #' @author KVC
 #' @export
-run_model <- function(aScenarioInfo) {
+run_model <- function(aScenarioInfo, aPeriods=PERIODS) {
+  ## Ensure that output directories exist
+  odnorm <- outdir_setup(aScenarioInfo$mOutputDir)
+
+  if(length(aPeriods) < 1) {
+      ## This is mostly here to facilitate testing.
+      return(invisible(odnorm))
+  }
+
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <- LandAllocator(REGION)
   LandAllocator_setup(mLandAllocator, aScenarioInfo)
 
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
-  for(per in PERIODS){
+  for(per in aPeriods){
     message("Starting period: ", per)
 
     # First, call initCalc for AgProductionTechnology (via Sector) and LandAllocator
@@ -136,6 +211,7 @@ run_model <- function(aScenarioInfo) {
     plotLandAllocation(mLandAllocator, aScenarioInfo)
     plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
   }
+  return(invisible(odnorm))
 }
 
 

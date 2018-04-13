@@ -4,10 +4,13 @@
 \alias{run_model}
 \title{run_model}
 \usage{
-run_model(aScenarioInfo)
+run_model(aScenarioInfo, aPeriods = PERIODS)
 }
 \arguments{
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+}
+\value{
+Name of the output directory
 }
 \description{
 run_model
