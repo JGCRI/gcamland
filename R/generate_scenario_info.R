@@ -13,6 +13,8 @@
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
 #' @param aOutputDir Output directory
+#' @param aRegion Region to use in the calculation.  Right now we only run a
+#' single region at a time.
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
@@ -27,7 +29,8 @@ ScenarioInfo <- function(aScenario = NULL,
                          aLogitCropland = NULL,
                          aScenarioName = NULL,
                          aFileName = NULL,
-                         aOutputDir = "./outputs") {
+                         aOutputDir = "./outputs",
+                         aRegion = DEFAULT.REGION) {
 
   self <- new.env()
   class(self) <- "ScenarioInfo"
@@ -43,6 +46,7 @@ ScenarioInfo <- function(aScenario = NULL,
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
+  self$mRegion <- aRegion
 
   self
 }

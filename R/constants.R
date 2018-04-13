@@ -37,5 +37,5 @@ BIOMASS_TYPES <- c("biomass", "willow")
 
 # **************************************************************************************************************
 # * Things that will eventually be removed
-REGION <- "USA"
+DEFAULT.REGION <- "USA"
 AEZ <- NULL

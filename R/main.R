@@ -140,7 +140,7 @@ run_model <- function(aScenarioInfo, aPeriods=PERIODS) {
   }
 
   # Initialize LandAllocator and read in calibration data
-  mLandAllocator <- LandAllocator(REGION)
+  mLandAllocator <- LandAllocator(aScenarioInfo$mRegion)
   LandAllocator_setup(mLandAllocator, aScenarioInfo)
 
   # Loop through each period and run the model

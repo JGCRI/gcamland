@@ -8,7 +8,7 @@ ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
   aLaggedShareOld = NULL, aLinearYears = NULL, aLogitUseDefault = NULL,
   aLogitAgroForest = NULL, aLogitAgroForest_NonPasture = NULL,
   aLogitCropland = NULL, aScenarioName = NULL, aFileName = NULL,
-  aOutputDir = "./outputs")
+  aOutputDir = "./outputs", aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aScenario}{Scenario name}
@@ -32,6 +32,9 @@ ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
 \item{aFileName}{File name}
 
 \item{aOutputDir}{Output directory}
+
+\item{aRegion}{Region to use in the calculation.  Right now we only run a
+single region at a time.}
 }
 \value{
 New ScenarioInfo object
