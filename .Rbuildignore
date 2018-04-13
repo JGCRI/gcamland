@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 outputs/
 ^\.travis\.yml$
+^data-raw$
