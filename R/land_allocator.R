@@ -4,7 +4,9 @@
 #'
 #' @details Initialize an Class called LandAllocator
 #' @param aRegionName Region name
+#' @param aFinalCalPeriod Final calibration period
 #' @field mRegionName Region name
+#' @field mFinalCalPeriod Final calibration period
 #' @field mChoiceFunction Logit type & exponent for the top level of the nest
 #' @field mLandAllocation Land allocation for this region
 #' @field mShare Share of land
@@ -14,8 +16,9 @@
 #' @return New, initialized LandAllocator
 #' @author KVC September 2017
 #' @export
-LandAllocator <- function(aRegionName) {
-  mRegionName = aRegionName
+LandAllocator <- function(aRegionName, aFinalCalPeriod) {
+  mRegionName <- aRegionName
+  mFinalCalPeriod <- aFinalCalPeriod
   mChoiceFunction = ChoiceFunction("relative-cost", 0)
   mLandAllocation = NULL
   mShare = NULL
@@ -42,7 +45,7 @@ LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
     LandNode_initCalc(child, aPeriod)
   }
 
-  if(aPeriod <= FINAL_CALIBRATION_PERIOD){
+  if(aPeriod <= aLandAllocator$mFinalCalPeriod){
     LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
   }
 
@@ -172,8 +175,8 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   # The land allocator has a logit exponent of zero, so
   # we need to set shares to their read in values
   for(child in aLandAllocator$mChildren) {
-    if(aPeriod > FINAL_CALIBRATION_PERIOD) {
-      child$mShare[aPeriod] <- LandNode_getCalLandAllocation(child, FINAL_CALIBRATION_PERIOD) /
+    if(aPeriod > aLandAllocator$mFinalCalPeriod) {
+      child$mShare[aPeriod] <- LandNode_getCalLandAllocation(child, aLandAllocator$mFinalCalPeriod) /
                                                 aLandAllocator$mLandAllocation
     }
   }
@@ -205,7 +208,7 @@ LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
 LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
   # In calibration periods, check land area and set calibration values
   # TODO: Do we really need to do this twice? It also happens in initCalc
-  if (aPeriod <= FINAL_CALIBRATION_PERIOD) {
+  if (aPeriod <= aLandAllocator$mFinalCalPeriod) {
     LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
   }
 

@@ -302,13 +302,14 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
 #'
 #' @details Read in ag production data
 #' @param aRegionName Region to read data for
+#' @param ascentype Scenario type: either "Reference" or "Hindcast"
 #' @return All AgProductionTechnology information
 #' @importFrom readr read_csv
 #' @importFrom dplyr bind_rows
 #' @import tidyr
 #' @author KVC October 2017
 #' @export
-ReadData_AgProd <- function(aRegionName) {
+ReadData_AgProd <- function(aRegionName, ascentype) {
   # Silence package checks
   region <- AgSupplySubsector <- NULL
 
@@ -317,7 +318,7 @@ ReadData_AgProd <- function(aRegionName) {
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgProduction_For.csv", package = "gcamland"), skip = 3))) %>%
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgProduction_Past.csv", package = "gcamland"), skip = 3))) ->
     calOutput
-  agProdChange <- get_AgProdChange()
+  agProdChange <- get_AgProdChange(ascentype)
   suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_ag.csv", package = "gcamland"), skip = 3)) %>%
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
@@ -342,7 +343,7 @@ ReadData_AgProd <- function(aRegionName) {
       filter(grepl(AEZ, AgSupplySubsector)) ->
       calOutput
 
-    if(SCENARIO != "Hindcast") {
+    if(ascentype != "Hindcast") {
       # Hindcast data is only at the region level
       agProdChange %>%
         filter(grepl(AEZ, AgSupplySubsector)) ->
@@ -360,15 +361,16 @@ ReadData_AgProd <- function(aRegionName) {
 #' get_AgProdChange
 #'
 #' @details Read in AgProdChange for all periods and return them
+#' @param ascentype Scenario type: either "Reference" or "Hindcast"
 #' @return Tibble containing AgProdChange by commodity and year
 #' @importFrom readr read_csv
 #' @author KVC October 2017
-get_AgProdChange <- function() {
+get_AgProdChange <- function(ascentype) {
   # Silence package checks
   year <- NULL
 
   # Read in data
-  if(SCENARIO == "Hindcast") {
+  if(ascentype == "Hindcast") {
     agProdChange <- get_hindcast_AgProdChange()
   } else {
     agProdChange <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgProdChange_ref.csv", package = "gcamland"), skip = 3))
@@ -376,7 +378,7 @@ get_AgProdChange <- function() {
 
   # Filter for years in model only
   agProdChange %>%
-    filter(year %in% YEARS) ->
+    filter(year %in% YEARS[[ascentype]]) ->
     agProdChange
 
   return(agProdChange)

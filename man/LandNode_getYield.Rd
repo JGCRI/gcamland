@@ -4,12 +4,14 @@
 \alias{LandNode_getYield}
 \title{LandNode_getYield}
 \usage{
-LandNode_getYield(aLandNode, aData)
+LandNode_getYield(aLandNode, aData, scentype)
 }
 \arguments{
 \item{aLandNode}{LandNode}
 
 \item{aData}{Table to store data in}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Yield for all leafs in the node

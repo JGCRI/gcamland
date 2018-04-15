@@ -21,7 +21,7 @@
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
 #' FALSE)
-#' @param aObsvar Observed data variance.
+#' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
 #' @param aOutputDir Output directory
@@ -39,7 +39,7 @@ ScenarioInfo <- function(aScenario = NULL,
                          aLogitAgroForest = NULL,
                          aLogitAgroForest_NonPasture = NULL,
                          aLogitCropland = NULL,
-                         aObsvar = 1.0,
+                         aScenarioType = "Reference",
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs",
@@ -56,7 +56,7 @@ ScenarioInfo <- function(aScenario = NULL,
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
   self$mLogitCropland <- aLogitCropland
-  self$mObsvar <- aObsvar
+  self$mScenarioType <- aScenarioType
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
@@ -65,13 +65,15 @@ ScenarioInfo <- function(aScenario = NULL,
   self
 }
 
+DEFAULT.SCENARIO.TYPE <- "Reference"
+
 #' SCENARIO.INFO
 #'
 #' A \code{ScenarioInfo} object with parameters for the default scenario.
 #'
 #' @export
 #' @author Kate Calvin
-SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
+SCENARIO.INFO <- ScenarioInfo(aScenario = DEFAULT.SCENARIO.TYPE,
                               aExpectationType = "Perfect",
                               aLinearYears = NULL,
                               aLaggedShareOld = NULL,
@@ -79,5 +81,5 @@ SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
                               aLogitAgroForest = NULL,
                               aLogitAgroForest_NonPasture = NULL,
                               aLogitCropland = NULL,
-                              aScenarioName = paste(SCENARIO, "_", "Perfect", sep=""),
-                              aFileName = paste(SCENARIO, "_", "Perfect", sep=""))
+                              aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
+                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))

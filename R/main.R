@@ -10,15 +10,16 @@
 #'
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
+#' @param atype Scenario type: either "Reference" or "Hindcast"
 #' @return List of ScenarioInfo objects for the ensemble members
 #' @import foreach doParallel
 #' @author KVC November 2017
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
   # Silence package checks
   obj <- NULL
 
-  NPARAM <- 5   # There are actually 5 parameters, but only one of lagshare
+  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
                 # or linyears is used in a single model design.
 
   ## Set options for ensembles
@@ -28,8 +29,6 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   limits.CROPLAND <- c(0.1, 10)
   limits.LAGSHARE <- c(0.1, 0.9)
   limits.LINYEARS <- round(c(1, 15))
-  limits.OBSVAR <- c(0.01, 1)           # Interpreted as a fraction of the
-                                        # per-crop variance.
 
   rn <- randtoolbox::sobol(N, NPARAM)
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
@@ -40,13 +39,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
   levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
                                         # lagshare and linyears are mutually
                                         # exclusive
-  levels.OBSVAR <- scl(rn[,5], limits.OBSVAR)
 
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS, levels.OBSVAR,
-                     seq_along(levels.AGROFOREST), aOutputDir) %>%
+                     levels.LAGSHARE, levels.LINYEARS,
+                     seq_along(levels.AGROFOREST), atype, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   # Loop over all scenario configurations and run the model
@@ -71,16 +69,17 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs") {
 #' @param share The share parameter for the lagged model
 #' @param linyears The number of years parameter for the linear model
 #' @param serialnum A serial number for generating unique file names
+#' @param scentype Scenario type, either "Hindcast" or "Reference"
 #' @param outdir Name of the output directory
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                obsvar, serialnum, aOutputDir)
+                                serialnum, scentype, aOutputDir)
 {
   ## Perfect expectations scenario
-  scenName <- getScenName(SCENARIO, "Perfect", NULL, agFor, agForNonPast, crop)
+  scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
 
-  perfscen <- ScenarioInfo(aScenario = SCENARIO,
+  perfscen <- ScenarioInfo(aScenario = scentype,
                            aExpectationType = "Perfect",
                            aLinearYears = NULL,
                            aLaggedShareOld = NULL,
@@ -88,16 +87,15 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
-                           aObsvar = obsvar,
                            aScenarioName = scenName,
                            aFileName = sprintf("Perf_%04d", serialnum),
                            aOutputDir = aOutputDir)
 
 
   ## Lagged scenario
-  scenName <- getScenName(SCENARIO, "Lagged", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(scentype, "Lagged", share, agFor, agForNonPast, crop)
 
-  lagscen <- ScenarioInfo(aScenario = SCENARIO,
+  lagscen <- ScenarioInfo(aScenario = scentype,
                           aExpectationType = "Lagged",
                           aLinearYears = NULL,
                           aLaggedShareOld = share,
@@ -105,15 +103,14 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
-                          aObsvar = obsvar,
                           aScenarioName = scenName,
                           aFileName = sprintf("Lag_%04d", serialnum),
                           aOutputDir = aOutputDir)
 
 
   ## Linear scenario
-  scenName <- getScenName(SCENARIO, "Linear", linyears, agFor, agForNonPast, crop)
-  linscen <- ScenarioInfo(aScenario = SCENARIO,
+  scenName <- getScenName(scentype, "Linear", linyears, agFor, agForNonPast, crop)
+  linscen <- ScenarioInfo(aScenario = scentype,
                           aExpectationType = "Linear",
                           aLinearYears = linyears,
                           aLaggedShareOld = NULL,
@@ -121,7 +118,6 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
-                          aObsvar = obsvar,
                           aScenarioName = scenName,
                           aFileName = sprintf("Lin_%04d", serialnum),
                           aOutputDir = aOutputDir)
@@ -135,13 +131,17 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 #' Loop through all years and run the land model.
 #'
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
-#' @param aPeriods Integer vector of periods to run.
+#' @param aPeriods Integer vector of periods to run.  Default is all periods
+#' defined for the scenario type.
 #' @return Name of the output directory for the run.
 #' @author KVC
 #' @export
-run_model <- function(aScenarioInfo, aPeriods=PERIODS) {
+run_model <- function(aScenarioInfo, aPeriods=NULL) {
   ## Ensure that output directories exist
   odnorm <- outdir_setup(aScenarioInfo$mOutputDir)
+
+  if(is.null(aPeriods))
+      aPeriods <- PERIODS[[aScenarioInfo$mScenarioType]]
 
   if(length(aPeriods) < 1) {
       ## This is mostly here to facilitate testing.
@@ -149,7 +149,9 @@ run_model <- function(aScenarioInfo, aPeriods=PERIODS) {
   }
 
   # Initialize LandAllocator and read in calibration data
-  mLandAllocator <- LandAllocator(aScenarioInfo$mRegion)
+  mLandAllocator <-
+      LandAllocator(aScenarioInfo$mRegion,
+                    TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD)
   LandAllocator_setup(mLandAllocator, aScenarioInfo)
 
   # Loop through each period and run the model

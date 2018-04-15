@@ -4,14 +4,17 @@
 \alias{LandNode}
 \title{LandNode}
 \usage{
-LandNode(aName, aChoiceFunction, aLandAllocation)
+LandNode(aName, aChoiceFunction, aLandAllocation, aFinalCalPeriod)
 }
 \arguments{
 \item{aName}{Node name}
 
 \item{aChoiceFunction}{Choice function (logit type and exponent from node above)}
 
-\item{aLandAllocation}{Land allocation for this node}
+\item{aLandAllocation}{Land allocation for this node (reserved for future
+use)}
+
+\item{aFinalCalPeriod}{Final calibration period}
 }
 \value{
 New, initialized LandNode
@@ -30,6 +33,8 @@ Initialize an Class called LandNode
 \item{\code{mChoiceFunction}}{Choice function (logit type and exponent) for this node}
 
 \item{\code{mLandAllocation}}{Land allocation for this node}
+
+\item{\code{mFinalCalPeriod}}{Final calibration period}
 
 \item{\code{mUnmanagedLandValue}}{Unmanaged land value in this node}
 

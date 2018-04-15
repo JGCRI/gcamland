@@ -4,12 +4,14 @@
 \alias{LandLeaf_getExpectedPrice}
 \title{LandLeaf_getExpectedPrice}
 \usage{
-LandLeaf_getExpectedPrice(aLandLeaf, aData)
+LandLeaf_getExpectedPrice(aLandLeaf, aData, scentype)
 }
 \arguments{
 \item{aLandLeaf}{LandLeaf}
 
 \item{aData}{Table to store data in}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Expected price data

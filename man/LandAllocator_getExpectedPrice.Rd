@@ -4,12 +4,14 @@
 \alias{LandAllocator_getExpectedPrice}
 \title{LandAllocator_getExpectedPrice}
 \usage{
-LandAllocator_getExpectedPrice(aLandAllocator, aData)
+LandAllocator_getExpectedPrice(aLandAllocator, aData, scentype)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
 \item{aData}{Data table to store expected price}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Expected price data

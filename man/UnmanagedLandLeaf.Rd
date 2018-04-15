@@ -4,10 +4,12 @@
 \alias{UnmanagedLandLeaf}
 \title{UnmanagedLandLeaf}
 \usage{
-UnmanagedLandLeaf(aName)
+UnmanagedLandLeaf(aName, aFinalCalPeriod)
 }
 \arguments{
 \item{aName}{Leaf name}
+
+\item{aFinalCalPeriod}{Final calibration period}
 }
 \value{
 New, initialized UnmanagedLandLeaf
@@ -22,6 +24,8 @@ Initialize an Class called UnmanagedLandLeaf
 
 \describe{
 \item{\code{mName}}{Leaf name}
+
+\item{\code{mFinalCalPeriod}}{Final calibration period}
 
 \item{\code{mLandAllocation}}{Land allocation for this leaf}
 

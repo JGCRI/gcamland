@@ -4,7 +4,9 @@
 #'
 #' @details Initialize an Class called LandLeaf
 #' @param aName Leaf name
+#' @param aFinalCalPeriod Final calibration period
 #' @field mName Leaf name
+#' @field mFinalCalPeriod Final calibration period
 #' @field mProductName Name of product produced by this leaf
 #' @field mLandAllocation Land allocation for this leaf
 #' @field mCalLandAllocation Calibration land allocation for this leaf
@@ -21,8 +23,9 @@
 #'
 #' @return New, initialized LandLeaf
 #' @author KVC September 2017
-LandLeaf <- function(aName) {
-  mName = aName
+LandLeaf <- function(aName, aFinalCalPeriod) {
+  mName <- aName
+  mFinalCalPeriod <- aFinalCalPeriod
   mProductName = NULL
   mLandAllocation = list()
   mCalLandAllocation = list()
@@ -165,7 +168,7 @@ LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # TODO: Implement this
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
-  if(aPeriod == FINAL_CALIBRATION_PERIOD) {
+  if(aPeriod == aLandLeaf$mFinalCalPeriod) {
     #     double shareAdj = 1.0;
     #     double profitRateForCal = mProfitRate[ aPeriod ];
     #     if( mIsGhostShareRelativeToDominantCrop ) {

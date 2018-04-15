@@ -4,10 +4,12 @@
 \alias{get_timestep}
 \title{get_timestep}
 \usage{
-get_timestep(aPer)
+get_timestep(aPer, scentype)
 }
 \arguments{
 \item{aPer}{Period to get timestep for}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Years

@@ -4,12 +4,14 @@
 \alias{LandAllocator_getLandShares}
 \title{LandAllocator_getLandShares}
 \usage{
-LandAllocator_getLandShares(aLandAllocator, aShares)
+LandAllocator_getLandShares(aLandAllocator, aShares, scentype)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
 \item{aShares}{Table of shares to append information to}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Table of land shares

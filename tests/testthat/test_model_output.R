@@ -6,6 +6,7 @@ context("Model results")
 basepath <- file.path(tempdir(), "outputs")
 test.info <- SCENARIO.INFO
 test.info$mOutputDir <- basepath
+scentype <- test.info$mScenarioType
 
 test_that("Model runs successfully.", {
     ## Run the model to generate outputs.  This needs to be the first test in
@@ -31,8 +32,10 @@ test_that("land cover matches calibration data", {
 
   # Get comparison data
   compareData <- read_csv("./comparison-data/HistLandAllocation.csv")
+  finalcalper <- TIME.PARAMS[[scentype]]$FINAL_CALIBRATION_PERIOD
   compareData %>%
-    filter(region == test.info$mRegion, year <= YEARS[FINAL_CALIBRATION_PERIOD]) ->
+    filter(region == test.info$mRegion,
+           year <= YEARS[[scentype]][finalcalper]) ->
     compareData
 
   # Look for output data in outputs under top level
@@ -168,11 +171,12 @@ test_that("land area doesn't change over time", {
   # Create data frame for comparison, where land cover equals base year level in all years
   outputData %>%
     # Filter for first year
-    filter(year == min(YEARS)) %>%
+    filter(year == min(YEARS[[scentype]])) %>%
     select(-year) %>%
     # Copy to all years
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
     select(-uniqueJoinField) %>%
     # Select appropriate columns
     select(AEZ, year, land.allocation) ->
@@ -204,7 +208,7 @@ test_that("land cover matches reference values", {
     # Get comparison data
     compareData <- read_csv("./comparison-data/LandAllocation_Reference_Perfect.csv", skip = 1)
     compareData %>%
-      filter(region == test.info$mRegion, year %in% YEARS) ->
+      filter(region == test.info$mRegion, year %in% YEARS[[scentype]]) ->
       compareData
 
     # Look for output data in outputs under top level

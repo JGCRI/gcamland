@@ -24,8 +24,9 @@ printOutput <- function(aLandAllocator, aScenarioInfo) {
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
 printPrices <- function(aScenarioInfo) {
-  file <- file.path(aScenarioInfo$mOutputDir, "prices.csv")
-  write_csv(PRICES, file)
+    file <- file.path(aScenarioInfo$mOutputDir, "prices.csv")
+    type <- aScenarioInfo$mScenarioType
+    write_csv(PRICES[[type]], file)
 }
 
 #' printLandAllocation
@@ -39,6 +40,8 @@ printPrices <- function(aScenarioInfo) {
 printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
+
+  scentype <- aScenarioInfo$mScenarioType
 
   # Get a list of leafs
   nodes <- unique(aNest$parent)
@@ -56,11 +59,12 @@ printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
   tibble::tibble(name = leafs$node,
                  land.allocation = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allLand
 
-  allLand <- LandAllocator_getLandAllocation(aLandAllocator, allLand)
+  allLand <- LandAllocator_getLandAllocation(aLandAllocator, allLand, scentype)
 
   # Add information on scenario and expectation type
   allLand$scenario <- aScenarioInfo$mScenarioName
@@ -75,15 +79,16 @@ printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
 #' @details Calculates and returns land allocation for a particular leaf
 #' @param aLandAllocator LandAllocator
 #' @param allLand Data frame to fill in land allocation
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Land allocation table
 #' @author KVC October 2017
-LandAllocator_getLandAllocation <- function(aLandAllocator, allLand) {
+LandAllocator_getLandAllocation <- function(aLandAllocator, allLand, scentype) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      allLand <- LandNode_getLandAllocation(child, allLand)
+      allLand <- LandNode_getLandAllocation(child, allLand, scentype)
     } else {
-      allLand <- LandLeaf_getLandAllocation(child, allLand)
+      allLand <- LandLeaf_getLandAllocation(child, allLand, scentype)
     }
   }
 
@@ -95,16 +100,17 @@ LandAllocator_getLandAllocation <- function(aLandAllocator, allLand) {
 #' @details Calculates and returns total land allocation for types and periods
 #' @param aLandNode LandNode
 #' @param allLand Data frame to fill in land allocation
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Land allocation table
 #' @author KVC October 2017
-LandNode_getLandAllocation <- function(aLandNode, allLand) {
+LandNode_getLandAllocation <- function(aLandNode, allLand, scentype) {
 
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      allLand <- LandNode_getLandAllocation(child, allLand)
+      allLand <- LandNode_getLandAllocation(child, allLand, scentype)
     } else {
-      allLand <- LandLeaf_getLandAllocation(child, allLand)
+      allLand <- LandLeaf_getLandAllocation(child, allLand, scentype)
     }
   }
 
@@ -116,14 +122,15 @@ LandNode_getLandAllocation <- function(aLandNode, allLand) {
 #' @details Calculates and returns total land allocation for types and periods
 #' @param aLandLeaf LandLeaf
 #' @param allLand Data frame to fill in land allocation
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Land allocation table
 #' @author KVC October 2017
-LandLeaf_getLandAllocation <- function(aLandLeaf, allLand) {
+LandLeaf_getLandAllocation <- function(aLandLeaf, allLand, scentype) {
 
-  for(per in PERIODS) {
+  for(per in PERIODS[[scentype]]) {
     currName <- aLandLeaf$mName[1]
-    currYear <- get_per_to_yr(per)
+    currYear <- get_per_to_yr(per, scentype)
     allLand$land.allocation[allLand$year == currYear &
                               allLand$name == currName] <- aLandLeaf$mLandAllocation[[per]]
   }
@@ -143,6 +150,8 @@ printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- year <-share <- NULL
 
+  scentype <- aScenarioInfo$mScenarioType
+
   # Get a list of leafs
   nodes <- unique(aNest$parent)
   aNest %>%
@@ -160,12 +169,14 @@ printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
                  name = leafs$node,
                  share = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allLandShares
 
   # Loop over all periods and get shares
-  allLandShares <- LandAllocator_getLandShares(aLandAllocator, allLandShares)
+  allLandShares <- LandAllocator_getLandShares(aLandAllocator, allLandShares,
+                                               scentype)
 
   # Convert year to integer
   allLandShares %>%
@@ -184,19 +195,20 @@ printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
 #' @details Calculates and returns land allocation for a particular leaf
 #' @param aLandAllocator LandAllocator
 #' @param aShares Table of shares to append information to
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Table of land shares
 #' @author KVC November 2017
-LandAllocator_getLandShares <- function(aLandAllocator, aShares) {
+LandAllocator_getLandShares <- function(aLandAllocator, aShares, scentype) {
 
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      aShares <- LandNode_getLandShares(child, aShares)
+      aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
-      for(per in PERIODS) {
+      for(per in PERIODS[[scentype]]) {
         currParent <- "root"
         currName <- child$mName[1]
-        currYear <- get_per_to_yr(per)
+        currYear <- get_per_to_yr(per, scentype)
         aShares$share[aShares$year == currYear &
                         aShares$name == currName &
                         aShares$parent == currParent] <- child$mShare[[per]]
@@ -212,18 +224,19 @@ LandAllocator_getLandShares <- function(aLandAllocator, aShares) {
 #' @details Calculates and returns land share for all children.
 #' @param aLandNode LandNode
 #' @param aShares Table of shares to add to
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Table of land shares
 #' @author KVC November 2017
-LandNode_getLandShares <- function(aLandNode, aShares) {
+LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      aShares <- LandNode_getLandShares(child, aShares)
+      aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
-      for(per in PERIODS) {
+      for(per in PERIODS[[scentype]]) {
         currParent <- aLandNode$mName[1]
         currName <- child$mName[1]
-        currYear <- get_per_to_yr(per)
+        currYear <- get_per_to_yr(per, scentype)
         aShares$share[aShares$year == currYear &
                         aShares$name == currName &
                         aShares$parent == currParent] <- child$mShare[[per]]
@@ -337,6 +350,8 @@ printYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
+  scentype <- aScenarioInfo$mScenarioType
+
   # Get a list of leafs
   nodes <- unique(aNest$parent)
   aNest %>%
@@ -353,11 +368,12 @@ printYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   tibble::tibble(name = leafs$node,
                  yield = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allYield
 
-  allYield <- LandAllocator_getYield(aLandAllocator, allYield)
+  allYield <- LandAllocator_getYield(aLandAllocator, allYield, scentype)
 
   # Add information on scenario and expectation type
   allYield$scenario <- aScenarioInfo$mScenarioName
@@ -373,15 +389,16 @@ printYield <- function(aLandAllocator, aScenarioInfo, aNest) {
 #' @details Calculates and returns yield for all leafs
 #' @param aLandAllocator LandAllocator
 #' @param aData Table to store data in
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Yield for all leafs
 #' @author KVC October 2017
-LandAllocator_getYield <- function(aLandAllocator, aData) {
+LandAllocator_getYield <- function(aLandAllocator, aData, scentype) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      aData <- LandNode_getYield(child, aData)
+      aData <- LandNode_getYield(child, aData, scentype)
     } else if(class(child) == "LandLeaf") {
-      aData <- LandLeaf_getYield(child, aData)
+      aData <- LandLeaf_getYield(child, aData, scentype)
     }
   }
 
@@ -393,15 +410,16 @@ LandAllocator_getYield <- function(aLandAllocator, aData) {
 #' @details Calculates and returns yield for all leafs in a node
 #' @param aLandNode LandNode
 #' @param aData Table to store data in
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Yield for all leafs in the node
 #' @author KVC October 2017
-LandNode_getYield <- function(aLandNode, aData) {
+LandNode_getYield <- function(aLandNode, aData, scentype) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      aData <- LandNode_getYield(child, aData)
+      aData <- LandNode_getYield(child, aData, scentype)
     } else if(class(child) == "LandLeaf") {
-      aData <- LandLeaf_getYield(child, aData)
+      aData <- LandLeaf_getYield(child, aData, scentype)
     }
   }
 
@@ -413,13 +431,14 @@ LandNode_getYield <- function(aLandNode, aData) {
 #' @details Calculates and returns yield for this leaf
 #' @param aLandLeaf LandLeaf
 #' @param aData Table to store data in
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Yield for all leafs in the node
 #' @author KVC October 2017
-LandLeaf_getYield <- function(aLandLeaf, aData) {
-  for(per in PERIODS) {
+LandLeaf_getYield <- function(aLandLeaf, aData, scentype) {
+  for(per in PERIODS[[scentype]]) {
     currName <- aLandLeaf$mName[1]
-    currYear <- get_per_to_yr(per)
+    currYear <- get_per_to_yr(per, scentype)
     aData$yield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mYield[[per]]
   }
 
@@ -438,6 +457,8 @@ printExpectedYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
+  scentype <- aScenarioInfo$mScenarioType
+
   # Get a list of leafs
   nodes <- unique(aNest$parent)
   aNest %>%
@@ -454,11 +475,12 @@ printExpectedYield <- function(aLandAllocator, aScenarioInfo, aNest) {
   tibble::tibble(name = leafs$node,
                  expectedYield = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allYield
 
-  allYield <- LandAllocator_getExpectedYield(aLandAllocator, allYield)
+  allYield <- LandAllocator_getExpectedYield(aLandAllocator, allYield, scentype)
 
   # Add information on scenario and expectation type
   allYield$scenario <- aScenarioInfo$mScenarioName
@@ -474,15 +496,16 @@ printExpectedYield <- function(aLandAllocator, aScenarioInfo, aNest) {
 #' @details Calculates and returns expected yield for all leafs
 #' @param aLandAllocator LandAllocator
 #' @param aData Data table to store expected yield
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Expected yield data
 #' @author KVC October 2017
-LandAllocator_getExpectedYield <- function(aLandAllocator, aData) {
+LandAllocator_getExpectedYield <- function(aLandAllocator, aData, scentype) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      aData <- LandNode_getExpectedYield(child, aData)
+      aData <- LandNode_getExpectedYield(child, aData, scentype)
     } else if(class(child) == "LandLeaf") {
-      aData <- LandLeaf_getExpectedYield(child, aData)
+      aData <- LandLeaf_getExpectedYield(child, aData, scentype)
     }
   }
 
@@ -494,15 +517,16 @@ LandAllocator_getExpectedYield <- function(aLandAllocator, aData) {
 #' @details Calculates and returns expected yield for leafs in this node
 #' @param aLandNode LandNode
 #' @param aData Data table to store expected yield
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Expected yield data
 #' @author KVC October 2017
-LandNode_getExpectedYield <- function(aLandNode, aData) {
+LandNode_getExpectedYield <- function(aLandNode, aData, scentype) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      aData <- LandNode_getExpectedYield(child, aData)
+      aData <- LandNode_getExpectedYield(child, aData, scentype)
     } else if(class(child) == "LandLeaf") {
-      aData <- LandLeaf_getExpectedYield(child, aData)
+      aData <- LandLeaf_getExpectedYield(child, aData, scentype)
     }
   }
 
@@ -514,13 +538,14 @@ LandNode_getExpectedYield <- function(aLandNode, aData) {
 #' @details Calculates and returns expected yield for this leaf
 #' @param aLandLeaf LandLeaf
 #' @param aData Table to store data in
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Expected yield data
 #' @author KVC October 2017
-LandLeaf_getExpectedYield <- function(aLandLeaf, aData) {
-  for(per in PERIODS) {
+LandLeaf_getExpectedYield <- function(aLandLeaf, aData, scentype) {
+  for(per in PERIODS[[scentype]]) {
     currName <- aLandLeaf$mName[1]
-    currYear <- get_per_to_yr(per)
+    currYear <- get_per_to_yr(per, scentype)
     aData$expectedYield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedYield[[per]]
   }
 
@@ -540,6 +565,8 @@ printExpectedPrice <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
+  scentype <- aScenarioInfo$mScenarioType
+
   # Get a list of leafs
   nodes <- unique(aNest$parent)
   aNest %>%
@@ -556,11 +583,12 @@ printExpectedPrice <- function(aLandAllocator, aScenarioInfo, aNest) {
   tibble::tibble(name = leafs$node,
                  expectedPrice = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
     select(-uniqueJoinField) ->
     allPrice
 
-  allPrice <- LandAllocator_getExpectedPrice(aLandAllocator, allPrice)
+  allPrice <- LandAllocator_getExpectedPrice(aLandAllocator, allPrice, scentype)
 
   # Add information on scenario and expectation type
   allPrice$scenario <- aScenarioInfo$mScenarioName
@@ -576,15 +604,16 @@ printExpectedPrice <- function(aLandAllocator, aScenarioInfo, aNest) {
 #' @details Calculates and returns expected price for all leafs
 #' @param aLandAllocator LandAllocator
 #' @param aData Data table to store expected price
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Expected price data
 #' @author KVC October 2017
-LandAllocator_getExpectedPrice <- function(aLandAllocator, aData) {
+LandAllocator_getExpectedPrice <- function(aLandAllocator, aData, scentype) {
   for(child in aLandAllocator$mChildren) {
     if(class(child) == "LandNode") {
-      aData <- LandNode_getExpectedPrice(child, aData)
+      aData <- LandNode_getExpectedPrice(child, aData, scentype)
     } else if(class(child) == "LandLeaf") {
-      aData <- LandLeaf_getExpectedPrice(child, aData)
+      aData <- LandLeaf_getExpectedPrice(child, aData, scentype)
     }
   }
 
@@ -596,15 +625,16 @@ LandAllocator_getExpectedPrice <- function(aLandAllocator, aData) {
 #' @details Calculates and returns expected price for leafs in this node
 #' @param aLandNode LandNode
 #' @param aData Data table to store expected price
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Expected price data
 #' @author KVC November 2017
-LandNode_getExpectedPrice <- function(aLandNode, aData) {
+LandNode_getExpectedPrice <- function(aLandNode, aData, scentype) {
   for(child in aLandNode$mChildren) {
     if(class(child) == "LandNode") {
-      aData <- LandNode_getExpectedPrice(child, aData)
+      aData <- LandNode_getExpectedPrice(child, aData, scentype)
     } else if(class(child) == "LandLeaf") {
-      aData <- LandLeaf_getExpectedPrice(child, aData)
+      aData <- LandLeaf_getExpectedPrice(child, aData, scentype)
     }
   }
 
@@ -616,13 +646,14 @@ LandNode_getExpectedPrice <- function(aLandNode, aData) {
 #' @details Calculates and returns expected price for this leaf
 #' @param aLandLeaf LandLeaf
 #' @param aData Table to store data in
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #'
 #' @return Expected price data
 #' @author KVC November 2017
-LandLeaf_getExpectedPrice <- function(aLandLeaf, aData) {
-  for(per in PERIODS) {
+LandLeaf_getExpectedPrice <- function(aLandLeaf, aData, scentype) {
+  for(per in PERIODS[[scentype]]) {
     currName <- aLandLeaf$mName[1]
-    currYear <- get_per_to_yr(per)
+    currYear <- get_per_to_yr(per, scentype)
     aData$expectedPrice[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedPrice[[per]]
   }
 

@@ -4,10 +4,12 @@
 \alias{get_per_to_yr}
 \title{get_per_to_yr}
 \usage{
-get_per_to_yr(aPer)
+get_per_to_yr(aPer, scentype)
 }
 \arguments{
 \item{aPer}{Period to convert}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Year

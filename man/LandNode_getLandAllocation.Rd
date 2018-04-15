@@ -4,12 +4,14 @@
 \alias{LandNode_getLandAllocation}
 \title{LandNode_getLandAllocation}
 \usage{
-LandNode_getLandAllocation(aLandNode, allLand)
+LandNode_getLandAllocation(aLandNode, allLand, scentype)
 }
 \arguments{
 \item{aLandNode}{LandNode}
 
 \item{allLand}{Data frame to fill in land allocation}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Land allocation table

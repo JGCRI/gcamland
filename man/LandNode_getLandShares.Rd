@@ -4,12 +4,14 @@
 \alias{LandNode_getLandShares}
 \title{LandNode_getLandShares}
 \usage{
-LandNode_getLandShares(aLandNode, aShares)
+LandNode_getLandShares(aLandNode, aShares, scentype)
 }
 \arguments{
 \item{aLandNode}{LandNode}
 
 \item{aShares}{Table of shares to add to}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Table of land shares

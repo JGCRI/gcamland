@@ -4,10 +4,12 @@
 \alias{LandAllocator}
 \title{LandAllocator}
 \usage{
-LandAllocator(aRegionName)
+LandAllocator(aRegionName, aFinalCalPeriod)
 }
 \arguments{
 \item{aRegionName}{Region name}
+
+\item{aFinalCalPeriod}{Final calibration period}
 }
 \value{
 New, initialized LandAllocator
@@ -22,6 +24,8 @@ Initialize an Class called LandAllocator
 
 \describe{
 \item{\code{mRegionName}}{Region name}
+
+\item{\code{mFinalCalPeriod}}{Final calibration period}
 
 \item{\code{mChoiceFunction}}{Logit type & exponent for the top level of the nest}
 

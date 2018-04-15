@@ -23,3 +23,26 @@ LazyData: true
 RoxygenNote: 6.0.1
 Suggests: testthat
 BugReports: https://github.com/JGCRI/gcamland/issues
+Collate: 
+    'ag_production_technology.R'
+    'constants.R'
+    'data.R'
+    'generate_price_data.R'
+    'generate_scenario_info.R'
+    'helpers.R'
+    'lagged_expectation.R'
+    'land_allocator.R'
+    'land_leaf.R'
+    'land_node.R'
+    'linear_expectation.R'
+    'main.R'
+    'perfect_expectation.R'
+    'plot_land.R'
+    'process_hindcast_data.R'
+    'read_data.R'
+    'relative_cost_logit.R'
+    'reporting.R'
+    'sector.R'
+    'sector_utils.R'
+    'setup.R'
+    'unmanaged_land_leaf.R'

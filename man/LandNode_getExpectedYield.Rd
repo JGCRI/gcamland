@@ -4,12 +4,14 @@
 \alias{LandNode_getExpectedYield}
 \title{LandNode_getExpectedYield}
 \usage{
-LandNode_getExpectedYield(aLandNode, aData)
+LandNode_getExpectedYield(aLandNode, aData, scentype)
 }
 \arguments{
 \item{aLandNode}{LandNode}
 
 \item{aData}{Data table to store expected yield}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Expected yield data

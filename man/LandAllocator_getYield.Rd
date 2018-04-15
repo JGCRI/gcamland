@@ -4,12 +4,14 @@
 \alias{LandAllocator_getYield}
 \title{LandAllocator_getYield}
 \usage{
-LandAllocator_getYield(aLandAllocator, aData)
+LandAllocator_getYield(aLandAllocator, aData, scentype)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}
 
 \item{aData}{Table to store data in}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Yield for all leafs

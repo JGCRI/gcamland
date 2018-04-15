@@ -4,12 +4,14 @@
 \alias{PerfectExpectation_calcExpectedYield}
 \title{PerfectExpectation_calcExpectedYield}
 \usage{
-PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{LandLeaf to calculate expected yield for}
 
 \item{aPeriod}{Current model period}
+
+\item{aScenarioInfo}{Scenario parameter structure}
 }
 \description{
 PerfectExpectation_calcExpectedYield

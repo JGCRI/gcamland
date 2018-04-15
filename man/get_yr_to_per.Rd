@@ -4,10 +4,12 @@
 \alias{get_yr_to_per}
 \title{get_yr_to_per}
 \usage{
-get_yr_to_per(aYear)
+get_yr_to_per(aYear, scentype)
 }
 \arguments{
 \item{aYear}{Year to convert}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Period number

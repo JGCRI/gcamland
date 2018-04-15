@@ -4,12 +4,13 @@
 \alias{run_model}
 \title{Run the GCAM land model}
 \usage{
-run_model(aScenarioInfo, aPeriods = PERIODS)
+run_model(aScenarioInfo, aPeriods = NULL)
 }
 \arguments{
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations.}
 
-\item{aPeriods}{Integer vector of periods to run.}
+\item{aPeriods}{Integer vector of periods to run.  Default is all periods
+defined for the scenario type.}
 }
 \value{
 Name of the output directory for the run.

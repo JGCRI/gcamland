@@ -4,12 +4,14 @@
 \alias{LandLeaf_getExpectedYield}
 \title{LandLeaf_getExpectedYield}
 \usage{
-LandLeaf_getExpectedYield(aLandLeaf, aData)
+LandLeaf_getExpectedYield(aLandLeaf, aData, scentype)
 }
 \arguments{
 \item{aLandLeaf}{LandLeaf}
 
 \item{aData}{Table to store data in}
+
+\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Expected yield data

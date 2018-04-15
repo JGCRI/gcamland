@@ -5,15 +5,16 @@
 #' get_yr_to_per
 #'
 #' @param aYear Year to convert
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #' @details Convert a year to a period number
 #' @return Period number
 #' @author KVC October 2017
-get_yr_to_per <- function(aYear) {
+get_yr_to_per <- function(aYear, scentype) {
   per <- -1
-  if(aYear %in% YEARS) {
-    per <- which(aYear == YEARS)
+  if(aYear %in% YEARS[[scentype]]) {
+    per <- which(aYear == YEARS[[scentype]])
   } else{
-    per <- max(which(aYear > YEARS))
+    per <- max(which(aYear > YEARS[[scentype]]))
   }
 
   return(per)
@@ -22,22 +23,24 @@ get_yr_to_per <- function(aYear) {
 #' get_per_to_yr
 #'
 #' @param aPer Period to convert
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #' @details Convert a period to a year
 #' @return Year
 #' @author KVC October 2017
-get_per_to_yr <- function(aPer) {
-  return(YEARS[[aPer]])
+get_per_to_yr <- function(aPer, scentype) {
+  return(YEARS[[scentype]][[aPer]])
 }
 
 #' get_timestep
 #'
 #' @param aPer Period to get timestep for
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #' @details Calculate the length of the timestep leading up to a particular period
 #' @return Years
 #' @author KVC October 2017
-get_timestep <- function(aPer) {
+get_timestep <- function(aPer, scentype) {
   if(aPer > 1){
-    yrs <- YEARS[[aPer]] - YEARS[[aPer - 1]]
+    yrs <- YEARS[[scentype]][[aPer]] - YEARS[[scentype]][[aPer - 1]]
   } else{
     stop("Invalid period passed to get_timestep")
   }
@@ -48,10 +51,11 @@ get_timestep <- function(aPer) {
 #' getStartYear
 #'
 #' @details Get model start year
+#' @param scentype Scenario type: either "Reference" or "Hindcast"
 #' @return Year
 #' @author KVC October 2017
-getStartYear <- function() {
-  return(min(YEARS))
+getStartYear <- function(scentype) {
+  return(min(YEARS[[scentype]]))
 }
 
 

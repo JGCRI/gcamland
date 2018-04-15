@@ -3,13 +3,14 @@
 \docType{data}
 \name{PRICES}
 \alias{PRICES}
-\title{PRICES}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 192 rows and 4 columns.}
+\title{Price tables for each scenario type.}
+\format{An object of class \code{list} of length 2.}
 \usage{
 PRICES
 }
 \description{
-A tibble with all of the prices for the model
+Currently supported types are "Reference" and "Hindcast".  This structure is
+a list of tibbles with all of the prices for the model, for each scenario.
 }
 \author{
 Kate Calvin

@@ -4,10 +4,12 @@
 \alias{LandLeaf}
 \title{LandLeaf}
 \usage{
-LandLeaf(aName)
+LandLeaf(aName, aFinalCalPeriod)
 }
 \arguments{
 \item{aName}{Leaf name}
+
+\item{aFinalCalPeriod}{Final calibration period}
 }
 \value{
 New, initialized LandLeaf
@@ -22,6 +24,8 @@ Initialize an Class called LandLeaf
 
 \describe{
 \item{\code{mName}}{Leaf name}
+
+\item{\code{mFinalCalPeriod}}{Final calibration period}
 
 \item{\code{mProductName}}{Name of product produced by this leaf}
 
