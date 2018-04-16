@@ -54,3 +54,45 @@ get_scenario_land_data <- function(aScenarioInfo)
       dplyr::group_by(land.type, year) %>%
       dplyr::summarise(land.allocation = sum(land.allocation))
 }
+
+
+#' Select a log-probability density function
+#'
+#' Choose a log-probability density function from the family of Gossett's
+#' t-distributions (including the normal distribution as a special case).
+#'
+#' The t-distributions are parameterized by a parameter \eqn{\nu} called the
+#' "degrees of freedom".  Despite the name, this parameter need not be an
+#' integer; however, it must be positive.  The smaller \eqn{\nu} is, the heavier
+#' the tails of the distribution.  In the limit that \eqn{\nu\rightarrow\infty},
+#' the distribution becomes equivalent to the normal distribution.  Therefore,
+#' as a special case, passing \code{df = Inf} will return a normal distribution.
+#'
+#' The function returned from this generator should be called with a vector of
+#' differences between the model data and observed data, and a vector of scale
+#' factors \eqn{sigma}.  Together, these will be used to compute
+#' t-scores; that is, scaled differences between the model data and observed
+#' data: \eqn{t = \frac{M-O}{\sigma}}.
+#'
+#' The scaling factor \eqn{\sigma} is a parameter of the probability model.
+#' Since the scales of the observed and model values depend on the commodity
+#' and/or region, this will be a vector of the same length as the difference
+#' vector.
+#'
+#' @param df Degrees of freedom for the distribution.
+#' @return A function \code{lp(model-observation, sigma)}
+#' @export
+get_lpdf <- function(df)
+{
+    if(length(df) != 1) {
+        stop("get_lpdf must be called with a single df value.")
+    }
+    if(df <= 0) {
+        stop("get_lpdf: df must be > 0.")
+    }
+    ## df=Inf is explicitly allowed in stats::dt
+    function(x, sig) {
+        stats::dt(x/sig, df=df, log=TRUE) - log(sig)
+    }
+}
+

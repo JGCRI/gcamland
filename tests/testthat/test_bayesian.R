@@ -25,3 +25,25 @@ test_that("get_historical_land_data returns filtered FAO data", {
                       readr::read_csv('complex_filter_ref.csv'))
 })
 
+
+test_that("Functions returned by get_lpdf are valid", {
+    x <- c(1,1, 0.5, 0.5)
+    sig <- c(1, 0.5, 1, 0.5)
+
+    f1 <- get_lpdf(Inf)
+    expect_equal(f1(x,sig),
+                 dnorm(x, sd=sig, log=TRUE))
+
+    f2 <- get_lpdf(1)
+    expect_equal(f2(x,sig),
+                 dcauchy(x, scale=sig, log=TRUE))
+
+    ## Verify that it works with fractional df
+    f3 <- get_lpdf(2.5)
+    expect_equal(f3(x,sig),
+                 dt(x/sig, df=2.5, log=TRUE) - log(sig))
+
+    expect_error({f4 <- get_lpdf(0)})
+    expect_error({f5 <- get_lpdf(-1)})
+    expect_error({f6 <- get_lpdf(c(1,2,3,4))})
+})
