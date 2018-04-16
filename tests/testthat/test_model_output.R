@@ -239,7 +239,10 @@ test_that("land cover matches reference values", {
 test_that("scenario land data can be retrieved", {
     ld <- get_scenario_land_data(test.info)
     expect_true(is.data.frame(ld))
-    expect_equal(ncol(ld), 3)
-    expect_equal(names(ld),
-                 c('land.type', 'year', 'land.allocation'))
+    expect_equal(ncol(ld), 10)
+    expect_setequal(names(ld),
+                    c('land.type', 'year', 'model', 'variable',
+                      'expectation.type', 'share.old', 'linear.years',
+                      'logit.agforest', 'logit.afnonpast', 'logit.crop'))
 })
+

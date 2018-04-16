@@ -20,7 +20,7 @@ t-distributions (including the normal distribution as a special case).
 The t-distributions are parameterized by a parameter \eqn{\nu} called the
 "degrees of freedom".  Despite the name, this parameter need not be an
 integer; however, it must be positive.  The smaller \eqn{\nu} is, the heavier
-the tails of the distribution.  In the limit that \eqn{\nu\rightarrow\infty},
+the tails of the distribution.  In the limit that \eqn{\nu \rightarrow \infty},
 the distribution becomes equivalent to the normal distribution.  Therefore,
 as a special case, passing \code{df = Inf} will return a normal distribution.
 
@@ -28,7 +28,7 @@ The function returned from this generator should be called with a vector of
 differences between the model data and observed data, and a vector of scale
 factors \eqn{sigma}.  Together, these will be used to compute
 t-scores; that is, scaled differences between the model data and observed
-data: \eqn{t = \frac{M-O}{\sigma}}.
+data: \eqn{t = (M-O)/\sigma}.
 
 The scaling factor \eqn{\sigma} is a parameter of the probability model.
 Since the scales of the observed and model values depend on the commodity

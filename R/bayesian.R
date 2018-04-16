@@ -20,6 +20,9 @@
 get_historical_land_data <- function(regions = NULL, years = NULL,
                                      commodities = NULL)
 {
+    ## silence notes
+    GCAM_commodity <- variable <- year <- area <- NULL
+
     filter <- rep(TRUE, nrow(FAO_land_history))
     if(!is.null(regions))
         filter <- filter & FAO_land_history$region %in% regions
@@ -28,7 +31,9 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
     if(!is.null(commodities))
         filter <- filter & FAO_land_history$GCAM_commodity %in% commodities
 
-    FAO_land_history[filter,]
+    FAO_land_history[filter,] %>%
+      dplyr::mutate(variable="Land Area") %>%
+      dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area)
 }
 
 
@@ -52,9 +57,28 @@ get_scenario_land_data <- function(aScenarioInfo)
       tidyr::extract('name', c('land.type', 'AEZ'),
                      '(.+)(AEZ[0-9]+)') %>%
       dplyr::group_by(land.type, year) %>%
-      dplyr::summarise(land.allocation = sum(land.allocation))
+      dplyr::summarise(model = sum(land.allocation)) %>%
+      dplyr::mutate(variable = "Land Area") %>%
+      add_parameter_data(aScenarioInfo)
 }
 
+
+#' Add model parameter values to a table of model results
+#'
+#' @param df Data frame with model results
+#' @param aScenarioInfo ScenarioInfo structure for the scenario
+#' @keywords internal
+add_parameter_data <- function(df, aScenarioInfo)
+{
+    df$expectation.type <- aScenarioInfo$mExpectationType
+    df$share.old <- aScenarioInfo$mLaggedShareOld
+    df$linear.years <- aScenarioInfo$mLinearYears
+    df$logit.agforest <- aScenarioInfo$mLogitAgroForest
+    df$logit.afnonpast <- aScenarioInfo$mLogitAgroForest_NonPasture
+    df$logit.crop <- aScenarioInfo$mLogitCropland
+
+    df
+}
 
 #' Select a log-probability density function
 #'
@@ -64,7 +88,7 @@ get_scenario_land_data <- function(aScenarioInfo)
 #' The t-distributions are parameterized by a parameter \eqn{\nu} called the
 #' "degrees of freedom".  Despite the name, this parameter need not be an
 #' integer; however, it must be positive.  The smaller \eqn{\nu} is, the heavier
-#' the tails of the distribution.  In the limit that \eqn{\nu\rightarrow\infty},
+#' the tails of the distribution.  In the limit that \eqn{\nu \rightarrow \infty},
 #' the distribution becomes equivalent to the normal distribution.  Therefore,
 #' as a special case, passing \code{df = Inf} will return a normal distribution.
 #'
@@ -72,7 +96,7 @@ get_scenario_land_data <- function(aScenarioInfo)
 #' differences between the model data and observed data, and a vector of scale
 #' factors \eqn{sigma}.  Together, these will be used to compute
 #' t-scores; that is, scaled differences between the model data and observed
-#' data: \eqn{t = \frac{M-O}{\sigma}}.
+#' data: \eqn{t = (M-O)/\sigma}.
 #'
 #' The scaling factor \eqn{\sigma} is a parameter of the probability model.
 #' Since the scales of the observed and model values depend on the commodity
