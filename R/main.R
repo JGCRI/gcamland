@@ -52,6 +52,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
     message("Starting simulation: ", obj$mFileName)
     run_model(obj)
   }
+
   invisible(scenObjects)
 }
 
@@ -79,7 +80,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
 
-  perfscen <- ScenarioInfo(aScenario = scentype,
+  perfscen <- ScenarioInfo(aScenarioType = scentype,
                            aExpectationType = "Perfect",
                            aLinearYears = NULL,
                            aLaggedShareOld = NULL,
@@ -95,7 +96,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
   ## Lagged scenario
   scenName <- getScenName(scentype, "Lagged", share, agFor, agForNonPast, crop)
 
-  lagscen <- ScenarioInfo(aScenario = scentype,
+  lagscen <- ScenarioInfo(aScenarioType = scentype,
                           aExpectationType = "Lagged",
                           aLinearYears = NULL,
                           aLaggedShareOld = share,
@@ -110,7 +111,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 
   ## Linear scenario
   scenName <- getScenName(scentype, "Linear", linyears, agFor, agForNonPast, crop)
-  linscen <- ScenarioInfo(aScenario = scentype,
+  linscen <- ScenarioInfo(aScenarioType = scentype,
                           aExpectationType = "Linear",
                           aLinearYears = linyears,
                           aLaggedShareOld = NULL,

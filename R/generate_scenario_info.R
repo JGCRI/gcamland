@@ -48,7 +48,8 @@ ScenarioInfo <- function(aScenario = NULL,
   self <- new.env()
   class(self) <- "ScenarioInfo"
 
-  self$mScenario <- aScenario
+  self$mScenario <- aScenario           # TODO: This seems to be unused right
+                                        # now.  Remove?
   self$mExpectationType <- aExpectationType
   self$mLaggedShareOld <- aLaggedShareOld
   self$mLinearYears <- aLinearYears
@@ -73,7 +74,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #'
 #' @export
 #' @author Kate Calvin
-SCENARIO.INFO <- ScenarioInfo(aScenario = DEFAULT.SCENARIO.TYPE,
+SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aExpectationType = "Perfect",
                               aLinearYears = NULL,
                               aLaggedShareOld = NULL,

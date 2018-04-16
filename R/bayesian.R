@@ -17,8 +17,8 @@
 #' use all commodities.)
 #' @return Data frame containing the filtered data.
 #' @export
-get_historical_data <- function(regions = NULL, years = NULL,
-                                commodities = NULL)
+get_historical_land_data <- function(regions = NULL, years = NULL,
+                                     commodities = NULL)
 {
     filter <- rep(TRUE, nrow(FAO_land_history))
     if(!is.null(regions))
@@ -32,3 +32,25 @@ get_historical_data <- function(regions = NULL, years = NULL,
 }
 
 
+#' Load land use results for an already-run scenario
+#'
+#' Fetch land use results and aggregate to region, commodity, and year.
+#'
+#' @param aScenarioInfo ScenarioInfo structure for the run.
+#' @return Table with region, commodity, year, and area.
+#' @export
+get_scenario_land_data <- function(aScenarioInfo)
+{
+    land.type <- year <- land.allocation <- NULL # silence package notes
+
+    outputdir <- aScenarioInfo$mOutputDir
+    filename <- paste0('landAllocation_',aScenarioInfo$mFileName,'.csv')
+    fn <- file.path(outputdir, 'land', filename)
+
+    readr::read_csv(fn) %>%
+      ## split name / AEZ
+      tidyr::extract('name', c('land.type', 'AEZ'),
+                     '(.+)(AEZ[0-9]+)') %>%
+      dplyr::group_by(land.type, year) %>%
+      dplyr::summarise(land.allocation = sum(land.allocation))
+}
