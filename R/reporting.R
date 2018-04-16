@@ -128,7 +128,7 @@ LandNode_getLandAllocation <- function(aLandNode, allLand, scentype) {
 #' @author KVC October 2017
 LandLeaf_getLandAllocation <- function(aLandLeaf, allLand, scentype) {
 
-  for(per in PERIODS[[scentype]]) {
+  for(per in seq_along(aLandLeaf$mLandAllocation)) {
     currName <- aLandLeaf$mName[1]
     currYear <- get_per_to_yr(per, scentype)
     allLand$land.allocation[allLand$year == currYear &
@@ -205,7 +205,7 @@ LandAllocator_getLandShares <- function(aLandAllocator, aShares, scentype) {
     if(class(child) == "LandNode") {
       aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
-      for(per in PERIODS[[scentype]]) {
+      for(per in seq_along(child$mShare)) {
         currParent <- "root"
         currName <- child$mName[1]
         currYear <- get_per_to_yr(per, scentype)
@@ -233,7 +233,7 @@ LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
     if(class(child) == "LandNode") {
       aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
-      for(per in PERIODS[[scentype]]) {
+      for(per in seq_along(child$mShare)) {
         currParent <- aLandNode$mName[1]
         currName <- child$mName[1]
         currYear <- get_per_to_yr(per, scentype)
@@ -436,7 +436,7 @@ LandNode_getYield <- function(aLandNode, aData, scentype) {
 #' @return Yield for all leafs in the node
 #' @author KVC October 2017
 LandLeaf_getYield <- function(aLandLeaf, aData, scentype) {
-  for(per in PERIODS[[scentype]]) {
+  for(per in seq_along(aLandLeaf$mYield)) {
     currName <- aLandLeaf$mName[1]
     currYear <- get_per_to_yr(per, scentype)
     aData$yield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mYield[[per]]
@@ -543,7 +543,7 @@ LandNode_getExpectedYield <- function(aLandNode, aData, scentype) {
 #' @return Expected yield data
 #' @author KVC October 2017
 LandLeaf_getExpectedYield <- function(aLandLeaf, aData, scentype) {
-  for(per in PERIODS[[scentype]]) {
+  for(per in seq_along(aLandLeaf$mExpectedYield)) {
     currName <- aLandLeaf$mName[1]
     currYear <- get_per_to_yr(per, scentype)
     aData$expectedYield[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedYield[[per]]
@@ -651,7 +651,7 @@ LandNode_getExpectedPrice <- function(aLandNode, aData, scentype) {
 #' @return Expected price data
 #' @author KVC November 2017
 LandLeaf_getExpectedPrice <- function(aLandLeaf, aData, scentype) {
-  for(per in PERIODS[[scentype]]) {
+  for(per in seq_along(aLandLeaf$mExpectedPrice)) {
     currName <- aLandLeaf$mName[1]
     currYear <- get_per_to_yr(per, scentype)
     aData$expectedPrice[aData$name == currName & aData$year == currYear] <- aLandLeaf$mExpectedPrice[[per]]

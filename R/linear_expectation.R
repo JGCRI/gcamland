@@ -74,7 +74,7 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   # Update yield tibble to include actual yields
   i <- startYear
   while(i < currYear){
-    if(i < getStartYear()) {
+    if(i < getStartYear(aScenarioInfo$mScenarioType)) {
       # We won't have data prior to the start year, so we'll want
       # to just use its data as many times as needed
       # TODO: do we want to read in data prior to startYear so this works?

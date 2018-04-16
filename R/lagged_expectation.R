@@ -56,7 +56,7 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
     # Calculate expectations
     if ( aPeriod > 1 ) {
-      prevYear <- get_per_to_yr(aPeriod - 1, aScenarioInfo$mScenType)
+      prevYear <- get_per_to_yr(aPeriod - 1, aScenarioInfo$mScenarioType)
 
       # Get previous expectation
       previousExpectation <- aLandLeaf$mExpectedPrice[[aPeriod-1]]
