@@ -27,4 +27,13 @@ commodities, so generally it will only be necessary to run this function once
 at the beginning of the analysis.  The resulting data can be matched to the
 model results for each of the models run in order to calculate Bayesian
 likelihoods.
+
+This function also computes the grouped variance for use in subsequent
+calculations.
 }
+\section{TODO}{
+
+
+Calculate obsvar as a detrended variance instead of total variance.
+}
+

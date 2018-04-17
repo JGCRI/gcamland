@@ -239,10 +239,32 @@ test_that("land cover matches reference values", {
 test_that("scenario land data can be retrieved", {
     ld <- get_scenario_land_data(test.info)
     expect_true(is.data.frame(ld))
-    expect_equal(ncol(ld), 10)
+    expect_equal(ncol(ld), 5)
     expect_setequal(names(ld),
-                    c('land.type', 'year', 'model', 'variable',
-                      'expectation.type', 'share.old', 'linear.years',
-                      'logit.agforest', 'logit.afnonpast', 'logit.crop'))
+                    c('land.type', 'year', 'model', 'variable', 'region'))
+
 })
 
+test_that("lppd is calculated correctly",
+      {
+    ## Comparison data
+    lppd_ref <-
+        structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+                       lppd_ = c(-107.815639492531, -107.524496758494, -108.420661612172,
+                       -109.539941147891, -110.682083919338, -111.790184816942, -112.847577781434,
+                       -113.85112936962, -114.802588313354,
+                       -115.70539810398)),
+                  .Names = c("xi", "lppd_"), class = c("tbl_df", "tbl", "data.frame"))
+
+
+    histland <- get_historical_land_data(test.info$mRegion)
+    modelland <- get_scenario_land_data(test.info)
+
+    lppd_out <- calc_lppd(modelland, histland)
+
+
+    ## Not sure why the data frames refuse to compare as equal, when the
+    ## individual data columns do.  Whatever.
+    expect_equal(lppd_out$xi, lppd_ref$xi)
+    expect_equal(lppd_out$lppd_, lppd_ref$lppd_)
+})

@@ -2,19 +2,19 @@ context("Bayesian")
 
 test_that("get_historical_land_data returns filtered FAO data", {
     ## no filtering
-    expect_equivalent(get_historical_land_data() %>% select(-variable),
+    expect_equivalent(get_historical_land_data() %>% select(-variable, -obsvar),
                       FAO_land_history %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## region filtering
-    expect_equivalent(get_historical_land_data("USA") %>% select(-variable),
+    expect_equivalent(get_historical_land_data("USA") %>% select(-variable, -obsvar),
                       dplyr::filter(FAO_land_history, region=="USA") %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## year filtering
-    expect_equivalent(get_historical_land_data(years=c(1972, 1984)) %>% select(-variable),
+    expect_equivalent(get_historical_land_data(years=c(1972, 1984)) %>% select(-variable, -obsvar),
                       dplyr::filter(FAO_land_history, year==1972 | year==1984) %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## commodity filtering
-    expect_equivalent(get_historical_land_data(commodities="Corn") %>% select(-variable),
+    expect_equivalent(get_historical_land_data(commodities="Corn") %>% select(-variable, -obsvar),
                       dplyr::filter(FAO_land_history, GCAM_commodity == "Corn") %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
 
@@ -26,7 +26,7 @@ test_that("get_historical_land_data returns filtered FAO data", {
           "OilCrop", "MiscCrop", "FodderHerb", "FodderGrass", "FiberCrop",
           "Corn", "UnmanagedForest", "Forest", "willow", "biomass")
     expect_equivalent(get_historical_land_data("Australia_NZ", 1972:1984,
-                                               all_output_commodities) %>% select(-variable),
+                                               all_output_commodities) %>% select(-variable, -obsvar),
                       readr::read_csv('complex_filter_ref.csv') %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
 })

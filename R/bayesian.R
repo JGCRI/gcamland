@@ -11,6 +11,13 @@
 #' model results for each of the models run in order to calculate Bayesian
 #' likelihoods.
 #'
+#' This function also computes the grouped variance for use in subsequent
+#' calculations.
+#'
+#' @section TODO:
+#'
+#' Calculate obsvar as a detrended variance instead of total variance.
+#'
 #' @param regions Regions to keep in filtered data. (Default is use all regions.)
 #' @param years Years to keep in filtered data. (Default is use all years.)
 #' @param commodities GCAM commodities to keep in filtered data (Default is to
@@ -21,7 +28,7 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
                                      commodities = NULL)
 {
     ## silence notes
-    GCAM_commodity <- variable <- year <- area <- NULL
+    GCAM_commodity <- variable <- year <- area <- obsvar <- NULL
 
     filter <- rep(TRUE, nrow(FAO_land_history))
     if(!is.null(regions))
@@ -33,7 +40,10 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 
     FAO_land_history[filter,] %>%
       dplyr::mutate(variable="Land Area") %>%
-      dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area)
+      dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area) %>%
+      group_by(land.type, variable, region) %>%
+      mutate(obsvar = var(obs)) %>%
+      ungroup
 }
 
 
@@ -58,9 +68,9 @@ get_scenario_land_data <- function(aScenarioInfo)
                      '(.+)(AEZ[0-9]+)') %>%
       dplyr::group_by(land.type, year) %>%
       dplyr::summarise(model = sum(land.allocation)) %>%
-      dplyr::mutate(variable = "Land Area") %>%
       ungroup %>%
-      add_parameter_data(aScenarioInfo)
+      dplyr::mutate(variable = "Land Area") %>%
+      dplyr::mutate(region = aScenarioInfo$mRegion)
 }
 
 
@@ -128,7 +138,7 @@ get_lpdf <- function(df)
 #' Match historical data to observations and compute the log-likelihood for each
 #' data point.  This will be done for a variety of variance levels, so the
 #' result will be a table with an extra parameter \code{xi} and an output column
-#' \code{lp_} that gives the log probability density.
+#' \code{lppd_} that gives the log pointwise probability density.
 #'
 #' The variance levels \eqn{\xi} are used to calculate the scale parameter
 #' required by the lpdf.  For each grouping of region, land type (i.e., GCAM
@@ -138,31 +148,26 @@ get_lpdf <- function(df)
 #' \varsigma^2_g}}.  If multiple \eqn{\xi} values are passed, this process is
 #' repeated for each one, and the results are combined into a single table.
 #'
-#' @param model Table of model outputs (q.v. \code{\link{get_historical_land_data}})
+#' @param model Table of model outputs
+#' (q.v. \code{\link{get_historical_land_data}}) for a \emph{single} model.
 #' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
 #' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
 #' @param varlvls Variance levels to run (see details).
-#' @return Data frame with \eqn{\xi} and \code{lp_} columns added.
+#' @return Data frame containing xi and lppd_
 #' @export
-calc_lp <- function(model, obs, lpdf = get_lpdf(2), varlvls = seq(0.1, 1, 0.1))
+calc_lppd <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1, 1, 0.1))
 {
     ## silence package checks
     land.type <- variable <- region <- NULL
 
     jointbl <- dplyr::inner_join(obs, model,
-                                 by=(c('region','land.type','variable','year'))) %>%
-      group_by(land.type, variable, region) %>%
-      mutate(obsvar = var(obs)) %>%
-      ungroup
+                                 by=(c('region','land.type','variable','year')))
 
     lapply(varlvls,
            function(xi) {
-               d <- jointbl
-               d$xi <- xi
-               d$sig <- sqrt(xi*d$obsvar)
-               d$lp_ <- lpdf(d$model-d$obs, d$sig)
-               d$obsvar <- d$sig <- NULL
-               d
+               sig <- sqrt(xi*jointbl$obsvar)
+               lp_ <- lpdf(jointbl$model-jointbl$obs, sig)
+               list(xi=xi, lppd_=sum(lp_))
            }) %>%
       dplyr::bind_rows()
 }
