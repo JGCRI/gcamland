@@ -4,7 +4,7 @@
 \name{SCENARIO.INFO}
 \alias{SCENARIO.INFO}
 \title{SCENARIO.INFO}
-\format{An object of class \code{ScenarioInfo} of length 13.}
+\format{An object of class \code{ScenarioInfo} of length 15.}
 \usage{
 SCENARIO.INFO
 }

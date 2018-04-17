@@ -62,6 +62,9 @@ ScenarioInfo <- function(aScenario = NULL,
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
   self$mRegion <- aRegion
+  self$mPointwiseLikelihood <- data.frame() # actually log-likelihood, tabulated
+                                        # by data point.
+  self$mLogPost <- data.frame()
 
   self
 }

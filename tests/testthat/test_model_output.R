@@ -258,13 +258,13 @@ test_that("log-likelihood is calculated correctly",
 
 
     histland <- get_historical_land_data(test.info$mRegion)
-    modelland <- get_scenario_land_data(test.info)
+    test.info <- calc_post(test.info, histland)
 
-    ll_out <- calc_loglikelihood(modelland, histland)
+    ll_out <- test.info$mLogPost
 
 
     ## Not sure why the data frames refuse to compare as equal, when the
     ## individual data columns do.  Whatever.
     expect_equal(ll_out$xi, ll_ref$xi)
-    expect_equal(ll_out$ll_, ll_ref$ll_)
+    expect_equal(ll_out$lp_, ll_ref$ll_)
 })

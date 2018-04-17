@@ -4,7 +4,7 @@
 \alias{calc_prior}
 \title{Compute the log-prior for a paremeter set}
 \usage{
-calc_prior(aScenarioInfo, xi, prior = function(x) {     0 })
+calc_prior(aScenarioInfo, xi, prior)
 }
 \arguments{
 \item{aScenarioInfo}{ScenarioInfo structure for the scenario.}

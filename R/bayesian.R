@@ -148,17 +148,19 @@ get_lpdf <- function(df)
 #' \varsigma^2_g}}.  If multiple \eqn{\xi} values are passed, this process is
 #' repeated for each one, and the results are combined into a single table.
 #'
-#' @param model Table of model outputs
+#' @param aScenarioInfo ScenarioInfo object for the scenario
 #' (q.v. \code{\link{get_historical_land_data}}) for a \emph{single} model.
 #' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
 #' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
 #' @param varlvls Variance levels to run (see details).
 #' @return Data frame containing xi and ll_
 #' @export
-calc_loglikelihood <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1, 1, 0.1))
+calc_loglikelihood <- function(aScenarioInfo, obs, lpdf, varlvls)
 {
     ## silence package checks
     land.type <- variable <- region <- NULL
+
+    model <- get_scenario_land_data(aScenarioInfo)
 
     jointbl <- dplyr::inner_join(obs, model,
                                  by=(c('region','land.type','variable','year')))
@@ -167,7 +169,7 @@ calc_loglikelihood <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1
            function(xi) {
                sig <- sqrt(xi*jointbl$obsvar)
                ll_ <- lpdf(jointbl$model-jointbl$obs, sig)
-               list(xi=xi, ll_=sum(ll_))
+               dplyr::bind_cols(jointbl, data.frame(xi=xi, ll_=ll_))
            }) %>%
       dplyr::bind_rows()
 }
@@ -203,7 +205,7 @@ calc_loglikelihood <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1
 #' applies a uniform prior.
 #' @return vector of prior values
 #' @export
-calc_prior <- function(aScenarioInfo, xi, prior = function(x) {0})
+calc_prior <- function(aScenarioInfo, xi, prior)
 {
     d <- data.frame(xi=xi) %>%
       add_parameter_data(aScenarioInfo)
@@ -212,3 +214,34 @@ calc_prior <- function(aScenarioInfo, xi, prior = function(x) {0})
 }
 
 
+#' Compute the log-likelihood and log-posteriors for a set of parameters
+#'
+#' The log-posterior is just the sum over the pointwise likelihoods, plus the
+#' prior for the given parameter set.
+#'
+#' @param aScenarioInfo ScenarioInfo structure for the scenario
+#' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
+#' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
+#' @param prior Log prior function (q.v. \code{\link{calc_prior}})
+#' @param varlvls Variance levels to run (see description in
+#' \code{\link{calc_loglikelihood}}).
+#' @return Modified ScenarioInfo with pointwise likelihood and model posterior
+#' tables.
+#' @export
+calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x){0},
+                      varlvls = seq(0.1, 1, 0.1))
+{
+    ll_point <- calc_loglikelihood(aScenarioInfo, obs, lpdf, varlvls)
+    aScenarioInfo$mPointwiseLikelihood <- ll_point
+
+    lpost <- dplyr::group_by(ll_point, xi) %>%
+      dplyr::summarise(lp_ = sum(ll_)) %>%
+      ungroup
+
+    ## Add the prior
+    lpost$lp_ <- lpost$lp_ + calc_prior(aScenarioInfo, lpost$xi, prior)
+    aScenarioInfo$mLogPost <- lpost
+
+    ## return the modified scenario object
+    aScenarioInfo
+}
