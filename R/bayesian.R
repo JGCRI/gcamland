@@ -28,7 +28,10 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
                                      commodities = NULL)
 {
     ## silence notes
-    GCAM_commodity <- variable <- year <- area <- obsvar <- NULL
+    GCAM_commodity <- variable <- year <- area <- obsvar <-
+        region <- land.type <- obs <- NULL
+
+    FAO_land_history <- gcamland::FAO_land_history
 
     filter <- rep(TRUE, nrow(FAO_land_history))
     if(!is.null(regions))
@@ -42,7 +45,7 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
       dplyr::mutate(variable="Land Area") %>%
       dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area) %>%
       group_by(land.type, variable, region) %>%
-      mutate(obsvar = var(obs)) %>%
+      mutate(obsvar = stats::var(obs)) %>%
       ungroup
 }
 
@@ -231,6 +234,9 @@ calc_prior <- function(aScenarioInfo, xi, prior)
 calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x){0},
                       varlvls = seq(0.1, 1, 0.1))
 {
+    ## silence package checks
+    xi <- ll_ <- NULL
+
     ll_point <- calc_loglikelihood(aScenarioInfo, obs, lpdf, varlvls)
     aScenarioInfo$mPointwiseLikelihood <- ll_point
 
