@@ -59,6 +59,7 @@ get_scenario_land_data <- function(aScenarioInfo)
       dplyr::group_by(land.type, year) %>%
       dplyr::summarise(model = sum(land.allocation)) %>%
       dplyr::mutate(variable = "Land Area") %>%
+      ungroup %>%
       add_parameter_data(aScenarioInfo)
 }
 
@@ -76,6 +77,7 @@ add_parameter_data <- function(df, aScenarioInfo)
     df$logit.agforest <- aScenarioInfo$mLogitAgroForest
     df$logit.afnonpast <- aScenarioInfo$mLogitAgroForest_NonPasture
     df$logit.crop <- aScenarioInfo$mLogitCropland
+    df$region <- aScenarioInfo$mRegion
 
     df
 }
@@ -118,5 +120,50 @@ get_lpdf <- function(df)
     function(x, sig) {
         stats::dt(x/sig, df=df, log=TRUE) - log(sig)
     }
+}
+
+
+#' Compute the log-likelihoods for each data point
+#'
+#' Match historical data to observations and compute the log-likelihood for each
+#' data point.  This will be done for a variety of variance levels, so the
+#' result will be a table with an extra parameter \code{xi} and an output column
+#' \code{lp_} that gives the log probability density.
+#'
+#' The variance levels \eqn{\xi} are used to calculate the scale parameter
+#' required by the lpdf.  For each grouping of region, land type (i.e., GCAM
+#' commodity), and variable (e.g., land area), we calculate a variance
+#' \eqn{\varsigma^2_g} for the grouping.  Then, the scale factor for all of the
+#' data points in the grouping is calculated as \eqn{\sigma_g = \sqrt{\xi
+#' \varsigma^2_g}}.  If multiple \eqn{\xi} values are passed, this process is
+#' repeated for each one, and the results are combined into a single table.
+#'
+#' @param model Table of model outputs (q.v. \code{\link{get_historical_land_data}})
+#' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
+#' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
+#' @param varlvls Variance levels to run (see details).
+#' @return Data frame with \eqn{\xi} and \code{lp_} columns added.
+#' @export
+calc_lp <- function(model, obs, lpdf = get_lpdf(2), varlvls = seq(0.1, 1, 0.1))
+{
+    ## silence package checks
+    land.type <- variable <- region <- NULL
+
+    jointbl <- dplyr::inner_join(obs, model,
+                                 by=(c('region','land.type','variable','year'))) %>%
+      group_by(land.type, variable, region) %>%
+      mutate(obsvar = var(obs)) %>%
+      ungroup
+
+    lapply(varlvls,
+           function(xi) {
+               d <- jointbl
+               d$xi <- xi
+               d$sig <- sqrt(xi*d$obsvar)
+               d$lp_ <- lpdf(d$model-d$obs, d$sig)
+               d$obsvar <- d$sig <- NULL
+               d
+           }) %>%
+      dplyr::bind_rows()
 }
 
