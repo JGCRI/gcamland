@@ -138,7 +138,7 @@ get_lpdf <- function(df)
 #' Match historical data to observations and compute the log-likelihood for each
 #' data point.  This will be done for a variety of variance levels, so the
 #' result will be a table with an extra parameter \code{xi} and an output column
-#' \code{lppd_} that gives the log pointwise probability density.
+#' \code{ll_} that gives the log pointwise probability density.
 #'
 #' The variance levels \eqn{\xi} are used to calculate the scale parameter
 #' required by the lpdf.  For each grouping of region, land type (i.e., GCAM
@@ -153,9 +153,9 @@ get_lpdf <- function(df)
 #' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
 #' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
 #' @param varlvls Variance levels to run (see details).
-#' @return Data frame containing xi and lppd_
+#' @return Data frame containing xi and ll_
 #' @export
-calc_lppd <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1, 1, 0.1))
+calc_loglikelihood <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1, 1, 0.1))
 {
     ## silence package checks
     land.type <- variable <- region <- NULL
@@ -166,9 +166,49 @@ calc_lppd <- function(model, obs, lpdf = get_lpdf(1), varlvls = seq(0.1, 1, 0.1)
     lapply(varlvls,
            function(xi) {
                sig <- sqrt(xi*jointbl$obsvar)
-               lp_ <- lpdf(jointbl$model-jointbl$obs, sig)
-               list(xi=xi, lppd_=sum(lp_))
+               ll_ <- lpdf(jointbl$model-jointbl$obs, sig)
+               list(xi=xi, ll_=sum(ll_))
            }) %>%
       dplyr::bind_rows()
 }
+
+
+#' Compute the log-prior for a paremeter set
+#'
+#' The land model parameters are extracted from the ScenarioInfo object
+#' supplied.  The \code{xi} parameter isn't stored in the ScenarioInfo
+#' structure, so it must be supplied separately.  Multiple \code{xi} values in a
+#' vector are allowed.  The prior must also be supplied as a function.  It
+#' should take a named list of parameter vectors and compute the log prior for
+#' those parameters
+#'
+#' The design of the prior function is trying to walk a tightrope between
+#' convenience, flexibility, and extensibility.  Right now the parameters are
+#' expectation.type (character), share.old and linear.years (double, only
+#' defined for certain types), logit.agforest, logit.afnonpast, logit.crop, and
+#' xi (all double, and all defined for all models.  The purpose of passing them
+#' in a list is to ensure that we can easily add new parameters if we want to.
+#'
+#' Also note that because a couple of the parameters are defined only for
+#' certain expectation types, a prior function will have to handle those cases
+#' correctly.
+#'
+#' Finally, note that the list \emph{actually} passed to the prior function may
+#' contain extra junk variables (to avoid having to waste time dropping columns
+#' that aren't needed.)  The prior function should ignore these.
+#'
+#' @param aScenarioInfo ScenarioInfo structure for the scenario.
+#' @param xi Vector of xi parameter values
+#' @param prior Function that calculates the log-prior (see details).  Default
+#' applies a uniform prior.
+#' @return vector of prior values
+#' @export
+calc_prior <- function(aScenarioInfo, xi, prior = function(x) {0})
+{
+    d <- data.frame(xi=xi) %>%
+      add_parameter_data(aScenarioInfo)
+
+    prior(d)
+}
+
 
