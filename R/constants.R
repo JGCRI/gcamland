@@ -1,8 +1,6 @@
 # constants.R
 
 # **************************************************************************************************************
-# * Scenario type
-SCENARIO <- "Reference"
 
 # **************************************************************************************************************
 # * Run configuration settings
@@ -10,19 +8,22 @@ MAKE.PLOTS <- FALSE
 
 # **************************************************************************************************************
 # * Time-related parameters
-if(SCENARIO == "Hindcast") {
-  FINAL_CALIBRATION_PERIOD <- 1
-  HISTORY.YEARS <- c(1975)
-  FUTURE.YEARS <- seq(1976, 2010, 1)
-} else {
-  FINAL_CALIBRATION_PERIOD <- 4
-  HISTORY.YEARS <- c(1975, 1990, 2005, 2010)
-  FUTURE.YEARS <- seq(2015, 2050, 5)
-}
+TIME.PARAMS <- list(
+    "Hindcast" = list(FINAL_CALIBRATION_PERIOD=1, HISTORY.YEARS=1975,
+    FUTURE.YEARS=seq(1976, 2010, 1)),
+    "Reference" = list(FINAL_CALIBRATION_PERIOD=4, HISTORY.YEARS=c(1975, 1990,
+                                                   2005, 2010),
+    FUTURE.YEARS=seq(2015, 2050, 5)))
+SCEN.TYPES <- names(TIME.PARAMS)
 
 # Concatenate years
-YEARS <- c(HISTORY.YEARS, FUTURE.YEARS)
-PERIODS <- 1:length(YEARS)
+YEARS <- sapply(SCEN.TYPES, function(type) {
+                   c(TIME.PARAMS[[type]]$HISTORY.YEARS,
+                     TIME.PARAMS[[type]]$FUTURE.YEARS)
+               }, simplify=FALSE, USE.NAMES=TRUE)
+PERIODS <- sapply(SCEN.TYPES, function(type) {
+                      1:length(YEARS[[type]])
+                  }, simplify=FALSE, USE.NAMES=TRUE)
 
 # **************************************************************************************************************
 # * Threshold-related constants
@@ -37,5 +38,5 @@ BIOMASS_TYPES <- c("biomass", "willow")
 
 # **************************************************************************************************************
 # * Things that will eventually be removed
-REGION <- "USA"
+DEFAULT.REGION <- "USA"
 AEZ <- NULL

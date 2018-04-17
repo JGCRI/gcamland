@@ -4,12 +4,14 @@
 \alias{run_ensemble}
 \title{Run an ensemble of offline land models}
 \usage{
-run_ensemble(N = 500, aOutputDir = "./outputs")
+run_ensemble(N = 500, aOutputDir = "./outputs", atype = "Hindcast")
 }
 \arguments{
 \item{N}{Number of parameter sets to select}
 
 \item{aOutputDir}{Output directory}
+
+\item{atype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 List of ScenarioInfo objects for the ensemble members

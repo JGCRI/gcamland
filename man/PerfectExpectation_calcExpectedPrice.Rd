@@ -4,12 +4,14 @@
 \alias{PerfectExpectation_calcExpectedPrice}
 \title{PerfectExpectation_calcExpectedPrice}
 \usage{
-PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
+PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{LandLeaf to calculate expected price for}
 
 \item{aPeriod}{Current model period}
+
+\item{aScenarioInfo}{Scenario parameter structure}
 }
 \description{
 PerfectExpectation_calcExpectedPrice

@@ -1,7 +1,17 @@
 
-#' ScenarioInfo
+#' ScenarioInfo constructor
 #'
-#' @details Contains all information needed to describe a scenario
+#' Create a structure that ontains all information needed to describe a
+#' scenario.
+#'
+#' Most of the parameters are self-explanatory.  The \code{Obsvar} parameter
+#' is a little unusual, in that it plays no role in the model calculations; it
+#' only enters into the likelihood function.  Fitting this parameter allows us
+#' to estimate how much of the variation in the observed data isn't captured by
+#' our model.  This variation could be because of irreducible uncertainty (e.g.,
+#' measurement error in the observed data), or it could be an indicator that
+#' there is some behavior that our model is failing to capture.
+#'
 #' @param aScenario Scenario name
 #' @param aExpectationType Expectation type
 #' @param aLaggedShareOld Share of old expectations included in current expectation
@@ -9,10 +19,14 @@
 #' @param aLogitUseDefault Boolean indicating whether to use default logits
 #' @param aLogitAgroForest AgroForest logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
-#' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault == FALSE)
+#' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
+#' FALSE)
+#' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
 #' @param aOutputDir Output directory
+#' @param aRegion Region to use in the calculation.  Right now we only run a
+#' single region at a time.
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
@@ -25,32 +39,41 @@ ScenarioInfo <- function(aScenario = NULL,
                          aLogitAgroForest = NULL,
                          aLogitAgroForest_NonPasture = NULL,
                          aLogitCropland = NULL,
+                         aScenarioType = "Reference",
                          aScenarioName = NULL,
                          aFileName = NULL,
-                         aOutputDir = "./outputs") {
-  mScenario <- aScenario
-  mExpectationType <- aExpectationType
-  mLaggedShareOld <- aLaggedShareOld
-  mLinearYears <- aLinearYears
-  mLogitUseDefault <- aLogitUseDefault
-  mLogitAgroForest <- aLogitAgroForest
-  mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
-  mLogitCropland <- aLogitCropland
-  mScenarioName <- aScenarioName
-  mFileName <- aFileName
-  mOutputDir <- aOutputDir
+                         aOutputDir = "./outputs",
+                         aRegion = DEFAULT.REGION) {
 
-  self <- environment()
+  self <- new.env()
   class(self) <- "ScenarioInfo"
+
+  self$mScenario <- aScenario
+  self$mExpectationType <- aExpectationType
+  self$mLaggedShareOld <- aLaggedShareOld
+  self$mLinearYears <- aLinearYears
+  self$mLogitUseDefault <- aLogitUseDefault
+  self$mLogitAgroForest <- aLogitAgroForest
+  self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
+  self$mLogitCropland <- aLogitCropland
+  self$mScenarioType <- aScenarioType
+  self$mScenarioName <- aScenarioName
+  self$mFileName <- aFileName
+  self$mOutputDir <- aOutputDir
+  self$mRegion <- aRegion
+
   self
 }
 
+DEFAULT.SCENARIO.TYPE <- "Reference"
+
 #' SCENARIO.INFO
 #'
-#' A tibble with scenario info for the default
+#' A \code{ScenarioInfo} object with parameters for the default scenario.
+#'
 #' @export
 #' @author Kate Calvin
-SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
+SCENARIO.INFO <- ScenarioInfo(aScenario = DEFAULT.SCENARIO.TYPE,
                               aExpectationType = "Perfect",
                               aLinearYears = NULL,
                               aLaggedShareOld = NULL,
@@ -58,5 +81,5 @@ SCENARIO.INFO <- ScenarioInfo(aScenario = SCENARIO,
                               aLogitAgroForest = NULL,
                               aLogitAgroForest_NonPasture = NULL,
                               aLogitCropland = NULL,
-                              aScenarioName = paste(SCENARIO, "_", "Perfect", sep=""),
-                              aFileName = paste(SCENARIO, "_", "Perfect", sep=""))
+                              aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
+                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))

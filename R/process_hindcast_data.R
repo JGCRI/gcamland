@@ -41,7 +41,7 @@ get_hindcast_AgProdChange <- function(){
 
   # Join data and compute average yield
   faoHA %>%
-    filter(year %in% YEARS) %>%
+    filter(year %in% YEARS$Hindcast) %>%
     left_join(faoProd, by=c("FAO_country", "item", "year")) %>%
     left_join(select(agluCtry, FAO_country, iso), by="FAO_country") %>%
     left_join(select(iso_GCAM_regID, iso, GCAM_region_ID), by="iso") %>%
@@ -62,7 +62,7 @@ get_hindcast_AgProdChange <- function(){
   # Compute AgProdChange
   faoYield %>%
     mutate(prev_year = year - 1) %>%
-    filter(prev_year %in% YEARS) %>%
+    filter(prev_year %in% YEARS$Hindcast) %>%
     left_join(faoYield, by=c("region", "GCAM_commodity", "prev_year" = "year")) %>%
     mutate(AgProdChange = (yield.x / yield.y) - 1) %>%
     select(region, GCAM_commodity, year, AgProdChange) ->

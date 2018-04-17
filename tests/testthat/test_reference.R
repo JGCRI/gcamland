@@ -24,7 +24,8 @@ test_that("land cover matches reference values", {
     # Get comparison data
     compareData <- read_csv("./comparison-data/LandAllocation_Reference_Perfect.csv", skip = 1)
     compareData %>%
-      filter(region == REGION, year %in% YEARS) ->
+      filter(region == SCENARIO.INFO$mRegion,
+             year %in% YEARS[[SCENARIO.INFO$mScenarioType]]) ->
       compareData
 
     # Look for output data in outputs under top level
@@ -32,7 +33,7 @@ test_that("land cover matches reference values", {
     path <- file.path(basepath,"land")
     file <- file.path(path, paste0("landAllocation_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
-      mutate(region = REGION) ->
+      mutate(region = SCENARIO.INFO$mRegion) ->
       outputData
 
     compareData %>%

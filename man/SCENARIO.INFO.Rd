@@ -4,12 +4,12 @@
 \name{SCENARIO.INFO}
 \alias{SCENARIO.INFO}
 \title{SCENARIO.INFO}
-\format{An object of class \code{ScenarioInfo} of length 23.}
+\format{An object of class \code{ScenarioInfo} of length 13.}
 \usage{
 SCENARIO.INFO
 }
 \description{
-A tibble with scenario info for the default
+A \code{ScenarioInfo} object with parameters for the default scenario.
 }
 \author{
 Kate Calvin

@@ -4,7 +4,8 @@
 \alias{Leaf_setup}
 \title{Leaf_setup}
 \usage{
-Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aAgData = NULL)
+Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo,
+  aAgData = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
@@ -14,6 +15,8 @@ Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aAgData = NULL)
 \item{aData}{Data needed for setting up this node}
 
 \item{aColName}{Column name with the parent}
+
+\item{aScenarioInfo}{ScenarioInfo structure containing the scenario parameters}
 
 \item{aAgData}{Agricultural technology data}
 }

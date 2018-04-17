@@ -5,7 +5,7 @@
 \title{Generate the ensemble members for a single set of parameters}
 \usage{
 gen_ensemble_member(agFor, agForNonPast, crop, share, linyears, serialnum,
-  aOutputDir)
+  scentype, aOutputDir)
 }
 \arguments{
 \item{agFor}{The logit exponent the ag/forest nest, which controls
@@ -21,6 +21,8 @@ controls competition between crops, grass/shrub, and forest.}
 \item{linyears}{The number of years parameter for the linear model}
 
 \item{serialnum}{A serial number for generating unique file names}
+
+\item{scentype}{Scenario type, either "Hindcast" or "Reference"}
 
 \item{outdir}{Name of the output directory}
 }

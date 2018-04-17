@@ -4,7 +4,9 @@
 #'
 #' @details Initialize an Class called UnmanagedLandLeaf
 #' @param aName Leaf name
+#' @param aFinalCalPeriod Final calibration period
 #' @field mName Leaf name
+#' @field mFinalCalPeriod Final calibration period
 #' @field mLandAllocation Land allocation for this leaf
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
@@ -12,8 +14,9 @@
 #'
 #' @return New, initialized UnmanagedLandLeaf
 #' @author KVC October 2017
-UnmanagedLandLeaf <- function(aName) {
-  mName = aName
+UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
+  mName <- aName
+  mFinalCalPeriod <- aFinalCalPeriod
   mLandAllocation = list()
   mShare = list()
   mShareWeight = NULL

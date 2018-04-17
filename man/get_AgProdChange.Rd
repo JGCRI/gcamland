@@ -4,7 +4,10 @@
 \alias{get_AgProdChange}
 \title{get_AgProdChange}
 \usage{
-get_AgProdChange()
+get_AgProdChange(ascentype)
+}
+\arguments{
+\item{ascentype}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Tibble containing AgProdChange by commodity and year

@@ -2,13 +2,14 @@
 % Please edit documentation in R/generate_scenario_info.R
 \name{ScenarioInfo}
 \alias{ScenarioInfo}
-\title{ScenarioInfo}
+\title{ScenarioInfo constructor}
 \usage{
 ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
   aLaggedShareOld = NULL, aLinearYears = NULL, aLogitUseDefault = NULL,
   aLogitAgroForest = NULL, aLogitAgroForest_NonPasture = NULL,
-  aLogitCropland = NULL, aScenarioName = NULL, aFileName = NULL,
-  aOutputDir = "./outputs")
+  aLogitCropland = NULL, aScenarioType = "Reference",
+  aScenarioName = NULL, aFileName = NULL, aOutputDir = "./outputs",
+  aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aScenario}{Scenario name}
@@ -25,22 +26,35 @@ ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
 
 \item{aLogitAgroForest_NonPasture}{AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)}
 
-\item{aLogitCropland}{Cropland logit exponent (assuming mLogitUseDefault == FALSE)}
+\item{aLogitCropland}{Cropland logit exponent (assuming mLogitUseDefault ==
+FALSE)}
+
+\item{aScenarioType}{Type of scenario to run: either "Reference" or "Hindcast".}
 
 \item{aScenarioName}{Complete scenario name, with expectations & logit info}
 
 \item{aFileName}{File name}
 
 \item{aOutputDir}{Output directory}
+
+\item{aRegion}{Region to use in the calculation.  Right now we only run a
+single region at a time.}
 }
 \value{
 New ScenarioInfo object
 }
 \description{
-ScenarioInfo
+Create a structure that ontains all information needed to describe a
+scenario.
 }
 \details{
-Contains all information needed to describe a scenario
+Most of the parameters are self-explanatory.  The \code{Obsvar} parameter
+is a little unusual, in that it plays no role in the model calculations; it
+only enters into the likelihood function.  Fitting this parameter allows us
+to estimate how much of the variation in the observed data isn't captured by
+our model.  This variation could be because of irreducible uncertainty (e.g.,
+measurement error in the observed data), or it could be an indicator that
+there is some behavior that our model is failing to capture.
 }
 \author{
 KVC November 2017

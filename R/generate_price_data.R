@@ -1,21 +1,22 @@
 #' get_prices
 #'
 #' @details Read in prices for all periods and return them
+#' @param scentype Type of scenario to run, either "Reference" or "Hindcast".
 #' @return Tibble containing prices by commodity and year
 #' @importFrom readr read_csv
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate
 #' @author KVC October 2017
 #' @export
-get_prices <- function() {
+get_prices <- function(scentype) {
   # Silence package checks
   region <- sector <- year <- price <- scenario <- Units <- NULL
 
   # Get prices
-  if(SCENARIO == "Hindcast") {
+  if(scentype == "Hindcast") {
     prices <- get_hindcast_prices()
   } else {
-    file <- paste("./scenario-data/AgPrices_", SCENARIO, ".csv", sep="")
+    file <- paste("./scenario-data/AgPrices_", scentype, ".csv", sep="")
     prices <- suppressMessages(read_csv(system.file("extdata", file, package = "gcamland"), skip = 1))
 
     # Tidy data
@@ -28,7 +29,7 @@ get_prices <- function() {
 
   # Filter for only years included in model simulation (or those before start year)
   prices %>%
-    filter(year <= max(YEARS)) ->
+    filter(year <= max(YEARS[[scentype]])) ->
     prices
 
   return(prices)
@@ -99,7 +100,7 @@ get_hindcast_prices <- function(){
     select(GCAM_commodity) %>%
     distinct() %>%
     mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+    full_join(mutate(tibble(year = YEARS$Hindcast), uniqueJoinField = 1), by = "uniqueJoinField") %>%
     select(-uniqueJoinField) %>%
     left_join(faoPrices, by=c("GCAM_commodity", "year")) %>%
     left_join(faoPricesFirstYear, by=c("GCAM_commodity")) %>%
@@ -111,8 +112,12 @@ get_hindcast_prices <- function(){
   return(faoPrices)
 }
 
-#' PRICES
+#' Price tables for each scenario type.
 #'
-#' A tibble with all of the prices for the model
+#' Currently supported types are "Reference" and "Hindcast".  This structure is
+#' a list of tibbles with all of the prices for the model, for each scenario.
+#' @include constants.R
 #' @author Kate Calvin
-PRICES <- get_prices()
+PRICES <- sapply(SCEN.TYPES, get_prices, simplify=FALSE, USE.NAMES=TRUE)
+
+

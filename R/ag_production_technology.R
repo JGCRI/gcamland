@@ -19,7 +19,7 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   #       zero non-land cost, it will copy from the previous period.
   if(aLandLeaf$mCost[[aPeriod]] == 0 && aPeriod > 1) {
     # Get the length of the current time step
-    timestep <- get_timestep(aPeriod)
+    timestep <- get_timestep(aPeriod, aScenarioInfo$mScenarioType)
 
     # Adjust last period's variable cost by tech change
     aLandLeaf$mCost[aPeriod] = aLandLeaf$mCost[[aPeriod - 1]] /
@@ -36,7 +36,7 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
     }
   } else if(aPeriod > 1) {
     # Get the length of the current time step
-    timestep <- get_timestep(aPeriod)
+    timestep <- get_timestep(aPeriod, aScenarioInfo$mScenarioType)
 
     # Unless a yield is read in for this period, get the previous period yield from the market info.
     # Note: you can never overwrite a positive yield with a zero yield. If the model sees a
@@ -78,8 +78,8 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioI
 
   # Get expected profit rate
   if(aScenarioInfo$mExpectationType == "Perfect") {
-    expectedPrice <- PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod)
-    expectedYield <- PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod)
+    expectedPrice <- PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
+    expectedYield <- PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
   } else if(aScenarioInfo$mExpectationType == "Linear") {
     expectedPrice <- LinearExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
     expectedYield <- LinearExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)

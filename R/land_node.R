@@ -5,10 +5,13 @@
 #' @details Initialize an Class called LandNode
 #' @param aName Node name
 #' @param aChoiceFunction Choice function (logit type and exponent from node above)
-#' @param aLandAllocation Land allocation for this node
+#' @param aLandAllocation Land allocation for this node (reserved for future
+#' use)
+#' @param aFinalCalPeriod Final calibration period
 #' @field mName Node name
 #' @field mChoiceFunction Choice function (logit type and exponent) for this node
 #' @field mLandAllocation Land allocation for this node
+#' @field mFinalCalPeriod Final calibration period
 #' @field mUnmanagedLandValue Unmanaged land value in this node
 #' @field mShare Share of land allocated to this node
 #' @field mShareWeight Share weight of this node
@@ -17,9 +20,10 @@
 #'
 #' @return New, initialized LandNode
 #' @author KVC September 2017
-LandNode <- function(aName, aChoiceFunction, aLandAllocation) {
-  mName = aName
-  mChoiceFunction = aChoiceFunction
+LandNode <- function(aName, aChoiceFunction, aLandAllocation, aFinalCalPeriod) {
+  mName <- aName
+  mChoiceFunction <- aChoiceFunction
+  mFinalCalPeriod <- aFinalCalPeriod
   mLandAllocation = list()
   mUnmanagedLandValue = 0.0
   mShare = list()
@@ -266,7 +270,7 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
       } else{
         print("ERROR: Invalid choice function in LandNode_calculateNodeProfitRates")
       }
-    } else if(aPeriod == FINAL_CALIBRATION_PERIOD) {
+    } else if(aPeriod == aLandNode$mFinalCalPeriod) {
       # TODO: Implement future technologies
       # It may be the case that this node contains only "future" crop/technologies.  In this case
       # we use the ghost share in it's first available year to calculate the implied profit rate.
@@ -411,7 +415,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 
   # If we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
-  if(aPeriod == FINAL_CALIBRATION_PERIOD) {
+  if(aPeriod == aLandNode$mFinalCalPeriod) {
   #     double shareAdj = 1.0;
   #     double profitRateForCal = mProfitRate[ aPeriod ];
   #     if( mIsGhostShareRelativeToDominantCrop ) {
