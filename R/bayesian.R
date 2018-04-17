@@ -245,3 +245,61 @@ calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x
     ## return the modified scenario object
     aScenarioInfo
 }
+
+
+#' Run all the Bayesian analysis on a list of scenarios
+#'
+#' The assumption is that the scenarios have already been run.  The best way to
+#' arrange this is to use the return value of \code{\link{run_ensemble}} as the
+#' argument to this function
+#'
+#' @section TODO:
+#'
+#' \itemize{
+#' \item{Offer some more control over likelihood and prior functions, xi values,
+#' etc.}
+#' \item{Offer control over years, land types.}
+#' \item{Compute WAIC values in this function.}
+#' }
+#'
+#' @param aScenarioList List of ScenarioInfo structures
+#' @return Modified list of ScenarioInfo structures with the Bayesian
+#' calculation tables populated.
+#' @export
+run_bayes <- function(aScenarioList)
+{
+    rgns <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
+    obsdata <- get_historical_land_data(rgns)
+
+    invisible(
+        lapply(aScenarioList,
+               function(s) {
+                   calc_post(s, obsdata)
+               }))
+}
+
+
+#' Organize a list of ScenarioInfo objects into a grand table of parameters
+#'
+#' The table produced includes the model parameters and log-posterior
+#' probability for all of the models in the input list.
+#'
+#' Before this function can run, the scenario list must have been run through
+#' \code{\link{run_bayes}} to compute the posterior probability densities.
+#'
+#' Note that the table produced here has \emph{nearly} everything needed to do
+#' inference with the models, but some statistics, such as the WAIC, still
+#' require the pointwise data stored in the ScenarioInfo structures.
+#'
+#' @param aScenarioList List of ScenarioInfo structures
+#' @return Data frame containing model parameters and log-posterior
+#' probabilities.
+#' @export
+grand_table <- function(aScenarioList)
+{
+    lapply(aScenarioList,
+           function(s) {
+               add_parameter_data(s$mLogPost, s)
+           }) %>%
+      dplyr::bind_rows()
+}

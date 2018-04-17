@@ -7,8 +7,9 @@
 ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
   aLaggedShareOld = NA, aLinearYears = NA, aLogitUseDefault = TRUE,
   aLogitAgroForest = NA, aLogitAgroForest_NonPasture = NA,
-  aLogitCropland = NA, aScenarioType = "Reference", aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aRegion = DEFAULT.REGION)
+  aLogitCropland = NA, aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aScenarioName = NULL, aFileName = NULL, aOutputDir = "./outputs",
+  aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aScenario}{Scenario name}

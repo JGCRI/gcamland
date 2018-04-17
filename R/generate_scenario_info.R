@@ -1,4 +1,6 @@
 
+DEFAULT.SCENARIO.TYPE <- "Reference"
+
 #' ScenarioInfo constructor
 #'
 #' Create a structure that ontains all information needed to describe a
@@ -39,7 +41,7 @@ ScenarioInfo <- function(aScenario = NULL,
                          aLogitAgroForest = NA,
                          aLogitAgroForest_NonPasture = NA,
                          aLogitCropland = NA,
-                         aScenarioType = "Reference",
+                         aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs",
@@ -68,8 +70,6 @@ ScenarioInfo <- function(aScenario = NULL,
 
   self
 }
-
-DEFAULT.SCENARIO.TYPE <- "Reference"
 
 #' SCENARIO.INFO
 #'

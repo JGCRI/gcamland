@@ -24,11 +24,11 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 10)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 10)
-  limits.CROPLAND <- c(0.1, 10)
+  limits.AGROFOREST <- c(0.1, 6)
+  limits.AGROFOREST_NONPASTURE <- c(0.1, 6)
+  limits.CROPLAND <- c(0.1, 6)
   limits.LAGSHARE <- c(0.1, 0.9)
-  limits.LINYEARS <- round(c(1, 15))
+  limits.LINYEARS <- round(c(1, 20))
 
   rn <- randtoolbox::sobol(N, NPARAM)
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
