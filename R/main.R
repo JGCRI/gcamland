@@ -8,6 +8,15 @@
 #' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
 #' parameter sets are selected, then 3N scenarios are run.)
 #'
+#' @section Output:
+#' The scenario results are written to a series of files in the specified output
+#' directory.  There is a subdirectory for each output type, and output from
+#' each scenario is written in its own file in the relevant subdirectory.  The
+#' list of \code{ScenarioInfo} objects is written to a file called
+#' \code{scenario-info.rds} in the output directory.  This file can be loaded
+#' with a command such as \code{scenaro_list <-
+#' readRDS('output/scenario-info.rds')}
+#'
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
 #' @param atype Scenario type: either "Reference" or "Hindcast"
@@ -52,6 +61,10 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
     message("Starting simulation: ", obj$mFileName)
     run_model(obj)
   }
+
+  ## Save the scenario info from the scenarios that we ran
+  scenfile <- file.path(aOutputDir, 'scenario-info.rds')
+  saveRDS(scenObjects, scenfile)
 
   invisible(scenObjects)
 }
