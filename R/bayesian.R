@@ -65,7 +65,7 @@ get_scenario_land_data <- function(aScenarioInfo)
     filename <- paste0('landAllocation_',aScenarioInfo$mFileName,'.csv')
     fn <- file.path(outputdir, 'land', filename)
 
-    readr::read_csv(fn) %>%
+    suppressMessages(readr::read_csv(fn)) %>%
       ## split name / AEZ
       tidyr::extract('name', c('land.type', 'AEZ'),
                      '(.+)(AEZ[0-9]+)') %>%
