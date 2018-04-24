@@ -4,10 +4,16 @@
 \alias{run_bayes}
 \title{Run all the Bayesian analysis on a list of scenarios}
 \usage{
-run_bayes(aScenarioList)
+run_bayes(aScenarioList, years = NULL, landtypes = NULL)
 }
 \arguments{
 \item{aScenarioList}{List of ScenarioInfo structures}
+
+\item{years}{Vector of years to filter observations to (default is to use all
+available years)}
+
+\item{landtypes}{Vector of land types to filter observations to (default is
+to use all available land types)}
 }
 \value{
 Modified list of ScenarioInfo structures with the Bayesian
@@ -18,14 +24,18 @@ The assumption is that the scenarios have already been run.  The best way to
 arrange this is to use the return value of \code{\link{run_ensemble}} as the
 argument to this function
 }
+\details{
+The \code{years} and \code{landtypes} arguments can be use to restrict the
+observations that will be used in the analysis.  The regions are always
+filtered to excatly the regions that are included in the ScenarioInfo
+structures.
+}
 \section{TODO}{
 
 
 \itemize{
 \item{Offer some more control over likelihood and prior functions, xi values,
 etc.}
-\item{Offer control over years, land types.}
-\item{Compute WAIC values in this function.}
 }
 }
 

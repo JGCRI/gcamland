@@ -259,23 +259,30 @@ calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x
 #' arrange this is to use the return value of \code{\link{run_ensemble}} as the
 #' argument to this function
 #'
+#' The \code{years} and \code{landtypes} arguments can be use to restrict the
+#' observations that will be used in the analysis.  The regions are always
+#' filtered to excatly the regions that are included in the ScenarioInfo
+#' structures.
+#'
 #' @section TODO:
 #'
 #' \itemize{
 #' \item{Offer some more control over likelihood and prior functions, xi values,
 #' etc.}
-#' \item{Offer control over years, land types.}
-#' \item{Compute WAIC values in this function.}
 #' }
 #'
 #' @param aScenarioList List of ScenarioInfo structures
+#' @param years Vector of years to filter observations to (default is to use all
+#' available years)
+#' @param landtypes Vector of land types to filter observations to (default is
+#' to use all available land types)
 #' @return Modified list of ScenarioInfo structures with the Bayesian
 #' calculation tables populated.
 #' @export
-run_bayes <- function(aScenarioList)
+run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL)
 {
     rgns <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
-    obsdata <- get_historical_land_data(rgns)
+    obsdata <- get_historical_land_data(rgns, years, landtypes)
 
     invisible(
         lapply(aScenarioList,
