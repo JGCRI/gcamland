@@ -48,7 +48,7 @@ ScenarioInfo <- function(aScenario = NULL,
                          aRegion = DEFAULT.REGION) {
 
   self <- new.env()
-  class(self) <- "ScenarioInfo"
+  class(self) <- c("ScenarioInfo", class(self))
 
   self$mScenario <- aScenario           # TODO: This seems to be unused right
                                         # now.  Remove?
@@ -69,6 +69,15 @@ ScenarioInfo <- function(aScenario = NULL,
   self$mLogPost <- data.frame()
 
   self
+}
+
+#' Test whether an object is a \code{ScenarioInfo} object
+#'
+#' @param object Object to be tested.
+#' @export
+is.ScenarioInfo <- function(object)
+{
+    inherits(object, 'ScenarioInfo')
 }
 
 #' SCENARIO.INFO
