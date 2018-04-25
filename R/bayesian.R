@@ -316,3 +316,81 @@ grand_table <- function(aScenarioList)
            }) %>%
       dplyr::bind_rows()
 }
+
+
+#' Calculate the parameter expectation values for a collection of model runs.
+#'
+#' Use the parameter sample values to compute expectation values for the
+#' parameters.  The samples can be either MCMC samples or uniform samples.  In
+#' the latter case, the values will be weighted by their posterior
+#' probabilities.
+#'
+#' The input to this function can be given either as a grand table
+#' (q.v. \code{\link{grand_table}}) or as a list of \code{ScenarioInfo}
+#' objects.  Generally this collection will have several model families
+#' represented, so the table is split according to the model type.  The result
+#' will be a table of expectation values by model
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param weighted If \code{TRUE}, weight the samples by their posterior.
+#' @param lp Name of the column containing the log posterior
+#' probability.  Ignored if \code{weighted==FALSE}.
+#' @export
+EV <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+               weighted=TRUE, lp='lp_')
+{
+    if(!inherits(samples, 'data.frame')) {
+        ## Check that this is a scenario list
+        if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+            stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+        samples <- grand_table(samples)
+    }
+
+    if(is.null(reportvars)) {
+        ## Use default values of reportvars
+        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                        'share.old', 'linear.years', 'xi')
+    }
+
+    samples_by_model <- split(samples, samples[,modelgroup])
+    evtbls <- lapply(X=samples_by_model, FUN=ev_single, modelgroup=modelgroup,
+                     reportvars=reportvars, weighted=weighted, lp=lp)
+    bind_rows(evtbls)
+}
+
+#' Helper function for EV
+#'
+#' @param samples Data frame of Monte Carlo samples for a single model.
+#' @param modelgroup Vector of names of columns that define the model
+#' groupings.  These will be included in the results along with the
+#' \code{reportvars}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.
+#' @param weighted If \code{TRUE}, weight samples by their posterior
+#' probabilities.
+#' @param lp Name of column containing the log posterior.
+#' @keywords internal
+ev_single <- function(samples, modelgroup, reportvars, weighted, lp)
+{
+    outtbl <- unique(samples[,modelgroup])
+    if(weighted) {
+        logwgt <- samples[[lp]]
+        wgt <- exp(logwgt - max(logwgt))
+        fac <- 1.0/sumx(wgt)
+        for(col in reportvars) {
+            outtbl[[col]] <- sum(wgt*samples[[col]]) * fac
+        }
+    }
+    else {
+        for(col in reportvars) {
+            outtbl[[col]] <- mean(samples[[col]])
+        }
+    }
+    outtbl
+}
+

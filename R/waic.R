@@ -242,7 +242,7 @@ pwaic <- function(pointwise_ll)
     else {
         ## scale weights to avoid excessively large or small numbers
         wgt <- exp(logwgt - max(logwgt))
-        fac <- 1.0/sum(wgt)
+        fac <- 1.0/sumx(wgt)
         wgtllmat <- sapply(seq(1,nc),
                            function(i) {wgt[i] * llmat[,i]})
         llmean <- apply(wgtllmat, 1, sum) * fac
