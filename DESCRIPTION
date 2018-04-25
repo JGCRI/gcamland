@@ -47,3 +47,4 @@ Collate:
     'sector_utils.R'
     'setup.R'
     'unmanaged_land_leaf.R'
+    'waic.R'
