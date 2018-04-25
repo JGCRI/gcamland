@@ -394,3 +394,67 @@ ev_single <- function(samples, modelgroup, reportvars, weighted, lp)
     outtbl
 }
 
+
+#' Calculate highest posterior density interval (HPDI) for a set of samples
+#'
+#' The HPDI is the interval that contains a specified fraction of the sample
+#' points, ordered by posterior probability density.
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param interval The fraction of samples to be contained in the interval
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param weighted If \code{TRUE}, weight the samples by their posterior.
+#' @param lp Name of the column containing the log posterior
+#' probability.
+#' @return List of matrices, one element for each model. Each matrix has
+#' parameters in rows and the upper/lower bounds of the interval in its two
+#' columns.
+#' @export
+HPDI <- function(samples, interval = 0.95, modelgroup = 'expectation.type', reportvars=NULL,
+                 weighted=TRUE, lp='lp_')
+{
+    if(!inherits(samples, 'data.frame')) {
+        ## Check that this is a scenario list
+        if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+            stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+        samples <- grand_table(samples)
+    }
+
+    if(is.null(reportvars)) {
+        ## Use default values of reportvars
+        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                        'share.old', 'linear.years', 'xi')
+    }
+
+    samples_by_model <- split(samples, samples[,modelgroup])
+    lapply(X=samples_by_model, FUN=hpdi_single, interval=interval,
+           reportvars=reportvars, weighted=weighted, lp=lp)
+}
+
+hpdi_single <- function(samples, interval, reportvars, weighted, lp)
+{
+    samples <- samples[order(samples[[lp]], decreasing=TRUE),]
+    if(weighted) {
+        logwt <- samples[[lp]]
+        wgt <- exp(logwt-max(logwt))
+        fac <- 1.0/sumx(wgt)
+        wgt <- wgt * fac
+
+        kmax <- which.max(cumsum(wgt) >= interval) # bet you didn't know you
+                                        # could do this.
+    }
+    else {
+        kmax <- as.integer(ceiling(interval*nrow(samples)))
+    }
+    samples <- samples[1:kmax,]
+    mat <- t(sapply(reportvars, function(var) {c(min(samples[[var]]),
+                                                 max(samples[[var]]))}))
+    rownames(mat) <- reportvars
+    colnames(mat) <- c(paste('|',interval),
+                       paste(interval,'|'))
+    mat
+}

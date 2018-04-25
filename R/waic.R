@@ -189,7 +189,7 @@ extract_post_vector <- function(aScenarioInfo)
 log_sum <- function(lx)
 {
     lx0 <- max(lx)
-    log(sum(exp(lx-lx0))) + lx0
+    log(sumx(exp(lx-lx0))) + lx0
 }
 
 
