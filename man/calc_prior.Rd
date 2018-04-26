@@ -30,7 +30,7 @@ The design of the prior function is trying to walk a tightrope between
 convenience, flexibility, and extensibility.  Right now the parameters are
 expectation.type (character), share.old and linear.years (double, only
 defined for certain types), logit.agforest, logit.afnonpast, logit.crop, and
-xi (all double, and all defined for all models.  The purpose of passing them
+xi (all double, and all defined for all models).  The purpose of passing them
 in a list is to ensure that we can easily add new parameters if we want to.
 
 Also note that because a couple of the parameters are defined only for
