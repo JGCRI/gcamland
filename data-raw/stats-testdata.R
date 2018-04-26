@@ -63,10 +63,12 @@ gen_stats_testdata <- function()
 
     obs.test <- tibble(region="USA", land.type="Corn", variable="Land Area",
                        year=years, obs=yvals, obsvar=var(yvals))
+    xvals.test <- tibble(year=years, x1=x1, x2=x2)
 
 
     outdir <- 'tests/testthat/data'
     write_csv(obs.test, file.path(outdir, 'obs-test.csv'))
+    write_csv(xvals.test, file.path(outdir, 'xvals-test.csv'))
 
 ### Generate model predictions
 
@@ -122,4 +124,29 @@ gen_stats_testdata <- function()
 
 
     invisible(list(obs.test=obs.test, scens=scenObjects))
+}
+
+
+## Run the model we've designed through another package, and verify that the EV,
+## HDPI, WAIC, etc, look right.
+run_comparison_analysis <- function()
+{
+    m1spec <- alist(
+        obs ~ dnorm(mu, sig),
+        mu <- af + afnp*x1 + afc*x2,
+        ##        sig2 <- xi*9.22845317107775,
+        ##        xi ~ dunif(0, 1),
+        sig ~ dunif(0, 3.037837),
+        af ~ dunif(0, 6),
+        afnp ~ dunif(0, 6),
+        afc ~ dunif(0, 6))
+
+    d <- read_csv('tests/testthat/data/obs-test.csv')
+    x <- read_csv('tests/testthat/data/xvals-test.csv')
+    d <- as.data.frame(dplyr::left_join(d, x, by='year'))
+    d <- d[,c('x1','x2','obs')]
+
+    m1 <- rethinking::map2stan(m1spec, data=d)
+
+    m1
 }
