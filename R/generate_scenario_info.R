@@ -1,4 +1,6 @@
 
+DEFAULT.SCENARIO.TYPE <- "Reference"
+
 #' ScenarioInfo constructor
 #'
 #' Create a structure that ontains all information needed to describe a
@@ -33,13 +35,13 @@
 ScenarioInfo <- function(aScenario = NULL,
                          # Currently only "Perfect", "Linear", and "Lagged" ExpectationType are supported
                          aExpectationType = NULL,
-                         aLaggedShareOld = NULL,
-                         aLinearYears = NULL,
-                         aLogitUseDefault = NULL,
-                         aLogitAgroForest = NULL,
-                         aLogitAgroForest_NonPasture = NULL,
-                         aLogitCropland = NULL,
-                         aScenarioType = "Reference",
+                         aLaggedShareOld = NA,
+                         aLinearYears = NA,
+                         aLogitUseDefault = TRUE,
+                         aLogitAgroForest = NA,
+                         aLogitAgroForest_NonPasture = NA,
+                         aLogitCropland = NA,
+                         aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs",
@@ -48,7 +50,8 @@ ScenarioInfo <- function(aScenario = NULL,
   self <- new.env()
   class(self) <- "ScenarioInfo"
 
-  self$mScenario <- aScenario
+  self$mScenario <- aScenario           # TODO: This seems to be unused right
+                                        # now.  Remove?
   self$mExpectationType <- aExpectationType
   self$mLaggedShareOld <- aLaggedShareOld
   self$mLinearYears <- aLinearYears
@@ -61,11 +64,12 @@ ScenarioInfo <- function(aScenario = NULL,
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
   self$mRegion <- aRegion
+  self$mPointwiseLikelihood <- data.frame() # actually log-likelihood, tabulated
+                                        # by data point.
+  self$mLogPost <- data.frame()
 
   self
 }
-
-DEFAULT.SCENARIO.TYPE <- "Reference"
 
 #' SCENARIO.INFO
 #'
@@ -73,13 +77,13 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #'
 #' @export
 #' @author Kate Calvin
-SCENARIO.INFO <- ScenarioInfo(aScenario = DEFAULT.SCENARIO.TYPE,
+SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aExpectationType = "Perfect",
-                              aLinearYears = NULL,
-                              aLaggedShareOld = NULL,
+                              aLinearYears = NA,
+                              aLaggedShareOld = NA,
                               aLogitUseDefault = TRUE,
-                              aLogitAgroForest = NULL,
-                              aLogitAgroForest_NonPasture = NULL,
-                              aLogitCropland = NULL,
+                              aLogitAgroForest = NA,
+                              aLogitAgroForest_NonPasture = NA,
+                              aLogitCropland = NA,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))

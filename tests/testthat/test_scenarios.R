@@ -15,8 +15,7 @@ test_that('Alternate scenario types run successfully', {
         for (expectation in expectations) {
             if(type=="Reference" && expectation=="Perfect")
                 next                    # already tested in test_model_output.R
-            testscen <- ScenarioInfo(aScenario = type,
-                                     aExpectationType = expectation,
+            testscen <- ScenarioInfo(aExpectationType = expectation,
                                      aLinearYears = 2,
                                      aLaggedShareOld = 0.5,
                                      aLogitUseDefault = TRUE,

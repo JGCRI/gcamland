@@ -24,11 +24,11 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 10)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 10)
-  limits.CROPLAND <- c(0.1, 10)
+  limits.AGROFOREST <- c(0.1, 6)
+  limits.AGROFOREST_NONPASTURE <- c(0.1, 6)
+  limits.CROPLAND <- c(0.1, 6)
   limits.LAGSHARE <- c(0.1, 0.9)
-  limits.LINYEARS <- round(c(1, 15))
+  limits.LINYEARS <- round(c(1, 20))
 
   rn <- randtoolbox::sobol(N, NPARAM)
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
@@ -52,6 +52,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
     message("Starting simulation: ", obj$mFileName)
     run_model(obj)
   }
+
   invisible(scenObjects)
 }
 
@@ -79,10 +80,10 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
 
-  perfscen <- ScenarioInfo(aScenario = scentype,
+  perfscen <- ScenarioInfo(aScenarioType = scentype,
                            aExpectationType = "Perfect",
-                           aLinearYears = NULL,
-                           aLaggedShareOld = NULL,
+                           aLinearYears = NA,
+                           aLaggedShareOld = NA,
                            aLogitUseDefault = FALSE,
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
@@ -95,9 +96,9 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
   ## Lagged scenario
   scenName <- getScenName(scentype, "Lagged", share, agFor, agForNonPast, crop)
 
-  lagscen <- ScenarioInfo(aScenario = scentype,
+  lagscen <- ScenarioInfo(aScenarioType = scentype,
                           aExpectationType = "Lagged",
-                          aLinearYears = NULL,
+                          aLinearYears = NA,
                           aLaggedShareOld = share,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
@@ -110,10 +111,10 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 
   ## Linear scenario
   scenName <- getScenName(scentype, "Linear", linyears, agFor, agForNonPast, crop)
-  linscen <- ScenarioInfo(aScenario = scentype,
+  linscen <- ScenarioInfo(aScenarioType = scentype,
                           aExpectationType = "Linear",
                           aLinearYears = linyears,
-                          aLaggedShareOld = NULL,
+                          aLaggedShareOld = NA,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,

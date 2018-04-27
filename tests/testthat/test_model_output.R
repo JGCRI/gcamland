@@ -235,3 +235,36 @@ test_that("land cover matches reference values", {
   }
 
 })
+
+test_that("scenario land data can be retrieved", {
+    ld <- get_scenario_land_data(test.info)
+    expect_true(is.data.frame(ld))
+    expect_equal(ncol(ld), 5)
+    expect_setequal(names(ld),
+                    c('land.type', 'year', 'model', 'variable', 'region'))
+
+})
+
+test_that("log-likelihood is calculated correctly",
+      {
+    ## Comparison data
+    ll_ref <-
+        structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+                       ll_ = c(-107.815639492531, -107.524496758494, -108.420661612172,
+                       -109.539941147891, -110.682083919338, -111.790184816942, -112.847577781434,
+                       -113.85112936962, -114.802588313354,
+                       -115.70539810398)),
+                  .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
+
+
+    histland <- get_historical_land_data(test.info$mRegion)
+    test.info <- calc_post(test.info, histland)
+
+    ll_out <- test.info$mLogPost
+
+
+    ## Not sure why the data frames refuse to compare as equal, when the
+    ## individual data columns do.  Whatever.
+    expect_equal(ll_out$xi, ll_ref$xi)
+    expect_equal(ll_out$lp_, ll_ref$ll_)
+})
