@@ -54,6 +54,13 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 #'
 #' Fetch land use results and aggregate to region, commodity, and year.
 #'
+#' @section TODO:
+#'
+#' Currently the land use results don't have a region column, so we can't
+#' aggregate by region (we have to assume that the results are all for a single
+#' region).  Once we add a region column to the model output, we will want to
+#' add region to the grouping variables for this function.
+#'
 #' @param aScenarioInfo ScenarioInfo structure for the run.
 #' @return Table with region, commodity, year, and area.
 #' @export
@@ -315,6 +322,52 @@ grand_table <- function(aScenarioList)
                add_parameter_data(s$mLogPost, s)
            }) %>%
       dplyr::bind_rows()
+}
+
+
+#' Calculate MAP (maximum a posteriori) estimates for a collection of model runs
+#'
+#' The MAP estimate is the estimate in each model group with the highest
+#' posterior probability density.  The results are reported in a matrix that
+#' contains the MAP values of all of the parameters, for
+#' all model groups, along with the in-sample deviance.
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param lp Name of the column containing the log posterior
+#' probability.  Ignored if \code{weighted==FALSE}.
+#' @export
+MAP <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+                lp='lp_')
+{
+    if(!inherits(samples, 'data.frame')) {
+        ## Check that this is a scenario list
+        if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+            stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+        samples <- grand_table(samples)
+    }
+
+    if(is.null(reportvars)) {
+        ## Use default values of reportvars
+        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                        'share.old', 'linear.years', 'xi')
+    }
+
+    samples_by_model <- split(samples, samples[,modelgroup])
+    maprows <-
+        lapply(
+            samples_by_model,
+            function(d) {
+                k <- which.max(d[[lp]])
+                mapval <- d[k,c(modelgroup, reportvars)]
+                mapval[['dev_']] <- -2.0*d[[lp]][k]
+                as.matrix(mapval)
+            })
+    do.call(rbind, maprows)
 }
 
 
