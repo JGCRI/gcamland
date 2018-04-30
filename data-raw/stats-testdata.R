@@ -39,6 +39,8 @@ library(tibble)
 gen_stats_testdata <- function()
 {
     set.seed(8675309)
+    oldwd <- getwd()
+    setwd('tests/testthat')
 
 ### Generate observed data
     params <- c(2.25, 3.16, 3.24)
@@ -66,7 +68,7 @@ gen_stats_testdata <- function()
     xvals.test <- tibble(year=years, x1=x1, x2=x2)
 
 
-    outdir <- 'tests/testthat/data'
+    outdir <- 'data'
     write_csv(obs.test, file.path(outdir, 'obs-test.csv'))
     write_csv(xvals.test, file.path(outdir, 'xvals-test.csv'))
 
@@ -76,34 +78,52 @@ gen_stats_testdata <- function()
     Nsample <- 500
     limits <- c(0, 6)
     scentype <- 'Hindcast'
-    exptype <- 'Perfect'
+    exptype1 <- 'Perfect'
+    exptype2 <- 'Lagged'
 
     rn <- randtoolbox::sobol(Nsample, NPARAM)
     p <- limits[1] + rn*(limits[2]-limits[1])
 
     scenObjects <-
-        lapply(1:Nsample,
-               function(i) {
-                   scenname <- gcamland:::getScenName(scentype, exptype, NULL, p[i,1],
-                                                      p[i,2], p[i,3])
-                   ScenarioInfo(aScenarioType = scentype,
-                                aExpectationType = exptype,
-                                aLinearYears = NA,
-                                aLaggedShareOld = NA,
-                                aLogitUseDefault = FALSE,
-                                aLogitAgroForest = p[i,1],
-                                aLogitAgroForest_NonPasture = p[i,2],
-                                aLogitCropland = p[i,3],
-                                aScenarioName = scenname,
-                                aFileName = sprintf("Perf_%04d", i),
-                                aOutputDir = outdir)
-               })
+        unlist(
+            lapply(1:Nsample,
+                   function(i) {
+                       scenname1 <- gcamland:::getScenName(scentype, exptype1, NULL, p[i,1],
+                                                           p[i,2], p[i,3])
+                       scenname2 <- gcamland:::getScenName(scentype, exptype2, NULL, p[i,1],
+                                                           p[i,2], p[i,3])
+                       list(
+                           ScenarioInfo(aScenarioType = scentype,
+                                        aExpectationType = exptype1,
+                                        aLinearYears = NA,
+                                        aLaggedShareOld = NA,
+                                        aLogitUseDefault = FALSE,
+                                        aLogitAgroForest = p[i,1],
+                                        aLogitAgroForest_NonPasture = p[i,2],
+                                        aLogitCropland = p[i,3],
+                                        aScenarioName = scenname1,
+                                        aFileName = sprintf("Perf_%04d", i),
+                                        aOutputDir = outdir),
+                           ScenarioInfo(aScenarioType = scentype,
+                                        aExpectationType = exptype2,
+                                        aLinearYears = NA,
+                                        aLaggedShareOld = NA,
+                                        aLogitUseDefault = FALSE,
+                                        aLogitAgroForest = p[i,1],
+                                        aLogitAgroForest_NonPasture = p[i,2],
+                                        aLogitCropland = p[i,3],
+                                        aScenarioName = scenname2,
+                                        aFileName = sprintf("Lag_%04d", i),
+                                        aOutputDir = outdir)
+                           )
+                   }),
+            recursive=FALSE)
 
     for(obj in scenObjects) {
         ymod <- obj$mLogitAgroForest + x1*obj$mLogitAgroForest_NonPasture +
           x2*obj$mLogitCropland
         mdata <- tibble(name='CornAEZ000', land.allocation=ymod, year=years,
-                        scenario=paste(scentype, exptype,
+                        scenario=paste(scentype, obj$mExpectationType,
                         paste0('AgroForest', obj$mLogitAgroForest),
                         paste0('AgroForestNonPasture',
                                obj$mLogitAgroForest_NonPasture),
@@ -122,6 +142,8 @@ gen_stats_testdata <- function()
     scenfile <- file.path(outdir, 'scenario-info.rds')
     saveRDS(scenObjects, scenfile, compress='xz')
 
+
+    setwd(oldwd)
 
     invisible(list(obs.test=obs.test, scens=scenObjects))
 }

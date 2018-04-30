@@ -328,7 +328,7 @@ grand_table <- function(aScenarioList)
 #' Calculate MAP (maximum a posteriori) estimates for a collection of model runs
 #'
 #' The MAP estimate is the estimate in each model group with the highest
-#' posterior probability density.  The results are reported in a matrix that
+#' posterior probability density.  The results are reported in a data frame that
 #' contains the MAP values of all of the parameters, for
 #' all model groups, along with the in-sample deviance.
 #'
@@ -365,9 +365,9 @@ MAP <- function(samples, modelgroup='expectation.type', reportvars=NULL,
                 k <- which.max(d[[lp]])
                 mapval <- d[k,c(modelgroup, reportvars)]
                 mapval[['dev_']] <- -2.0*d[[lp]][k]
-                as.matrix(mapval)
+                mapval
             })
-    do.call(rbind, maprows)
+    bind_rows(maprows)
 }
 
 

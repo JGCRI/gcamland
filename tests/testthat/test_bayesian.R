@@ -1,5 +1,7 @@
 context("Bayesian")
 
+testscenarios <- readRDS('data/scenario-info.rds')
+
 test_that("get_historical_land_data returns filtered FAO data", {
     ## no filtering
     expect_equivalent(get_historical_land_data() %>% select(-variable, -obsvar),
@@ -53,3 +55,58 @@ test_that("Functions returned by get_lpdf are valid", {
     expect_error({f5 <- get_lpdf(-1)})
     expect_error({f6 <- get_lpdf(c(1,2,3,4))})
 })
+
+
+test_that("The table produced by grand_table is grand.", {
+    gt <- grand_table(testscenarios)
+    expect_true(inherits(gt, 'data.frame'))
+    expect_equal(nrow(gt), 10000)
+    expect_equal(ncol(gt), 9)
+    expect_setequal(names(gt),
+                    c("xi", "lp_", "expectation.type", "share.old",
+                      "linear.years", "logit.agforest", "logit.afnonpast",
+                      "logit.crop", "region"))
+    expect_setequal(unique(gt$expectation.type), c("Perfect", "Lagged"))
+    expect_equal(unique(gt$region), "USA")
+    expect_true(all(is.na(gt$share.old)))
+    expect_true(all(is.na(gt$linear.years)))
+})
+
+
+test_that("MAP function produces correct answer.", {
+    map <- MAP(testscenarios)
+    expect_true(inherits(map, 'data.frame'))
+    expect_equal(nrow(map), 2)
+    expect_equal(ncol(map), 8)
+    expect_equal(map$logit.agforest, rep(1.21875, 2), tolerance=1e-4)
+    expect_equal(map$logit.afnonpast, rep(3.65625, 2), tolerance=1e-4)
+    expect_equal(map$logit.crop, rep(3.84375, 2), tolerance=1e-4)
+    expect_equal(map$xi, rep(0.4, 2))
+    expect_equal(map$dev_, rep(146.3854, 2))
+    expect_true(all(is.na(map$share.old)))
+    expect_true(all(is.na(map$linear.years)))
+})
+
+
+
+test_that("EV function produces correct answer.", {
+    ev <- EV(testscenarios)
+    expect_true(inherits(ev, 'data.frame'))
+    expect_equal(nrow(ev), 2)
+    expect_equal(ncol(ev), 7)
+    expect_equal(ev$logit.agforest, rep(1.961597, 2), tolerance=1e-4)
+    expect_equal(ev$logit.afnonpast, rep(3.172973, 2), tolerance=1e-4)
+    expect_equal(ev$logit.crop, rep(3.530459, 2), tolerance=1e-4)
+    expect_equal(ev$xi, rep(0.439868, 2))
+    expect_true(all(is.na(ev$share.old)))
+    expect_true(all(is.na(ev$linear.years)))
+})
+
+
+test_that("waic function produces correct answer.", {
+    w <- waic(testscenarios)
+    expect_true(inherits(w, 'data.frame'))
+    expect_equal(nrow(w), 2)
+    expect_equal(w$waic[1], 152.7175, tolerance=1e-3)
+})
+

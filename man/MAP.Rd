@@ -22,7 +22,7 @@ probability.  Ignored if \code{weighted==FALSE}.}
 }
 \description{
 The MAP estimate is the estimate in each model group with the highest
-posterior probability density.  The results are reported in a matrix that
+posterior probability density.  The results are reported in a data frame that
 contains the MAP values of all of the parameters, for
 all model groups, along with the in-sample deviance.
 }
