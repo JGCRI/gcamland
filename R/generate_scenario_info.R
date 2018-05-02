@@ -14,7 +14,6 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' measurement error in the observed data), or it could be an indicator that
 #' there is some behavior that our model is failing to capture.
 #'
-#' @param aScenario Scenario name
 #' @param aExpectationType Expectation type
 #' @param aLaggedShareOld Share of old expectations included in current expectation
 #' @param aLinearYears Years for linear expectations
@@ -32,8 +31,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
-ScenarioInfo <- function(aScenario = NULL,
-                         # Currently only "Perfect", "Linear", and "Lagged" ExpectationType are supported
+ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" ExpectationType are supported
                          aExpectationType = NULL,
                          aLaggedShareOld = NA,
                          aLinearYears = NA,
@@ -50,8 +48,6 @@ ScenarioInfo <- function(aScenario = NULL,
   self <- new.env()
   class(self) <- "ScenarioInfo"
 
-  self$mScenario <- aScenario           # TODO: This seems to be unused right
-                                        # now.  Remove?
   self$mExpectationType <- aExpectationType
   self$mLaggedShareOld <- aLaggedShareOld
   self$mLinearYears <- aLinearYears
