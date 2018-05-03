@@ -37,6 +37,8 @@ DBL_MIN <- 1e-15
 BIOMASS_TYPES <- c("biomass", "willow")
 
 # **************************************************************************************************************
-# * Things that will eventually be removed
+# * Region-specificiation. Only one region is currently permitted. A single AEZ can be specified, or
+# * if AEZ = NULL, then all AEZs will be run.
+# * TODO: enable multiple regions as an option
 DEFAULT.REGION <- "USA"
 AEZ <- NULL

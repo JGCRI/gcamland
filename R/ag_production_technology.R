@@ -11,9 +11,7 @@
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
 AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
-  # Compute tech change values for this period for both ag productivity and
-  # the nonLandVariableCost.
-
+  # First, set the nonLandVariableCost for this technology in this period.
   # If no nonLandVariableCost is read in, get the previous period cost.
   # Note: you can never overwrite a positive cost with a zero cost. If the model sees a
   #       zero non-land cost, it will copy from the previous period.
@@ -26,15 +24,20 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
                                           ((1 + aLandLeaf$mNonLandCostTechChange[[aPeriod]]) ^ timestep)
   }
 
-  # Note: C++ code says "Only do the ag productivity change calc if a calibration value is not read in that period"
-  # TODO: Do we need to check for cal values?
+  # Next, set the yield for this technology in this period.
+  # If calibration values are read in, then yield = mCalOutput / mCalLandAllocation.
+  # If mCalOutput is read in, but not land area, yield is set to zero.
+  # If calibration values are missing, yield is set to the previous value, then adjusted by AgProdChange.
   if(aLandLeaf$mCalOutput[[aPeriod]] != -1) {
+    # Calibration values exist, so calculate yield
     if(aLandLeaf$mCalLandAllocation[[aPeriod]] > 0) {
       aLandLeaf$mYield[aPeriod] <- aLandLeaf$mCalOutput[[aPeriod]] / aLandLeaf$mCalLandAllocation[[aPeriod]]
     } else {
       aLandLeaf$mYield[aPeriod] <- 0
     }
   } else if(aPeriod > 1) {
+    # Calibration values do not exist, and it is after the first model period
+
     # Get the length of the current time step
     timestep <- get_timestep(aPeriod, aScenarioInfo$mScenarioType)
 
@@ -51,10 +54,11 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
       # Yield has been set to zero
       preYield <- aLandLeaf$mYield[[aPeriod-1]]
 
-      # Adjust last period's variable cost by tech change
+      # Adjust last period's yield by tech change
       aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ timestep)
     }
   } else {
+    # Calibration values don't exist and it is the first model period, so we need to set a yield.
     # Note: this isn't in the C++ code, but I seem to need something here
     aLandLeaf$mYield[aPeriod] <- 0.0
   }
@@ -76,7 +80,7 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioI
   # Silence package checks
   Period <- Product <- NULL
 
-  # Get expected profit rate
+  # Get expected price and yield. These will be used to calculate profit.
   if(aScenarioInfo$mExpectationType == "Perfect") {
     expectedPrice <- PerfectExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
     expectedYield <- PerfectExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
@@ -88,6 +92,7 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioI
     expectedYield <- LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
   }
 
+  # Calculate expected profit.
   # Price in model is 1975$/kg. Land and ag costs are now assumed to be in 1975$.
   # We multiply by 1e9 since profitRate initially is in $/m2
   # and the land allocator needs it in $/billion m2. This assumes yield is in kg/m2.

@@ -5,16 +5,16 @@
 #' get_yr_to_per
 #'
 #' @param aYear Year to convert
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
 #' @details Convert a year to a period number
 #' @return Period number
 #' @author KVC October 2017
-get_yr_to_per <- function(aYear, scentype) {
+get_yr_to_per <- function(aYear, aScenType) {
   per <- -1
-  if(aYear %in% YEARS[[scentype]]) {
-    per <- which(aYear == YEARS[[scentype]])
+  if(aYear %in% YEARS[[aScenType]]) {
+    per <- which(aYear == YEARS[[aScenType]])
   } else{
-    per <- max(which(aYear > YEARS[[scentype]]))
+    per <- max(which(aYear > YEARS[[aScenType]]))
   }
 
   return(per)
@@ -23,24 +23,24 @@ get_yr_to_per <- function(aYear, scentype) {
 #' get_per_to_yr
 #'
 #' @param aPer Period to convert
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
 #' @details Convert a period to a year
 #' @return Year
 #' @author KVC October 2017
-get_per_to_yr <- function(aPer, scentype) {
-  return(YEARS[[scentype]][[aPer]])
+get_per_to_yr <- function(aPer, aScenType) {
+  return(YEARS[[aScenType]][[aPer]])
 }
 
 #' get_timestep
 #'
 #' @param aPer Period to get timestep for
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
 #' @details Calculate the length of the timestep leading up to a particular period
 #' @return Years
 #' @author KVC October 2017
-get_timestep <- function(aPer, scentype) {
+get_timestep <- function(aPer, aScenType) {
   if(aPer > 1){
-    yrs <- YEARS[[scentype]][[aPer]] - YEARS[[scentype]][[aPer - 1]]
+    yrs <- YEARS[[aScenType]][[aPer]] - YEARS[[aScenType]][[aPer - 1]]
   } else{
     stop("Invalid period passed to get_timestep")
   }
@@ -51,11 +51,11 @@ get_timestep <- function(aPer, scentype) {
 #' getStartYear
 #'
 #' @details Get model start year
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
 #' @return Year
 #' @author KVC October 2017
-getStartYear <- function(scentype) {
-  return(min(YEARS[[scentype]]))
+getStartYear <- function(aScenType) {
+  return(min(YEARS[[aScenType]]))
 }
 
 

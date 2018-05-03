@@ -4,10 +4,10 @@
 \alias{add_parameter_data}
 \title{Add model parameter values to a table of model results}
 \usage{
-add_parameter_data(df, aScenarioInfo)
+add_parameter_data(modeldata, aScenarioInfo)
 }
 \arguments{
-\item{df}{Data frame with model results}
+\item{modeldata}{Data frame with model results}
 
 \item{aScenarioInfo}{ScenarioInfo structure for the scenario}
 }

@@ -30,9 +30,6 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation, aFinalCalPeriod) {
   mShareWeight = NULL
   mProfitRate = list()
   mChildren = list()
-  greet = function() {
-    cat(paste0("Hello, I am a LandNode named ", self$mName, ".\n"))
-  }
 
   self <- environment()
   class(self) <- "LandNode"

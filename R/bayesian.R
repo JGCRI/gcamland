@@ -86,20 +86,20 @@ get_scenario_land_data <- function(aScenarioInfo)
 
 #' Add model parameter values to a table of model results
 #'
-#' @param df Data frame with model results
+#' @param modeldata Data frame with model results
 #' @param aScenarioInfo ScenarioInfo structure for the scenario
 #' @keywords internal
-add_parameter_data <- function(df, aScenarioInfo)
+add_parameter_data <- function(modeldata, aScenarioInfo)
 {
-    df$expectation.type <- aScenarioInfo$mExpectationType
-    df$share.old <- aScenarioInfo$mLaggedShareOld
-    df$linear.years <- aScenarioInfo$mLinearYears
-    df$logit.agforest <- aScenarioInfo$mLogitAgroForest
-    df$logit.afnonpast <- aScenarioInfo$mLogitAgroForest_NonPasture
-    df$logit.crop <- aScenarioInfo$mLogitCropland
-    df$region <- aScenarioInfo$mRegion
+    modeldata$expectation.type <- aScenarioInfo$mExpectationType
+    modeldata$share.old <- aScenarioInfo$mLaggedShareOld
+    modeldata$linear.years <- aScenarioInfo$mLinearYears
+    modeldata$logit.agforest <- aScenarioInfo$mLogitAgroForest
+    modeldata$logit.afnonpast <- aScenarioInfo$mLogitAgroForest_NonPasture
+    modeldata$logit.crop <- aScenarioInfo$mLogitCropland
+    modeldata$region <- aScenarioInfo$mRegion
 
-    df
+    modeldata
 }
 
 #' Select a log-probability density function
@@ -198,7 +198,7 @@ calc_loglikelihood <- function(aScenarioInfo, obs, lpdf, varlvls)
 #' convenience, flexibility, and extensibility.  Right now the parameters are
 #' expectation.type (character), share.old and linear.years (double, only
 #' defined for certain types), logit.agforest, logit.afnonpast, logit.crop, and
-#' xi (all double, and all defined for all models.  The purpose of passing them
+#' xi (all double, and all defined for all models).  The purpose of passing them
 #' in a list is to ensure that we can easily add new parameters if we want to.
 #'
 #' Also note that because a couple of the parameters are defined only for
