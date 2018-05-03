@@ -13,6 +13,6 @@ Currently supported types are "Reference" and "Hindcast".  This structure is
 a list of tibbles with all of the prices for the model, for each scenario.
 }
 \author{
-Kate Calvin
+Kate Calvin, Robert Link
 }
 \keyword{datasets}

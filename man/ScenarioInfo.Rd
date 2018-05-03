@@ -4,16 +4,13 @@
 \alias{ScenarioInfo}
 \title{ScenarioInfo constructor}
 \usage{
-ScenarioInfo(aScenario = NULL, aExpectationType = NULL,
-  aLaggedShareOld = NA, aLinearYears = NA, aLogitUseDefault = TRUE,
-  aLogitAgroForest = NA, aLogitAgroForest_NonPasture = NA,
-  aLogitCropland = NA, aScenarioType = DEFAULT.SCENARIO.TYPE,
-  aScenarioName = NULL, aFileName = NULL, aOutputDir = "./outputs",
-  aRegion = DEFAULT.REGION)
+ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
+  aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
+  aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
+  aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
+  aFileName = NULL, aOutputDir = "./outputs", aRegion = DEFAULT.REGION)
 }
 \arguments{
-\item{aScenario}{Scenario name}
-
 \item{aExpectationType}{Expectation type}
 
 \item{aLaggedShareOld}{Share of old expectations included in current expectation}

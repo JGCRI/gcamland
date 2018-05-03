@@ -18,8 +18,8 @@ LaggedExpectation_calcExpectedPrice
 }
 \details{
 Calculate the expected price for a LandLeaf using
-         a lagged approach -- use previous expectation + fraction
-         of new information.
+         a lagged approach -- use linear combination of previous expectation and
+         new information.
 }
 \author{
 KVC November 2017

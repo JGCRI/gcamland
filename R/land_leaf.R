@@ -40,9 +40,6 @@ LandLeaf <- function(aName, aFinalCalPeriod) {
   mCalOutput = list() # Note: we read this in to calculate yield for consistency with C++
   mNonLandCostTechChange = list()
   mAgProdChange = list()
-  greet = function() {
-    cat(paste0("Hello, I am a LandLeaf named ", self$mName, ".\n"))
-  }
 
   self <- environment()
   class(self) <- "LandLeaf"

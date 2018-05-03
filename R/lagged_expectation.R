@@ -3,8 +3,8 @@
 #' LaggedExpectation_calcExpectedYield
 #'
 #' @details Calculate the expected yield for a LandLeaf using
-#'          a lagged approach -- use previous expectation + fraction
-#'          of new information.
+#'          a lagged approach -- use linear combination of previous expectation and
+#'          new information.
 #' @param aLandLeaf LandLeaf to calculate expected yield for
 #' @param aPeriod Current model period
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
@@ -41,8 +41,8 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
 #' LaggedExpectation_calcExpectedPrice
 #'
 #' @details Calculate the expected price for a LandLeaf using
-#'          a lagged approach -- use previous expectation + fraction
-#'          of new information.
+#'          a lagged approach -- use linear combination of previous expectation and
+#'          new information.
 #' @param aLandLeaf LandLeaf to calculate expected price for
 #' @param aPeriod Current model period
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations

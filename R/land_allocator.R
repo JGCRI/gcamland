@@ -24,9 +24,6 @@ LandAllocator <- function(aRegionName, aFinalCalPeriod) {
   mShare = NULL
   mUnmanagedLandValue = 0.0
   mChildren = list()
-  greet = function() {
-    cat(paste0("Hello, my name is ", self$mRegionName, ".\n"))
-  }
 
   self <- environment()
   class(self) <- "LandAllocator"
