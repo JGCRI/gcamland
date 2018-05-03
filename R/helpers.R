@@ -98,5 +98,15 @@ getScenName <- function(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, 
   return(scenNameAdj)
 }
 
-
-
+#' Sum values, minimizing roundoff error
+#'
+#' This version of \code{sum} should be used when the values to be summed are
+#' likely to differ dramatically in magnitude, such as when summing likelihood
+#' values.
+#'
+#' @param x Values to be summed.
+#' @keywords internal
+sumx <- function(x)
+{
+    sum(x[order(abs(x))])
+}

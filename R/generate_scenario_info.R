@@ -46,7 +46,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aRegion = DEFAULT.REGION) {
 
   self <- new.env()
-  class(self) <- "ScenarioInfo"
+  class(self) <- c("ScenarioInfo", class(self))
 
   self$mExpectationType <- aExpectationType
   self$mLaggedShareOld <- aLaggedShareOld
@@ -65,6 +65,15 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mLogPost <- data.frame()
 
   self
+}
+
+#' Test whether an object is a \code{ScenarioInfo} object
+#'
+#' @param object Object to be tested.
+#' @export
+is.ScenarioInfo <- function(object)
+{
+    inherits(object, 'ScenarioInfo')
 }
 
 #' SCENARIO.INFO

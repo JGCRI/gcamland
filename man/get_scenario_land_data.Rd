@@ -15,3 +15,12 @@ Table with region, commodity, year, and area.
 \description{
 Fetch land use results and aggregate to region, commodity, and year.
 }
+\section{TODO}{
+
+
+Currently the land use results don't have a region column, so we can't
+aggregate by region (we have to assume that the results are all for a single
+region).  Once we add a region column to the model output, we will want to
+add region to the grouping variables for this function.
+}
+

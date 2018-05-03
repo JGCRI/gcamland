@@ -54,6 +54,13 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 #'
 #' Fetch land use results and aggregate to region, commodity, and year.
 #'
+#' @section TODO:
+#'
+#' Currently the land use results don't have a region column, so we can't
+#' aggregate by region (we have to assume that the results are all for a single
+#' region).  Once we add a region column to the model output, we will want to
+#' add region to the grouping variables for this function.
+#'
 #' @param aScenarioInfo ScenarioInfo structure for the run.
 #' @return Table with region, commodity, year, and area.
 #' @export
@@ -65,7 +72,7 @@ get_scenario_land_data <- function(aScenarioInfo)
     filename <- paste0('landAllocation_',aScenarioInfo$mFileName,'.csv')
     fn <- file.path(outputdir, 'land', filename)
 
-    readr::read_csv(fn) %>%
+    suppressMessages(readr::read_csv(fn)) %>%
       ## split name / AEZ
       tidyr::extract('name', c('land.type', 'AEZ'),
                      '(.+)(AEZ[0-9]+)') %>%
@@ -259,23 +266,30 @@ calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x
 #' arrange this is to use the return value of \code{\link{run_ensemble}} as the
 #' argument to this function
 #'
+#' The \code{years} and \code{landtypes} arguments can be use to restrict the
+#' observations that will be used in the analysis.  The regions are always
+#' filtered to excatly the regions that are included in the ScenarioInfo
+#' structures.
+#'
 #' @section TODO:
 #'
 #' \itemize{
 #' \item{Offer some more control over likelihood and prior functions, xi values,
 #' etc.}
-#' \item{Offer control over years, land types.}
-#' \item{Compute WAIC values in this function.}
 #' }
 #'
 #' @param aScenarioList List of ScenarioInfo structures
+#' @param years Vector of years to filter observations to (default is to use all
+#' available years)
+#' @param landtypes Vector of land types to filter observations to (default is
+#' to use all available land types)
 #' @return Modified list of ScenarioInfo structures with the Bayesian
 #' calculation tables populated.
 #' @export
-run_bayes <- function(aScenarioList)
+run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL)
 {
     rgns <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
-    obsdata <- get_historical_land_data(rgns)
+    obsdata <- get_historical_land_data(rgns, years, landtypes)
 
     invisible(
         lapply(aScenarioList,
@@ -308,4 +322,192 @@ grand_table <- function(aScenarioList)
                add_parameter_data(s$mLogPost, s)
            }) %>%
       dplyr::bind_rows()
+}
+
+
+#' Calculate MAP (maximum a posteriori) estimates for a collection of model runs
+#'
+#' The MAP estimate is the estimate in each model group with the highest
+#' posterior probability density.  The results are reported in a data frame that
+#' contains the MAP values of all of the parameters, for
+#' all model groups, along with the in-sample deviance.
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param lp Name of the column containing the log posterior
+#' probability.  Ignored if \code{weighted==FALSE}.
+#' @export
+MAP <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+                lp='lp_')
+{
+    if(!inherits(samples, 'data.frame')) {
+        ## Check that this is a scenario list
+        if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+            stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+        samples <- grand_table(samples)
+    }
+
+    if(is.null(reportvars)) {
+        ## Use default values of reportvars
+        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                        'share.old', 'linear.years', 'xi')
+    }
+
+    samples_by_model <- split(samples, samples[,modelgroup])
+    maprows <-
+        lapply(
+            samples_by_model,
+            function(d) {
+                k <- which.max(d[[lp]])
+                mapval <- d[k,c(modelgroup, reportvars)]
+                mapval[['dev_']] <- -2.0*d[[lp]][k]
+                mapval
+            })
+    bind_rows(maprows)
+}
+
+
+#' Calculate the parameter expectation values for a collection of model runs.
+#'
+#' Use the parameter sample values to compute expectation values for the
+#' parameters.  The samples can be either MCMC samples or uniform samples.  In
+#' the latter case, the values will be weighted by their posterior
+#' probabilities.
+#'
+#' The input to this function can be given either as a grand table
+#' (q.v. \code{\link{grand_table}}) or as a list of \code{ScenarioInfo}
+#' objects.  Generally this collection will have several model families
+#' represented, so the table is split according to the model type.  The result
+#' will be a table of expectation values by model
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param weighted If \code{TRUE}, weight the samples by their posterior.
+#' @param lp Name of the column containing the log posterior
+#' probability.  Ignored if \code{weighted==FALSE}.
+#' @export
+EV <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+               weighted=TRUE, lp='lp_')
+{
+    if(!inherits(samples, 'data.frame')) {
+        ## Check that this is a scenario list
+        if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+            stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+        samples <- grand_table(samples)
+    }
+
+    if(is.null(reportvars)) {
+        ## Use default values of reportvars
+        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                        'share.old', 'linear.years', 'xi')
+    }
+
+    samples_by_model <- split(samples, samples[,modelgroup])
+    evtbls <- lapply(X=samples_by_model, FUN=ev_single, modelgroup=modelgroup,
+                     reportvars=reportvars, weighted=weighted, lp=lp)
+    bind_rows(evtbls)
+}
+
+#' Helper function for EV
+#'
+#' @param samples Data frame of Monte Carlo samples for a single model.
+#' @param modelgroup Vector of names of columns that define the model
+#' groupings.  These will be included in the results along with the
+#' \code{reportvars}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.
+#' @param weighted If \code{TRUE}, weight samples by their posterior
+#' probabilities.
+#' @param lp Name of column containing the log posterior.
+#' @keywords internal
+ev_single <- function(samples, modelgroup, reportvars, weighted, lp)
+{
+    outtbl <- unique(samples[,modelgroup])
+    if(weighted) {
+        logwgt <- samples[[lp]]
+        wgt <- exp(logwgt - max(logwgt))
+        fac <- 1.0/sumx(wgt)
+        for(col in reportvars) {
+            outtbl[[col]] <- sum(wgt*samples[[col]]) * fac
+        }
+    }
+    else {
+        for(col in reportvars) {
+            outtbl[[col]] <- mean(samples[[col]])
+        }
+    }
+    outtbl
+}
+
+
+#' Calculate highest posterior density interval (HPDI) for a set of samples
+#'
+#' The HPDI is the interval that contains a specified fraction of the sample
+#' points, ordered by posterior probability density.
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param interval The fraction of samples to be contained in the interval
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param weighted If \code{TRUE}, weight the samples by their posterior.
+#' @param lp Name of the column containing the log posterior
+#' probability.
+#' @return List of matrices, one element for each model. Each matrix has
+#' parameters in rows and the upper/lower bounds of the interval in its two
+#' columns.
+#' @export
+HPDI <- function(samples, interval = 0.95, modelgroup = 'expectation.type', reportvars=NULL,
+                 weighted=TRUE, lp='lp_')
+{
+    if(!inherits(samples, 'data.frame')) {
+        ## Check that this is a scenario list
+        if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+            stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+        samples <- grand_table(samples)
+    }
+
+    if(is.null(reportvars)) {
+        ## Use default values of reportvars
+        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                        'share.old', 'linear.years', 'xi')
+    }
+
+    samples_by_model <- split(samples, samples[,modelgroup])
+    lapply(X=samples_by_model, FUN=hpdi_single, interval=interval,
+           reportvars=reportvars, weighted=weighted, lp=lp)
+}
+
+hpdi_single <- function(samples, interval, reportvars, weighted, lp)
+{
+    samples <- samples[order(samples[[lp]], decreasing=TRUE),]
+    if(weighted) {
+        logwt <- samples[[lp]]
+        wgt <- exp(logwt-max(logwt))
+        fac <- 1.0/sumx(wgt)
+        wgt <- wgt * fac
+
+        kmax <- which.max(cumsum(wgt) >= interval) # bet you didn't know you
+                                        # could do this.
+    }
+    else {
+        kmax <- as.integer(ceiling(interval*nrow(samples)))
+    }
+    samples <- samples[1:kmax,]
+    mat <- t(sapply(reportvars, function(var) {c(min(samples[[var]]),
+                                                 max(samples[[var]]))}))
+    rownames(mat) <- reportvars
+    colnames(mat) <- c(paste('|',interval),
+                       paste(interval,'|'))
+    mat
 }
