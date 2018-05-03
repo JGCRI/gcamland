@@ -4,10 +4,10 @@
 \alias{getStartYear}
 \title{getStartYear}
 \usage{
-getStartYear(scentype)
+getStartYear(aScenType)
 }
 \arguments{
-\item{scentype}{Scenario type: either "Reference" or "Hindcast"}
+\item{aScenType}{Scenario type: either "Reference" or "Hindcast"}
 }
 \value{
 Year

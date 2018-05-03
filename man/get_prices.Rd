@@ -4,10 +4,10 @@
 \alias{get_prices}
 \title{get_prices}
 \usage{
-get_prices(scentype)
+get_prices(aScenType)
 }
 \arguments{
-\item{scentype}{Type of scenario to run, either "Reference" or "Hindcast".}
+\item{aScenType}{Type of scenario to run, either "Reference" or "Hindcast".}
 }
 \value{
 Tibble containing prices by commodity and year
