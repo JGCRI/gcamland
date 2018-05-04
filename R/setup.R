@@ -393,7 +393,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
 
 #' Required subdirectories for output directory
 #' @keywords internal
-REQD.SUBDIRS <- c("land","expectedYield","expectedPrice")
+REQD.SUBDIRS <- c()
 
 
 #' Set up output directories

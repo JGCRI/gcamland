@@ -40,7 +40,8 @@ test_that("land cover matches calibration data", {
 
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  file <- file.path(basepath, paste0("output_", test.info$mScenarioName, ".csv"))
+  path <- basepath
+  file <- file.path(path, paste0("output_", test.info$mScenarioName, ".csv"))
   expect_true(file.exists(file))
   read_csv(file) %>%
     select(-yield, -expectedPrice, -expectedYield) %>%
@@ -117,13 +118,14 @@ test_that("perfect expectations about yield are calculated correctly", {
   if (SCENARIO.INFO$mExpectationType == "Perfect") {
 
     # Get actual data
-    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
+    path <- basepath
+    file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
       select(-land.allocation, -expectedYield, -expectedPrice) ->
       actualData
 
     # Get expected data
-    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
+    file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
       select(-land.allocation, -yield, -expectedPrice) %>%
       rename(yield = expectedYield) ->
@@ -157,7 +159,8 @@ test_that("land area doesn't change over time", {
   # Get output data
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
+  path <- basepath
+  file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
   outputData <- read_csv(file)
 
   # Aggregate to regions
@@ -212,7 +215,8 @@ test_that("land cover matches reference values", {
 
     # Look for output data in outputs under top level
     # (as this code will be run in tests/testthat)
-    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
+    path <- basepath
+    file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
       select(-yield, -expectedYield, -expectedPrice) %>%
       mutate(region = test.info$mRegion) ->
