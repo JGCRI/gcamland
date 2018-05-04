@@ -10,7 +10,8 @@
 #' @author KVC October 2017
 printOutput <- function(aLandAllocator, aScenarioInfo) {
   nest <- printNest(aLandAllocator, aScenarioInfo)
-  printLandAllocation(aLandAllocator, aScenarioInfo, nest)
+  printAllOutputs(aLandAllocator, aScenarioInfo, nest)
+  #printLandAllocation(aLandAllocator, aScenarioInfo, nest)
   printLandShares(aLandAllocator, aScenarioInfo, nest)
   printYield(aLandAllocator, aScenarioInfo, nest)
   printExpectedYield(aLandAllocator, aScenarioInfo, nest)
@@ -27,6 +28,51 @@ printPrices <- function(aScenarioInfo) {
     file <- file.path(aScenarioInfo$mOutputDir, "prices.csv")
     type <- aScenarioInfo$mScenarioType
     write_csv(PRICES[[type]], file)
+}
+
+#' printAllOutputs
+#'
+#' @details Prints all outputs (land allocation, expected price, expected yield, yield) by land leaf
+#' @param aLandAllocator Land allocator
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aNest Nest to fill in
+#' @importFrom readr write_csv read_csv
+#' @author KVC May 2018
+printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
+  # Silence package checks
+  node <- parent <- uniqueJoinField <- NULL
+
+  scenType <- aScenarioInfo$mScenarioType
+
+  # Get a list of leafs
+  nodes <- unique(aNest$parent)
+  aNest %>%
+    filter(node %!in% nodes) ->
+    leafs
+
+  # Some leafs have the same parent node name. We need to add those
+  aNest %>%
+    filter(parent == node) %>%
+    bind_rows(leafs) ->
+    leafs
+
+  # Get data into a data frame
+  tibble::tibble(name = leafs$node,
+                 land.allocation = rep(NA, length(leafs$node))) %>%
+    mutate(uniqueJoinField = 1) %>%
+    full_join(mutate(tibble(year = YEARS[[scenType]]), uniqueJoinField = 1),
+              by = "uniqueJoinField") %>%
+    select(-uniqueJoinField) ->
+    allOutput
+
+  allOutput <- LandAllocator_getOutputs(aLandAllocator, allOutput, scenType)
+
+  # Add information on scenario and expectation type
+  allOutput$scenario <- aScenarioInfo$mScenarioName
+
+  path <- normalizePath(paste0(aScenarioInfo$mOutputDir, "/land/"))
+  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".csv")
+  write_csv(allOutput, file)
 }
 
 #' printLandAllocation
@@ -74,6 +120,28 @@ printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
   write_csv(allLand, file)
 }
 
+#' LandAllocator_getOutputs
+#'
+#' @details Calculates and returns all outputs for the land allocator
+#' @param aLandAllocator LandAllocator
+#' @param aAllOutputs Data frame to fill in outputs
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
+#'
+#' @return Output table
+#' @author KVC May 2018
+LandAllocator_getOutputs <- function(aLandAllocator, aAllOutputs, aScenType) {
+  for(child in aLandAllocator$mChildren) {
+    if(class(child) == "LandNode") {
+      aAllOutputs <- LandNode_getOutputs(child, aAllOutputs, aScenType)
+    } else {
+      aAllOutputs <- LandLeaf_getOutputs(child, aAllOutputs, aScenType)
+    }
+  }
+
+  return(aAllOutputs)
+}
+
+
 #' LandAllocator_getLandAllocation
 #'
 #' @details Calculates and returns land allocation for a particular leaf
@@ -95,6 +163,29 @@ LandAllocator_getLandAllocation <- function(aLandAllocator, allLand, scentype) {
   return(allLand)
 }
 
+#' LandNode_getOutputs
+#'
+#' @details Calculates and returns all outputs for this node
+#' @param aLandNode LandNode
+#' @param aAllOutputs Data frame to fill in outputs
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
+#'
+#' @return Output table
+#' @author KVC May 2018
+LandNode_getOutputs <- function(aLandNode, aAllOutputs, aScenType) {
+
+  for(child in aLandNode$mChildren) {
+    if(class(child) == "LandNode") {
+      aAllOutputs <- LandNode_getOutputs(child, aAllOutputs, aScenType)
+    } else {
+      aAllOutputs <- LandLeaf_getOutputs(child, aAllOutputs, aScenType)
+    }
+  }
+
+  return(aAllOutputs)
+}
+
+
 #' LandNode_getLandAllocation
 #'
 #' @details Calculates and returns total land allocation for types and periods
@@ -115,6 +206,26 @@ LandNode_getLandAllocation <- function(aLandNode, allLand, scentype) {
   }
 
   return(allLand)
+}
+
+#' LandLeaf_getOutputs
+#'
+#' @details Calculates and returns outputs for this leaf in all periods
+#' @param aLandLeaf LandLeaf
+#' @param aAllOutputs Data frame to fill in outputs
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
+#'
+#' @return Output table
+#' @author KVC May 2018
+LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
+  for(per in seq_along(aLandLeaf$mLandAllocation)) {
+    currName <- aLandLeaf$mName[1]
+    currYear <- get_per_to_yr(per, aScenType)
+    aAllOutputs$land.allocation[aAllOutputs$year == currYear & aAllOutputs$name == currName] <-
+      aLandLeaf$mLandAllocation[[per]]
+  }
+
+  return(aAllOutputs)
 }
 
 #' LandLeaf_getLandAllocation
