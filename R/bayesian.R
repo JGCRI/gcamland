@@ -69,8 +69,8 @@ get_scenario_land_data <- function(aScenarioInfo)
     land.type <- year <- land.allocation <- NULL # silence package notes
 
     outputdir <- aScenarioInfo$mOutputDir
-    filename <- paste0('landAllocation_',aScenarioInfo$mFileName,'.csv')
-    fn <- file.path(outputdir, 'land', filename)
+    filename <- paste0('output_',aScenarioInfo$mFileName,'.csv')
+    fn <- file.path(outputdir, filename)
 
     suppressMessages(readr::read_csv(fn)) %>%
       ## split name / AEZ

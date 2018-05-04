@@ -11,7 +11,6 @@
 printOutput <- function(aLandAllocator, aScenarioInfo) {
   nest <- printNest(aLandAllocator, aScenarioInfo)
   printAllOutputs(aLandAllocator, aScenarioInfo, nest)
-  printLandAllocation(aLandAllocator, aScenarioInfo, nest)
   printLandShares(aLandAllocator, aScenarioInfo, nest)
   printPrices(aScenarioInfo)
 }
@@ -74,51 +73,6 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
   write_csv(allOutput, file)
 }
 
-#' printLandAllocation
-#'
-#' @details Prints land allocation by land leaf
-#' @param aLandAllocator Land allocator
-#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
-#' @param aNest Nest to fill in
-#' @importFrom readr write_csv read_csv
-#' @author KVC October 2017
-printLandAllocation <- function(aLandAllocator, aScenarioInfo, aNest) {
-  # Silence package checks
-  node <- parent <- uniqueJoinField <- NULL
-
-  scentype <- aScenarioInfo$mScenarioType
-
-  # Get a list of leafs
-  nodes <- unique(aNest$parent)
-  aNest %>%
-    filter(node %!in% nodes) ->
-    leafs
-
-  # Some leafs have the same parent node name. We need to add those
-  aNest %>%
-    filter(parent == node) %>%
-    bind_rows(leafs) ->
-    leafs
-
-  # Get data into a data frame
-  tibble::tibble(name = leafs$node,
-                 land.allocation = rep(NA, length(leafs$node))) %>%
-    mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS[[scentype]]), uniqueJoinField = 1),
-              by = "uniqueJoinField") %>%
-    select(-uniqueJoinField) ->
-    allLand
-
-  allLand <- LandAllocator_getLandAllocation(aLandAllocator, allLand, scentype)
-
-  # Add information on scenario and expectation type
-  allLand$scenario <- aScenarioInfo$mScenarioName
-
-  path <- normalizePath(paste0(aScenarioInfo$mOutputDir, "/land/"))
-  file <- paste0(path, "/landAllocation_", aScenarioInfo$mFileName, ".csv")
-  write_csv(allLand, file)
-}
-
 #' LandAllocator_getOutputs
 #'
 #' @details Calculates and returns all outputs for the land allocator
@@ -138,28 +92,6 @@ LandAllocator_getOutputs <- function(aLandAllocator, aAllOutputs, aScenType) {
   }
 
   return(aAllOutputs)
-}
-
-
-#' LandAllocator_getLandAllocation
-#'
-#' @details Calculates and returns land allocation for a particular leaf
-#' @param aLandAllocator LandAllocator
-#' @param allLand Data frame to fill in land allocation
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
-#'
-#' @return Land allocation table
-#' @author KVC October 2017
-LandAllocator_getLandAllocation <- function(aLandAllocator, allLand, scentype) {
-  for(child in aLandAllocator$mChildren) {
-    if(class(child) == "LandNode") {
-      allLand <- LandNode_getLandAllocation(child, allLand, scentype)
-    } else {
-      allLand <- LandLeaf_getLandAllocation(child, allLand, scentype)
-    }
-  }
-
-  return(allLand)
 }
 
 #' LandNode_getOutputs
@@ -182,29 +114,6 @@ LandNode_getOutputs <- function(aLandNode, aAllOutputs, aScenType) {
   }
 
   return(aAllOutputs)
-}
-
-
-#' LandNode_getLandAllocation
-#'
-#' @details Calculates and returns total land allocation for types and periods
-#' @param aLandNode LandNode
-#' @param allLand Data frame to fill in land allocation
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
-#'
-#' @return Land allocation table
-#' @author KVC October 2017
-LandNode_getLandAllocation <- function(aLandNode, allLand, scentype) {
-
-  for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
-      allLand <- LandNode_getLandAllocation(child, allLand, scentype)
-    } else {
-      allLand <- LandLeaf_getLandAllocation(child, allLand, scentype)
-    }
-  }
-
-  return(allLand)
 }
 
 #' LandLeaf_getOutputs
@@ -235,27 +144,6 @@ LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
   }
 
   return(aAllOutputs)
-}
-
-#' LandLeaf_getLandAllocation
-#'
-#' @details Calculates and returns total land allocation for types and periods
-#' @param aLandLeaf LandLeaf
-#' @param allLand Data frame to fill in land allocation
-#' @param scentype Scenario type: either "Reference" or "Hindcast"
-#'
-#' @return Land allocation table
-#' @author KVC October 2017
-LandLeaf_getLandAllocation <- function(aLandLeaf, allLand, scentype) {
-
-  for(per in seq_along(aLandLeaf$mLandAllocation)) {
-    currName <- aLandLeaf$mName[1]
-    currYear <- get_per_to_yr(per, scentype)
-    allLand$land.allocation[allLand$year == currYear &
-                              allLand$name == currName] <- aLandLeaf$mLandAllocation[[per]]
-  }
-
-  return(allLand)
 }
 
 #' printLandShares

@@ -40,11 +40,10 @@ test_that("land cover matches calibration data", {
 
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  path <- file.path(basepath,"land")
-  file <- file.path(path, paste0("landAllocation_", test.info$mScenarioName,
-                                 ".csv"))
+  file <- file.path(basepath, paste0("output_", test.info$mScenarioName, ".csv"))
   expect_true(file.exists(file))
   read_csv(file) %>%
+    select(-yield, -expectedPrice, -expectedYield) %>%
     mutate(region = test.info$mRegion) ->
     outputData
 
@@ -118,14 +117,15 @@ test_that("perfect expectations about yield are calculated correctly", {
   if (SCENARIO.INFO$mExpectationType == "Perfect") {
 
     # Get actual data
-    path <- basepath
-    file <- file.path(path, "yield.csv")
-    actualData <- read_csv(file)
+    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
+    read_csv(file) %>%
+      select(-land.allocation, -expectedYield, -expectedPrice) ->
+      actualData
 
     # Get expected data
-    path <- file.path(basepath, "expectedYield")
-    file <- file.path(path, paste0("expectedYield_", SCENARIO.INFO$mScenarioName, ".csv"))
+    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
+      select(-land.allocation, -yield, -expectedPrice) %>%
       rename(yield = expectedYield) ->
       expectedData
 
@@ -157,8 +157,7 @@ test_that("land area doesn't change over time", {
   # Get output data
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
-  path <- file.path(basepath, "land")
-  file <- file.path(path, paste0("landAllocation_", SCENARIO.INFO$mScenarioName, ".csv"))
+  file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
   outputData <- read_csv(file)
 
   # Aggregate to regions
@@ -213,9 +212,9 @@ test_that("land cover matches reference values", {
 
     # Look for output data in outputs under top level
     # (as this code will be run in tests/testthat)
-    path <- file.path(basepath,"land")
-    file <- file.path(path, paste0("landAllocation_", SCENARIO.INFO$mScenarioName, ".csv"))
+    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
+      select(-yield, -expectedYield, -expectedPrice) %>%
       mutate(region = test.info$mRegion) ->
       outputData
 
