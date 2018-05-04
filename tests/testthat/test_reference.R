@@ -30,9 +30,9 @@ test_that("land cover matches reference values", {
 
     # Look for output data in outputs under top level
     # (as this code will be run in tests/testthat)
-    path <- file.path(basepath,"land")
-    file <- file.path(path, paste0("landAllocation_", SCENARIO.INFO$mScenarioName, ".csv"))
+    file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
     read_csv(file) %>%
+      select(-yield, -expectedYield, -expectedPrice) %>%
       mutate(region = SCENARIO.INFO$mRegion) ->
       outputData
 
