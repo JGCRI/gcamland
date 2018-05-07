@@ -15,7 +15,7 @@ Imports:
     readr (>= 1.0.0),
     ggplot2 (>= 2.2.1),
     igraph (>= 1.0.1),
-    randtoolbox (>= 1.17.1),
+    randtoolbox (>= 1.17),
     doParallel,
     foreach
 Encoding: UTF-8
