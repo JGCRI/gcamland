@@ -276,16 +276,36 @@ LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
 #'          leaf data
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aFilter Regular expression to filter out of graph output (the return
+#'          value contains the full table, regardless of filters)
 #' @return Table of land node nestings, constructed by \code{\link{getNest}}.
 #' @importFrom readr write_csv
 #' @author KVC October 2017
-printNest <- function(aLandAllocator, aScenarioInfo) {
+printNest <- function(aLandAllocator, aScenarioInfo, aFilter='Urban|Rock|Tundra') {
   nest <- getNest(aLandAllocator)
 
   # Write to file
   path <- normalizePath(aScenarioInfo$mOutputDir)
-  file <- paste0(path, "/landNest.csv")
-  write_csv(nest, file)
+  file <- paste0(path, "/landNest.dot")
+
+  if(is.null(aFilter)) {
+      indices <- 1:nrow(nest)
+  }
+  else {
+      ## drop from the graph output any nodes matching the filter
+      indices <- grep(aFilter, nest$node, invert=TRUE)
+  }
+
+  ## Create the data in dot format.
+  cat('digraph land_nesting {\nrankdir=LR;\n', file=file)
+  edges <-
+      sapply(indices,
+             function(row) {
+                 paste0('\t"', nest[row, 1], '" -> "', nest[row,2], '";')
+             })
+  cat(edges, file=file, append=TRUE, sep='\n')
+  cat('}\n', file=file, append=TRUE)
+
 
   # Return the current nest
   return(nest)

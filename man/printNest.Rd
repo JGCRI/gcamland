@@ -4,12 +4,15 @@
 \alias{printNest}
 \title{printNest}
 \usage{
-printNest(aLandAllocator, aScenarioInfo)
+printNest(aLandAllocator, aScenarioInfo, aFilter = "Urban|Rock|Tundra")
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aFilter}{Regular expression to filter out of graph output (the return
+value contains the full table, regardless of filters)}
 }
 \value{
 Table of land node nestings, constructed by \code{\link{getNest}}.
