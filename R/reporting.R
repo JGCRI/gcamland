@@ -9,10 +9,24 @@
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC October 2017
 printOutput <- function(aLandAllocator, aScenarioInfo) {
-  nest <- printNest(aLandAllocator, aScenarioInfo)
+  nest <- getNest(aLandAllocator)
   printAllOutputs(aLandAllocator, aScenarioInfo, nest)
-  printLandShares(aLandAllocator, aScenarioInfo, nest)
-  printPrices(aScenarioInfo)
+}
+
+#' Write out additional information for debugging
+#'
+#' Write the land shares and land nests to their respective output files.  This
+#' information will be written out if the \code{aVerbose} argument to
+#' \code{\link{run_model}} is \code{TRUE}.
+#'
+#' @param aLandAllocator Land allocator structure
+#' @param aScenarioInfo Scenario parameter structure
+printDebug <- function(aLandAllocator, aScenarioInfo)
+{
+    nest <- printNest(aLandAllocator, aScenarioInfo)
+    printLandShares(aLandAllocator, aScenarioInfo, nest)
+    printPrices(aScenarioInfo)
+    invisible(NULL)
 }
 
 #' printPrices
@@ -262,23 +276,11 @@ LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
 #'          leaf data
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
-#' @return Nest structure
+#' @return Table of land node nestings, constructed by \code{\link{getNest}}.
 #' @importFrom readr write_csv
 #' @author KVC October 2017
 printNest <- function(aLandAllocator, aScenarioInfo) {
-  # Silence package checks
-  parent <- node <- NULL
-
-  tibble::tibble(parent = "TEMP",
-                 node = "TEMP") -> nest
-
-  # Map out nest
-  nest <- LandAllocator_addToNest(aLandAllocator, nest)
-
-  # Remove temporary link
-  nest %>%
-    filter(parent != "TEMP") ->
-    nest
+  nest <- getNest(aLandAllocator)
 
   # Write to file
   path <- normalizePath(aScenarioInfo$mOutputDir)
@@ -289,6 +291,24 @@ printNest <- function(aLandAllocator, aScenarioInfo) {
   return(nest)
 }
 
+#' Construct a table of land node nestings
+#'
+#' The table describes the graph of node relationships.  There is one row for
+#' each edge in the graph.  The columns are "parent" and "node", and they
+#' name the parent and child in the edge.
+#'
+#' @param aLandAllocator Land allocator structure
+getNest <- function(aLandAllocator)
+{
+    tibble::tibble(parent = "TEMP",
+                   node = "TEMP") -> nest
+
+    # Map out nest
+    nest <- LandAllocator_addToNest(aLandAllocator, nest)
+
+    # Remove temporary link
+    nest[nest$parent != "TEMP",]
+}
 
 #' LandAllocator_addToNest
 #'

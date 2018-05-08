@@ -12,7 +12,7 @@ printNest(aLandAllocator, aScenarioInfo)
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \value{
-Nest structure
+Table of land node nestings, constructed by \code{\link{getNest}}.
 }
 \description{
 printNest

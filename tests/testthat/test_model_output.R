@@ -11,7 +11,7 @@ scentype <- test.info$mScenarioType
 test_that("Model runs successfully.", {
     ## Run the model to generate outputs.  This needs to be the first test in
     ## this context, as all the rest will depend on these results.
-    expect_message(run_model(test.info))
+    expect_message(run_model(test.info, aVerbose=TRUE))
 })
 
 

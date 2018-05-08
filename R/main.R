@@ -147,10 +147,11 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
 #' @param aPeriods Integer vector of periods to run.  Default is all periods
 #' defined for the scenario type.
+#' @param aVerbose If \code{TRUE}, output additional debugging information.
 #' @return Name of the output directory for the run.
 #' @author KVC
 #' @export
-run_model <- function(aScenarioInfo, aPeriods=NULL) {
+run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   ## Ensure that output directories exist
   odnorm <- outdir_setup(aScenarioInfo$mOutputDir)
 
@@ -186,6 +187,9 @@ run_model <- function(aScenarioInfo, aPeriods=NULL) {
   # Print Outputs
   message("All model periods complete. Starting output.")
   printOutput(mLandAllocator, aScenarioInfo)
+  if(aVerbose) {
+      printDebug(mLandAllocator, aScenarioInfo)
+  }
 
   # Make figures
   if(MAKE.PLOTS) {
