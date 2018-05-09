@@ -102,7 +102,7 @@ gen_stats_testdata <- function()
                                         aLogitAgroForest_NonPasture = p[i,2],
                                         aLogitCropland = p[i,3],
                                         aScenarioName = scenname1,
-                                        aFileName = sprintf("Perf_%04d", i),
+                                        aFileName = "ensemble",
                                         aOutputDir = outdir),
                            ScenarioInfo(aScenarioType = scentype,
                                         aExpectationType = exptype2,
@@ -113,30 +113,44 @@ gen_stats_testdata <- function()
                                         aLogitAgroForest_NonPasture = p[i,2],
                                         aLogitCropland = p[i,3],
                                         aScenarioName = scenname2,
-                                        aFileName = sprintf("Lag_%04d", i),
+                                        aFileName = "ensemble",
                                         aOutputDir = outdir)
                            )
                    }),
             recursive=FALSE)
 
-    for(obj in scenObjects) {
-        ymod <- obj$mLogitAgroForest + x1*obj$mLogitAgroForest_NonPasture +
-          x2*obj$mLogitCropland
-        mdata <- tibble(name='CornAEZ000', land.allocation=ymod, year=years,
-                        scenario=paste(scentype, obj$mExpectationType,
-                        paste0('AgroForest', obj$mLogitAgroForest),
-                        paste0('AgroForestNonPasture',
-                               obj$mLogitAgroForest_NonPasture),
-                        paste0('Cropland', obj$mLogitCropland),
-                        sep='_'))
-        ## Construct the filename and write it out.
-        bn <- paste0('landAllocation_', obj$mFileName, '.csv')
-        fn <- file.path(outdir, 'land', bn)
-        write_csv(mdata, fn)
+    model_output <-
+        lapply(scenObjects,
+               function(obj) {
+                   ymod <- obj$mLogitAgroForest + x1*obj$mLogitAgroForest_NonPasture +
+                     x2*obj$mLogitCropland
+                   mdata <- tibble(name='CornAEZ000', land.allocation=ymod, year=years,
+                                   scenario=paste(scentype, obj$mExpectationType,
+                                   paste0('AgroForest', obj$mLogitAgroForest),
+                                   paste0('AgroForestNonPasture',
+                                          obj$mLogitAgroForest_NonPasture),
+                                   paste0('Cropland', obj$mLogitCropland),
+                                   sep='_'))
+               }) %>%
+          dplyr::bind_rows()
 
-        ## calculate the posterior PDF and likelihood
-        obj <- calc_post(obj, obs.test, get_lpdf(Inf))
-    }
+### Construct the filename and write out merged data set.
+    fn <- file.path(outdir, "output_ensemble.rds")
+    saveRDS(model_output, fn, compress='xz')
+
+    ## Read the model data back in and process it so that we can calculate
+    ## posteriors
+    model_output <- get_scenario_land_data(scenObjects)
+
+    ## Calculate posteriors for all scenarios
+    scenObjects <-
+        lapply(scenObjects,
+               function(obj) {
+                   sname <- obj$mScenarioName
+                   mdata <- dplyr::filter(model_output, scenario==sname)
+                   ## calculate the posterior PDF and likelihood
+                   obj <- calc_post(obj, obs.test, mdata, get_lpdf(Inf))
+               })
 
 ### Save model objects
     scenfile <- file.path(outdir, 'scenario-info.rds')
@@ -145,7 +159,7 @@ gen_stats_testdata <- function()
 
     setwd(oldwd)
 
-    invisible(list(obs.test=obs.test, scens=scenObjects))
+    invisible(list(obs.test=obs.test, scens=scenObjects, model.test=model_output))
 }
 
 

@@ -4,13 +4,14 @@
 \alias{calc_post}
 \title{Compute the log-likelihood and log-posteriors for a set of parameters}
 \usage{
-calc_post(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x) {    
-  0 }, varlvls = seq(0.1, 1, 0.1))
+calc_post(aScenarioInfo, obs, model, lpdf, prior, varlvls = seq(0.1, 1, 0.1))
 }
 \arguments{
 \item{aScenarioInfo}{ScenarioInfo structure for the scenario}
 
 \item{obs}{Table of observational data (q.v. \code{\link{add_parameter_data}})}
+
+\item{model}{Table of model results for the scenario.}
 
 \item{lpdf}{Log probability density function (q.v. \code{\link{get_lpdf}})}
 
@@ -27,3 +28,4 @@ tables.
 The log-posterior is just the sum over the pointwise likelihoods, plus the
 prior for the given parameter set.
 }
+\keyword{internal}

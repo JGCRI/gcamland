@@ -7,10 +7,12 @@
 #' @details Prints all outputs
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aFileOutput Flag indicating whether data should be written to file.
+#' @return Table of all outputs
 #' @author KVC October 2017
-printOutput <- function(aLandAllocator, aScenarioInfo) {
+printOutput <- function(aLandAllocator, aScenarioInfo, aFileOutput=FALSE) {
   nest <- getNest(aLandAllocator)
-  printAllOutputs(aLandAllocator, aScenarioInfo, nest)
+  printAllOutputs(aLandAllocator, aScenarioInfo, nest, aFileOutput)
 }
 
 #' Write out additional information for debugging
@@ -46,9 +48,12 @@ printPrices <- function(aScenarioInfo) {
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @param aNest Nest to fill in
+#' @param aFileOutput Flag indicating whether output should be written to a
+#' file, in addition to being returned.
+#' @return Table of all model outputs.
 #' @importFrom readr write_csv read_csv
 #' @author KVC May 2018
-printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
+printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FALSE) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
@@ -83,8 +88,12 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Add information on scenario and expectation type
   allOutput$scenario <- aScenarioInfo$mScenarioName
 
-  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".csv")
-  write_csv(allOutput, file)
+  if(aFileOutput) {
+      file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+      saveRDS(allOutput, file)
+  }
+
+  allOutput
 }
 
 #' LandAllocator_getOutputs

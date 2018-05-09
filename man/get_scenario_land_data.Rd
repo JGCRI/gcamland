@@ -2,18 +2,18 @@
 % Please edit documentation in R/bayesian.R
 \name{get_scenario_land_data}
 \alias{get_scenario_land_data}
-\title{Load land use results for an already-run scenario}
+\title{Load land use results for a list of already-run scenarios}
 \usage{
-get_scenario_land_data(aScenarioInfo)
+get_scenario_land_data(aScenarioList)
 }
 \arguments{
-\item{aScenarioInfo}{ScenarioInfo structure for the run.}
+\item{aScenarioList}{List of ScenarioInfo structures for the runs.}
 }
 \value{
 Table with region, commodity, year, and area.
 }
 \description{
-Fetch land use results and aggregate to region, commodity, and year.
+Fetch land use results and aggregate to region, commodity, year, and scenario.
 }
 \section{TODO}{
 

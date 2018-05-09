@@ -15,7 +15,7 @@ defined for the scenario type.}
 \item{aVerbose}{If \code{TRUE}, output additional debugging information.}
 }
 \value{
-Name of the output directory for the run.
+Table of model results.
 }
 \description{
 Loop through all years and run the land model.

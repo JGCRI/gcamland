@@ -4,12 +4,17 @@
 \alias{printOutput}
 \title{printLandAllocation}
 \usage{
-printOutput(aLandAllocator, aScenarioInfo)
+printOutput(aLandAllocator, aScenarioInfo, aFileOutput = FALSE)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aFileOutput}{Flag indicating whether data should be written to file.}
+}
+\value{
+Table of all outputs
 }
 \description{
 printLandAllocation
