@@ -24,25 +24,25 @@
 #' @return New, initialized LandLeaf
 #' @author KVC September 2017
 LandLeaf <- function(aName, aFinalCalPeriod) {
-  mName <- aName
-  mFinalCalPeriod <- aFinalCalPeriod
-  mProductName = NULL
-  mLandAllocation = list()
-  mCalLandAllocation = list()
-  mShare = list()
-  mShareWeight = NULL
-  mProfitRate = list()
+  self <- new.env(parent=emptyenv())
+  self$mName <- aName
+  self$mFinalCalPeriod <- aFinalCalPeriod
+  self$mProductName = NULL
+  self$mLandAllocation = list()
+  self$mCalLandAllocation = list()
+  self$mShare = list()
+  self$mShareWeight = NULL
+  self$mProfitRate = list()
   # We are including cost, yield, and tech change here, rather than AgProductionTechnology for convenience
-  mCost = list()
-  mYield = list()
-  mExpectedYield = list()
-  mExpectedPrice = list()
-  mCalOutput = list() # Note: we read this in to calculate yield for consistency with C++
-  mNonLandCostTechChange = list()
-  mAgProdChange = list()
+  self$mCost = list()
+  self$mYield = list()
+  self$mExpectedYield = list()
+  self$mExpectedPrice = list()
+  self$mCalOutput = list() # Note: we read this in to calculate yield for consistency with C++
+  self$mNonLandCostTechChange = list()
+  self$mAgProdChange = list()
 
-  self <- environment()
-  class(self) <- "LandLeaf"
+  class(self) <- c("LandLeaf", class(self))
   self
 }
 

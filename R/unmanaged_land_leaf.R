@@ -15,18 +15,18 @@
 #' @return New, initialized UnmanagedLandLeaf
 #' @author KVC October 2017
 UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
-  mName <- aName
-  mFinalCalPeriod <- aFinalCalPeriod
-  mLandAllocation = list()
-  mShare = list()
-  mShareWeight = NULL
-  mProfitRate = list()
+  self <- new.env(parent=emptyenv())
+  self$mName <- aName
+  self$mFinalCalPeriod <- aFinalCalPeriod
+  self$mLandAllocation = list()
+  self$mShare = list()
+  self$mShareWeight = NULL
+  self$mProfitRate = list()
   greet = function() {
     cat(paste0("Hello, I am a UnmanagedLandLeaf named ", self$mName, ".\n"))
   }
 
-  self <- environment()
-  class(self) <- "UnmanagedLandLeaf"
+  class(self) <- c("UnmanagedLandLeaf", class(self))
   self
 }
 

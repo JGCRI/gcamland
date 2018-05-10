@@ -17,16 +17,16 @@
 #' @author KVC September 2017
 #' @export
 LandAllocator <- function(aRegionName, aFinalCalPeriod) {
-  mRegionName <- aRegionName
-  mFinalCalPeriod <- aFinalCalPeriod
-  mChoiceFunction = ChoiceFunction("relative-cost", 0)
-  mLandAllocation = NULL
-  mShare = NULL
-  mUnmanagedLandValue = 0.0
-  mChildren = list()
+  self <- new.env(parent=emptyenv())
+  self$mRegionName <- aRegionName
+  self$mFinalCalPeriod <- aFinalCalPeriod
+  self$mChoiceFunction = ChoiceFunction("relative-cost", 0)
+  self$mLandAllocation = NULL
+  self$mShare = NULL
+  self$mUnmanagedLandValue = 0.0
+  self$mChildren = list()
 
-  self <- environment()
-  class(self) <- "LandAllocator"
+  class(self) <- c("LandAllocator", class(self))
   self
 }
 
@@ -161,7 +161,7 @@ LandAllocator_calcLandShares <- function(aLandAllocator, aChoiceFnAbove, aPeriod
   i <- 1
   unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandAllocator$mChildren)))
   for(child in aLandAllocator$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)
     } else {
       unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(child, aLandAllocator$mChoiceFunction, aPeriod)

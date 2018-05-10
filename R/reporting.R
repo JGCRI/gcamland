@@ -107,7 +107,7 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FA
 #' @author KVC May 2018
 LandAllocator_getOutputs <- function(aLandAllocator, aAllOutputs, aScenType) {
   for(child in aLandAllocator$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aAllOutputs <- LandNode_getOutputs(child, aAllOutputs, aScenType)
     } else {
       aAllOutputs <- LandLeaf_getOutputs(child, aAllOutputs, aScenType)
@@ -129,7 +129,7 @@ LandAllocator_getOutputs <- function(aLandAllocator, aAllOutputs, aScenType) {
 LandNode_getOutputs <- function(aLandNode, aAllOutputs, aScenType) {
 
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aAllOutputs <- LandNode_getOutputs(child, aAllOutputs, aScenType)
     } else {
       aAllOutputs <- LandLeaf_getOutputs(child, aAllOutputs, aScenType)
@@ -156,7 +156,7 @@ LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
                                   aAllOutputs$name == currName] <- aLandLeaf$mLandAllocation[[per]]
 
     # Only get yield and price information for LandLeafs
-    if(class(aLandLeaf) == "LandLeaf") {
+    if(inherits(aLandLeaf, "LandLeaf")) {
       aAllOutputs$yield[aAllOutputs$name == currName &
                           aAllOutputs$year == currYear] <- aLandLeaf$mYield[[per]]
       aAllOutputs$expectedYield[aAllOutputs$name == currName &
@@ -233,7 +233,7 @@ printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
 LandAllocator_getLandShares <- function(aLandAllocator, aShares, scentype) {
 
   for(child in aLandAllocator$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
       for(per in seq_along(child$mShare)) {
@@ -261,7 +261,7 @@ LandAllocator_getLandShares <- function(aLandAllocator, aShares, scentype) {
 #' @author KVC November 2017
 LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
       for(per in seq_along(child$mShare)) {
@@ -359,7 +359,7 @@ LandAllocator_addToNest <- function(aLandAllocator, aNest) {
 
     # Now, call addToNest on each of the child nodes
     # Note: we don't need to call this on children that are leafs
-    if (class(child) == "LandNode") {
+    if (inherits(child, "LandNode")) {
       nest <- LandNode_addToNest(child, nest)
     }
   }
@@ -387,7 +387,7 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 
     # Now, call addToNest on each of the child nodes
     # Note: we don't need to call this on children that are leafs
-    if (class(child) == "LandNode") {
+    if (inherits(child, "LandNode")) {
       nest <- LandNode_addToNest(child, nest)
     }
   }

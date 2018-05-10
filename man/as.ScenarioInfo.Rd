@@ -13,7 +13,7 @@ as.ScenarioInfo(object)
 \method{as.ScenarioInfo}{list}(object)
 }
 \arguments{
-\item{object}{Object to be tested or converted.}
+\item{object}{Object to be converted.}
 }
 \description{
 Convert an object to a \code{ScenarioInfo} object
