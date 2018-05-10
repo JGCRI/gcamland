@@ -325,7 +325,8 @@ run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL,
     invisible(
         lapply(aScenarioList,
                function(s) {
-                   calc_post(s, obsdata, modeldata[[s$mScenarioName]])
+                   calc_post(s, obsdata, modeldata[[s$mScenarioName]],
+                             lpdf=lpdf, prior=prior)
                }))
 }
 
