@@ -70,6 +70,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
 
 #' Test whether an object is a \code{ScenarioInfo} object
 #'
+#' @param object Object to be tested.
 #' @export
 is.ScenarioInfo <- function(object)
 {

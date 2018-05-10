@@ -58,7 +58,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE, levels.LINYEARS,
                      atype, aOutputDir) %>%
-    unlist(recursive=FALSE)
+    unlist(recursive=FALSE) %>%
+    lapply(as.list)                     # Convert to a list to survive serialization
 
   # Loop over all scenario configurations and run the model
   rslt <-

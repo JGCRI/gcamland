@@ -6,6 +6,9 @@
 \usage{
 is.ScenarioInfo(object)
 }
+\arguments{
+\item{object}{Object to be tested.}
+}
 \description{
 Test whether an object is a \code{ScenarioInfo} object
 }
