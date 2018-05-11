@@ -50,6 +50,7 @@ get_hindcast_AgProdChange <- function(){
     na.omit() %>%
     group_by(region, GCAM_commodity, year) %>%
     summarize(ha = sum(ha), prod = sum(prod)) %>%
+    ungroup %>%
     mutate(yield = prod / ha) %>%
     select(region, GCAM_commodity, year, yield) ->
     faoYield

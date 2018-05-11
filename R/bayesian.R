@@ -50,9 +50,9 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 }
 
 
-#' Load land use results for an already-run scenario
+#' Load land use results for a list of already-run scenarios
 #'
-#' Fetch land use results and aggregate to region, commodity, and year.
+#' Fetch land use results and aggregate to region, commodity, year, and scenario.
 #'
 #' @section TODO:
 #'
@@ -61,45 +61,72 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 #' region).  Once we add a region column to the model output, we will want to
 #' add region to the grouping variables for this function.
 #'
-#' @param aScenarioInfo ScenarioInfo structure for the run.
+#' @param aScenarioList List of ScenarioInfo structures for the runs.
 #' @return Table with region, commodity, year, and area.
 #' @export
-get_scenario_land_data <- function(aScenarioInfo)
+get_scenario_land_data <- function(aScenarioList)
 {
-    land.type <- year <- land.allocation <- NULL # silence package notes
+    land.type <- year <- land.allocation <- scenario <- NULL # silence package notes
 
-    outputdir <- aScenarioInfo$mOutputDir
-    filename <- paste0('output_',aScenarioInfo$mFileName,'.csv')
+    if(inherits(aScenarioList, "ScenarioInfo")) {
+        ## user passed a single scenario.  Convert it to a list and press on
+        aScenarioList <- list(aScenarioList)
+    }
+
+    outputdir <- unique(sapply(aScenarioList, function(s) {s$mOutputDir}))
+    filestem <- unique(sapply(aScenarioList, function(s) {s$mFileName}))
+    if(length(outputdir) > 1 || length(filestem) > 1) {
+        stop('get_scenario_land_data: scenarios have different output directory and/or filename.')
+    }
+
+    ## For now we have to assume a single region.  See TODO note above.
+    region <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
+    if(length(region) > 1) {
+        stop('get_scenario_land_data: scenarios must all be from a single region')
+    }
+
+    filename <- paste0('output_',filestem,'.rds')
     fn <- file.path(outputdir, filename)
-
-    suppressMessages(readr::read_csv(fn)) %>%
+    readRDS(fn) %>%
       ## split name / AEZ
       tidyr::extract('name', c('land.type', 'AEZ'),
                      '(.+)(AEZ[0-9]+)') %>%
-      dplyr::group_by(land.type, year) %>%
+      dplyr::group_by(land.type, year, scenario) %>%
       dplyr::summarise(model = sum(land.allocation)) %>%
       ungroup %>%
       dplyr::mutate(variable = "Land Area") %>%
-      dplyr::mutate(region = aScenarioInfo$mRegion)
+      dplyr::mutate(region = region)
 }
 
 
 #' Add model parameter values to a table of model results
 #'
 #' @param modeldata Data frame with model results
-#' @param aScenarioInfo ScenarioInfo structure for the scenario
+#' @param aScenarioList List of ScenarioInfo structures for the scenarios
 #' @keywords internal
-add_parameter_data <- function(modeldata, aScenarioInfo)
+add_parameter_data <- function(modeldata, aScenarioList)
 {
-    modeldata$expectation.type <- aScenarioInfo$mExpectationType
-    modeldata$share.old <- aScenarioInfo$mLaggedShareOld
-    modeldata$linear.years <- aScenarioInfo$mLinearYears
-    modeldata$logit.agforest <- aScenarioInfo$mLogitAgroForest
-    modeldata$logit.afnonpast <- aScenarioInfo$mLogitAgroForest_NonPasture
-    modeldata$logit.crop <- aScenarioInfo$mLogitCropland
-    modeldata$region <- aScenarioInfo$mRegion
+    if(inherits(aScenarioList, "ScenarioInfo")) {
+        ## user passed a single scenario.  Convert it to a list and press on
+        aScenarioList <- list(aScenarioList)
+    }
 
-    modeldata
+    ## Create a table of parameters by scenario name
+    stbl <-
+        lapply(aScenarioList, function(s) {
+                   tibble::tibble(expectation.type = s$mExpectationType,
+                                  share.old = s$mLaggedShareOld,
+                                  linear.years = s$mLinearYears,
+                                  logit.agforest = s$mLogitAgroForest,
+                                  logit.afnonpast = s$mLogitAgroForest_NonPasture,
+                                  logit.crop = s$mLogitCropland,
+                                  region = s$mRegion,
+                                  scenario = s$mScenarioName)
+               }) %>%
+          dplyr::bind_rows()
+
+    ## join parameters to results.
+    dplyr::left_join(modeldata, stbl, by="scenario")
 }
 
 #' Select a log-probability density function
@@ -158,19 +185,17 @@ get_lpdf <- function(df)
 #' \varsigma^2_g}}.  If multiple \eqn{\xi} values are passed, this process is
 #' repeated for each one, and the results are combined into a single table.
 #'
-#' @param aScenarioInfo ScenarioInfo object for the scenario
-#' (q.v. \code{\link{get_historical_land_data}}) for a \emph{single} model.
 #' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
+#' @param model Table of model outputs
+#' (q.v. \code{\link{get_scenario_land_data}})
 #' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
 #' @param varlvls Variance levels to run (see details).
 #' @return Data frame containing xi and ll_
-#' @export
-calc_loglikelihood <- function(aScenarioInfo, obs, lpdf, varlvls)
+#' @keywords internal
+calc_loglikelihood <- function(obs, model, lpdf, varlvls)
 {
     ## silence package checks
     land.type <- variable <- region <- NULL
-
-    model <- get_scenario_land_data(aScenarioInfo)
 
     jointbl <- dplyr::inner_join(obs, model,
                                  by=(c('region','land.type','variable','year')))
@@ -214,10 +239,10 @@ calc_loglikelihood <- function(aScenarioInfo, obs, lpdf, varlvls)
 #' @param prior Function that calculates the log-prior (see details).  Default
 #' applies a uniform prior.
 #' @return vector of prior values
-#' @export
+#' @keywords internal
 calc_prior <- function(aScenarioInfo, xi, prior)
 {
-    d <- data.frame(xi=xi) %>%
+    d <- tibble::tibble(xi=xi, scenario=aScenarioInfo$mScenarioName) %>%
       add_parameter_data(aScenarioInfo)
 
     prior(d)
@@ -231,20 +256,21 @@ calc_prior <- function(aScenarioInfo, xi, prior)
 #'
 #' @param aScenarioInfo ScenarioInfo structure for the scenario
 #' @param obs Table of observational data (q.v. \code{\link{add_parameter_data}})
+#' @param model Table of model results for the scenario.
 #' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
 #' @param prior Log prior function (q.v. \code{\link{calc_prior}})
 #' @param varlvls Variance levels to run (see description in
 #' \code{\link{calc_loglikelihood}}).
 #' @return Modified ScenarioInfo with pointwise likelihood and model posterior
 #' tables.
-#' @export
-calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x){0},
+#' @keywords internal
+calc_post <- function(aScenarioInfo, obs, model, lpdf, prior,
                       varlvls = seq(0.1, 1, 0.1))
 {
     ## silence package checks
     xi <- ll_ <- NULL
 
-    ll_point <- calc_loglikelihood(aScenarioInfo, obs, lpdf, varlvls)
+    ll_point <- calc_loglikelihood(obs, model, lpdf, varlvls)
     aScenarioInfo$mPointwiseLikelihood <- ll_point
 
     lpost <- dplyr::group_by(ll_point, xi) %>%
@@ -283,21 +309,29 @@ calc_post <- function(aScenarioInfo, obs, lpdf = get_lpdf(1), prior = function(x
 #' available years)
 #' @param landtypes Vector of land types to filter observations to (default is
 #' to use all available land types)
+#' @param lpdf Log probability density function (q.v. \code{\link{get_lpdf}})
+#' @param prior Log prior function (q.v. \code{\link{calc_prior}}).
 #' @return Modified list of ScenarioInfo structures with the Bayesian
 #' calculation tables populated.
 #' @export
-run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL)
+run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL,
+                      lpdf = get_lpdf(1), prior = uniform_prior)
 {
     rgns <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
     obsdata <- get_historical_land_data(rgns, years, landtypes)
+    modeldata <- get_scenario_land_data(aScenarioList)
+    modeldata <- split(modeldata, modeldata$scenario)
 
     invisible(
         lapply(aScenarioList,
                function(s) {
-                   calc_post(s, obsdata)
+                   calc_post(s, obsdata, modeldata[[s$mScenarioName]],
+                             lpdf=lpdf, prior=prior)
                }))
 }
 
+### A uniform prior to serve as the default in run_bayes
+uniform_prior <- function(params) {0}
 
 #' Organize a list of ScenarioInfo objects into a grand table of parameters
 #'
@@ -317,11 +351,26 @@ run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL)
 #' @export
 grand_table <- function(aScenarioList)
 {
-    lapply(aScenarioList,
-           function(s) {
-               add_parameter_data(s$mLogPost, s)
+    ## silence package checks
+    scenario <- NULL
+
+    tbllen <- sapply(aScenarioList, function(s) {length(s$mLogPost)})
+    if(any(tbllen) == 0) {
+        warning('grand_table: One or more scenarios do not have posterior probability tables. Running run_bayes with default arguments.')
+        aScenarioList <- run_bayes(aScenarioList)
+    }
+
+    modata <-
+        lapply(aScenarioList,
+               function(s) {
+                   lpost <- s$mLogPost
+                   lpost$scenario <- s$mScenarioName
+                   lpost
            }) %>%
-      dplyr::bind_rows()
+          dplyr::bind_rows()
+
+    add_parameter_data(modata, aScenarioList) %>%
+      dplyr::select(-scenario)
 }
 
 

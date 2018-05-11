@@ -45,7 +45,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aOutputDir = "./outputs",
                          aRegion = DEFAULT.REGION) {
 
-  self <- new.env()
+  self <- new.env(parent=emptyenv())
   class(self) <- c("ScenarioInfo", class(self))
 
   self$mExpectationType <- aExpectationType
@@ -67,6 +67,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self
 }
 
+
 #' Test whether an object is a \code{ScenarioInfo} object
 #'
 #' @param object Object to be tested.
@@ -75,6 +76,36 @@ is.ScenarioInfo <- function(object)
 {
     inherits(object, 'ScenarioInfo')
 }
+
+#' Convert an object to a \code{ScenarioInfo} object
+#'
+#' @param object Object to be converted.
+#' @export
+as.ScenarioInfo <- function(object)
+{
+    UseMethod("as.ScenarioInfo", object)
+}
+
+#' @describeIn as.ScenarioInfo Convert an environment to a \code{ScenarioInfo}
+#'
+#' @export
+as.ScenarioInfo.environment <- function(object)
+{
+    if(!is.ScenarioInfo(object)) {
+        class(object) <- c('ScenarioInfo', class(object))
+    }
+    object
+}
+
+#' @describeIn as.ScenarioInfo Convert a list to a \code{ScenarioInfo}
+#'
+#' @export
+as.ScenarioInfo.list <- function(object)
+{
+    eobj <- list2env(object, parent=emptyenv())
+    as.ScenarioInfo(eobj)
+}
+
 
 #' SCENARIO.INFO
 #'

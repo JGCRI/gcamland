@@ -41,3 +41,4 @@ Finally, note that the list \emph{actually} passed to the prior function may
 contain extra junk variables (to avoid having to waste time dropping columns
 that aren't needed.)  The prior function should ignore these.
 }
+\keyword{internal}

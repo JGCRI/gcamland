@@ -4,7 +4,8 @@
 \alias{run_bayes}
 \title{Run all the Bayesian analysis on a list of scenarios}
 \usage{
-run_bayes(aScenarioList, years = NULL, landtypes = NULL)
+run_bayes(aScenarioList, years = NULL, landtypes = NULL,
+  lpdf = get_lpdf(1), prior = uniform_prior)
 }
 \arguments{
 \item{aScenarioList}{List of ScenarioInfo structures}
@@ -14,6 +15,10 @@ available years)}
 
 \item{landtypes}{Vector of land types to filter observations to (default is
 to use all available land types)}
+
+\item{lpdf}{Log probability density function (q.v. \code{\link{get_lpdf}})}
+
+\item{prior}{Log prior function (q.v. \code{\link{calc_prior}}).}
 }
 \value{
 Modified list of ScenarioInfo structures with the Bayesian

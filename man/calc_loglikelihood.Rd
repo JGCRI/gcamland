@@ -4,13 +4,13 @@
 \alias{calc_loglikelihood}
 \title{Compute the log-likelihoods for each data point}
 \usage{
-calc_loglikelihood(aScenarioInfo, obs, lpdf, varlvls)
+calc_loglikelihood(obs, model, lpdf, varlvls)
 }
 \arguments{
-\item{aScenarioInfo}{ScenarioInfo object for the scenario
-(q.v. \code{\link{get_historical_land_data}}) for a \emph{single} model.}
-
 \item{obs}{Table of observational data (q.v. \code{\link{add_parameter_data}})}
+
+\item{model}{Table of model outputs
+(q.v. \code{\link{get_scenario_land_data}})}
 
 \item{lpdf}{Log probability density function (q.v. \code{\link{get_lpdf}})}
 
@@ -34,3 +34,4 @@ data points in the grouping is calculated as \eqn{\sigma_g = \sqrt{\xi
 \varsigma^2_g}}.  If multiple \eqn{\xi} values are passed, this process is
 repeated for each one, and the results are combined into a single table.
 }
+\keyword{internal}

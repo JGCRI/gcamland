@@ -30,9 +30,9 @@ Sector_initCalc <- function(aLandAllocator, aPeriod, aScenarioInfo){
 Subsector_initCalc <- function(aLandNode, aPeriod, aScenarioInfo){
   # loop through children
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       Subsector_initCalc(child, aPeriod, aScenarioInfo)
-    } else if (class(child) == "LandLeaf") {
+    } else if (inherits(child, "LandLeaf")) {
       # If this is a leaf, call the AgProductionTechnology method
       AgProductionTechnology_initCalc(child, aPeriod, aScenarioInfo)
     }

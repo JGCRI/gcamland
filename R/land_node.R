@@ -21,18 +21,18 @@
 #' @return New, initialized LandNode
 #' @author KVC September 2017
 LandNode <- function(aName, aChoiceFunction, aLandAllocation, aFinalCalPeriod) {
-  mName <- aName
-  mChoiceFunction <- aChoiceFunction
-  mFinalCalPeriod <- aFinalCalPeriod
-  mLandAllocation = list()
-  mUnmanagedLandValue = 0.0
-  mShare = list()
-  mShareWeight = NULL
-  mProfitRate = list()
-  mChildren = list()
+  self <- new.env(parent=emptyenv())
+  self$mName <- aName
+  self$mChoiceFunction <- aChoiceFunction
+  self$mFinalCalPeriod <- aFinalCalPeriod
+  self$mLandAllocation = list()
+  self$mUnmanagedLandValue = 0.0
+  self$mShare = list()
+  self$mShareWeight = NULL
+  self$mProfitRate = list()
+  self$mChildren = list()
 
-  self <- environment()
-  class(self) <- "LandNode"
+  class(self) <- c("LandNode", class(self))
   self
 }
 
@@ -47,9 +47,9 @@ LandNode_initCalc <- function(aLandNode, aPeriod) {
   # TODO: all kinds of things including error checking
   # Call initCalc on any children
   for (child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       LandNode_initCalc(child, aPeriod)
-    } else if (class(child) == "LandLeaf") {
+    } else if (inherits(child, "LandLeaf")) {
       LandLeaf_initCalc(child, aPeriod)
     } else {
       UnmanagedLandLeaf_initCalc(child, aPeriod)
@@ -81,7 +81,7 @@ LandNode_setInitShares <- function(aLandNode, aLandAllocationAbove, aPeriod) {
 
   # Call setInitShares on all children
   for( child in aLandNode$mChildren ) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       LandNode_setInitShares(child, nodeLandAllocation, aPeriod)
     } else {
       LandLeaf_setInitShares(child, nodeLandAllocation, aPeriod)
@@ -101,7 +101,7 @@ LandNode_getCalLandAllocation <- function(aLandNode, aPeriod) {
   sum <- 0.0
 
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       sum <- sum + LandNode_getCalLandAllocation(child, aPeriod)
     } else {
       sum <- sum + LandLeaf_getCalLandAllocation(child, aPeriod)
@@ -131,7 +131,7 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   i <- 1
   unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
       unNormalizedShares$unnormalized.share[i] <- LandLeaf_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)
@@ -204,7 +204,7 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   aLandNode$mChoiceFunction$mOuputCost <- avgProfit
 
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
       LandLeaf_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
@@ -234,9 +234,9 @@ LandNode_setUnmanagedLandProfitRate <- function(aLandNode, aAverageProfitRate, a
 
   # Loop through all children and call setUnmanagedLandProfitRate
   for(child in aLandNode$mChildren) {
-    if (class(child) == "UnmanagedLandLeaf") {
+    if (inherits(child, "UnmanagedLandLeaf")) {
       UnmanagedLandLeaf_setUnmanagedLandProfitRate(child, avgProfitRate, aPeriod)
-    } else if (class(child) == "LandNode") {
+    } else if (inherits(child, "LandNode")) {
       LandNode_setUnmanagedLandProfitRate(child, avgProfitRate, aPeriod)
     }
   }
@@ -289,7 +289,7 @@ LandNode_calculateNodeProfitRates <- function(aLandNode, aAverageProfitRateAbove
   # Pass the node profit rate down to children and trigger their calculation
   # and pass down the logit exponent of this node
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       LandNode_calculateNodeProfitRates(child, avgProfitRate, aLandNode$mChoiceFunction, aPeriod)
     }
   }
@@ -330,7 +330,7 @@ LandNode_calcLandAllocation <- function(aLandNode, aLandAllocationAbove, aPeriod
 
   # Call calcLandAllocation for each child
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode"){
+    if(inherits(child, "LandNode")){
       LandNode_calcLandAllocation(child, nodeLandAllocation, aPeriod)
     } else {
       LandLeaf_calcLandAllocation(child, nodeLandAllocation, aPeriod)

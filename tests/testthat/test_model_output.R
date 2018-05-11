@@ -11,7 +11,7 @@ scentype <- test.info$mScenarioType
 test_that("Model runs successfully.", {
     ## Run the model to generate outputs.  This needs to be the first test in
     ## this context, as all the rest will depend on these results.
-    expect_message(run_model(test.info))
+    expect_message(run_model(test.info, aVerbose=TRUE))
 })
 
 
@@ -41,9 +41,9 @@ test_that("land cover matches calibration data", {
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
   path <- basepath
-  file <- file.path(path, paste0("output_", test.info$mScenarioName, ".csv"))
+  file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
   expect_true(file.exists(file))
-  read_csv(file) %>%
+  readRDS(file) %>%
     select(-yield, -expectedPrice, -expectedYield) %>%
     mutate(region = test.info$mRegion) ->
     outputData
@@ -115,18 +115,18 @@ test_that("perfect expectations about yield are calculated correctly", {
   }
 
   # With perfect expectations, yield should match expected yield exactly
-  if (SCENARIO.INFO$mExpectationType == "Perfect") {
+  if (test.info$mExpectationType == "Perfect") {
 
     # Get actual data
     path <- basepath
-    file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
-    read_csv(file) %>%
+    file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
+    readRDS(file) %>%
       select(-land.allocation, -expectedYield, -expectedPrice) ->
       actualData
 
     # Get expected data
-    file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
-    read_csv(file) %>%
+    file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
+    readRDS(file) %>%
       select(-land.allocation, -yield, -expectedPrice) %>%
       rename(yield = expectedYield) ->
       expectedData
@@ -160,8 +160,8 @@ test_that("land area doesn't change over time", {
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
   path <- basepath
-  file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
-  outputData <- read_csv(file)
+  file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
+  outputData <- readRDS(file)
 
   # Aggregate to regions
   outputData %>%
@@ -205,7 +205,7 @@ test_that("land cover matches reference values", {
     x
   }
 
-  if (SCENARIO.INFO$mScenarioName == "Reference_Perfect") {
+  if (test.info$mScenarioName == "Reference_Perfect") {
 
     # Get comparison data
     compareData <- read_csv("./comparison-data/LandAllocation_Reference_Perfect.csv", skip = 1)
@@ -216,8 +216,8 @@ test_that("land cover matches reference values", {
     # Look for output data in outputs under top level
     # (as this code will be run in tests/testthat)
     path <- basepath
-    file <- file.path(path, paste0("output_", SCENARIO.INFO$mScenarioName, ".csv"))
-    read_csv(file) %>%
+    file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
+    readRDS(file) %>%
       select(-yield, -expectedYield, -expectedPrice) %>%
       mutate(region = test.info$mRegion) ->
       outputData
@@ -242,9 +242,9 @@ test_that("land cover matches reference values", {
 test_that("scenario land data can be retrieved", {
     ld <- get_scenario_land_data(test.info)
     expect_true(is.data.frame(ld))
-    expect_equal(ncol(ld), 5)
+    expect_equal(ncol(ld), 6)
     expect_setequal(names(ld),
-                    c('land.type', 'year', 'model', 'variable', 'region'))
+                    c('land.type', 'year', 'model', 'variable', 'region', 'scenario'))
 
 })
 
@@ -261,7 +261,9 @@ test_that("log-likelihood is calculated correctly",
 
 
     histland <- get_historical_land_data(test.info$mRegion)
-    test.info <- calc_post(test.info, histland)
+    modland <- get_scenario_land_data(list(test.info))
+    test.info <- calc_post(test.info, histland, modland,
+                           lpdf=get_lpdf(1), prior=uniform_prior)
 
     ll_out <- test.info$mLogPost
 

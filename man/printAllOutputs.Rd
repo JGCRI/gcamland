@@ -4,7 +4,7 @@
 \alias{printAllOutputs}
 \title{printAllOutputs}
 \usage{
-printAllOutputs(aLandAllocator, aScenarioInfo, aNest)
+printAllOutputs(aLandAllocator, aScenarioInfo, aNest, aFileOutput = FALSE)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}
@@ -12,6 +12,12 @@ printAllOutputs(aLandAllocator, aScenarioInfo, aNest)
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 
 \item{aNest}{Nest to fill in}
+
+\item{aFileOutput}{Flag indicating whether output should be written to a
+file, in addition to being returned.}
+}
+\value{
+Table of all model outputs.
 }
 \description{
 printAllOutputs

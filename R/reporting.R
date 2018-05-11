@@ -7,12 +7,28 @@
 #' @details Prints all outputs
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aFileOutput Flag indicating whether data should be written to file.
+#' @return Table of all outputs
 #' @author KVC October 2017
-printOutput <- function(aLandAllocator, aScenarioInfo) {
-  nest <- printNest(aLandAllocator, aScenarioInfo)
-  printAllOutputs(aLandAllocator, aScenarioInfo, nest)
-  printLandShares(aLandAllocator, aScenarioInfo, nest)
-  printPrices(aScenarioInfo)
+printOutput <- function(aLandAllocator, aScenarioInfo, aFileOutput=FALSE) {
+  nest <- getNest(aLandAllocator)
+  printAllOutputs(aLandAllocator, aScenarioInfo, nest, aFileOutput)
+}
+
+#' Write out additional information for debugging
+#'
+#' Write the land shares and land nests to their respective output files.  This
+#' information will be written out if the \code{aVerbose} argument to
+#' \code{\link{run_model}} is \code{TRUE}.
+#'
+#' @param aLandAllocator Land allocator structure
+#' @param aScenarioInfo Scenario parameter structure
+printDebug <- function(aLandAllocator, aScenarioInfo)
+{
+    nest <- printNest(aLandAllocator, aScenarioInfo)
+    printLandShares(aLandAllocator, aScenarioInfo, nest)
+    printPrices(aScenarioInfo)
+    invisible(NULL)
 }
 
 #' printPrices
@@ -32,9 +48,12 @@ printPrices <- function(aScenarioInfo) {
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @param aNest Nest to fill in
+#' @param aFileOutput Flag indicating whether output should be written to a
+#' file, in addition to being returned.
+#' @return Table of all model outputs.
 #' @importFrom readr write_csv read_csv
 #' @author KVC May 2018
-printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
+printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FALSE) {
   # Silence package checks
   node <- parent <- uniqueJoinField <- NULL
 
@@ -69,8 +88,12 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
   # Add information on scenario and expectation type
   allOutput$scenario <- aScenarioInfo$mScenarioName
 
-  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".csv")
-  write_csv(allOutput, file)
+  if(aFileOutput) {
+      file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+      saveRDS(allOutput, file)
+  }
+
+  allOutput
 }
 
 #' LandAllocator_getOutputs
@@ -84,7 +107,7 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest) {
 #' @author KVC May 2018
 LandAllocator_getOutputs <- function(aLandAllocator, aAllOutputs, aScenType) {
   for(child in aLandAllocator$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aAllOutputs <- LandNode_getOutputs(child, aAllOutputs, aScenType)
     } else {
       aAllOutputs <- LandLeaf_getOutputs(child, aAllOutputs, aScenType)
@@ -106,7 +129,7 @@ LandAllocator_getOutputs <- function(aLandAllocator, aAllOutputs, aScenType) {
 LandNode_getOutputs <- function(aLandNode, aAllOutputs, aScenType) {
 
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aAllOutputs <- LandNode_getOutputs(child, aAllOutputs, aScenType)
     } else {
       aAllOutputs <- LandLeaf_getOutputs(child, aAllOutputs, aScenType)
@@ -133,7 +156,7 @@ LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
                                   aAllOutputs$name == currName] <- aLandLeaf$mLandAllocation[[per]]
 
     # Only get yield and price information for LandLeafs
-    if(class(aLandLeaf) == "LandLeaf") {
+    if(inherits(aLandLeaf, "LandLeaf")) {
       aAllOutputs$yield[aAllOutputs$name == currName &
                           aAllOutputs$year == currYear] <- aLandLeaf$mYield[[per]]
       aAllOutputs$expectedYield[aAllOutputs$name == currName &
@@ -210,7 +233,7 @@ printLandShares <- function(aLandAllocator, aScenarioInfo, aNest) {
 LandAllocator_getLandShares <- function(aLandAllocator, aShares, scentype) {
 
   for(child in aLandAllocator$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
       for(per in seq_along(child$mShare)) {
@@ -238,7 +261,7 @@ LandAllocator_getLandShares <- function(aLandAllocator, aShares, scentype) {
 #' @author KVC November 2017
 LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
   for(child in aLandNode$mChildren) {
-    if(class(child) == "LandNode") {
+    if(inherits(child, "LandNode")) {
       aShares <- LandNode_getLandShares(child, aShares, scentype)
     } else {
       for(per in seq_along(child$mShare)) {
@@ -262,33 +285,59 @@ LandNode_getLandShares <- function(aLandNode, aShares, scentype) {
 #'          leaf data
 #' @param aLandAllocator Land allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
-#' @return Nest structure
+#' @param aFilter Regular expression to filter out of graph output (the return
+#'          value contains the full table, regardless of filters)
+#' @return Table of land node nestings, constructed by \code{\link{getNest}}.
 #' @importFrom readr write_csv
 #' @author KVC October 2017
-printNest <- function(aLandAllocator, aScenarioInfo) {
-  # Silence package checks
-  parent <- node <- NULL
-
-  tibble::tibble(parent = "TEMP",
-                 node = "TEMP") -> nest
-
-  # Map out nest
-  nest <- LandAllocator_addToNest(aLandAllocator, nest)
-
-  # Remove temporary link
-  nest %>%
-    filter(parent != "TEMP") ->
-    nest
+printNest <- function(aLandAllocator, aScenarioInfo, aFilter='Urban|Rock|Tundra') {
+  nest <- getNest(aLandAllocator)
 
   # Write to file
   path <- normalizePath(aScenarioInfo$mOutputDir)
-  file <- paste0(path, "/landNest.csv")
-  write_csv(nest, file)
+  file <- paste0(path, "/landNest.dot")
+
+  if(is.null(aFilter)) {
+      indices <- 1:nrow(nest)
+  }
+  else {
+      ## drop from the graph output any nodes matching the filter
+      indices <- grep(aFilter, nest$node, invert=TRUE)
+  }
+
+  ## Create the data in dot format.
+  cat('digraph land_nesting {\nrankdir=LR;\n', file=file)
+  edges <-
+      sapply(indices,
+             function(row) {
+                 paste0('\t"', nest[row, 1], '" -> "', nest[row,2], '";')
+             })
+  cat(edges, file=file, append=TRUE, sep='\n')
+  cat('}\n', file=file, append=TRUE)
+
 
   # Return the current nest
   return(nest)
 }
 
+#' Construct a table of land node nestings
+#'
+#' The table describes the graph of node relationships.  There is one row for
+#' each edge in the graph.  The columns are "parent" and "node", and they
+#' name the parent and child in the edge.
+#'
+#' @param aLandAllocator Land allocator structure
+getNest <- function(aLandAllocator)
+{
+    tibble::tibble(parent = "TEMP",
+                   node = "TEMP") -> nest
+
+    # Map out nest
+    nest <- LandAllocator_addToNest(aLandAllocator, nest)
+
+    # Remove temporary link
+    nest[nest$parent != "TEMP",]
+}
 
 #' LandAllocator_addToNest
 #'
@@ -310,7 +359,7 @@ LandAllocator_addToNest <- function(aLandAllocator, aNest) {
 
     # Now, call addToNest on each of the child nodes
     # Note: we don't need to call this on children that are leafs
-    if (class(child) == "LandNode") {
+    if (inherits(child, "LandNode")) {
       nest <- LandNode_addToNest(child, nest)
     }
   }
@@ -338,7 +387,7 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 
     # Now, call addToNest on each of the child nodes
     # Note: we don't need to call this on children that are leafs
-    if (class(child) == "LandNode") {
+    if (inherits(child, "LandNode")) {
       nest <- LandNode_addToNest(child, nest)
     }
   }

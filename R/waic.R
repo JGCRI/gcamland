@@ -237,7 +237,7 @@ pwaic <- function(pointwise_ll)
     nc <- ncol(llmat)
 
     if(is.null(logwgt)) {
-        llvar <- apply(llmat, 1, var)
+        llvar <- apply(llmat, 1, stats::var)
     }
     else {
         ## scale weights to avoid excessively large or small numbers

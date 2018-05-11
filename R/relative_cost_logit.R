@@ -7,12 +7,12 @@
 #' @param aLogitExponent Logt exponent
 #' @author KVC September 2017
 ChoiceFunction <- function(aType, aLogitExponent){
-  mType = aType
-  mLogitExponent = aLogitExponent
-  mOutputCost = NULL
+  self <- new.env(parent=emptyenv())
+  self$mType = aType
+  self$mLogitExponent = aLogitExponent
+  self$mOutputCost = NULL
 
-  self <- environment()
-  class(self) <- "ChoiceFunction"
+  class(self) <- c("ChoiceFunction", class(self))
   self
 }
 

@@ -20,11 +20,15 @@
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
 #' @param atype Scenario type: either "Reference" or "Hindcast"
+#' @param logparallel Name of directory to use for parallel workers' log files.
+#' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members
 #' @import foreach doParallel
 #' @author KVC November 2017
+#' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
+                         logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
@@ -37,7 +41,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
   limits.AGROFOREST_NONPASTURE <- c(0.1, 6)
   limits.CROPLAND <- c(0.1, 6)
   limits.LAGSHARE <- c(0.1, 0.9)
-  limits.LINYEARS <- round(c(1, 20))
+  limits.LINYEARS <- round(c(2, 20))
 
   rn <- randtoolbox::sobol(N, NPARAM)
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
@@ -53,18 +57,51 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE, levels.LINYEARS,
-                     seq_along(levels.AGROFOREST), atype, aOutputDir) %>%
-    unlist(recursive=FALSE)
+                     atype, aOutputDir) %>%
+    unlist(recursive=FALSE) %>%
+    lapply(as.list)                     # Convert to a list to survive serialization
 
   # Loop over all scenario configurations and run the model
-  foreach(obj = scenObjects) %dopar% {
-    message("Starting simulation: ", obj$mFileName)
-    run_model(obj)
-  }
+  rslt <-
+      foreach(obj = scenObjects, .combine=rbind) %dopar% {
+          if(!is.null(logparallel)) {
+              nn <- Sys.info()['nodename']
+              sn <- obj$mScenarioName
+              fn <- file.path(logparallel, paste0('info-', sn, '.txt'))
+              print(fn)
+              logfil <- file(fn, 'w')
+              if(!file.exists(fn)) {
+                  stop("Couldn't create logfile: ", fn)
+              }
+              writeLines(c('nodename= ', nn), con=logfil)
+              writeLines(capture.output(sessionInfo()),con=logfil)
+              flush(logfil)
+          }
+
+          message("Starting simulation: ", obj$mScenarioName)
+          si <- as.ScenarioInfo(obj)
+          if(N > 50) {
+              suppressMessages(run_model(si))
+          }
+          else {
+              run_model(si)
+          }
+
+          if(!is.null(logparallel)) {
+              writeLines(capture.output(warnings()), con=logfil)
+              close(logfil)
+          }
+      }
 
   ## Save the scenario info from the scenarios that we ran
   scenfile <- file.path(aOutputDir, 'scenario-info.rds')
   saveRDS(scenObjects, scenfile)
+
+  ## Save the full set of ensemble results
+  outfile <- file.path(aOutputDir, 'output_ensemble.rds')
+  saveRDS(rslt, outfile)
+
+  warnings()
 
   invisible(scenObjects)
 }
@@ -82,13 +119,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
 #' @param crop The logit exponent for the crop nest
 #' @param share The share parameter for the lagged model
 #' @param linyears The number of years parameter for the linear model
-#' @param serialnum A serial number for generating unique file names
 #' @param scentype Scenario type, either "Hindcast" or "Reference"
 #' @param outdir Name of the output directory
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                serialnum, scentype, aOutputDir)
+                                scentype, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -102,7 +138,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
                            aScenarioName = scenName,
-                           aFileName = sprintf("Perf_%04d", serialnum),
+                           aFileName = "ensemble",
                            aOutputDir = aOutputDir)
 
 
@@ -118,7 +154,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
-                          aFileName = sprintf("Lag_%04d", serialnum),
+                          aFileName = "ensemble",
                           aOutputDir = aOutputDir)
 
 
@@ -133,7 +169,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
-                          aFileName = sprintf("Lin_%04d", serialnum),
+                          aFileName = "ensemble",
                           aOutputDir = aOutputDir)
 
   list(perfscen, lagscen, linscen)
@@ -147,10 +183,11 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
 #' @param aPeriods Integer vector of periods to run.  Default is all periods
 #' defined for the scenario type.
-#' @return Name of the output directory for the run.
+#' @param aVerbose If \code{TRUE}, output additional debugging information.
+#' @return Table of model results.
 #' @author KVC
 #' @export
-run_model <- function(aScenarioInfo, aPeriods=NULL) {
+run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   ## Ensure that output directories exist
   odnorm <- outdir_setup(aScenarioInfo$mOutputDir)
 
@@ -185,7 +222,11 @@ run_model <- function(aScenarioInfo, aPeriods=NULL) {
 
   # Print Outputs
   message("All model periods complete. Starting output.")
-  printOutput(mLandAllocator, aScenarioInfo)
+  ## Write the output to a file only if verbose mode is set
+  rslt <- printOutput(mLandAllocator, aScenarioInfo, aFileOutput=aVerbose)
+  if(aVerbose) {
+      printDebug(mLandAllocator, aScenarioInfo)
+  }
 
   # Make figures
   if(MAKE.PLOTS) {
@@ -194,7 +235,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL) {
     plotLandAllocation(mLandAllocator, aScenarioInfo)
     plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
   }
-  return(invisible(odnorm))
+  return(invisible(rslt))
 }
 
 
