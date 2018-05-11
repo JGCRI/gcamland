@@ -41,7 +41,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   limits.AGROFOREST_NONPASTURE <- c(0.1, 6)
   limits.CROPLAND <- c(0.1, 6)
   limits.LAGSHARE <- c(0.1, 0.9)
-  limits.LINYEARS <- round(c(1, 20))
+  limits.LINYEARS <- round(c(2, 20))
 
   rn <- randtoolbox::sobol(N, NPARAM)
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
@@ -83,7 +83,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
           run_model(si)
 
           if(!is.null(logparallel)) {
-              warnings(file=logfil)
+              writeLines(capture.output(warnings()), con=logfil)
               close(logfil)
           }
       }
@@ -95,6 +95,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   ## Save the full set of ensemble results
   outfile <- file.path(aOutputDir, 'output_ensemble.rds')
   saveRDS(rslt, outfile)
+
+  warnings()
 
   invisible(scenObjects)
 }

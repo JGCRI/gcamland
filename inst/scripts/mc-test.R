@@ -7,7 +7,8 @@ library('doParallel')
 ## nproc:    Total number of cores available ($SLURM_NTASKS)
 ## N:        Number of iterations to run
 ## outdir:   Output directory
-run_mc <- function(nodefile, nproc, N, outdir)
+## logdir:   Directory for logs
+run_mc <- function(nodefile, nproc, N, outdir, logdir)
 {
     print(getwd())
     nodes <- readr::read_lines(nodefile)
@@ -16,9 +17,8 @@ run_mc <- function(nodefile, nproc, N, outdir)
 
     cl <- makeCluster(nodes, outfile="")
     registerDoParallel(cl)
-#    registerDoSEQ()
 
-    print(system.time(run_ensemble(N, outdir)))
+    print(system.time(run_ensemble(N, outdir, logparallel=logdir)))
     stopCluster(cl)
 }
 
