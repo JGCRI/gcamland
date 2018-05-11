@@ -8,7 +8,7 @@ library('doParallel')
 ## N:        Number of iterations to run
 ## outdir:   Output directory
 ## logdir:   Directory for logs
-run_mc <- function(nodefile, nproc, N, outdir, logdir)
+run_mc <- function(nodefile, nproc, N, outdir, logdir=NULL)
 {
     print(getwd())
     nodes <- readr::read_lines(nodefile)

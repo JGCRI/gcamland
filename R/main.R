@@ -80,7 +80,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
 
           message("Starting simulation: ", obj$mScenarioName)
           si <- as.ScenarioInfo(obj)
-          run_model(si)
+          if(N > 50) {
+              suppressMessages(run_model(si))
+          }
+          else {
+              run_model(si)
+          }
 
           if(!is.null(logparallel)) {
               writeLines(capture.output(warnings()), con=logfil)
