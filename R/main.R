@@ -20,11 +20,15 @@
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
 #' @param atype Scenario type: either "Reference" or "Hindcast"
+#' @param logparallel Name of directory to use for parallel workers' log files.
+#' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members
 #' @import foreach doParallel
 #' @author KVC November 2017
+#' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
+                         logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
@@ -59,8 +63,28 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast") {
   # Loop over all scenario configurations and run the model
   rslt <-
       foreach(obj = scenObjects, .combine=rbind) %dopar% {
-          message("Starting simulation: ", obj$mFileName)
-          run_model(obj)
+          if(!is.null(logparallel)) {
+              nn <- Sys.info()['nodename']
+              sn <- obj$mScenarioName
+              fn <- file.path(logparallel, paste0('info-', sn, '.txt'))
+              print(fn)
+              logfil <- file(fn, 'w')
+              if(!file.exists(fn)) {
+                  stop("Couldn't create logfile: ", fn)
+              }
+              writeLines(c('nodename= ', nn), con=logfil)
+              writeLines(capture.output(sessionInfo()),con=logfil)
+              flush(logfil)
+          }
+
+          message("Starting simulation: ", obj$mScenarioName)
+          si <- as.ScenarioInfo(obj)
+          run_model(si)
+
+          if(!is.null(logparallel)) {
+              warnings(file=logfil)
+              close(logfil)
+          }
       }
 
   ## Save the scenario info from the scenarios that we ran

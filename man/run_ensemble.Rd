@@ -4,7 +4,8 @@
 \alias{run_ensemble}
 \title{Run an ensemble of offline land models}
 \usage{
-run_ensemble(N = 500, aOutputDir = "./outputs", atype = "Hindcast")
+run_ensemble(N = 500, aOutputDir = "./outputs", atype = "Hindcast",
+  logparallel = NULL)
 }
 \arguments{
 \item{N}{Number of parameter sets to select}
@@ -12,6 +13,9 @@ run_ensemble(N = 500, aOutputDir = "./outputs", atype = "Hindcast")
 \item{aOutputDir}{Output directory}
 
 \item{atype}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{logparallel}{Name of directory to use for parallel workers' log files.
+If \code{NULL}, then don't write log files.}
 }
 \value{
 List of ScenarioInfo objects for the ensemble members
