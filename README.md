@@ -36,6 +36,13 @@ The `run_ensemble` function is parallel enabled using the `doParallel` package. 
 return value is a list of the `ScenarioInfo` structures created.  These structures
 have the parameter values, as well as the file names for the output.
 
+For really large ensembles you will probably want to run them in
+parallel on a cluster.  There is an example batch script (for the
+SLURM cluster resource manager) in `inst/scripts/jobrun.zsh`.  You
+will want to customize the output directory and number of iterations
+to your needs, then submit it with `sbatch`. 
+
+
 ## Calculating Bayesian Posteriors
 
 The `run_bayes` function will compute a Bayesian log-posterior probability density

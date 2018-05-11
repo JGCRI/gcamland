@@ -58,12 +58,13 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE, levels.LINYEARS,
                      atype, aOutputDir) %>%
-    unlist(recursive=FALSE) %>%
-    lapply(as.list)                     # Convert to a list to survive serialization
+    unlist(recursive=FALSE)
+
+  serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
 
   # Loop over all scenario configurations and run the model
   rslt <-
-      foreach(obj = scenObjects, .combine=rbind) %dopar% {
+      foreach(obj = serialized_scenObjs, .combine=rbind) %dopar% {
           if(!is.null(logparallel)) {
               nn <- Sys.info()['nodename']
               sn <- obj$mScenarioName
@@ -81,16 +82,17 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
           message("Starting simulation: ", obj$mScenarioName)
           si <- as.ScenarioInfo(obj)
           if(N > 50) {
-              suppressMessages(run_model(si))
+              rslt <- suppressMessages(run_model(si))
           }
           else {
-              run_model(si)
+              rslt <- run_model(si)
           }
 
           if(!is.null(logparallel)) {
               writeLines(capture.output(warnings()), con=logfil)
               close(logfil)
           }
+          rslt
       }
 
   ## Save the scenario info from the scenarios that we ran
