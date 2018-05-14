@@ -17,6 +17,10 @@ N=96
 outdir="/pic/scratch/$USER/gcamland/output"
 logdir="/pic/scratch/$USER/gcamland"
 
+mkdir -p $outdir
+mkdir -p $logdir
+
+echo "Run command:"
 echo "source('$program'); run_mc('$nodefile', $SLURM_NTASKS, $N, '$outdir', '$logdir')"
 
 Rscript -e "source('$program'); run_mc('$nodefile', $SLURM_NTASKS, $N, '$outdir')"
