@@ -108,5 +108,12 @@ test_that("waic function produces correct answer.", {
     expect_true(inherits(w, 'data.frame'))
     expect_equal(nrow(w), 2)
     expect_equal(w$waic[1], 152.7175, tolerance=1e-3)
+    expect_equal(w$se[1], 8.080363, tolerance=1e-3) # rethinking::waic reported
+                                        # se.waic ~ 8.1 for this model.
+    ## These next two tests need work.  Since we are using two copies of the
+    ## same model, dwaic and se.dwaic are both zero.  Still, we can at least
+    ## verify that the calculations run.
+    expect_equal(w$dwaic, c(0.0, 0.0))
+    expect_equal(w$se.dwaic, c(0.0, 0.0))
 })
 

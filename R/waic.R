@@ -83,28 +83,64 @@ waic <- function(aScenarioList, weighted=TRUE)
     logprob_by_type <- lapply(X=scenarios_by_type, FUN=pointwise_loglike, weighted=weighted)
 
     model <- names(scenarios_by_type)
-    lppd <- sapply(logprob_by_type, lppdavg)
-    pwaic <- sapply(logprob_by_type, pwaic)
-    waic <- -2.0 * (lppd - pwaic)
+    lppd_lst <- lapply(logprob_by_type, lppd)    # Each item in the list is a model
+    pwaic_lst <- lapply(logprob_by_type, pwaic)  # same
+    waic <- mapply(function(lppd, pwaic) {-2.0 * (sum(lppd) - sum(pwaic))},
+                   lppd_lst, pwaic_lst)          # produces one value for each model,
+                                                 # organized into a vector
+    ## Get the total lppd and pwaic for each model so we can include them in the
+    ## output
+    lppd_mod <- sapply(lppd_lst, sum)
+    pwaic_mod <- sapply(pwaic_lst, sum)
+
+
+    ## standard error of the WAIC is sqrt(n_obs * var(waic_obs)), where waic_obs
+    ## is -2*(lppd-pwaic) for each observation.  McElreath uses the population
+    ## variance (n instead of n-1 in the denominator), but I don't see a good
+    ## reason for that.  It doesn't really matter that much anyhow.  If your
+    ## sample size is so small that n and n-1 are dramatically different, you're
+    ## probably doing something wrong.
+    se <- mapply(
+        function(lppd, pwaic) {
+            nobs <- length(lppd)
+            waic <- -2.0 * (lppd - pwaic)
+            sqrt(nobs * stats::var(waic))
+        },
+        lppd_lst, pwaic_lst)
+
+
+    ## Find the model with the smallest ("best") WAIC.  Compute the WAIC
+    ## difference between each model and that "best" model.
     dwaic <- waic - min(waic)
 
-    ## if(length(dwaic > 1)) {
-    ##     model.minwaic <- logprob_by_type[[which.min(waic)]]
-    ##     se.dwaic <- sapply(X=logprob_by_type, FUN=se.dwaic,
-    ##                        cmpmodel=model.minwaic)
-    ## }
-    ## else {
-    ##     se.dwaic <- 0
-    ## }
+    ## Compute an estimate of the standard error on these differences.  The
+    ## technique is similar to how we do the se for the WAIC, except we use
+    ## pointwise WAIC differences instead of pointwise WAIC
+    imin <- which.min(waic)
+    waic0 <- -2.0*(lppd_lst[[imin]] - pwaic_lst[[imin]])  # pointwise WAIC
+                                        # for lowest-WAIC model
+    se.dwaic <- mapply(
+        function(lppd, pwaic) {
+            wm <- -2.0*(lppd - pwaic) # pointwise waic estimate for model
+            dw <- wm - waic0
+            nobs <- length(wm)
+            ## needless to say, this will fail if the number of observations
+            ## is different between the two models.  More subtly, it will be
+            ## meaningless if the observations are not the same between the
+            ## two models.
+            sqrt(nobs * stats::var(dw))
+        },
+        lppd_lst, pwaic_lst)
 
-    se <- NA
-    se.dwaic <- NA
 
     ## Return as a data frame with an additional class attribute so we can
-    ## potentially define some methods
+    ## potentially define some methods (e.g. plots) that work on that class
+    perm <- order(waic)
     structure(
-        data.frame(model=model, waic=waic, lppd=lppd, pwaic=pwaic, dwaic=dwaic,
-                   se.dwaic=se.dwaic),
+        data.frame(model=model[perm],
+                   waic=waic[perm], se=se[perm],
+                   lppd=lppd_mod[perm], pwaic=pwaic_mod[perm],
+                   dwaic=dwaic[perm], se.dwaic=se.dwaic[perm]),
         class=c('modelcompare','data.frame'))
 }
 
@@ -193,11 +229,13 @@ log_sum <- function(lx)
 }
 
 
-#' Compute the log average pointwise predictive density for a single model.
+#' Compute the log pointwise predictive density for a single model.
 #'
 #' @param pointwise_ll List returned from \code{\link{pointwise_loglike}}.
+#' @return A vector of lppd values averaged over Monte Carlo samples.  Each
+#' observation will have one corresponding pont in the vector.
 #' @keywords internal
-lppdavg <- function(pointwise_ll)
+lppd <- function(pointwise_ll)
 {
     llmat <- pointwise_ll$loglike
     logwgt <- pointwise_ll$weight
@@ -215,20 +253,20 @@ lppdavg <- function(pointwise_ll)
 
     ## For each point average over all samples.  Samples are in rows, so we
     ## apply the sum over that margin.
-    avgll <- apply(llmat, 1, log_sum) - logfac
-
-    ## The lppd for the model is the sum of the above
-    sum(avgll)
+    apply(llmat, 1, log_sum) - logfac
 }
 
 
 #' Compute the effective number of parameters \code{pwaic} for a model.
 #'
-#' For each observation, compute the variance of the log likelihood.  Then,
-#' \code{pwaic} is the sum of these.  Note that we are computing the variance of
-#' the \emph{log} likelihood
+#' For each observation, compute the variance of the log likelihood.  Note that
+#' we are computing the variance of the \emph{log} likelihood.  The total
+#' \code{pwaic} for the model is the sum of these, but we return the individual
+#' values for use in computing standard errors.
 #'
 #' @param pointwise_ll List returned from \code{\link{pointwise_loglike}}.
+#' @return A vector of pwaic values averaged over Monte Carlo samples.  Each
+#' observation will have one corresponding point in the vector.
 #' @keywords internal
 pwaic <- function(pointwise_ll)
 {
@@ -257,7 +295,6 @@ pwaic <- function(pointwise_ll)
         llvar <- apply(wgtsqdiff, 1, sum) * fac
     }
 
-    ## pwaic is the sum of the pointwise variance
-    sum(llvar)
+    llvar
 }
 
