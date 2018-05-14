@@ -94,7 +94,7 @@ waic <- function(aScenarioList, weighted=TRUE)
     lppd_mod <- sapply(lppd_lst, sum)
     pwaic_mod <- sapply(pwaic_lst, sum)
     ## Calculate the Akaike weight.
-    awgt <- softmax(0.5*waic)
+    awgt <- softmax(-0.5*waic)
 
 
     ## standard error of the WAIC is sqrt(n_obs * var(waic_obs)), where waic_obs
