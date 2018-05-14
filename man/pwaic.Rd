@@ -9,9 +9,14 @@ pwaic(pointwise_ll)
 \arguments{
 \item{pointwise_ll}{List returned from \code{\link{pointwise_loglike}}.}
 }
+\value{
+A vector of pwaic values averaged over Monte Carlo samples.  Each
+observation will have one corresponding point in the vector.
+}
 \description{
-For each observation, compute the variance of the log likelihood.  Then,
-\code{pwaic} is the sum of these.  Note that we are computing the variance of
-the \emph{log} likelihood
+For each observation, compute the variance of the log likelihood.  Note that
+we are computing the variance of the \emph{log} likelihood.  The total
+\code{pwaic} for the model is the sum of these, but we return the individual
+values for use in computing standard errors.
 }
 \keyword{internal}
