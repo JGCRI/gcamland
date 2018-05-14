@@ -43,9 +43,10 @@
 #'   \item{dwaic}{Difference between a model's WAIC and the WAIC of the model
 #' with the lowest WAIC in the input set.}
 #'   \item{se.dwaic}{Standard error for \code{dwaic}.}
+#'   \item{awgt}{Akaike weight for each model.}
 #' }
 #' The first four of these are characteristics of the individual model they are
-#' calculated for.  The last two, \code{dwaic} and \code{se.dwaic} are joint
+#' calculated for.  The last three, \code{dwaic}, \code{se.dwaic}, and \code{awgt} are joint
 #' properties of the collection of models in the input.
 #'
 #' @param aScenarioList List of \code{ScenarioInfo} structures.
@@ -92,6 +93,8 @@ waic <- function(aScenarioList, weighted=TRUE)
     ## output
     lppd_mod <- sapply(lppd_lst, sum)
     pwaic_mod <- sapply(pwaic_lst, sum)
+    ## Calculate the Akaike weight.
+    awgt <- softmax(0.5*waic)
 
 
     ## standard error of the WAIC is sqrt(n_obs * var(waic_obs)), where waic_obs
@@ -137,10 +140,11 @@ waic <- function(aScenarioList, weighted=TRUE)
     ## potentially define some methods (e.g. plots) that work on that class
     perm <- order(waic)
     structure(
-        data.frame(model=model[perm],
-                   waic=waic[perm], se=se[perm],
-                   lppd=lppd_mod[perm], pwaic=pwaic_mod[perm],
-                   dwaic=dwaic[perm], se.dwaic=se.dwaic[perm]),
+        data.frame(model=model,
+                   waic=waic, se=se,
+                   lppd=lppd_mod, pwaic=pwaic_mod,
+                   dwaic=dwaic, se.dwaic=se.dwaic,
+                   awgt=awgt)[perm,],
         class=c('modelcompare','data.frame'))
 }
 
@@ -228,6 +232,25 @@ log_sum <- function(lx)
     log(sumx(exp(lx-lx0))) + lx0
 }
 
+
+#' Compute the softmax function of a vector
+#'
+#' The softmax of a vector of variables \eqn{x_i} is
+#' \deqn{s_i = \frac{\exp(x_i)}{\sum_{j=1}^{N} \exp(x_j)}}
+#'
+#' @param x Vector of values for which to compute softmax
+#' @return Vector of softmax values
+#' @export
+softmax <- function(x)
+{
+    ## Note that softmax is invariant to a constant shift in its arguments, so
+    ## shift everything such that the largest x value is 0.
+    x0 <- max(x)
+    xx <- x-x0
+    expx <- exp(xx)
+    denom <- sumx(expx)
+    expx / denom
+}
 
 #' Compute the log pointwise predictive density for a single model.
 #'

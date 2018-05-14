@@ -115,5 +115,6 @@ test_that("waic function produces correct answer.", {
     ## verify that the calculations run.
     expect_equal(w$dwaic, c(0.0, 0.0))
     expect_equal(w$se.dwaic, c(0.0, 0.0))
+    expect_equal(w$awgt, c(0.5, 0.5))
 })
 

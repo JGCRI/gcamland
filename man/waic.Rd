@@ -62,8 +62,9 @@ an integer).}
   \item{dwaic}{Difference between a model's WAIC and the WAIC of the model
 with the lowest WAIC in the input set.}
   \item{se.dwaic}{Standard error for \code{dwaic}.}
+  \item{awgt}{Akaike weight for each model.}
 }
 The first four of these are characteristics of the individual model they are
-calculated for.  The last two, \code{dwaic} and \code{se.dwaic} are joint
+calculated for.  The last three, \code{dwaic}, \code{se.dwaic}, and \code{awgt} are joint
 properties of the collection of models in the input.
 }
