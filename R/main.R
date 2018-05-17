@@ -101,6 +101,9 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
           rslt
       }
 
+  message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
+          format(object.size(rslt), units="auto"))
+
   ## Save the scenario info from the scenarios that we ran
   scenfile <- file.path(aOutputDir, 'scenario-info.rds')
   saveRDS(scenObjects, scenfile)
@@ -108,6 +111,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   ## Save the full set of ensemble results
   outfile <- file.path(aOutputDir, 'output_ensemble.rds')
   saveRDS(rslt, outfile)
+
+  message("Output directory is", aOutputDir)
 
   warnings()
 

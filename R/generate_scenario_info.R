@@ -26,6 +26,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
 #' @param aOutputDir Output directory
+#' @param aSerialNum Serial number for a run that is part of a series.
 #' @param aRegion Region to use in the calculation.  Right now we only run a
 #' single region at a time.
 #' @return New ScenarioInfo object
