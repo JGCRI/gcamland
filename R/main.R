@@ -19,6 +19,7 @@
 #'
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
+#' @param skip Number of iterations to skip (i.e., if building on another run.)
 #' @param atype Scenario type: either "Reference" or "Hindcast"
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
@@ -27,7 +28,7 @@
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hindcast",
                          logparallel=NULL) {
   # Silence package checks
   obj <- NULL
@@ -43,7 +44,9 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   limits.LAGSHARE <- c(0.1, 0.9)
   limits.LINYEARS <- round(c(2, 20))
 
-  rn <- randtoolbox::sobol(N, NPARAM)
+  serialnumber <- skip + (1:N)
+  rn <- randtoolbox::sobol(N+skip, NPARAM)
+  rn <- rn[serialnumber,]
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
   levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
   levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
@@ -52,7 +55,6 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
                                         # lagshare and linyears are mutually
                                         # exclusive
-  serialnumber <- 1:N
 
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
@@ -105,11 +107,14 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
           format(object.size(rslt), units="auto"))
 
   ## Save the scenario info from the scenarios that we ran
-  scenfile <- file.path(aOutputDir, 'scenario-info.rds')
+  suffix <- if(skip > 0) paste0("-",skip) else ""
+  filebase <- paste0("scenario-info", suffix, ".rds")
+  scenfile <- file.path(aOutputDir, filebase)
   saveRDS(scenObjects, scenfile)
 
   ## Save the full set of ensemble results
-  outfile <- file.path(aOutputDir, 'output_ensemble.rds')
+  filebase <- paste0("output_ensemble", suffix, ".rds")
+  outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
   message("Output directory is", aOutputDir)

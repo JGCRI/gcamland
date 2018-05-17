@@ -7,8 +7,9 @@ library('doParallel')
 ## nproc:    Total number of cores available ($SLURM_NTASKS)
 ## N:        Number of iterations to run
 ## outdir:   Output directory
+## skip:     Number of iterations to skip (i.e., if resuming from a previous run)
 ## logdir:   Directory for logs
-run_mc <- function(nodefile, nproc, N, outdir, logdir=NULL)
+run_mc <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL)
 {
     print(getwd())
     nodes <- readr::read_lines(nodefile)

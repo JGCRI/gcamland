@@ -35,6 +35,8 @@ FALSE)}
 
 \item{aOutputDir}{Output directory}
 
+\item{aSerialNum}{Serial number for a run that is part of a series.}
+
 \item{aRegion}{Region to use in the calculation.  Right now we only run a
 single region at a time.}
 }

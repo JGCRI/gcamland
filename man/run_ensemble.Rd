@@ -4,13 +4,15 @@
 \alias{run_ensemble}
 \title{Run an ensemble of offline land models}
 \usage{
-run_ensemble(N = 500, aOutputDir = "./outputs", atype = "Hindcast",
-  logparallel = NULL)
+run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
+  atype = "Hindcast", logparallel = NULL)
 }
 \arguments{
 \item{N}{Number of parameter sets to select}
 
 \item{aOutputDir}{Output directory}
+
+\item{skip}{Number of iterations to skip (i.e., if building on another run.)}
 
 \item{atype}{Scenario type: either "Reference" or "Hindcast"}
 
