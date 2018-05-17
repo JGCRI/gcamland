@@ -4,8 +4,8 @@
 \alias{gen_ensemble_member}
 \title{Generate the ensemble members for a single set of parameters}
 \usage{
-gen_ensemble_member(agFor, agForNonPast, crop, share, linyears, scentype,
-  aOutputDir)
+gen_ensemble_member(agFor, agForNonPast, crop, share, linyears, serialnum,
+  scentype, aOutputDir)
 }
 \arguments{
 \item{agFor}{The logit exponent the ag/forest nest, which controls
@@ -19,6 +19,8 @@ controls competition between crops, grass/shrub, and forest.}
 \item{share}{The share parameter for the lagged model}
 
 \item{linyears}{The number of years parameter for the linear model}
+
+\item{serialnum}{Serial number for the run}
 
 \item{scentype}{Scenario type, either "Hindcast" or "Reference"}
 

@@ -1,7 +1,7 @@
 Package: gcamland
 Type: Package
 Title: GCAM Land Allocation Module
-Version: 0.13.1
+Version: 0.13.1.5000
 Author: Katherine Calvin
 Maintainer: Katherine Calvin <katherine.calvin@pnnl.gov>
 Description: Allocates land among a variety of uses following the methodology in GCAM (github.com/jgcri/gcam-core).
@@ -16,7 +16,7 @@ Imports:
     ggplot2 (>= 2.2.1),
     igraph (>= 1.0.1),
     randtoolbox (>= 1.17),
-    doParallel (>= 1.0),
+    doParallel (>= 1.0.7),
     foreach (>= 1.4)
 Encoding: UTF-8
 LazyData: true

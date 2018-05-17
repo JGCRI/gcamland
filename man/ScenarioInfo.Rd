@@ -8,7 +8,8 @@ ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
   aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aRegion = DEFAULT.REGION)
+  aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
+  aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}

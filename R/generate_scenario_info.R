@@ -43,6 +43,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs",
+                         aSerialNum = NA,
                          aRegion = DEFAULT.REGION) {
 
   self <- new.env(parent=emptyenv())
@@ -60,6 +61,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
   self$mRegion <- aRegion
+  self$mSerialNumber <- aSerialNum          # Used in run_ensemble
   self$mPointwiseLikelihood <- data.frame() # actually log-likelihood, tabulated
                                         # by data point.
   self$mLogPost <- data.frame()

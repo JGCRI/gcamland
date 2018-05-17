@@ -52,11 +52,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
                                         # lagshare and linyears are mutually
                                         # exclusive
+  serialnumber <- 1:N
 
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS,
+                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
                      atype, aOutputDir) %>%
     unlist(recursive=FALSE)
 
@@ -79,7 +80,10 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
               flush(logfil)
           }
 
-          message("Starting simulation: ", obj$mScenarioName)
+          if(N <= 50)  {
+              message("Starting simulation: ", obj$mScenarioName)
+          }
+
           si <- as.ScenarioInfo(obj)
           if(N > 50) {
               rslt <- suppressMessages(run_model(si))
@@ -87,6 +91,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
           else {
               rslt <- run_model(si)
           }
+
+          message("Finished: ", obj$mSerialNumber)
 
           if(!is.null(logparallel)) {
               writeLines(capture.output(warnings()), con=logfil)
@@ -121,12 +127,13 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
 #' @param crop The logit exponent for the crop nest
 #' @param share The share parameter for the lagged model
 #' @param linyears The number of years parameter for the linear model
+#' @param serialnum Serial number for the run
 #' @param scentype Scenario type, either "Hindcast" or "Reference"
 #' @param outdir Name of the output directory
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                scentype, aOutputDir)
+                                serialnum, scentype, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -141,6 +148,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitCropland = crop,
                            aScenarioName = scenName,
                            aFileName = "ensemble",
+                           aSerialNum = serialnum,
                            aOutputDir = aOutputDir)
 
 
