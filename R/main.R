@@ -158,7 +158,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitCropland = crop,
                            aScenarioName = scenName,
                            aFileName = "ensemble",
-                           aSerialNum = serialnum,
+                           aSerialNum = serialnum+0.1,
                            aOutputDir = aOutputDir)
 
 
@@ -175,6 +175,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = "ensemble",
+                          aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
 
@@ -190,6 +191,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = "ensemble",
+                          aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
   list(perfscen, lagscen, linscen)
