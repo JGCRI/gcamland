@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 #SBATCH -n 48
-#SBATCH -t 30
+#SBATCH -t 300
 #SBATCH -A GCAM
 
 date
@@ -11,10 +11,11 @@ nodefile=$tmpdir/nodes.txt
 
 scontrol show hostnames > $nodefile
 
-program=`Rscript -e 'cat(system.file("scripts", "mc-test.R", package="gcamland"))'`
+program=`Rscript -e 'cat(system.file("scripts", "mc-batch.R", package="gcamland"))'`
 
-N=96
-skip=0
+N=1000
+tid=$SLURM_ARRAY_TASK_ID
+let "skip = tid*N"
 outdir="/pic/scratch/$USER/gcamland/output"
 logdir="/pic/scratch/$USER/gcamland"
 
