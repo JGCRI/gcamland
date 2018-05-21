@@ -107,7 +107,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
           format(object.size(rslt), units="auto"))
 
   ## Save the scenario info from the scenarios that we ran
-  suffix <- if(skip > 0) paste0("-",skip) else ""
+  suffix <- paste0("-",skip)
   filebase <- paste0("scenario-info", suffix, ".rds")
   scenfile <- file.path(aOutputDir, filebase)
   saveRDS(scenObjects, scenfile)
@@ -118,6 +118,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
   saveRDS(rslt, outfile)
 
   message("Output directory is", aOutputDir)
+  message("scenario file: ", scenfile)
+  message("output file: ", outfile)
 
   warnings()
 

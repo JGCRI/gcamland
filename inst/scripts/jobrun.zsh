@@ -13,7 +13,7 @@ scontrol show hostnames > $nodefile
 
 program=`Rscript -e 'cat(system.file("scripts", "mc-batch.R", package="gcamland"))'`
 
-N=1000
+N=960
 tid=$SLURM_ARRAY_TASK_ID
 let "skip = tid*N"
 outdir="/pic/scratch/$USER/gcamland/output"
