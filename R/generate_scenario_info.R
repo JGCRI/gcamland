@@ -26,6 +26,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
 #' @param aOutputDir Output directory
+#' @param aSerialNum Serial number for a run that is part of a series.
 #' @param aRegion Region to use in the calculation.  Right now we only run a
 #' single region at a time.
 #' @return New ScenarioInfo object
@@ -43,6 +44,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aScenarioName = NULL,
                          aFileName = NULL,
                          aOutputDir = "./outputs",
+                         aSerialNum = NA,
                          aRegion = DEFAULT.REGION) {
 
   self <- new.env(parent=emptyenv())
@@ -60,6 +62,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
   self$mRegion <- aRegion
+  self$mSerialNumber <- aSerialNum          # Used in run_ensemble
   self$mPointwiseLikelihood <- data.frame() # actually log-likelihood, tabulated
                                         # by data point.
   self$mLogPost <- data.frame()

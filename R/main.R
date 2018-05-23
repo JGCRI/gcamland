@@ -19,6 +19,7 @@
 #'
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
+#' @param skip Number of iterations to skip (i.e., if building on another run.)
 #' @param atype Scenario type: either "Reference" or "Hindcast"
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
@@ -27,7 +28,7 @@
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hindcast",
                          logparallel=NULL) {
   # Silence package checks
   obj <- NULL
@@ -43,7 +44,9 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   limits.LAGSHARE <- c(0.1, 0.9)
   limits.LINYEARS <- round(c(2, 20))
 
-  rn <- randtoolbox::sobol(N, NPARAM)
+  serialnumber <- skip + (1:N)
+  rn <- randtoolbox::sobol(N+skip, NPARAM)
+  rn <- rn[serialnumber,]
   scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
   levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
   levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
@@ -56,7 +59,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS,
+                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
                      atype, aOutputDir) %>%
     unlist(recursive=FALSE)
 
@@ -79,7 +82,10 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
               flush(logfil)
           }
 
-          message("Starting simulation: ", obj$mScenarioName)
+          if(N <= 50)  {
+              message("Starting simulation: ", obj$mScenarioName)
+          }
+
           si <- as.ScenarioInfo(obj)
           if(N > 50) {
               rslt <- suppressMessages(run_model(si))
@@ -88,6 +94,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
               rslt <- run_model(si)
           }
 
+          message("Finished: ", obj$mSerialNumber)
+
           if(!is.null(logparallel)) {
               writeLines(capture.output(warnings()), con=logfil)
               close(logfil)
@@ -95,13 +103,23 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
           rslt
       }
 
+  message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
+          format(object.size(rslt), units="auto"))
+
   ## Save the scenario info from the scenarios that we ran
-  scenfile <- file.path(aOutputDir, 'scenario-info.rds')
+  suffix <- sprintf("-%06d",skip)
+  filebase <- paste0("scenario-info", suffix, ".rds")
+  scenfile <- file.path(aOutputDir, filebase)
   saveRDS(scenObjects, scenfile)
 
   ## Save the full set of ensemble results
-  outfile <- file.path(aOutputDir, 'output_ensemble.rds')
+  filebase <- paste0("output_ensemble", suffix, ".rds")
+  outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
+
+  message("Output directory is", aOutputDir)
+  message("scenario file: ", scenfile)
+  message("output file: ", outfile)
 
   warnings()
 
@@ -121,12 +139,13 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", atype="Hindcast",
 #' @param crop The logit exponent for the crop nest
 #' @param share The share parameter for the lagged model
 #' @param linyears The number of years parameter for the linear model
+#' @param serialnum Serial number for the run
 #' @param scentype Scenario type, either "Hindcast" or "Reference"
 #' @param outdir Name of the output directory
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                scentype, aOutputDir)
+                                serialnum, scentype, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -141,6 +160,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitCropland = crop,
                            aScenarioName = scenName,
                            aFileName = "ensemble",
+                           aSerialNum = serialnum+0.1,
                            aOutputDir = aOutputDir)
 
 
@@ -157,6 +177,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = "ensemble",
+                          aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
 
@@ -172,6 +193,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = "ensemble",
+                          aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
   list(perfscen, lagscen, linscen)

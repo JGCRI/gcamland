@@ -8,7 +8,8 @@ ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
   aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aRegion = DEFAULT.REGION)
+  aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
+  aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}
@@ -33,6 +34,8 @@ FALSE)}
 \item{aFileName}{File name}
 
 \item{aOutputDir}{Output directory}
+
+\item{aSerialNum}{Serial number for a run that is part of a series.}
 
 \item{aRegion}{Region to use in the calculation.  Right now we only run a
 single region at a time.}
