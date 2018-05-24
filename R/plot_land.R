@@ -33,10 +33,11 @@ plotLandAllocation <- function(aScenarioInfo) {
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+  fileName <- paste0("output_", aScenarioInfo$mFileName, ".rds")
+  filePath <- file.path(aScenarioInfo$mOutputDir, fileName)
 
   # Read land allocation
-  allLand <- suppressMessages(readRDS(normalizePath(file)))
+  allLand <- suppressMessages(readRDS(normalizePath(filePath)))
 
   # TODO: add error message if output doesn't exist
 
@@ -59,10 +60,11 @@ plotRegionalLandAllocation <- function(aScenarioInfo) {
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+  fileName <- paste0("output_", aScenarioInfo$mFileName, ".rds")
+  filePath <- file.path(aScenarioInfo$mOutputDir, fileName)
 
   # Read land allocation
-  allLand <- suppressMessages(readRDS(normalizePath(file)))
+  allLand <- suppressMessages(readRDS(normalizePath(filePath)))
 
   # TODO: add error message if output doesn't exist
 
