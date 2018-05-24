@@ -249,18 +249,43 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   ## Write the output to a file only if verbose mode is set
   rslt <- printOutput(mLandAllocator, aScenarioInfo, aFileOutput=aVerbose)
   if(aVerbose) {
-      printDebug(mLandAllocator, aScenarioInfo)
+    message("Printing diagnostic information.")
+    printDebug(mLandAllocator, aScenarioInfo)
+    plotNest(mLandAllocator, aScenarioInfo)
   }
 
-  # Make figures
-  if(MAKE.PLOTS) {
-    message("Plotting diagnostic figures.")
-    plotNest(mLandAllocator, aScenarioInfo)
-    plotLandAllocation(mLandAllocator, aScenarioInfo)
-    plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
-  }
   return(invisible(rslt))
 }
+
+
+#' Export scenario results as a csv file
+#'
+#' Filter the scenario information object for a particular scenario and export its results
+#'
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
+#' @return Table of model results.
+#' @importFrom readr write_csv
+#' @author KVC
+#' @export
+export_results <- function(aScenarioInfo) {
+  # Get file name where results are curently stored
+  inFile <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+
+  # Read land allocation
+  allLand <- suppressMessages(readRDS(normalizePath(inFile)))
+
+  # Filter for requested scenario
+  allLand %>%
+    filter(scenario == aScenarioInfo$mScenarioName) ->
+    scenResults
+
+  # Get file name to store outputs
+  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mScenarioName, ".csv")
+  write_csv(scenResults, file)
+
+  return(invisible(scenResults))
+}
+
 
 
 

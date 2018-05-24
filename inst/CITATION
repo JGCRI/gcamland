@@ -1,0 +1,16 @@
+citHeader("To cite gcamland in publications use:")
+
+citEntry(entry = "Article",
+   title = "Economic and Physical Modeling of Land Use in GCAM 3.0 and an Application to Agricultural Productivity, Land, and Terrestrial Carbon",
+   author = personList(as.person("Marshall Wise"),
+               as.person("Katherine Calvin"),
+               as.person("Page Kyle"),
+               as.person("Patrick Luckow"),
+               as.person("Jae Edmonds")),
+   journal = "Climate Change Economics",
+   year = "2014",
+   volume = 5,
+   number = 2, 
+
+   textVersion = paste("Wise, M., K. Calvin, P. Kyle, P. Luckow and J. Edmonds (2014).", "Economic and Physical Modeling of Land Use in GCAM 3.0 and an Application to Agricultural Productivity, Land, and Terrestrial Carbon.", "Climate Change Economics 5(2).")
+) 
