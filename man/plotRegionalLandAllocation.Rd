@@ -4,11 +4,9 @@
 \alias{plotRegionalLandAllocation}
 \title{plotRegionalLandAllocation}
 \usage{
-plotRegionalLandAllocation(aLandAllocator, aScenarioInfo)
+plotRegionalLandAllocation(aScenarioInfo)
 }
 \arguments{
-\item{aLandAllocator}{Land Allocator}
-
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{

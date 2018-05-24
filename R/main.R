@@ -227,16 +227,11 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   ## Write the output to a file only if verbose mode is set
   rslt <- printOutput(mLandAllocator, aScenarioInfo, aFileOutput=aVerbose)
   if(aVerbose) {
-      printDebug(mLandAllocator, aScenarioInfo)
+    message("Printing diagnostic information.")
+    printDebug(mLandAllocator, aScenarioInfo)
+    plotNest(mLandAllocator, aScenarioInfo)
   }
 
-  # Make figures
-  if(MAKE.PLOTS) {
-    message("Plotting diagnostic figures.")
-    plotNest(mLandAllocator, aScenarioInfo)
-    plotLandAllocation(mLandAllocator, aScenarioInfo)
-    plotRegionalLandAllocation(mLandAllocator, aScenarioInfo)
-  }
   return(invisible(rslt))
 }
 

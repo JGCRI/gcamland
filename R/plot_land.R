@@ -25,20 +25,18 @@ plotNest <- function(aLandAllocator, aScenarioInfo) {
 #' plotLandAllocation
 #'
 #' @details Plots land allocation over time
-#' @param aLandAllocator Land Allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC September 2017
-#' @importFrom readr read_csv
 #' @export
-plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
+plotLandAllocation <- function(aScenarioInfo) {
   # Silence package checks
   land.allocation <- year <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".csv")
+  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
 
   # Read land allocation
-  allLand <- suppressMessages(read_csv(normalizePath(file)))
+  allLand <- suppressMessages(readRDS(normalizePath(file)))
 
   # TODO: add error message if output doesn't exist
 
@@ -51,22 +49,20 @@ plotLandAllocation <- function(aLandAllocator, aScenarioInfo) {
 #' @details Plots regional land allocation over time.
 #'          Aggregates land by region (i.e., adds all AEZs together)
 #'          and then plots land.
-#' @param aLandAllocator Land Allocator
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
-#' @importFrom readr read_csv
 #' @importFrom tidyr separate
 #' @importFrom dplyr group_by summarize
 #' @author KVC October 2017
 #' @export
-plotRegionalLandAllocation <- function(aLandAllocator, aScenarioInfo) {
+plotRegionalLandAllocation <- function(aScenarioInfo) {
   # Silence package checks
   land.allocation <- year <- land.type <- name <- NULL
 
   # Get file name
-  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".csv")
+  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
 
   # Read land allocation
-  allLand <- suppressMessages(read_csv(normalizePath(file)))
+  allLand <- suppressMessages(readRDS(normalizePath(file)))
 
   # TODO: add error message if output doesn't exist
 

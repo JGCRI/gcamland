@@ -4,11 +4,9 @@
 \alias{plotLandAllocation}
 \title{plotLandAllocation}
 \usage{
-plotLandAllocation(aLandAllocator, aScenarioInfo)
+plotLandAllocation(aScenarioInfo)
 }
 \arguments{
-\item{aLandAllocator}{Land Allocator}
-
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \description{
