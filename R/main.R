@@ -236,4 +236,34 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
 }
 
 
+#' Export scenario results as a csv file
+#'
+#' Filter the scenario information object for a particular scenario and export its results
+#'
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
+#' @return Table of model results.
+#' @importFrom readr write_csv
+#' @author KVC
+#' @export
+export_results <- function(aScenarioInfo) {
+  # Get file name where results are curently stored
+  inFile <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+
+  # Read land allocation
+  allLand <- suppressMessages(readRDS(normalizePath(inFile)))
+
+  # Filter for requested scenario
+  allLand %>%
+    filter(scenario == aScenarioInfo$mScenarioName) ->
+    scenResults
+
+  # Get file name to store outputs
+  file <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mScenarioName, ".csv")
+  write_csv(scenResults, file)
+
+  return(invisible(scenResults))
+}
+
+
+
 
