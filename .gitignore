@@ -17,6 +17,9 @@
 # RStudio files
 .Rproj.user/
 
+# emacs backup files
+*~
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
