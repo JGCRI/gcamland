@@ -14,7 +14,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
 
   scentype <- aScenarioInfo$mScenarioType
 
-  # Read ag data -- we'll use this for all leafs
+  # Read ag data -- we'll use this for all leafs, including bioenergy
   agData <- ReadData_AgProd(aLandAllocator$mRegionName, scentype)
 
   # Read in top-level information and save total land
@@ -56,7 +56,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData)
 
-  # Read information on UnmanagedLandLeaf children of LN2 nodes
+  # Read information on UnmanagedLandLeaf children of LN3 nodes
   childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
@@ -304,6 +304,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
   calOutput <- aAgData[[1]]
   agProdChange <- aAgData[[2]]
   cost <- aAgData[[3]]
+  bioYield <- aAgData[[4]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
@@ -319,6 +320,13 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
   calOutput %>%
     filter(AgProductionTechnology == name) ->
     calOutput
+
+  # For bioenergy, we read in yield directly
+  if(aLandLeaf$mProductName == "biomass") {
+    bioYield %>%
+      filter(AgProductionTechnology == name) ->
+      bioYield
+  }
 
   if(ascentype == "Hindcast") {
     # We only have AgProdChange at region level for historical data
@@ -341,17 +349,32 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
 
     # Only read in mCalOutput data for calibration periods
     if(per <= TIME.PARAMS[[ascentype]]$FINAL_CALIBRATION_PERIOD) {
-      # Filter for this period combination
+      # Get calOutput for this period combination
       calOutput %>%
         filter(year == y) ->
         currCalOutput
 
-      # Set calOutput and agProdChange
+      # Set calOutput
       if(nrow(currCalOutput)) {
         aLandLeaf$mCalOutput[per] <- as.numeric(currCalOutput[[c("calOutputValue")]])
       } else {
         # TODO: Do we need to flag missing or is it okay to set to -1?
         aLandLeaf$mCalOutput[per] <- -1
+      }
+
+      # Get yield for bioenergy for this period combination
+      if(aLandLeaf$mProductName == "biomass") {
+        bioYield %>%
+          filter(year == y) ->
+          currBioYield
+
+        # Set bioYield
+        if(nrow(currBioYield)) {
+          aLandLeaf$mYield[per] <- as.numeric(currBioYield[[c("yield")]])
+        } else {
+          # TODO: Do we need to flag missing or is it okay to set to -1?
+          aLandLeaf$mYield[per] <- -1
+        }
       }
 
       # Set data that shouldn't exist in the past to 0

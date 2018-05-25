@@ -57,7 +57,10 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
       # Adjust last period's yield by tech change
       aLandLeaf$mYield[aPeriod] <- preYield * ((1 + aLandLeaf$mAgProdChange[[aPeriod]]) ^ timestep)
     }
-  } else {
+  } else if (length(aLandLeaf$mYield) > 0) {
+    # Do nothing. Yield was read in for the calibration period. This will happen for bioenergy
+  }
+  else {
     # Calibration values don't exist and it is the first model period, so we need to set a yield.
     # Note: this isn't in the C++ code, but I seem to need something here
     aLandLeaf$mYield[aPeriod] <- 0.0

@@ -323,6 +323,8 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
     cost
+  suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgYield_bio_ref.csv", package = "gcamland"), skip = 3)) ->
+    bioYield
 
   # Filter data for the specified region
   calOutput %>%
@@ -336,6 +338,10 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
   cost %>%
     filter(region == aRegionName) ->
     cost
+
+  bioYield %>%
+    filter(region == aRegionName) ->
+    bioYield
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
@@ -353,9 +359,13 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
     cost %>%
       filter(grepl(AEZ, AgSupplySubsector)) ->
       cost
+
+    bioYield %>%
+      filter(grepl(AEZ, AgSupplySubsector)) ->
+      bioYield
   }
 
-  return(list(calOutput, agProdChange, cost))
+  return(list(calOutput, agProdChange, cost, bioYield))
 }
 
 #' get_AgProdChange
