@@ -233,6 +233,36 @@ ReadData_LN3_Node <- function(aRegionName) {
   return(data)
 }
 
+#' ReadData_LN3_GhostShare
+#'
+#' @details Read in ghost share for LN3 nodes
+#' @param aRegionName Region to read data for
+#' @return Ghost shares for level 3 nodes
+#' @importFrom readr read_csv
+#' @importFrom dplyr rename
+#' @author KVC October 2017
+ReadData_LN3_GhostShare <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- year.fillout <- logit.year.fillout <- NULL
+
+  # Read in calibration data
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_DefaultShare.csv", package = "gcamland"), skip = 3))
+
+  # Filter data for the specified region
+  data %>%
+    filter(region == aRegionName) ->
+    data
+
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
+
+  return(data)
+}
+
 #' ReadData_LN3_LandLeaf
 #'
 #' @details Read in names of information on LandLeafs that are
@@ -273,7 +303,7 @@ ReadData_LN3_LandLeaf <- function(aRegionName) {
 #' @details Read in names of information on UnmanagedLandLeafs that are
 #'          children of LandNode3 nodes
 #' @param aRegionName Region to read data for
-#' @return Data on UnmanagedLandLeaf children of LandNode2
+#' @return Data on UnmanagedLandLeaf children of LandNode3
 #' @importFrom readr read_csv
 #' @author KVC October 2017
 ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
@@ -282,6 +312,35 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
 
   # Read in calibration data
   data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
+
+  # Filter data for the specified region
+  data %>%
+    filter(region == aRegionName) ->
+    data
+
+  # Filter data for specified AEZ
+  if(!is.null(AEZ)){
+    data %>%
+      filter(grepl(AEZ, LandNode1)) ->
+      data
+  }
+
+  return(data)
+}
+
+#' ReadData_LN3_NewTech
+#'
+#' @details Read in new technologies that are children of LandNode3 nodes
+#' @param aRegionName Region to read data for
+#' @return Data on new technologies for children of LandNode3
+#' @importFrom readr read_csv
+#' @author KVC May 2018
+ReadData_LN3_NewTech <- function(aRegionName) {
+  # Silence package checks
+  region <- LandNode1 <- NULL
+
+  # Read in calibration data
+  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_NewTech.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%

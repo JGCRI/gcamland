@@ -11,6 +11,7 @@
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
 #' @field mProfitRate Profit rate of this leaf
+#' @field mIsNewTech Flag indicating leaf is a new technology (no calibration data)
 #'
 #' @return New, initialized UnmanagedLandLeaf
 #' @author KVC October 2017
@@ -22,6 +23,7 @@ UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
   self$mShare = list()
   self$mShareWeight = NULL
   self$mProfitRate = list()
+  self$mIsNewTech = FALSE
   greet = function() {
     cat(paste0("Hello, I am a UnmanagedLandLeaf named ", self$mName, ".\n"))
   }

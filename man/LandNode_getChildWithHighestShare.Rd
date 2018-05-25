@@ -4,9 +4,11 @@
 \alias{LandNode_getChildWithHighestShare}
 \title{LandNode_getChildWithHighestShare}
 \usage{
-LandNode_getChildWithHighestShare(aPeriod)
+LandNode_getChildWithHighestShare(aLandNode, aPeriod)
 }
 \arguments{
+\item{aLandNode}{current land node}
+
 \item{aPeriod}{Model time period.}
 }
 \description{
@@ -16,5 +18,5 @@ LandNode_getChildWithHighestShare
 Finds the child with the highest share (used for bioenergy calibration)
 }
 \author{
-KVC September 2017
+KVC May 2018
 }

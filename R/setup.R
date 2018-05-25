@@ -48,13 +48,15 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
 
   # Read information on LN3 nodes
   childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName)
+  ghostShareData <- ReadData_LN3_GhostShare(aLandAllocator$mRegionName)
   LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
-                 "LandNode3", aScenarioInfo)
+                 "LandNode3", aScenarioInfo, ghostShareData)
 
   # Read information on LandLeaf children of LN3 nodes
   childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
+  newTechData <- ReadData_LN3_NewTech(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
-             "LandLeaf", aScenarioInfo, agData)
+             "LandLeaf", aScenarioInfo, agData, newTechData)
 
   # Read information on UnmanagedLandLeaf children of LN3 nodes
   childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
@@ -117,9 +119,10 @@ LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName, aScenarioInf
 #' @param aData Data needed for setting up this node
 #' @param aColumnName Column name with the parent
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aGhostShareData Information on ghost shares
 #' @importFrom dplyr distinct
 #' @author KVC October 2017
-LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo) {
+LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo, aGhostShareData = NULL) {
   # Silence package checks
   region <- LandAllocatorRoot <- year.fillout <- logit.exponent <- NULL
 
@@ -144,8 +147,36 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
     choiceFunction <- ChoiceFunction("relative-cost", exponent)
 
     # Create the node
-    finalcalper <- TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD
-    newNode <- LandNode(name, choiceFunction, -1, finalcalper)
+    finalCalPer <- TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD
+    newNode <- LandNode(name, choiceFunction, -1, finalCalPer)
+
+    # If ghost share data exists, update it here
+    if(!is.null(aGhostShareData)) {
+      aGhostShareData %>%
+        mutate_(aColumnName = as.name(aColumnName)) %>%
+        filter(aColumnName == childName) ->
+        tempGhostShare
+
+      if(nrow(tempGhostShare)) {
+        # Loop over years and add ghost share
+        for(y in YEARS[[aScenarioInfo$mScenarioType]]) {
+          # Filter for current year
+          tempGhostShare %>%
+            filter(year == y) ->
+            currGhostShare
+
+          # Get period
+          per <- get_yr_to_per(y, aScenarioInfo$mScenarioType)
+
+          # Save ghost share
+          if(per <= finalCalPer) {
+            newNode$mGhostUnnormalizedShare[per] <- 0.0
+          } else {
+            newNode$mGhostUnnormalizedShare[per] <- as.numeric(currGhostShare[[c("default.share")]])
+          }
+        }
+      }
+    }
 
     # Get the names of the land nodes that are parents to this node
     temp %>%
@@ -176,11 +207,13 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
 #' @author KVC October 2017
 #' @export
 Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
-                       aScenarioInfo, aAgData = NULL) {
+                       aScenarioInfo, aAgData = NULL, newTechData = NULL) {
   region <- LandAllocatorRoot <- allocation <- year <- NULL
 
-  finalcalper <-
+  finalCalPer <-
       TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD
+
+  finalPer <- max(PERIODS[[aScenarioInfo$mScenarioType]])
 
   # Set up column name used for filtering
   aData %>%
@@ -197,7 +230,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
     if(aColName == "UnmanagedLandLeaf") {
       # Create an UnmanagedLandLeaf
-      newLeaf <- UnmanagedLandLeaf(temp[[aColName]], finalcalper)
+      newLeaf <- UnmanagedLandLeaf(temp[[aColName]], finalCalPer)
 
       # Get the names of the land nodes that are parents to this leaf
       temp %>%
@@ -206,7 +239,17 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
         parentNames
 
     } else if (aColName == "LandLeaf") {
-      newLeaf <- LandLeaf(temp[[aColName]], finalcalper)
+      newLeaf <- LandLeaf(temp[[aColName]], finalCalPer, finalPer)
+
+      # Check whether leaf is a new technology
+      if(!is.null(newTechData)) {
+        newTechData %>%
+          filter(LandLeaf == childName) ->
+          tempNewTech
+        if(nrow(tempNewTech)) {
+          newLeaf$mIsNewTech <- 1
+        }
+      }
 
       # Get the names of the land nodes that are parents to this leaf
       temp %>%
@@ -229,7 +272,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
       per <- get_yr_to_per(y, aScenarioInfo$mScenarioType)
 
       # Save land allocation
-      if(per <= finalcalper) {
+      if(per <= finalCalPer) {
         newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
       }
     }

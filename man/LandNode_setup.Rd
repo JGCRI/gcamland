@@ -4,7 +4,8 @@
 \alias{LandNode_setup}
 \title{LandNode_setup}
 \usage{
-LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo)
+LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo,
+  aGhostShareData = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
@@ -16,6 +17,8 @@ LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo)
 \item{aColumnName}{Column name with the parent}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aGhostShareData}{Information on ghost shares}
 }
 \description{
 LandNode_setup

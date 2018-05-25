@@ -5,7 +5,7 @@
 \title{Leaf_setup}
 \usage{
 Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo,
-  aAgData = NULL)
+  aAgData = NULL, newTechData = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
