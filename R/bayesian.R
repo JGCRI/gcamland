@@ -297,10 +297,25 @@ calc_post <- function(aScenarioInfo, obs, model, lpdf, prior,
 #' filtered to excatly the regions that are included in the ScenarioInfo
 #' structures.
 #'
+#' Typically log-probaility density functions are parameterized with a parameter
+#' (conventionally called \eqn{\sigma}) that describes how quickly the
+#' probability density falls off as the discrepancy between the model outputs
+#' and observed data grows.  We use a slightly modified version of this
+#' convention.  Because we look at a variety of different land use types, each
+#' of which can have completely different scale.  Therefore, we let each land
+#' use type have its own \eqn{\sigma} value.  We tie these values together using
+#' a single parameter \eqn{\xi}, which represents the fraction of the total
+#' variance of the observed values for a land use type that is allocated to that
+#' land use's \eqn{\sigma}.  In other words, for a land type \eqn{i}, with
+#' observations \eqn{O_i},
+#' \deqn{\sigma^2_i = \xi \var(O_i).}
+#' A single call to \code{run_bayes} will produce posteriors for a range of
+#' \eqn{\xi} values, by default \eqn{\xi = 0.1 \ldots 1.0} in steps of 0.1.
+#'
 #' @section TODO:
 #'
 #' \itemize{
-#' \item{Offer some more control over likelihood and prior functions, xi values,
+#' \item{Offer some more control over xi values,
 #' etc.}
 #' }
 #'
