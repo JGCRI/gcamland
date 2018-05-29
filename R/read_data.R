@@ -373,7 +373,7 @@ get_AgProdChange <- function(ascentype) {
   if(ascentype == "Hindcast") {
     agProdChange <- get_hindcast_AgProdChange()
   } else {
-    agProdChange <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L205.AgProdChange_ref.csv", package = "gcamland"), skip = 3))
+    agProdChange <- suppressMessages(read_csv(system.file("extdata", "./scenario-data/L205.AgProdChange_ref.csv", package = "gcamland"), skip = 3))
   }
 
   # Filter for years in model only
