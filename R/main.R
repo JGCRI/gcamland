@@ -212,7 +212,8 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 #' @author KVC
 #' @export
 run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
-  ## Ensure that output directories exist
+  #### Step 1: Setup
+  # Ensure that output directories exist
   odnorm <- outdir_setup(aScenarioInfo$mOutputDir)
 
   if(is.null(aPeriods))
@@ -234,16 +235,19 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   for(per in aPeriods){
     message("Starting period: ", per)
 
+    #### Step 2: Initial calculation
     # First, call initCalc for AgProductionTechnology (via Sector) and LandAllocator
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
     Sector_initCalc(mLandAllocator, per, aScenarioInfo)
     LandAllocator_initCalc(mLandAllocator, per)
 
+    #### Step 3: Final calculation
     # Next, call calcFinalLandAllocation for LandAllocator
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
   }
 
+  #### Step 4: Reporting
   # Print Outputs
   message("All model periods complete. Starting output.")
   ## Write the output to a file only if verbose mode is set
