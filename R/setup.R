@@ -170,9 +170,13 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
 
           # Save ghost share
           if(per <= finalCalPer) {
+            # We only want ghost shares in future periods
             newNode$mGhostUnnormalizedShare[per] <- 0.0
-          } else {
+          } else if(nrow(currGhostShare)) {
             newNode$mGhostUnnormalizedShare[per] <- as.numeric(currGhostShare[[c("default.share")]])
+          } else {
+            # If nothing is read in, set ghost share to zero
+            newNode$mGhostUnnormalizedShare[per] <- 0.0
           }
         }
       }
@@ -247,7 +251,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
           filter(LandLeaf == childName) ->
           tempNewTech
         if(nrow(tempNewTech)) {
-          newLeaf$mIsNewTech <- 1
+          newLeaf$mIsNewTech <- TRUE
         }
       }
 

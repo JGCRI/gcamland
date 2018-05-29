@@ -173,6 +173,7 @@ LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, a
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
   if(aPeriod == aLandLeaf$mFinalCalPeriod & aLandLeaf$mIsNewTech == TRUE) {
+    print(paste0("calibrating ", aLandLeaf$mName))
     profitRateForCal <- aLandLeaf$mProfitRate[[aPeriod]]
     if( aLandLeaf$mIsGhostShareRelativeToDominantCrop == TRUE ) {
       newCropAvgProfitRate <- aLandLeaf$mProfitRate[[aPeriod]]
@@ -191,13 +192,15 @@ LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, a
       # Note: we'll need to switch this to use the leaf-specific unnormalized share once
       # we move to the multiple-management technoloiges
       if(length(aParent$mGhostUnnormalizedShare) >= currPer) {
-        aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+        aLandLeaf$mShareWeight[currPer] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                                     aParent$mGhostUnnormalizedShare[[aPeriod]],
                                                                     profitRateForCal,
                                                                     currPer)
       }
       currPer <- currPer + 1
     }
+
+    print(aLandLeaf$mFinalPeriod)
 
   }
 }
