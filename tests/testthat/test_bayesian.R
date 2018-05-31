@@ -118,3 +118,16 @@ test_that("waic function produces correct answer.", {
     expect_equal(w$awgt, c(0.5, 0.5))
 })
 
+test_that("HPDI function produces correct answer.", {
+    ilst <- HPDI(testscenarios)
+
+    ## List should be two copies of the same matrix
+    expect_true(inherits(ilst, 'list'))
+    expect_equal(length(ilst), 2)
+    expect_equivalent(ilst[[1]], ilst[[2]])
+    expect_true(inherits(ilst[[1]], 'matrix'))
+
+    hpdi_ref <- structure(c(0.33984375, 1.74609375, 1.3828125, NA, NA, 0.2, 4.95703125,
+                            4.76953125, 5.68359375, NA, NA, 0.8), .Dim = c(6L, 2L))
+    expect_equivalent(ilst[[1]], hpdi_ref)
+})

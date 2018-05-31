@@ -21,9 +21,10 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests: testthat,
+    covr
 BugReports: https://github.com/JGCRI/gcamland/issues
-Collate: 
+Collate:
     'ag_production_technology.R'
     'bayesian.R'
     'constants.R'
