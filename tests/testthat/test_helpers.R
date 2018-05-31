@@ -14,3 +14,11 @@ test_that("scenario names are generated correctly", {
     expect_equal(getScenName("test", "Lagged", 0.5, -3, -3, -3),
                  "test_Lagged0.5_AgroForest-3_AgroForestNonPasture-3_Cropland-3")
 })
+
+test_that("Scenario info objects can be converted to lists and restored.", {
+    si1 <- SCENARIO.INFO
+    ll <- as.list(si1)
+    si2 <- as.ScenarioInfo(ll)
+    expect_equivalent(si1, si2)
+})
+
