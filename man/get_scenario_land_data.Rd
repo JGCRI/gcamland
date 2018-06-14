@@ -10,10 +10,21 @@ get_scenario_land_data(aScenarioList)
 \item{aScenarioList}{List of ScenarioInfo structures for the runs.}
 }
 \value{
-Table with region, commodity, year, and area.
+List of data frames containing land data.
 }
 \description{
-Fetch land use results and aggregate to region, commodity, year, and scenario.
+Fetch land use results and aggregate to region, commodity, year, and
+scenario.
+}
+\details{
+The name of the input file is constructed from the ScenarioInfo structure's
+\code{mOutputDir} and \code{mFileName} attributes.  It is permissible to have
+multiple output directories and/or file names in the list of structures
+passed as an argument.  Each file will be read only once.
+
+The return value is a list of data frames, indexed by the scenario name.
+The data frames
+returned this way have columns for region, land-type, year, and area.
 }
 \section{TODO}{
 

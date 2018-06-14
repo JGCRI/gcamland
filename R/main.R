@@ -56,11 +56,15 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
                                         # lagshare and linyears are mutually
                                         # exclusive
 
+  ## Filename suffix.  This will be used to create unique filenames for the
+  ## outputs across all worker processes, continuation runs, etc.
+  suffix <- sprintf("-%06d",skip)
+
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, aOutputDir) %>%
+                     atype, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
@@ -107,7 +111,6 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
           format(object.size(rslt), units="auto"))
 
   ## Save the scenario info from the scenarios that we ran
-  suffix <- sprintf("-%06d",skip)
   filebase <- paste0("scenario-info", suffix, ".rds")
   scenfile <- file.path(aOutputDir, filebase)
   saveRDS(scenObjects, scenfile)
@@ -141,11 +144,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
 #' @param linyears The number of years parameter for the linear model
 #' @param serialnum Serial number for the run
 #' @param scentype Scenario type, either "Hindcast" or "Reference"
-#' @param outdir Name of the output directory
+#' @param suffix Suffix for output filenames.
+#' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                serialnum, scentype, aOutputDir)
+                                serialnum, scentype, suffix, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -159,7 +163,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
                            aScenarioName = scenName,
-                           aFileName = "ensemble",
+                           aFileName = paste0("ensemble", suffix),
                            aSerialNum = serialnum+0.1,
                            aOutputDir = aOutputDir)
 
@@ -176,7 +180,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
-                          aFileName = "ensemble",
+                          aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
@@ -192,7 +196,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
-                          aFileName = "ensemble",
+                          aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
