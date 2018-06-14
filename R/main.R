@@ -108,7 +108,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
       }
 
   message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
-          format(object.size(rslt), units="auto"))
+          format(utils::object.size(rslt), units="auto"))
 
   ## Save the scenario info from the scenarios that we ran
   filebase <- paste0("scenario-info", suffix, ".rds")
@@ -276,6 +276,8 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
 #' @author KVC
 #' @export
 export_results <- function(aScenarioInfo) {
+  scenario <- NULL             # silence package checker.
+
   # Get file name where results are curently stored
   inFile <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
 
@@ -284,7 +286,7 @@ export_results <- function(aScenarioInfo) {
 
   # Filter for requested scenario
   allLand %>%
-    filter(scenario == aScenarioInfo$mScenarioName) ->
+    dplyr::filter(scenario == aScenarioInfo$mScenarioName) ->
     scenResults
 
   # Get file name to store outputs

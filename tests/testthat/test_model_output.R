@@ -240,12 +240,14 @@ test_that("land cover matches reference values", {
 })
 
 test_that("scenario land data can be retrieved", {
-    ld <- get_scenario_land_data(test.info)
-    expect_true(is.data.frame(ld))
-    expect_equal(ncol(ld), 6)
-    expect_setequal(names(ld),
-                    c('land.type', 'year', 'model', 'variable', 'region', 'scenario'))
-
+    ldl <- get_scenario_land_data(test.info)
+    expect_true(is.list(ldl))
+    for(ld in ldl) {
+        expect_equal(ncol(ld), 6)
+        expect_setequal(names(ld),
+                        c('land.type', 'year', 'model', 'variable', 'region',
+                          'scenario'))
+    }
 })
 
 test_that("log-likelihood is calculated correctly", {
@@ -260,7 +262,7 @@ test_that("log-likelihood is calculated correctly", {
 
 
     histland <- get_historical_land_data(test.info$mRegion)
-    modland <- get_scenario_land_data(list(test.info))
+    modland <- get_scenario_land_data(list(test.info))[[test.info$mScenarioName]]
     test.info <- calc_post(test.info, histland, modland,
                            lpdf=get_lpdf(1), prior=uniform_prior)
 
