@@ -4,18 +4,18 @@
 \alias{calc_prior}
 \title{Compute the log-prior for a paremeter set}
 \usage{
-calc_prior(aScenarioInfo, xi, prior)
+calc_prior(aScenarioInfo, xi, lprior)
 }
 \arguments{
 \item{aScenarioInfo}{ScenarioInfo structure for the scenario.}
 
 \item{xi}{Vector of xi parameter values}
 
-\item{prior}{Function that calculates the log-prior (see details).  Default
+\item{lprior}{Function that calculates the log-prior (see details).  Default
 applies a uniform prior.}
 }
 \value{
-vector of prior values
+Vector of log-prior values
 }
 \description{
 The land model parameters are extracted from the ScenarioInfo object

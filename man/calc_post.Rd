@@ -4,7 +4,7 @@
 \alias{calc_post}
 \title{Compute the log-likelihood and log-posteriors for a set of parameters}
 \usage{
-calc_post(aScenarioInfo, obs, model, lpdf, prior, varlvls = seq(0.1, 1, 0.1))
+calc_post(aScenarioInfo, obs, model, lpdf, lprior, varlvls = seq(0.1, 1, 0.1))
 }
 \arguments{
 \item{aScenarioInfo}{ScenarioInfo structure for the scenario}
@@ -15,7 +15,7 @@ calc_post(aScenarioInfo, obs, model, lpdf, prior, varlvls = seq(0.1, 1, 0.1))
 
 \item{lpdf}{Log probability density function (q.v. \code{\link{get_lpdf}})}
 
-\item{prior}{Log prior function (q.v. \code{\link{calc_prior}})}
+\item{lprior}{Log prior function (q.v. \code{\link{calc_prior}})}
 
 \item{varlvls}{Variance levels to run (see description in
 \code{\link{calc_loglikelihood}}).}

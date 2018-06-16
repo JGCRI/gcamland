@@ -264,7 +264,7 @@ test_that("log-likelihood is calculated correctly", {
     histland <- get_historical_land_data(test.info$mRegion)
     modland <- get_scenario_land_data(list(test.info))[[test.info$mScenarioName]]
     test.info <- calc_post(test.info, histland, modland,
-                           lpdf=get_lpdf(1), prior=uniform_prior)
+                           lpdf=get_lpdf(1), lprior=uniform_prior)
 
     ll_out <- test.info$mLogPost
 
