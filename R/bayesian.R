@@ -649,6 +649,9 @@ hpdi_single <- function(samples, interval, reportvars, weighted, lp)
 #' @export
 #' @keywords internal
 sipdf <- function(inputdir, saveopt=NA, lpdf=get_lpdf(1), lprior=uniform_prior) {
+
+    fn <- NULL                          # silence package checker
+
     ## Output files to process
     sifiles <- list.files(inputdir, 'scenario-info.*\\.rds')
 

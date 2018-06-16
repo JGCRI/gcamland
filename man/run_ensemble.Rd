@@ -5,7 +5,8 @@
 \title{Run an ensemble of offline land models}
 \usage{
 run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
-  atype = "Hindcast", logparallel = NULL)
+  lpdf = get_lpdf(1), lprior = uniform_prior, atype = "Hindcast",
+  logparallel = NULL)
 }
 \arguments{
 \item{N}{Number of parameter sets to select}
@@ -13,6 +14,12 @@ run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
 \item{aOutputDir}{Output directory}
 
 \item{skip}{Number of iterations to skip (i.e., if building on another run.)}
+
+\item{lpdf}{Log-likelihood function.  Used only if Bayesian posteriors are
+being run.}
+
+\item{lprior}{Log-prior probability density function.  Used only if Bayesian
+posteriors are being run.}
 
 \item{atype}{Scenario type: either "Reference" or "Hindcast"}
 
@@ -29,15 +36,22 @@ Then, each parameter set is run through the offline land model in
 each of the Perfect, Lagged, and Linear variants.  (I.e., if N
 parameter sets are selected, then 3N scenarios are run.)
 }
+\details{
+If the scenario type is "Hindcast", then after each model has been run, the
+Bayesian analysis will be run so that its results can be stored with the rest
+of the ScenarioInfo structure.
+}
 \section{Output}{
 
-The scenario results are written to a series of files in the specified output
-directory.  There is a subdirectory for each output type, and output from
-each scenario is written in its own file in the relevant subdirectory.  The
+The model results are written to a series of files in the specified output
+directory.
+The
 list of \code{ScenarioInfo} objects is written to a file called
 \code{scenario-info.rds} in the output directory.  This file can be loaded
 with a command such as \code{scenaro_list <-
-readRDS('output/scenario-info.rds')}
+readRDS('output/scenario-info.rds')}.  These objects contain links to the
+model output files, as well as the posterior probability density tables, if
+the Bayesian analysis was run.
 }
 
 \author{

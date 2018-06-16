@@ -8,18 +8,28 @@
 #' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
 #' parameter sets are selected, then 3N scenarios are run.)
 #'
+#' If the scenario type is "Hindcast", then after each model has been run, the
+#' Bayesian analysis will be run so that its results can be stored with the rest
+#' of the ScenarioInfo structure.
+#'
 #' @section Output:
-#' The scenario results are written to a series of files in the specified output
-#' directory.  There is a subdirectory for each output type, and output from
-#' each scenario is written in its own file in the relevant subdirectory.  The
+#' The model results are written to a series of files in the specified output
+#' directory.
+#' The
 #' list of \code{ScenarioInfo} objects is written to a file called
 #' \code{scenario-info.rds} in the output directory.  This file can be loaded
 #' with a command such as \code{scenaro_list <-
-#' readRDS('output/scenario-info.rds')}
+#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
+#' model output files, as well as the posterior probability density tables, if
+#' the Bayesian analysis was run.
 #'
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
 #' @param skip Number of iterations to skip (i.e., if building on another run.)
+#' @param lpdf Log-likelihood function.  Used only if Bayesian posteriors are
+#' being run.
+#' @param lprior Log-prior probability density function.  Used only if Bayesian
+#' posteriors are being run.
 #' @param atype Scenario type: either "Reference" or "Hindcast"
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
@@ -28,8 +38,9 @@
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hindcast",
-                         logparallel=NULL) {
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+                         lpdf=get_lpdf(1), lprior=uniform_prior,
+                         atype="Hindcast", logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
@@ -110,15 +121,20 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
   message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
           format(utils::object.size(rslt), units="auto"))
 
-  ## Save the scenario info from the scenarios that we ran
-  filebase <- paste0("scenario-info", suffix, ".rds")
-  scenfile <- file.path(aOutputDir, filebase)
-  saveRDS(scenObjects, scenfile)
-
   ## Save the full set of ensemble results
   filebase <- paste0("output_ensemble", suffix, ".rds")
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
+
+  if(atype == "Hindcast") {
+      ## For hindcast runs, calculate the Bayesian posteriors
+      scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
+  }
+
+  ## Save the scenario info from the scenarios that we ran
+  filebase <- paste0("scenario-info", suffix, ".rds")
+  scenfile <- file.path(aOutputDir, filebase)
+  saveRDS(scenObjects, scenfile)
 
   message("Output directory is", aOutputDir)
   message("scenario file: ", scenfile)
