@@ -297,3 +297,11 @@ test_that("posterior pdf table is calculated correctly", {
     expect_equal(gt$lp_, gt_ref$lp_)
 
 })
+
+test_that("model results can be exported as CSV", {
+    export_results(test.info)
+    file <- file.path(basepath, paste0("output_", test.info$mScenarioName,
+                                       ".csv"))
+    expect_true(file.exists(file))
+    ## TODO:  test the contents of the file.
+})
