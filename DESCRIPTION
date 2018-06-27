@@ -1,11 +1,11 @@
 Package: gcamland
 Type: Package
 Title: GCAM Land Allocation Module
-Version: 0.13.1.5002
+Version: 1.0
 Author: Katherine Calvin
 Maintainer: Katherine Calvin <katherine.calvin@pnnl.gov>
 Description: Allocates land among a variety of uses following the methodology in GCAM (github.com/jgcri/gcam-core).
-License: MIT + file LICENSE
+License: file LICENSE
 Depends: R (>= 3.3)
 Imports:
     assertthat (>= 0.2),
@@ -21,9 +21,10 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests: testthat,
+    covr
 BugReports: https://github.com/JGCRI/gcamland/issues
-Collate: 
+Collate:
     'ag_production_technology.R'
     'bayesian.R'
     'constants.R'

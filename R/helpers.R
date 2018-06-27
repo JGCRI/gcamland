@@ -39,7 +39,7 @@ get_per_to_yr <- function(aPer, aScenType) {
 #' @return Years
 #' @author KVC October 2017
 get_timestep <- function(aPer, aScenType) {
-  if(aPer > 1){
+  if(aPer > 1 && aPer <= length(YEARS[[aScenType]])) {
     yrs <- YEARS[[aScenType]][[aPer]] - YEARS[[aScenType]][[aPer - 1]]
   } else{
     stop("Invalid period passed to get_timestep")

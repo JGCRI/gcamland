@@ -75,7 +75,13 @@ plotRegionalLandAllocation <- function(aScenarioInfo) {
     summarize(land.allocation = sum(land.allocation)) ->
     regionalLand
 
+  # Define a color palette (default for ggplot2 is rainbow which is hard to read)
+  my_palette <- c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928',
+                  '#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f')
+
   # Now, plot regional land allocation over time
-  ggplot2::ggplot() + ggplot2::geom_area(data = regionalLand, ggplot2::aes(year, land.allocation, fill=land.type))
+  ggplot2::ggplot() + ggplot2::geom_area(data = regionalLand, ggplot2::aes(year, land.allocation, fill=land.type)) +
+    ggplot2::scale_fill_manual(values=my_palette)
+
 }
 
