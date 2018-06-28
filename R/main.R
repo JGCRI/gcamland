@@ -8,18 +8,28 @@
 #' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
 #' parameter sets are selected, then 3N scenarios are run.)
 #'
+#' If the scenario type is "Hindcast", then after each model has been run, the
+#' Bayesian analysis will be run so that its results can be stored with the rest
+#' of the ScenarioInfo structure.
+#'
 #' @section Output:
-#' The scenario results are written to a series of files in the specified output
-#' directory.  There is a subdirectory for each output type, and output from
-#' each scenario is written in its own file in the relevant subdirectory.  The
+#' The model results are written to a series of files in the specified output
+#' directory.
+#' The
 #' list of \code{ScenarioInfo} objects is written to a file called
 #' \code{scenario-info.rds} in the output directory.  This file can be loaded
 #' with a command such as \code{scenaro_list <-
-#' readRDS('output/scenario-info.rds')}
+#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
+#' model output files, as well as the posterior probability density tables, if
+#' the Bayesian analysis was run.
 #'
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
 #' @param skip Number of iterations to skip (i.e., if building on another run.)
+#' @param lpdf Log-likelihood function.  Used only if Bayesian posteriors are
+#' being run.
+#' @param lprior Log-prior probability density function.  Used only if Bayesian
+#' posteriors are being run.
 #' @param atype Scenario type: either "Reference" or "Hindcast"
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
@@ -28,8 +38,9 @@
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hindcast",
-                         logparallel=NULL) {
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+                         lpdf=get_lpdf(1), lprior=uniform_prior,
+                         atype="Hindcast", logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
@@ -56,11 +67,15 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
                                         # lagshare and linyears are mutually
                                         # exclusive
 
+  ## Filename suffix.  This will be used to create unique filenames for the
+  ## outputs across all worker processes, continuation runs, etc.
+  suffix <- sprintf("-%06d",skip)
+
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, aOutputDir) %>%
+                     atype, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
@@ -104,18 +119,22 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
       }
 
   message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
-          format(object.size(rslt), units="auto"))
-
-  ## Save the scenario info from the scenarios that we ran
-  suffix <- sprintf("-%06d",skip)
-  filebase <- paste0("scenario-info", suffix, ".rds")
-  scenfile <- file.path(aOutputDir, filebase)
-  saveRDS(scenObjects, scenfile)
+          format(utils::object.size(rslt), units="auto"))
 
   ## Save the full set of ensemble results
   filebase <- paste0("output_ensemble", suffix, ".rds")
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
+
+  if(atype == "Hindcast") {
+      ## For hindcast runs, calculate the Bayesian posteriors
+      scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
+  }
+
+  ## Save the scenario info from the scenarios that we ran
+  filebase <- paste0("scenario-info", suffix, ".rds")
+  scenfile <- file.path(aOutputDir, filebase)
+  saveRDS(scenObjects, scenfile)
 
   message("Output directory is", aOutputDir)
   message("scenario file: ", scenfile)
@@ -141,11 +160,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0, atype="Hin
 #' @param linyears The number of years parameter for the linear model
 #' @param serialnum Serial number for the run
 #' @param scentype Scenario type, either "Hindcast" or "Reference"
-#' @param outdir Name of the output directory
+#' @param suffix Suffix for output filenames.
+#' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                serialnum, scentype, aOutputDir)
+                                serialnum, scentype, suffix, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -159,7 +179,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
                            aScenarioName = scenName,
-                           aFileName = "ensemble",
+                           aFileName = paste0("ensemble", suffix),
                            aSerialNum = serialnum+0.1,
                            aOutputDir = aOutputDir)
 
@@ -176,7 +196,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
-                          aFileName = "ensemble",
+                          aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
@@ -192,7 +212,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
-                          aFileName = "ensemble",
+                          aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
@@ -272,6 +292,8 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
 #' @author KVC
 #' @export
 export_results <- function(aScenarioInfo) {
+  scenario <- NULL             # silence package checker.
+
   # Get file name where results are curently stored
   inFile <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
 
@@ -280,7 +302,7 @@ export_results <- function(aScenarioInfo) {
 
   # Filter for requested scenario
   allLand %>%
-    filter(scenario == aScenarioInfo$mScenarioName) ->
+    dplyr::filter(scenario == aScenarioInfo$mScenarioName) ->
     scenResults
 
   # Get file name to store outputs
