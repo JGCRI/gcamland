@@ -7,7 +7,9 @@
 run_model(aScenarioInfo, aPeriods = NULL, aVerbose = FALSE)
 }
 \arguments{
-\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations.}
+\item{aScenarioInfo}{A structure containing scenario-related information,
+created by \code{\link{ScenarioInfo}}.  There is a pre-built structure for the
+default scenario called \code{\link{SCENARIO.INFO}}.}
 
 \item{aPeriods}{Integer vector of periods to run.  Default is all periods
 defined for the scenario type.}
