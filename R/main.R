@@ -232,8 +232,10 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 #' @author KVC
 #' @export
 #' @examples
+#' \dontrun{
 #' run_model(SCENARIO.INFO, aVerbose=TRUE)
 #' run_model(SCENARIO.INFO, aPeriods = 1:5)
+#' }
 run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   #### Step 1: Setup
   # Ensure that output directories exist

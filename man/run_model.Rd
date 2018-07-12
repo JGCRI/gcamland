@@ -21,8 +21,10 @@ Table of model results.
 Loop through all years and run the land model.
 }
 \examples{
+\dontrun{
 run_model(SCENARIO.INFO, aVerbose=TRUE)
 run_model(SCENARIO.INFO, aPeriods = 1:5)
+}
 }
 \author{
 KVC
