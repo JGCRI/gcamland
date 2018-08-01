@@ -7,7 +7,9 @@
 run_model(aScenarioInfo, aPeriods = NULL, aVerbose = FALSE)
 }
 \arguments{
-\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations.}
+\item{aScenarioInfo}{A structure containing scenario-related information,
+created by \code{\link{ScenarioInfo}}.  There is a pre-built structure for the
+default scenario called \code{\link{SCENARIO.INFO}}.}
 
 \item{aPeriods}{Integer vector of periods to run.  Default is all periods
 defined for the scenario type.}
@@ -19,6 +21,12 @@ Table of model results.
 }
 \description{
 Loop through all years and run the land model.
+}
+\examples{
+\dontrun{
+run_model(SCENARIO.INFO, aVerbose=TRUE)
+run_model(SCENARIO.INFO, aPeriods = 1:5)
+}
 }
 \author{
 KVC

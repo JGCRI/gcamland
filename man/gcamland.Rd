@@ -22,8 +22,8 @@ To run an individual scenario, first generate a structure to hold the
 scenario parameters. The scenario structure can be passed directly to the
 main model function.  Then the model can be run with the
 \code{\link{run_model}} function.
-\code{
-sceninfo <- ScenarioInfo(aScenarioType = "Hindcast", aOutputDir = "./output")
+\preformatted{
+sceninfo <- ScenarioInfo(aExpectationType = "Perfect", aScenarioType = "Hindcast", aScenarioName = "Perfect_Hindcast", aFileName = "Perfect_Hindcast")
 rslt <- run_model(sceninfo)
 }
 The results will be returned as a data frame.  If the \code{aVerbose}

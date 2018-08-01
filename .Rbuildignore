@@ -4,3 +4,4 @@ outputs/
 ^\.travis\.yml$
 ^data-raw$
 ^codecov\.yml$
+^\.github$
