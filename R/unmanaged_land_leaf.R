@@ -21,7 +21,7 @@ UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
   self$mFinalCalPeriod <- aFinalCalPeriod
   self$mLandAllocation = list()
   self$mShare = list()
-  self$mShareWeight = NULL
+  self$mShareWeight = list()
   self$mProfitRate = list()
   self$mIsNewTech = FALSE
   greet = function() {
@@ -41,6 +41,11 @@ UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
 UnmanagedLandLeaf_initCalc <- function(aUnmanagedLandLeaf, aPeriod) {
   if (aPeriod > 1) {
     UnmanagedLandLeaf_setUnmanagedLandProfitRate(aUnmanagedLandLeaf, aUnmanagedLandLeaf$mProfitRate[[1]], aPeriod)
+
+    # Copy share weights forward
+    if (length(aUnmanagedLandLeaf$mShareWeight) < aPeriod) {
+      aUnmanagedLandLeaf$mShareWeight[aPeriod] <- aUnmanagedLandLeaf$mShareWeight[[aPeriod - 1]];
+    }
   }
 }
 

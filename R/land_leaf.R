@@ -36,7 +36,7 @@ LandLeaf <- function(aName, aFinalCalPeriod, aFinalPeriod) {
   self$mLandAllocation = list()
   self$mCalLandAllocation = list()
   self$mShare = list()
-  self$mShareWeight = NULL
+  self$mShareWeight = list()
   self$mProfitRate = list()
   self$mIsNewTech = FALSE
   self$mIsGhostShareRelativeToDominantCrop = TRUE
@@ -60,13 +60,12 @@ LandLeaf <- function(aName, aFinalCalPeriod, aFinalPeriod) {
 #' @details Initial calculations needed for the land leaf.
 #' @author KVC September 2017
 LandLeaf_initCalc <- function(aLandLeaf, aPeriod) {
-  # TODO: Implement this if needed
-#   if ( aPeriod > 1 ) {
-#     // If leaf is a "new tech" get the scaler from its parent
-#     if ( !mShareWeight[ aPeriod ].isInited()) {
-#       mShareWeight[ aPeriod ] = mShareWeight[ aPeriod - 1 ];
-#     }
-#   }
+  if (aPeriod > 1) {
+    # Copy share weights forward
+    if (length(aLandLeaf$mShareWeight) < aPeriod) {
+      aLandLeaf$mShareWeight[aPeriod] <- aLandLeaf$mShareWeight[[aPeriod - 1]];
+    }
+  }
 }
 
 #' LandLeaf_setInitShares
@@ -106,7 +105,7 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # TODO: Implement AbsoluteCostLogit
   if(aChoiceFnAbove$mType == "relative-cost") {
     unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove,
-                                                               aLandLeaf$mShareWeight,
+                                                               aLandLeaf$mShareWeight[[aPeriod]],
                                                                aLandLeaf$mProfitRate[[aPeriod]],
                                                                aPeriod)
   } else {
@@ -162,7 +161,7 @@ LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
 LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, aParent) {
   # TODO: move output cost to a member variable; implement absolute cost logit
   if( aChoiceFnAbove$mType == "relative-cost") {
-    aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+    aLandLeaf$mShareWeight[aPeriod] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandLeaf$mShare[[aPeriod]],
                                                               aLandLeaf$mProfitRate[[aPeriod]],
                                                               aPeriod)
@@ -173,7 +172,6 @@ LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, a
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
   if(aPeriod == aLandLeaf$mFinalCalPeriod & aLandLeaf$mIsNewTech == TRUE) {
-    print(paste0("calibrating ", aLandLeaf$mName))
     profitRateForCal <- aLandLeaf$mProfitRate[[aPeriod]]
     if( aLandLeaf$mIsGhostShareRelativeToDominantCrop == TRUE ) {
       newCropAvgProfitRate <- aLandLeaf$mProfitRate[[aPeriod]]
@@ -193,15 +191,13 @@ LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, a
       # we move to the multiple-management technoloiges
       if(length(aParent$mGhostUnnormalizedShare) >= currPer) {
         aLandLeaf$mShareWeight[currPer] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
-                                                                    aParent$mGhostUnnormalizedShare[[aPeriod]],
+                                                                    aParent$mGhostUnnormalizedShare[[currPer]],
                                                                     profitRateForCal,
                                                                     currPer)
       }
+
       currPer <- currPer + 1
     }
-
-    print(aLandLeaf$mFinalPeriod)
-
   }
 }
 
