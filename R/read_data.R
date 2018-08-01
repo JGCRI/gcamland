@@ -246,7 +246,7 @@ ReadData_LN3_GhostShare <- function(aRegionName) {
   region <- LandNode1 <- year.fillout <- logit.year.fillout <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_DefaultShare.csv", package = "gcamland"), skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_DefaultShare.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -340,7 +340,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
   region <- LandNode1 <- NULL
 
   # Read in calibration data
-  data <- suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L213.LN3_NewTech.csv", package = "gcamland"), skip = 3))
+  data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_NewTech.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
   data %>%
@@ -382,7 +382,7 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
     cost
-  suppressMessages(read_csv(system.file("extdata", "./gcam43-data/L201.AgYield_bio_ref.csv", package = "gcamland"), skip = 3)) ->
+  suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgYield_bio_ref.csv", package = "gcamland"), skip = 3)) ->
     bioYield
 
   # Filter data for the specified region
