@@ -124,7 +124,7 @@ LN1_setup <- function(aLandAllocator, aRegionName, aData, aColName, aScenarioInf
 #' @author KVC October 2017
 LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo, aGhostShareData = NULL) {
   # Silence package checks
-  region <- LandAllocatorRoot <- year.fillout <- logit.exponent <- NULL
+  region <- LandAllocatorRoot <- year.fillout <- logit.exponent <- year <- NULL
 
   # Create each child node
   for(childName in unique(aData[[aColumnName]])){
@@ -208,6 +208,7 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
 #' @param aColName Column name with the parent
 #' @param aScenarioInfo ScenarioInfo structure containing the scenario parameters
 #' @param aAgData Agricultural technology data
+#' @param newTechData Data about any new technologies (i.e., technologies without calibration information)
 #' @author KVC October 2017
 #' @export
 Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,

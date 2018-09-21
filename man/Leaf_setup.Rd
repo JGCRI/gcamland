@@ -19,6 +19,8 @@ Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo,
 \item{aScenarioInfo}{ScenarioInfo structure containing the scenario parameters}
 
 \item{aAgData}{Agricultural technology data}
+
+\item{newTechData}{Data about any new technologies (i.e., technologies without calibration information)}
 }
 \description{
 Leaf_setup
