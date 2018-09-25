@@ -11,6 +11,7 @@
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
 #' @field mProfitRate Profit rate of this leaf
+#' @field mIsNewTech Flag indicating leaf is a new technology (no calibration data)
 #'
 #' @return New, initialized UnmanagedLandLeaf
 #' @author KVC October 2017
@@ -20,8 +21,9 @@ UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
   self$mFinalCalPeriod <- aFinalCalPeriod
   self$mLandAllocation = list()
   self$mShare = list()
-  self$mShareWeight = NULL
+  self$mShareWeight = list()
   self$mProfitRate = list()
+  self$mIsNewTech = FALSE
   greet = function() {
     cat(paste0("Hello, I am a UnmanagedLandLeaf named ", self$mName, ".\n"))
   }
@@ -39,6 +41,11 @@ UnmanagedLandLeaf <- function(aName, aFinalCalPeriod) {
 UnmanagedLandLeaf_initCalc <- function(aUnmanagedLandLeaf, aPeriod) {
   if (aPeriod > 1) {
     UnmanagedLandLeaf_setUnmanagedLandProfitRate(aUnmanagedLandLeaf, aUnmanagedLandLeaf$mProfitRate[[1]], aPeriod)
+
+    # Copy share weights forward
+    if (length(aUnmanagedLandLeaf$mShareWeight) < aPeriod) {
+      aUnmanagedLandLeaf$mShareWeight[aPeriod] <- aUnmanagedLandLeaf$mShareWeight[[aPeriod - 1]];
+    }
   }
 }
 

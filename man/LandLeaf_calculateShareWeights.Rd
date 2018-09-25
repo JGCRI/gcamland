@@ -4,7 +4,7 @@
 \alias{LandLeaf_calculateShareWeights}
 \title{LandLeaf_calculateShareWeights}
 \usage{
-LandLeaf_calculateShareWeights(aLandLeaf, aChoiceFnAbove, aPeriod)
+LandLeaf_calculateShareWeights(aLandLeaf, aChoiceFnAbove, aPeriod, aParent)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf to perform calculations on}
@@ -12,6 +12,8 @@ LandLeaf_calculateShareWeights(aLandLeaf, aChoiceFnAbove, aPeriod)
 \item{aChoiceFnAbove}{Type of logit}
 
 \item{aPeriod}{Model time period}
+
+\item{aParent}{Parent node (needed for calibrating new techs)}
 }
 \description{
 LandLeaf_calculateShareWeights

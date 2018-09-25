@@ -15,6 +15,7 @@
 #' @field mUnmanagedLandValue Unmanaged land value in this node
 #' @field mShare Share of land allocated to this node
 #' @field mShareWeight Share weight of this node
+#' @field mGhostUnnormalizedShare Ghost share for new children in this node
 #' @field mProfitRate Profit rate of this node
 #' @field mChildren list of LandLeaf children
 #'
@@ -28,7 +29,8 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation, aFinalCalPeriod) {
   self$mLandAllocation = list()
   self$mUnmanagedLandValue = 0.0
   self$mShare = list()
-  self$mShareWeight = NULL
+  self$mShareWeight = list()
+  self$mGhostUnnormalizedShare = list()
   self$mProfitRate = list()
   self$mChildren = list()
 
@@ -45,6 +47,14 @@ LandNode <- function(aName, aChoiceFunction, aLandAllocation, aFinalCalPeriod) {
 #' @author KVC September 2017
 LandNode_initCalc <- function(aLandNode, aPeriod) {
   # TODO: all kinds of things including error checking
+
+  if (aPeriod > 1) {
+    # Copy share weights forward
+    if (length(aLandNode$mShareWeight) < aPeriod) {
+      aLandNode$mShareWeight[aPeriod] <- aLandNode$mShareWeight[[aPeriod - 1]];
+    }
+  }
+
   # Call initCalc on any children
   for (child in aLandNode$mChildren) {
     if(inherits(child, "LandNode")) {
@@ -162,8 +172,8 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # parent node.
   # TODO: Implement AbsoluteCostLogit
   if( aChoiceFnAbove$mType == "relative-cost") {
-    if(aLandNode$mShareWeight > 0) {
-      unNormalizedShare <- (aLandNode$mShareWeight * aLandNode$mProfitRate[[aPeriod]])^aChoiceFnAbove$mLogitExponent
+    if(aLandNode$mShareWeight[[aPeriod]] > 0) {
+      unNormalizedShare <- (aLandNode$mShareWeight[[aPeriod]] * aLandNode$mProfitRate[[aPeriod]])^aChoiceFnAbove$mLogitExponent
     } else {
       unNormalizedShare <- 0
     }
@@ -188,9 +198,9 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # TODO: Figure out if this is needed and why.
   if(aChoiceFnAbove$mLogitExponent == 0) {
-    aLandNode$mShareWeight <- aLandNode$mShare[[aPeriod]]
+    aLandNode$mShareWeight[aPeriod] <- aLandNode$mShare[[aPeriod]]
   } else {
-    aLandNode$mShareWeight <- 1
+    aLandNode$mShareWeight[aPeriod] <- 1
   }
 
   # Set node calibration profit as the output cost in the choice function
@@ -207,7 +217,7 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     if(inherits(child, "LandNode")) {
       LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
     } else {
-      LandLeaf_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
+      LandLeaf_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod, aLandNode)
     }
   }
 }
@@ -377,18 +387,19 @@ LandNode_getObservedAverageProfitRate <- function(aProfitRate, aShare, aPeriod) 
 #' LandNode_getChildWithHighestShare
 #'
 #' @details Finds the child with the highest share (used for bioenergy calibration)
+#' @param aLandNode current land node
 #' @param aPeriod Model time period.
-#' @author KVC September 2017
-LandNode_getChildWithHighestShare <- function(aPeriod) {
-#   double maxShare = 0.0;
-#   const ALandAllocatorItem* maxChild = 0;
-#   for ( unsigned int i = 0; i < mChildren.size(); i++ ) {
-#     if( !mChildren[ i ]->isUnmanagedLandLeaf() && mChildren[ i ]->getShare( aPeriod ) > maxShare ) {
-#       maxShare = mChildren[ i ]->getShare( aPeriod );
-#       maxChild = mChildren[ i ];
-#     }
-#   }
-#   return maxChild;
+#' @author KVC May 2018
+LandNode_getChildWithHighestShare <- function(aLandNode, aPeriod) {
+  maxShare <- 0.0
+  for(child in aLandNode$mChildren) {
+    if(inherits(child, "LandLeaf") & child$mShare[[aPeriod]] > maxShare) {
+      maxShare <- child$mShare[[aPeriod]]
+      maxChild <- child
+    }
+  }
+
+  return (maxChild)
 }
 
 #' LandNode_calculateShareWeight
@@ -402,7 +413,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # Calculate the share weight for the node
   # TODO: implement absolute cost logit too
   if(aChoiceFnAbove$mType == "relative-cost") {
-    aLandNode$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+    aLandNode$mShareWeight[aPeriod] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandNode$mShare[[aPeriod]],
                                                               aLandNode$mProfitRate[[aPeriod]],
                                                               aPeriod)
@@ -410,6 +421,7 @@ LandNode_calculateShareWeight <- function(aLandNode, aChoiceFnAbove, aPeriod) {
     print("ERROR: Invalid choice function in LandNode_calculateShareWeight")
   }
 
+  # TODO: Implement code below, which is needed if we are creating a brand new node.
   # If we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
   if(aPeriod == aLandNode$mFinalCalPeriod) {

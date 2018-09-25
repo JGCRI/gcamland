@@ -4,12 +4,14 @@
 \alias{LandLeaf}
 \title{LandLeaf}
 \usage{
-LandLeaf(aName, aFinalCalPeriod)
+LandLeaf(aName, aFinalCalPeriod, aFinalPeriod)
 }
 \arguments{
 \item{aName}{Leaf name}
 
 \item{aFinalCalPeriod}{Final calibration period}
+
+\item{aFinalPeriod}{Final model period}
 }
 \value{
 New, initialized LandLeaf
@@ -27,6 +29,8 @@ Initialize an Class called LandLeaf
 
 \item{\code{mFinalCalPeriod}}{Final calibration period}
 
+\item{\code{mFinalPeriod}}{Final model period}
+
 \item{\code{mProductName}}{Name of product produced by this leaf}
 
 \item{\code{mLandAllocation}}{Land allocation for this leaf}
@@ -38,6 +42,10 @@ Initialize an Class called LandLeaf
 \item{\code{mShareWeight}}{Share weight of this leaf}
 
 \item{\code{mProfitRate}}{Profit rate of this leaf}
+
+\item{\code{mIsNewTech}}{Flag indicating leaf is a new technology (no calibration data)}
+
+\item{\code{mIsGhostShareRelativeToDominantCrop}}{Flag indicating whether to compare profits of a new crop to a dominant one}
 
 \item{\code{mCost}}{Non-land variable cost of this leaf}
 

@@ -34,6 +34,8 @@ Initialize an Class called UnmanagedLandLeaf
 \item{\code{mShareWeight}}{Share weight of this leaf}
 
 \item{\code{mProfitRate}}{Profit rate of this leaf}
+
+\item{\code{mIsNewTech}}{Flag indicating leaf is a new technology (no calibration data)}
 }}
 
 \author{

@@ -5,14 +5,18 @@
 #' @details Initialize an Class called LandLeaf
 #' @param aName Leaf name
 #' @param aFinalCalPeriod Final calibration period
+#' @param aFinalPeriod Final model period
 #' @field mName Leaf name
 #' @field mFinalCalPeriod Final calibration period
+#' @field mFinalPeriod Final model period
 #' @field mProductName Name of product produced by this leaf
 #' @field mLandAllocation Land allocation for this leaf
 #' @field mCalLandAllocation Calibration land allocation for this leaf
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
 #' @field mProfitRate Profit rate of this leaf
+#' @field mIsNewTech Flag indicating leaf is a new technology (no calibration data)
+#' @field mIsGhostShareRelativeToDominantCrop Flag indicating whether to compare profits of a new crop to a dominant one
 #' @field mCost Non-land variable cost of this leaf
 #' @field mYield yield for this leaf
 #' @field mExpectedYield expected yield for this leaf
@@ -23,16 +27,19 @@
 #'
 #' @return New, initialized LandLeaf
 #' @author KVC September 2017
-LandLeaf <- function(aName, aFinalCalPeriod) {
+LandLeaf <- function(aName, aFinalCalPeriod, aFinalPeriod) {
   self <- new.env(parent=emptyenv())
   self$mName <- aName
   self$mFinalCalPeriod <- aFinalCalPeriod
+  self$mFinalPeriod <- aFinalPeriod
   self$mProductName = NULL
   self$mLandAllocation = list()
   self$mCalLandAllocation = list()
   self$mShare = list()
-  self$mShareWeight = NULL
+  self$mShareWeight = list()
   self$mProfitRate = list()
+  self$mIsNewTech = FALSE
+  self$mIsGhostShareRelativeToDominantCrop = TRUE
   # We are including cost, yield, and tech change here, rather than AgProductionTechnology for convenience
   self$mCost = list()
   self$mYield = list()
@@ -53,13 +60,12 @@ LandLeaf <- function(aName, aFinalCalPeriod) {
 #' @details Initial calculations needed for the land leaf.
 #' @author KVC September 2017
 LandLeaf_initCalc <- function(aLandLeaf, aPeriod) {
-  # TODO: Implement this if needed
-#   if ( aPeriod > 1 ) {
-#     // If leaf is a "new tech" get the scaler from its parent
-#     if ( !mShareWeight[ aPeriod ].isInited()) {
-#       mShareWeight[ aPeriod ] = mShareWeight[ aPeriod - 1 ];
-#     }
-#   }
+  if (aPeriod > 1) {
+    # Copy share weights forward
+    if (length(aLandLeaf$mShareWeight) < aPeriod) {
+      aLandLeaf$mShareWeight[aPeriod] <- aLandLeaf$mShareWeight[[aPeriod - 1]];
+    }
+  }
 }
 
 #' LandLeaf_setInitShares
@@ -99,7 +105,7 @@ LandLeaf_calcLandShares <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
   # TODO: Implement AbsoluteCostLogit
   if(aChoiceFnAbove$mType == "relative-cost") {
     unNormalizedShare <- RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove,
-                                                               aLandLeaf$mShareWeight,
+                                                               aLandLeaf$mShareWeight[[aPeriod]],
                                                                aLandLeaf$mProfitRate[[aPeriod]],
                                                                aPeriod)
   } else {
@@ -150,11 +156,12 @@ LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
 #' @param aLandLeaf Land leaf to perform calculations on
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
+#' @param aParent Parent node (needed for calibrating new techs)
 #' @author KVC September 2017
-LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
+LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, aParent) {
   # TODO: move output cost to a member variable; implement absolute cost logit
   if( aChoiceFnAbove$mType == "relative-cost") {
-    aLandLeaf$mShareWeight <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+    aLandLeaf$mShareWeight[aPeriod] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
                                                               aLandLeaf$mShare[[aPeriod]],
                                                               aLandLeaf$mProfitRate[[aPeriod]],
                                                               aPeriod)
@@ -162,39 +169,35 @@ LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod) {
     print("ERROR: Invalid choice function in LandLeaf_calculateShareWeight")
   }
 
-  # TODO: Implement this
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
   # we do that now with the current profit rate in the final calibration period.
-  if(aPeriod == aLandLeaf$mFinalCalPeriod) {
-    #     double shareAdj = 1.0;
-    #     double profitRateForCal = mProfitRate[ aPeriod ];
-    #     if( mIsGhostShareRelativeToDominantCrop ) {
-    #       double newCropAvgProfitRate;
-    #       getObservedAverageProfitRate( newCropAvgProfitRate, shareAdj, aPeriod );
-    #       double dominantCropAvgProfitRate;
-    #       const ALandAllocatorItem* maxChild = getParent()->getChildWithHighestShare( aPeriod );
-    #       if( maxChild ) {
-    #         maxChild->getObservedAverageProfitRate( dominantCropAvgProfitRate, shareAdj, aPeriod );
-    #         profitRateForCal *= dominantCropAvgProfitRate / newCropAvgProfitRate;
-    #       }
-    #       else {
-    #         // there are no valid crops in this nest and we were instructed to make the ghost share
-    #         // profit rate relative to them so we will zero out this land item.
-    #         for( int futurePer = aPeriod + 1; futurePer < modeltime->getmaxper(); ++futurePer ) {
-    #           mShareWeight[ futurePer ] = 0.0;
-    #         }
-    #         return;
-    #       }
-    #     }
-    #     for( int futurePer = aPeriod + 1; futurePer < modeltime->getmaxper(); ++futurePer ) {
-    #       if( mGhostUnormalizedShare[ futurePer ].isInited() ) {
-    #
-    #         mShareWeight[ futurePer ] = aChoiceFnAbove->calcShareWeight( mGhostUnormalizedShare[ futurePer ] /* * shareAdj */,
-    #                                                                      profitRateForCal,
-    #                                                                      futurePer );
-    #       }
-    #     }
+  if(aPeriod == aLandLeaf$mFinalCalPeriod & aLandLeaf$mIsNewTech == TRUE) {
+    profitRateForCal <- aLandLeaf$mProfitRate[[aPeriod]]
+    if( aLandLeaf$mIsGhostShareRelativeToDominantCrop == TRUE ) {
+      newCropAvgProfitRate <- aLandLeaf$mProfitRate[[aPeriod]]
+
+      # Get profit rate for sibling with the highest share
+      maxChild <- LandNode_getChildWithHighestShare(aParent, aPeriod)
+      dominantCropAvgProfitRate <- maxChild$mProfitRate[[aPeriod]]
+      profitRateForCal <- profitRateForCal * dominantCropAvgProfitRate / newCropAvgProfitRate
+    }
+
+    # Loop through future periods setting the share weight
+    # Note: we do this so we can adjust the ghost unnormalized share in the future (e.g., phase in bioenergy)
+    currPer <- aPeriod + 1
+    while(currPer < aLandLeaf$mFinalPeriod) {
+
+      # Note: we'll need to switch this to use the leaf-specific unnormalized share once
+      # we move to the multiple-management technoloiges
+      if(length(aParent$mGhostUnnormalizedShare) >= currPer) {
+        aLandLeaf$mShareWeight[currPer] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+                                                                    aParent$mGhostUnnormalizedShare[[currPer]],
+                                                                    profitRateForCal,
+                                                                    currPer)
+      }
+
+      currPer <- currPer + 1
+    }
   }
 }
-
 

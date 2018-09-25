@@ -7,7 +7,8 @@ basepath <- file.path(tempdir(), "outputs")
 # Note: these tests ensure all calculations work in a simple case
 test_that("yield expectation calculation works", {
   # First, create a land leaf
-  testLeaf <- LandLeaf("test", TIME.PARAMS[[DEFAULT.SCENARIO.TYPE]]$FINAL_CALIBRATION_PERIOD)
+  testLeaf <- LandLeaf("test", TIME.PARAMS[[DEFAULT.SCENARIO.TYPE]]$FINAL_CALIBRATION_PERIOD,
+                       max(PERIODS[[DEFAULT.SCENARIO.TYPE]]))
   testLeaf$mYield[1] <- 1
   testLeaf$mYield[2] <- 2
   testLeaf$mYield[3] <- 3

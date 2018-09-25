@@ -10,7 +10,7 @@ ReadData_LN3_UnmanagedLandLeaf(aRegionName)
 \item{aRegionName}{Region to read data for}
 }
 \value{
-Data on UnmanagedLandLeaf children of LandNode2
+Data on UnmanagedLandLeaf children of LandNode3
 }
 \description{
 ReadData_LN3_UnmanagedLandLeaf

@@ -286,12 +286,3 @@ Australia_NZ,root,AgroForestLandAEZ17,AgroForest_NonPastureAEZ17,CropLandAEZ17,b
 China,root,AgroForestLandAEZ17,AgroForest_NonPastureAEZ17,AllForestLandAEZ17,willowAEZ17,2020,1
 South America_Southern,root,AgroForestLandAEZ17,AgroForest_NonPastureAEZ17,CropLandAEZ17,biomassAEZ17,2020,1
 South America_Southern,root,AgroForestLandAEZ18,AgroForest_NonPastureAEZ18,CropLandAEZ18,biomassAEZ18,2020,1
-
-INPUT_TABLE
-Variable ID
-11000
-
-from,to
-LandNode1,LandNode
-LandNode2,LandNode
-LandNode3,LandNode
