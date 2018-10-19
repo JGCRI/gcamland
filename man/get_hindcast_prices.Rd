@@ -13,9 +13,8 @@ prices in historical period
 get_hindcast_prices
 }
 \details{
-Read in FAO prices by country and crop,
-         Aggregate to GCAM regions and commodities,
+Read in FAO prices by GCAM regions and commodity. Prices were processed by Ryna.
 }
 \author{
-KVC October 2017
+KVC October 2018
 }
