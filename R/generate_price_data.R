@@ -55,7 +55,7 @@ get_hindcast_prices <- function(){
     filter(GCAM_region_name == DEFAULT.REGION) %>%
     rename(sector = GCAM_commod,
            price = pp_2005usd_tonne) %>%
-    mutate(price = price / 3.05 / 1000) %>%
+    mutate(price = price / 3.05 / 1000) %>% # 3.05 converts from 2005$ to 1975$; 1000 converts from tonnes to kg
     select(year, sector, price) ->
     faoPrices
 
