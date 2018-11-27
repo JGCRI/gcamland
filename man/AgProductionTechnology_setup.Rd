@@ -4,14 +4,14 @@
 \alias{AgProductionTechnology_setup}
 \title{AgProductionTechnology_setup}
 \usage{
-AgProductionTechnology_setup(aLandLeaf, aAgData, ascentype)
+AgProductionTechnology_setup(aLandLeaf, aAgData, aScenarioInfo)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf}
 
 \item{aAgData}{Agricultural technology data}
 
-\item{ascentype}{Scenario type: either "Reference" or "Hindcast"}
+\item{aScenarioInfo}{Scenario info object}
 }
 \description{
 AgProductionTechnology_setup

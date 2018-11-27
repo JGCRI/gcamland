@@ -7,9 +7,9 @@
 ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
-  aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
-  aRegion = DEFAULT.REGION)
+  aUseZeroCost = FALSE, aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aScenarioName = NULL, aFileName = NULL, aOutputDir = "./outputs",
+  aSerialNum = NA, aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}
@@ -26,6 +26,8 @@ ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
 
 \item{aLogitCropland}{Cropland logit exponent (assuming mLogitUseDefault ==
 FALSE)}
+
+\item{aUseZeroCost}{Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)}
 
 \item{aScenarioType}{Type of scenario to run: either "Reference" or "Hindcast".}
 

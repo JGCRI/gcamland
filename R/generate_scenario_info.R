@@ -22,6 +22,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
 #' FALSE)
+#' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
 #' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
@@ -40,6 +41,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aLogitAgroForest = NA,
                          aLogitAgroForest_NonPasture = NA,
                          aLogitCropland = NA,
+                         aUseZeroCost = FALSE,
                          aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
                          aFileName = NULL,
@@ -57,6 +59,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
   self$mLogitCropland <- aLogitCropland
+  self$mUseZeroCost <- aUseZeroCost
   self$mScenarioType <- aScenarioType
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
@@ -124,6 +127,7 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLogitAgroForest = NA,
                               aLogitAgroForest_NonPasture = NA,
                               aLogitCropland = NA,
+                              aUseZeroCost = FALSE,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
 
@@ -135,12 +139,13 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 #' @param aExpectationType New expectation type (default = Perfect)
 #' @param aLinearYears New linear years (default = NULL)
 #' @param aLaggedShareOld New lagged share old (default = NULL)
+#' @param aUseZeroCost New cost assumption (default = FALSE)
 #'
 #' @return Updated scenario info object
 #' @export
 #' @author KVC November 2018
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
-                             aLinearYears = NULL, aLaggedShareOld = NULL) {
+                             aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE) {
 
   # Set the names of the scenario & file based on read in information
   if(is.null(aName)) {
@@ -156,6 +161,7 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   new_scen_info$mExpectationType <- aExpectationType
   new_scen_info$mLinearYears <- aLinearYears
   new_scen_info$mLaggedShareOld <- aLaggedShareOld
+  new_scen_info$mUseZeroCost <- aUseZeroCost
   new_scen_info$mScenarioName <- new_name
   new_scen_info$mFileName <- new_name
 

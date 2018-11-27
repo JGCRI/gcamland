@@ -6,7 +6,7 @@
 \usage{
 update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
   aExpectationType = "Perfect", aLinearYears = NULL,
-  aLaggedShareOld = NULL)
+  aLaggedShareOld = NULL, aUseZeroCost = FALSE)
 }
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}
@@ -18,6 +18,8 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 \item{aLinearYears}{New linear years (default = NULL)}
 
 \item{aLaggedShareOld}{New lagged share old (default = NULL)}
+
+\item{aUseZeroCost}{New cost assumption (default = FALSE)}
 }
 \value{
 Updated scenario info object
