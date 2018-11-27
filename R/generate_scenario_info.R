@@ -126,3 +126,38 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLogitCropland = NA,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
+
+
+#' update_scen_info
+#'
+#' @param aName New scenario name (default will generate this from other info)
+#' @param aScenarioType New scenario type (default = `DEFAULT.SCENARIO.TYPE`)
+#' @param aExpectationType New expectation type (default = Perfect)
+#' @param aLinearYears New linear years (default = NULL)
+#' @param aLaggedShareOld New lagged share old (default = NULL)
+#'
+#' @return Updated scenario info object
+#' @export
+#' @author KVC November 2018
+update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
+                             aLinearYears = NULL, aLaggedShareOld = NULL) {
+
+  # Set the names of the scenario & file based on read in information
+  if(is.null(aName)) {
+    new_name <- paste0(aScenarioType, "_", aExpectationType)
+    new_name <- paste0(aScenarioType, "_", aExpectationType)
+  } else {
+    new_name <- aName
+  }
+
+  # Copy scenario info from default & update all scenario info
+  new_scen_info <- SCENARIO.INFO
+  new_scen_info$mScenarioType <- aScenarioType
+  new_scen_info$mExpectationType <- aExpectationType
+  new_scen_info$mLinearYears <- aLinearYears
+  new_scen_info$mLaggedShareOld <- aLaggedShareOld
+  new_scen_info$mScenarioName <- new_name
+  new_scen_info$mFileName <- new_name
+
+  return(new_scen_info)
+}
