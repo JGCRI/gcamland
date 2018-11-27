@@ -76,7 +76,8 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FA
                  land.allocation = rep(NA, length(leafs$node)),
                  yield = rep(NA, length(leafs$node)),
                  expectedYield = rep(NA, length(leafs$node)),
-                 expectedPrice = rep(NA, length(leafs$node))) %>%
+                 expectedPrice = rep(NA, length(leafs$node)),
+                 shareWeight = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
     full_join(mutate(tibble(year = YEARS[[scenType]]), uniqueJoinField = 1),
               by = "uniqueJoinField") %>%
@@ -154,6 +155,8 @@ LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
     currYear <- get_per_to_yr(per, aScenType)
     aAllOutputs$land.allocation[aAllOutputs$year == currYear &
                                   aAllOutputs$name == currName] <- aLandLeaf$mLandAllocation[[per]]
+    aAllOutputs$shareWeight[aAllOutputs$name == currName &
+                              aAllOutputs$year == currYear] <- aLandLeaf$mShareWeight[[per]]
 
     # Only get yield and price information for LandLeafs
     if(inherits(aLandLeaf, "LandLeaf")) {
