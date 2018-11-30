@@ -32,7 +32,7 @@ test_that("land cover matches reference values", {
     # (as this code will be run in tests/testthat)
     file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".rds"))
     readRDS(file) %>%
-      select(-yield, -expectedYield, -expectedPrice) %>%
+      select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight) %>%
       mutate(region = SCENARIO.INFO$mRegion) ->
       outputData
 

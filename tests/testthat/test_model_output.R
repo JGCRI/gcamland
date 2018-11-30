@@ -44,7 +44,7 @@ test_that("land cover matches calibration data", {
   file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
   expect_true(file.exists(file))
   readRDS(file) %>%
-    select(-yield, -expectedPrice, -expectedYield) %>%
+    select(-yield, -expectedPrice, -expectedYield, -expectedProfit, -shareWeight) %>%
     mutate(region = test.info$mRegion) ->
     outputData
 
