@@ -194,8 +194,9 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 #' @param aLandNode Land node to perform calculations on
 #' @param aChoiceFnAbove The discrete choice function from the level above.
 #' @param aPeriod Period.
+#' @param aScenarioInfo Scenario info object
 #' @author KVC September 2017
-LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
+LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod, aScenarioInfo) {
   # TODO: Figure out if this is needed and why.
   if(aChoiceFnAbove$mLogitExponent == 0) {
     aLandNode$mShareWeight[aPeriod] <- aLandNode$mShare[[aPeriod]]
@@ -215,9 +216,9 @@ LandNode_calculateShareWeights <- function(aLandNode, aChoiceFnAbove, aPeriod) {
 
   for(child in aLandNode$mChildren) {
     if(inherits(child, "LandNode")) {
-      LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod)
+      LandNode_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod, aScenarioInfo)
     } else {
-      LandLeaf_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod, aLandNode)
+      LandLeaf_calculateShareWeights(child, aLandNode$mChoiceFunction, aPeriod, aLandNode, aScenarioInfo)
     }
   }
 }

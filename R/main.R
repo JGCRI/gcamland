@@ -267,7 +267,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
     # Note: AgProductionTechnology must be called first so profits
     #       can be set before LandAllocator can be calibrated
     Sector_initCalc(mLandAllocator, per, aScenarioInfo)
-    LandAllocator_initCalc(mLandAllocator, per)
+    LandAllocator_initCalc(mLandAllocator, per, aScenarioInfo)
 
     #### Step 3: Final calculation
     # Next, call calcFinalLandAllocation for LandAllocator

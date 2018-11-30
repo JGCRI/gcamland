@@ -4,12 +4,14 @@
 \alias{LandAllocator_initCalc}
 \title{LandAllocator_initCalc}
 \usage{
-LandAllocator_initCalc(aLandAllocator, aPeriod)
+LandAllocator_initCalc(aLandAllocator, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{The land allocator for this region}
 
 \item{aPeriod}{Current time period}
+
+\item{aScenarioInfo}{Scenario info object}
 }
 \description{
 LandAllocator_initCalc

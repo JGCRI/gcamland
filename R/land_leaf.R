@@ -157,8 +157,9 @@ LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
 #' @param aParent Parent node (needed for calibrating new techs)
+#' @param aScenarioInfo Scenario info object
 #' @author KVC September 2017
-LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, aParent) {
+LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, aParent, aScenarioInfo) {
   # TODO: move output cost to a member variable; implement absolute cost logit
   if( aChoiceFnAbove$mType == "relative-cost") {
     aLandLeaf$mShareWeight[aPeriod] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
