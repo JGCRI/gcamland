@@ -260,7 +260,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
   for(per in aPeriods){
-    message("Starting period: ", per)
+    message("Starting period: ", per, " (", get_per_to_yr(per, aScenarioInfo$mScenarioType), ")")
 
     #### Step 2: Initial calculation
     # First, call initCalc for AgProductionTechnology (via Sector) and LandAllocator
