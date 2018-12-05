@@ -271,7 +271,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
 
     #### Step 3: Final calculation
     # Next, call calcFinalLandAllocation for LandAllocator
-    LandAllocator_calcFinalLandAllocation(mLandAllocator, per)
+    LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
   }
 
   #### Step 4: Reporting

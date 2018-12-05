@@ -6,7 +6,7 @@
 \usage{
 update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
   aExpectationType = "Perfect", aLinearYears = NULL,
-  aLaggedShareOld = NULL, aUseZeroCost = FALSE)
+  aLaggedShareOld = NULL, aUseZeroCost = FALSE, aShareWtConnection = NULL)
 }
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}

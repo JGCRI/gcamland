@@ -62,6 +62,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
   childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
+
 }
 
 #' LN1_setup
@@ -280,6 +281,15 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
       if(per <= finalCalPer) {
         newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
       }
+    }
+
+    # Read in share weights, if applicable
+    if(aScenarioInfo$mCalibrateShareWt == FALSE) {
+      suppressMessages(read_csv(system.file("extdata", "./initialization-data/CalibratedShareWeights_2010.csv", package = "gcamland"), skip = 3)) %>%
+        filter(name == childName) ->
+        shareWt
+
+      newLeaf$mShareWeight <- shareWt[[c("shareWeight")]]
     }
 
     # Now, add the leaf to the land allocator

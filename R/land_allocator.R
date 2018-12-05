@@ -204,12 +204,13 @@ LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
 #'          Calls calibrateLandAllocator, calcLandShares, and calcLandAllocation
 #' @param aLandAllocator Land allocator for this region.
 #' @param aPeriod Model time period.
+#' @param aScenarioInfo Scenario info object
 #' @author KVC September 2017
-LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
+LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod, aScenarioInfo) {
   # In calibration periods, check land area and set calibration values
   # TODO: Do we really need to do this twice? It also happens in initCalc
   if (aPeriod <= aLandAllocator$mFinalCalPeriod) {
-    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
+    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod, aScenarioInfo)
   }
 
   # Calculate land shares

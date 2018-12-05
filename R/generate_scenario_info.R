@@ -23,6 +23,8 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
 #' FALSE)
 #' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
+#' @param aCalibrateShareWt Boolean indicating that the model should calculate share weights during calibration
+#' @param aShareWtConnection Connection information for where to get the share weights if they are not calibrated.
 #' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
@@ -42,6 +44,8 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aLogitAgroForest_NonPasture = NA,
                          aLogitCropland = NA,
                          aUseZeroCost = FALSE,
+                         aCalibrateShareWt = TRUE,
+                         aShareWtConnection = NA,
                          aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
                          aFileName = NULL,
@@ -60,6 +64,8 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
   self$mLogitCropland <- aLogitCropland
   self$mUseZeroCost <- aUseZeroCost
+  self$mCalibrateShareWt <- aCalibrateShareWt
+  self$mShareWtConnection <- aShareWtConnection
   self$mScenarioType <- aScenarioType
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
@@ -128,6 +134,7 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLogitAgroForest_NonPasture = NA,
                               aLogitCropland = NA,
                               aUseZeroCost = FALSE,
+                              aCalibrateShareWt = TRUE,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
 
@@ -145,7 +152,8 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 #' @export
 #' @author KVC November 2018
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
-                             aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE) {
+                             aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE,
+                             aShareWtConnection = NULL) {
 
   # Set the names of the scenario & file based on read in information
   if(is.null(aName)) {
@@ -164,6 +172,12 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   new_scen_info$mUseZeroCost <- aUseZeroCost
   new_scen_info$mScenarioName <- new_name
   new_scen_info$mFileName <- new_name
+
+  # If a share weight connection is specified, use it instead of calibrating
+  if(!is.null(aShareWtConnection)) {
+    new_scen_info$mCalibrateShareWt <- FALSE
+    new_scen_info$mShareWtConnection <- aShareWtConnection
+  }
 
   return(new_scen_info)
 }
