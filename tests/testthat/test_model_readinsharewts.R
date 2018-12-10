@@ -4,7 +4,7 @@ basepath <- file.path(tempdir(), "outputs")
 test.info <- SCENARIO.INFO
 test.info$mOutputDir <- basepath
 test.info$mCalibrateShareWt <- FALSE
-test.info$mFileName <- "ReadInShareWt"
+test.info$mShareWeights <- get_saved_share_weights()
 
 test_that("Model runs successfully with read in share weights.", {
     ## Run the model to generate outputs.  This needs to be the first test in

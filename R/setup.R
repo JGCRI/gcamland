@@ -285,11 +285,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
     # Read in share weights, if applicable
     if(aScenarioInfo$mCalibrateShareWt == FALSE) {
-      suppressMessages(read_csv(system.file("extdata", "./initialization-data/CalibratedShareWeights_2010.csv", package = "gcamland"), skip = 3)) %>%
-        filter(name == childName) ->
-        shareWt
-
-      newLeaf$mShareWeight <- shareWt[[c("shareWeight")]]
+      newLeaf$mShareWeight <- aScenarioInfo$mShareWeight[childName]
     }
 
     # Now, add the leaf to the land allocator

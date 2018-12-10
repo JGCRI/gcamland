@@ -24,7 +24,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' FALSE)
 #' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
 #' @param aCalibrateShareWt Boolean indicating that the model should calculate share weights during calibration
-#' @param aShareWtConnection Connection information for where to get the share weights if they are not calibrated.
+#' @param aShareWeights Share weights to use instead of calibrating
 #' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
@@ -45,7 +45,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aLogitCropland = NA,
                          aUseZeroCost = FALSE,
                          aCalibrateShareWt = TRUE,
-                         aShareWtConnection = NA,
+                         aShareWeights = NULL,
                          aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
                          aFileName = NULL,
@@ -65,7 +65,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mLogitCropland <- aLogitCropland
   self$mUseZeroCost <- aUseZeroCost
   self$mCalibrateShareWt <- aCalibrateShareWt
-  self$mShareWtConnection <- aShareWtConnection
+  self$mShareWeights <- aShareWeights
   self$mScenarioType <- aScenarioType
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
@@ -147,13 +147,15 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 #' @param aLinearYears New linear years (default = NULL)
 #' @param aLaggedShareOld New lagged share old (default = NULL)
 #' @param aUseZeroCost New cost assumption (default = FALSE)
+#' @param aCalibrateShareWt Flag indicating share weights should be calibrated
+#' @param aShareWts Vector of share weights
 #'
 #' @return Updated scenario info object
 #' @export
 #' @author KVC November 2018
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
                              aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE,
-                             aShareWtConnection = NULL) {
+                             aCalibrateShareWt = TRUE, aShareWts = NULL) {
 
   # Set the names of the scenario & file based on read in information
   if(is.null(aName)) {
@@ -173,11 +175,27 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   new_scen_info$mScenarioName <- new_name
   new_scen_info$mFileName <- new_name
 
-  # If a share weight connection is specified, use it instead of calibrating
-  if(!is.null(aShareWtConnection)) {
-    new_scen_info$mCalibrateShareWt <- FALSE
-    new_scen_info$mShareWtConnection <- aShareWtConnection
+  if(aCalibrateShareWt == FALSE & is.null(aShareWts)) {
+    # If share weights aren't calculated or provided, get them from a file
+    new_scen_info$mShareWeights <- get_saved_share_weights()
   }
 
   return(new_scen_info)
+}
+
+#' get_saved_share_weights
+#'
+#' Read in share weights from a file
+#'
+#' @return Share weights as a named vector
+#' @export
+#'
+#' @author KVC December 2018
+get_saved_share_weights <- function() {
+  temp <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/CalibratedShareWeights_2010.csv", package = "gcamland"), skip = 3))
+
+  shwt_vector <- as.numeric(temp$shareWeight)
+  names(shwt_vector) <- temp$name
+
+  return(shwt_vector)
 }

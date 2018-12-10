@@ -6,7 +6,8 @@
 \usage{
 update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
   aExpectationType = "Perfect", aLinearYears = NULL,
-  aLaggedShareOld = NULL, aUseZeroCost = FALSE, aShareWtConnection = NULL)
+  aLaggedShareOld = NULL, aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
+  aShareWts = NULL)
 }
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}
@@ -20,6 +21,10 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 \item{aLaggedShareOld}{New lagged share old (default = NULL)}
 
 \item{aUseZeroCost}{New cost assumption (default = FALSE)}
+
+\item{aCalibrateShareWt}{Flag indicating share weights should be calibrated}
+
+\item{aShareWts}{Vector of share weights}
 }
 \value{
 Updated scenario info object

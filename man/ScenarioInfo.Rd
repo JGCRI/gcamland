@@ -7,7 +7,7 @@
 ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
-  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWtConnection = NA,
+  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWeights = NULL,
   aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
   aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
   aRegion = DEFAULT.REGION)
@@ -32,7 +32,7 @@ FALSE)}
 
 \item{aCalibrateShareWt}{Boolean indicating that the model should calculate share weights during calibration}
 
-\item{aShareWtConnection}{Connection information for where to get the share weights if they are not calibrated.}
+\item{aShareWeights}{Share weights to use instead of calibrating}
 
 \item{aScenarioType}{Type of scenario to run: either "Reference" or "Hindcast".}
 
