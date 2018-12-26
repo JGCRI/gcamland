@@ -29,7 +29,7 @@ test_that("get_historical_land_data returns filtered FAO data", {
           "Corn", "UnmanagedForest", "Forest", "willow", "biomass")
     expect_equivalent(get_historical_land_data("Australia_NZ", 1972:1984,
                                                all_output_commodities) %>% select(-variable, -obsvar),
-                      readr::read_csv('complex_filter_ref.csv') %>%
+                      readr::read_csv('data/complex_filter_ref.csv', col_types='ccid') %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
 })
 
