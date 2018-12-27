@@ -286,6 +286,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
     # Read in share weights, if applicable
     if(aScenarioInfo$mCalibrateShareWt == FALSE) {
       newLeaf$mShareWeight <- aScenarioInfo$mShareWeight[childName]
+      assertthat::assert_that(!is.na(newLeaf$mShareWeight), msg=paste('Share weight for', childName, 'not found.'))
     }
 
     # Now, add the leaf to the land allocator
