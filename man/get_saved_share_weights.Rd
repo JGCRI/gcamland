@@ -12,6 +12,12 @@ Share weights as a named vector
 \description{
 Read in share weights from a file
 }
+\details{
+Returns a named vector of share weights, where names are the names of LandLeafs.
+The resulting vector can be passed as an argument to the \code{\link{ScenarioInfo}} constructor,
+to the \code{\link{update_scen_info}} function, or set directly to \code{mShareWeights} in a
+\code{\link{ScenarioInfo}} object.
+}
 \author{
 KVC December 2018
 }
