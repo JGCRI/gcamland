@@ -62,6 +62,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
   childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
+
 }
 
 #' LN1_setup
@@ -263,7 +264,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
         parentNames
 
       # Read-in yield, cost, tech change
-      AgProductionTechnology_setup(newLeaf, aAgData, aScenarioInfo$mScenarioType)
+      AgProductionTechnology_setup(newLeaf, aAgData, aScenarioInfo)
     }
 
     # Loop over years and add allocation
@@ -280,6 +281,12 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
       if(per <= finalCalPer) {
         newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
       }
+    }
+
+    # Read in share weights, if applicable
+    if(aScenarioInfo$mCalibrateShareWt == FALSE) {
+      newLeaf$mShareWeight <- aScenarioInfo$mShareWeight[childName]
+      assertthat::assert_that(!is.na(newLeaf$mShareWeight), msg=paste('Share weight for', childName, 'not found.'))
     }
 
     # Now, add the leaf to the land allocator
@@ -342,9 +349,9 @@ LandNode_addChild <- function(aLandNode, aChild, aParentNames) {
 #' @details Setup technology (e.g., CalOutput, technical change, cost, etc.)
 #' @param aLandLeaf Land leaf
 #' @param aAgData Agricultural technology data
-#' @param ascentype Scenario type: either "Reference" or "Hindcast"
+#' @param aScenarioInfo Scenario info object
 #' @author KVC October 2017
-AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
+AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
   # Silence package checks
   per <- year <- AgProductionTechnology <- GCAM_commodity <- NULL
 
@@ -376,7 +383,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
       bioYield
   }
 
-  if(ascentype == "Hindcast") {
+  if(aScenarioInfo$mScenarioType == "Hindcast") {
     # We only have AgProdChange at region level for historical data
     agProdChange %>%
       filter(GCAM_commodity == aLandLeaf$mProductName[1]) ->
@@ -392,11 +399,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
     cost
 
   # Loop through all periods and read in data
-  for(y in YEARS[[ascentype]]) {
-    per <- get_yr_to_per(y, ascentype)
+  for(y in YEARS[[aScenarioInfo$mScenarioType]]) {
+    per <- get_yr_to_per(y, aScenarioInfo$mScenarioType)
 
     # Only read in mCalOutput data for calibration periods
-    if(per <= TIME.PARAMS[[ascentype]]$FINAL_CALIBRATION_PERIOD) {
+    if(per <= TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
       # Get calOutput for this period combination
       calOutput %>%
         filter(year == y) ->
@@ -454,7 +461,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, ascentype) {
       currCost
 
     # Set cost in the LandLeaf
-    if(nrow(currCost)) {
+    if(nrow(currCost) & aScenarioInfo$mUseZeroCost == FALSE) {
       aLandLeaf$mCost[[per]] <- as.numeric(currCost[[c("nonLandVariableCost")]])
     } else {
       aLandLeaf$mCost[[per]] <- 0

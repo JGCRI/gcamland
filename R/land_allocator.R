@@ -34,16 +34,17 @@ LandAllocator <- function(aRegionName, aFinalCalPeriod) {
 #'
 #' @param aLandAllocator The land allocator for this region
 #' @param aPeriod Current time period
+#' @param aScenarioInfo Scenario info object
 #' @details Initial calculations needed for the land allocator.
 #' @author KVC September 2017
-LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
+LandAllocator_initCalc <- function(aLandAllocator, aPeriod, aScenarioInfo) {
   # Call land node's initCalc
   for(child in aLandAllocator$mChildren) {
     LandNode_initCalc(child, aPeriod)
   }
 
   if(aPeriod <= aLandAllocator$mFinalCalPeriod){
-    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
+    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod, aScenarioInfo)
   }
 
 }
@@ -52,11 +53,12 @@ LandAllocator_initCalc <- function(aLandAllocator, aPeriod) {
 #'
 #' @param aLandAllocator Land allocator for this region
 #' @param aPeriod model period.
+#' @param aScenarioInfo Scenario info object
 #' @details Sets initial land shares, sets unmanaged land profit rates,
 #'          calculate calibration prfot rates, then calculates share profit scalers
 #'          that will be used for scaling the profit rates for future year sharing
 #' @author KVC September 2017
-LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
+LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod, aScenarioInfo){
   # /*  Step 1. Calculate and set initial land shares based on read in data for a
   # calibration period. */
   LandAllocator_setInitShares(aLandAllocator, aPeriod)
@@ -93,7 +95,7 @@ LandAllocator_calibrateLandAllocator <- function(aLandAllocator, aPeriod){
   #
   # All of the calibration is captured in the leaves, so the share profit scalers for nodes are
   # set equal to 1.  */
-  LandAllocator_calculateShareWeights(aLandAllocator, aLandAllocator$mChoiceFunction, aPeriod)
+  LandAllocator_calculateShareWeights(aLandAllocator, aLandAllocator$mChoiceFunction, aPeriod, aScenarioInfo)
 }
 
 
@@ -118,13 +120,14 @@ LandAllocator_calculateNodeProfitRates <- function(aLandAllocator, aUnmanagedLan
 #' @param aLandAllocator Land Allocator
 #' @param aChoiceFunction Choice function
 #' @param aPeriod Current time period
+#' @param aScenarioInfo Scenario info object
 #' @details Loop through all children of the land allocator and
 #'          call the calculateShareWeights method on each
 #' @author KVC October 2017
-LandAllocator_calculateShareWeights <- function(aLandAllocator, aChoiceFunction, aPeriod) {
+LandAllocator_calculateShareWeights <- function(aLandAllocator, aChoiceFunction, aPeriod, aScenarioInfo) {
   # Loop through all children
   for(child in aLandAllocator$mChildren) {
-    LandNode_calculateShareWeights(child, aChoiceFunction, aPeriod)
+    LandNode_calculateShareWeights(child, aChoiceFunction, aPeriod, aScenarioInfo)
   }
 }
 
@@ -201,12 +204,13 @@ LandAllocator_calcLandAllocation <- function(aLandAllocator, aPeriod) {
 #'          Calls calibrateLandAllocator, calcLandShares, and calcLandAllocation
 #' @param aLandAllocator Land allocator for this region.
 #' @param aPeriod Model time period.
+#' @param aScenarioInfo Scenario info object
 #' @author KVC September 2017
-LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod) {
+LandAllocator_calcFinalLandAllocation <- function(aLandAllocator, aPeriod, aScenarioInfo) {
   # In calibration periods, check land area and set calibration values
   # TODO: Do we really need to do this twice? It also happens in initCalc
   if (aPeriod <= aLandAllocator$mFinalCalPeriod) {
-    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod)
+    LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod, aScenarioInfo)
   }
 
   # Calculate land shares

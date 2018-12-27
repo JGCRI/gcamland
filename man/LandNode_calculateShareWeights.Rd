@@ -4,7 +4,8 @@
 \alias{LandNode_calculateShareWeights}
 \title{LandNode_calculateShareWeights}
 \usage{
-LandNode_calculateShareWeights(aLandNode, aChoiceFnAbove, aPeriod)
+LandNode_calculateShareWeights(aLandNode, aChoiceFnAbove, aPeriod,
+  aScenarioInfo)
 }
 \arguments{
 \item{aLandNode}{Land node to perform calculations on}
@@ -12,6 +13,8 @@ LandNode_calculateShareWeights(aLandNode, aChoiceFnAbove, aPeriod)
 \item{aChoiceFnAbove}{The discrete choice function from the level above.}
 
 \item{aPeriod}{Period.}
+
+\item{aScenarioInfo}{Scenario info object}
 }
 \description{
 LandNode_calculateShareWeights

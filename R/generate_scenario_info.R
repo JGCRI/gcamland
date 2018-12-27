@@ -22,6 +22,10 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
 #' FALSE)
+#' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
+#' @param aCalibrateShareWt Boolean indicating that the model should calculate share weights during calibration
+#' @param aShareWeights Named vector of share weights to use instead of calibrating.  
+#' The names should correspond to the names of the land leaf nodes.
 #' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
 #' @param aFileName File name
@@ -40,6 +44,9 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
                          aLogitAgroForest = NA,
                          aLogitAgroForest_NonPasture = NA,
                          aLogitCropland = NA,
+                         aUseZeroCost = FALSE,
+                         aCalibrateShareWt = TRUE,
+                         aShareWeights = NULL,
                          aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
                          aFileName = NULL,
@@ -57,6 +64,10 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
   self$mLogitCropland <- aLogitCropland
+  self$mUseZeroCost <- aUseZeroCost
+  self$mCalibrateShareWt <- aCalibrateShareWt
+  self$mShareWeights <- aShareWeights
+  assertthat::assert_that(!is.null(aShareWeights) || aCalibrateShareWt, msg='If aShareWeights is not supplied, the aCalibrateShareWt must be TRUE.')
   self$mScenarioType <- aScenarioType
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
@@ -124,5 +135,81 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLogitAgroForest = NA,
                               aLogitAgroForest_NonPasture = NA,
                               aLogitCropland = NA,
+                              aUseZeroCost = FALSE,
+                              aCalibrateShareWt = TRUE,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
+
+
+#' update_scen_info
+#'
+#' This function takes the default \code{\link{SCENARIO.INFO}} object and updates it based on
+#' user specified arguments. Some updates (e.g., changing from "Reference" to "Hindcast" scenario
+#' type) will automatically update the scenario name and file name.
+#'
+#' @param aName New scenario name (default will generate this from other info)
+#' @param aScenarioType New scenario type (default = \code{DEFAULT.SCENARIO.TYPE})
+#' @param aExpectationType New expectation type (default = "Perfect")
+#' @param aLinearYears New linear years (default = NULL)
+#' @param aLaggedShareOld New lagged share old (default = NULL)
+#' @param aUseZeroCost New cost assumption (default = FALSE)
+#' @param aCalibrateShareWt Flag indicating share weights should be calibrated
+#' @param aShareWts Vector of share weights
+#'
+#' @return Updated scenario info object
+#' @export
+#' @author KVC November 2018
+#' @examples
+#' update_scen_info(aCalibrateShareWt = FALSE, aShareWts=get_saved_share_weights())
+#' update_scen_info(aScenarioType = "Hindcast")
+update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
+                             aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE,
+                             aCalibrateShareWt = TRUE, aShareWts = NULL) {
+
+  # Set the names of the scenario & file based on read in information
+  if(is.null(aName)) {
+    new_name <- paste0(aScenarioType, "_", aExpectationType)
+    new_name <- paste0(aScenarioType, "_", aExpectationType)
+  } else {
+    new_name <- aName
+  }
+
+  # Copy scenario info from default & update all scenario info
+  new_scen_info <- SCENARIO.INFO
+  new_scen_info$mScenarioType <- aScenarioType
+  new_scen_info$mExpectationType <- aExpectationType
+  new_scen_info$mLinearYears <- aLinearYears
+  new_scen_info$mLaggedShareOld <- aLaggedShareOld
+  new_scen_info$mUseZeroCost <- aUseZeroCost
+  new_scen_info$mScenarioName <- new_name
+  new_scen_info$mFileName <- new_name
+
+  if(aCalibrateShareWt == FALSE & is.null(aShareWts)) {
+    # If share weights aren't calculated or provided, get them from a file
+    new_scen_info$mShareWeights <- get_saved_share_weights()
+  }
+
+  return(new_scen_info)
+}
+
+#' get_saved_share_weights
+#'
+#' Read in share weights from a file
+#'
+#' @details Returns a named vector of share weights, where names are the names of LandLeafs.
+#' The resulting vector can be passed as an argument to the \code{\link{ScenarioInfo}} constructor,
+#' to the \code{\link{update_scen_info}} function, or set directly to \code{mShareWeights} in a
+#' \code{\link{ScenarioInfo}} object.
+#'
+#' @return Share weights as a named vector
+#' @export
+#'
+#' @author KVC December 2018
+get_saved_share_weights <- function() {
+  temp <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/CalibratedShareWeights_2010.csv", package = "gcamland"), skip = 3))
+
+  shwt_vector <- as.numeric(temp$shareWeight)
+  names(shwt_vector) <- temp$name
+
+  return(shwt_vector)
+}

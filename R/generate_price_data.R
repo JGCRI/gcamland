@@ -71,6 +71,14 @@ get_hindcast_prices <- function(){
     bind_rows(faoPrices) ->
     faoPrices
 
+  # Forest, Fodder, biomass & Pasture prices are missing from FAO price data set
+  # Read in from a separate file
+  extraPrices <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/price_extra.csv", package = "gcamland"), skip=4))
+
+  faoPrices %>%
+    bind_rows(select(extraPrices, sector, year, price)) ->
+    faoPrices
+
   return(faoPrices)
 }
 

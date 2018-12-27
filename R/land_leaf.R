@@ -157,16 +157,20 @@ LandLeaf_getCalLandAllocation <- function(aLandLeaf, aPeriod) {
 #' @param aChoiceFnAbove Type of logit
 #' @param aPeriod Model time period
 #' @param aParent Parent node (needed for calibrating new techs)
+#' @param aScenarioInfo Scenario info object
 #' @author KVC September 2017
-LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, aParent) {
-  # TODO: move output cost to a member variable; implement absolute cost logit
-  if( aChoiceFnAbove$mType == "relative-cost") {
-    aLandLeaf$mShareWeight[aPeriod] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
-                                                              aLandLeaf$mShare[[aPeriod]],
-                                                              aLandLeaf$mProfitRate[[aPeriod]],
-                                                              aPeriod)
-  } else {
-    print("ERROR: Invalid choice function in LandLeaf_calculateShareWeight")
+LandLeaf_calculateShareWeights <- function(aLandLeaf, aChoiceFnAbove, aPeriod, aParent, aScenarioInfo) {
+  # We only want to calculate share weights if this scenario requires it. Otherwise, we use read in values
+  if(aScenarioInfo$mCalibrateShareWt == TRUE) {
+    # TODO: move output cost to a member variable; implement absolute cost logit
+    if( aChoiceFnAbove$mType == "relative-cost") {
+      aLandLeaf$mShareWeight[aPeriod] <- RelativeCostLogit_calcShareWeight(aChoiceFnAbove,
+                                                                           aLandLeaf$mShare[[aPeriod]],
+                                                                           aLandLeaf$mProfitRate[[aPeriod]],
+                                                                           aPeriod)
+    } else {
+      print("ERROR: Invalid choice function in LandLeaf_calculateShareWeight")
+    }
   }
 
   # if we are in the final calibration year and we have "ghost" share-weights to calculate,
