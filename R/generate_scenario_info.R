@@ -66,6 +66,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
   self$mUseZeroCost <- aUseZeroCost
   self$mCalibrateShareWt <- aCalibrateShareWt
   self$mShareWeights <- aShareWeights
+  assertthat::assert_that(!is.null(aShareWeights) || aCalibrateShareWt, msg='If aShareWeights is not supplied, the aCalibrateShareWt must be TRUE.')
   self$mScenarioType <- aScenarioType
   self$mScenarioName <- aScenarioName
   self$mFileName <- aFileName
