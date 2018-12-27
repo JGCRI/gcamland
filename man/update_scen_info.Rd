@@ -30,7 +30,13 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 Updated scenario info object
 }
 \description{
-update_scen_info
+This function takes the default `SCENARIO.INFO` object and updates it based on
+user specified arguments. Some updates (e.g., changing from "Reference" to "Hindcast" scenario
+type) will automatically update the scenario name and file name.
+}
+\examples{
+update_scen_info(aCalibrateShareWt = FALSE, aShareWts=get_saved_share_weights())
+update_scen_info(aScenarioType = "Hindcast")
 }
 \author{
 KVC November 2018

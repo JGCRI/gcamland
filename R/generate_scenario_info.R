@@ -142,6 +142,10 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 
 #' update_scen_info
 #'
+#' This function takes the default `SCENARIO.INFO` object and updates it based on
+#' user specified arguments. Some updates (e.g., changing from "Reference" to "Hindcast" scenario
+#' type) will automatically update the scenario name and file name.
+#'
 #' @param aName New scenario name (default will generate this from other info)
 #' @param aScenarioType New scenario type (default = `DEFAULT.SCENARIO.TYPE`)
 #' @param aExpectationType New expectation type (default = Perfect)
@@ -154,6 +158,9 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 #' @return Updated scenario info object
 #' @export
 #' @author KVC November 2018
+#' @examples
+#' update_scen_info(aCalibrateShareWt = FALSE, aShareWts=get_saved_share_weights())
+#' update_scen_info(aScenarioType = "Hindcast")
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
                              aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE,
                              aCalibrateShareWt = TRUE, aShareWts = NULL) {
