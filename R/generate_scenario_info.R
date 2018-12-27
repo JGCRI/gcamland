@@ -142,13 +142,13 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 
 #' update_scen_info
 #'
-#' This function takes the default `SCENARIO.INFO` object and updates it based on
+#' This function takes the default \code{\link{SCENARIO.INFO}} object and updates it based on
 #' user specified arguments. Some updates (e.g., changing from "Reference" to "Hindcast" scenario
 #' type) will automatically update the scenario name and file name.
 #'
 #' @param aName New scenario name (default will generate this from other info)
-#' @param aScenarioType New scenario type (default = `DEFAULT.SCENARIO.TYPE`)
-#' @param aExpectationType New expectation type (default = Perfect)
+#' @param aScenarioType New scenario type (default = \code{DEFAULT.SCENARIO.TYPE})
+#' @param aExpectationType New expectation type (default = "Perfect")
 #' @param aLinearYears New linear years (default = NULL)
 #' @param aLaggedShareOld New lagged share old (default = NULL)
 #' @param aUseZeroCost New cost assumption (default = FALSE)

@@ -12,9 +12,9 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}
 
-\item{aScenarioType}{New scenario type (default = `DEFAULT.SCENARIO.TYPE`)}
+\item{aScenarioType}{New scenario type (default = \code{DEFAULT.SCENARIO.TYPE})}
 
-\item{aExpectationType}{New expectation type (default = Perfect)}
+\item{aExpectationType}{New expectation type (default = "Perfect")}
 
 \item{aLinearYears}{New linear years (default = NULL)}
 
@@ -30,7 +30,7 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 Updated scenario info object
 }
 \description{
-This function takes the default `SCENARIO.INFO` object and updates it based on
+This function takes the default \code{\link{SCENARIO.INFO}} object and updates it based on
 user specified arguments. Some updates (e.g., changing from "Reference" to "Hindcast" scenario
 type) will automatically update the scenario name and file name.
 }
