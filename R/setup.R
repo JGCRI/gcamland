@@ -161,11 +161,6 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
       if(nrow(tempGhostShare)) {
         # Loop over years and add ghost share
         for(y in YEARS[[aScenarioInfo$mScenarioType]]) {
-          # Filter for current year
-          tempGhostShare %>%
-            filter(year == y) ->
-            currGhostShare
-
           # Get period
           per <- get_yr_to_per(y, aScenarioInfo$mScenarioType)
 
@@ -173,8 +168,8 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
           if(per <= finalCalPer) {
             # We only want ghost shares in future periods
             newNode$mGhostUnnormalizedShare[per] <- 0.0
-          } else if(nrow(currGhostShare)) {
-            newNode$mGhostUnnormalizedShare[per] <- as.numeric(currGhostShare[[c("default.share")]])
+          } else if(y %in% unique(tempGhostShare$year)) {
+            newNode$mGhostUnnormalizedShare[per] <- as.numeric(tempGhostShare$default.share[tempGhostShare$year == y])
           } else {
             # If nothing is read in, set ghost share to zero
             newNode$mGhostUnnormalizedShare[per] <- 0.0
@@ -249,10 +244,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
       # Check whether leaf is a new technology
       if(!is.null(newTechData)) {
-        newTechData %>%
-          filter(LandLeaf == childName) ->
-          tempNewTech
-        if(nrow(tempNewTech)) {
+         if(childName %in% unique(newTechData$LandLeaf)) {
           newLeaf$mIsNewTech <- TRUE
         }
       }
@@ -269,17 +261,12 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
     # Loop over years and add allocation
     for(y in YEARS[[aScenarioInfo$mScenarioType]]) {
-      # Filter for current year
-      temp %>%
-        filter(year == y) ->
-        curr
-
       # Get period
       per <- get_yr_to_per(y, aScenarioInfo$mScenarioType)
 
       # Save land allocation
       if(per <= finalCalPer) {
-        newLeaf$mCalLandAllocation[per] <- as.numeric(curr[[c("allocation")]])
+        newLeaf$mCalLandAllocation[per] <- as.numeric(temp$allocation[temp$year == y])
       }
     }
 
@@ -371,18 +358,6 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
     aLandLeaf$mProductName <- "biomass"
   }
 
-  # Filter data for current land leaf only
-  calOutput %>%
-    filter(AgProductionTechnology == name) ->
-    calOutput
-
-  # For bioenergy, we read in yield directly
-  if(aLandLeaf$mProductName == "biomass") {
-    bioYield %>%
-      filter(AgProductionTechnology == name) ->
-      bioYield
-  }
-
   if(aScenarioInfo$mScenarioType == "Hindcast") {
     # We only have AgProdChange at region level for historical data
     agProdChange %>%
@@ -394,24 +369,17 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       agProdChange
   }
 
-  cost %>%
-    filter(AgProductionTechnology == name) ->
-    cost
-
   # Loop through all periods and read in data
   for(y in YEARS[[aScenarioInfo$mScenarioType]]) {
     per <- get_yr_to_per(y, aScenarioInfo$mScenarioType)
 
     # Only read in mCalOutput data for calibration periods
     if(per <= TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
-      # Get calOutput for this period combination
-      calOutput %>%
-        filter(year == y) ->
-        currCalOutput
 
       # Set calOutput
-      if(nrow(currCalOutput)) {
-        aLandLeaf$mCalOutput[per] <- as.numeric(currCalOutput[[c("calOutputValue")]])
+      if(y %in% unique(calOutput$year) & name %in% unique(calOutput$AgProductionTechnology)) {
+        aLandLeaf$mCalOutput[per] <- as.numeric(calOutput$calOutputValue[calOutput$year == y &
+                                                                           calOutput$AgProductionTechnology == name])
       } else {
         # TODO: Do we need to flag missing or is it okay to set to -1?
         aLandLeaf$mCalOutput[per] <- -1
@@ -419,15 +387,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
 
       # Get yield for bioenergy for this period combination
       if(aLandLeaf$mProductName == "biomass") {
-        bioYield %>%
-          filter(year == y) ->
-          currBioYield
-
-        # Set bioYield
-        if(nrow(currBioYield)) {
-          aLandLeaf$mYield[per] <- as.numeric(currBioYield[[c("yield")]])
+         # Set bioYield
+        if(y %in% unique(bioYield$year) & name %in% unique(bioYield$AgProductionTechnology)) {
+          aLandLeaf$mYield[per] <- as.numeric(bioYield$yield[bioYield$year == y &
+                                                               bioYield$AgProductionTechnology == name])
         } else {
-          # TODO: Do we need to flag missing or is it okay to set to -1?
           aLandLeaf$mYield[per] <- -1
         }
       }
@@ -437,13 +401,9 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       aLandLeaf$mNonLandCostTechChange[per] <- 0
     } else{
       # Only read in technical change information for future periods
-      agProdChange %>%
-        filter(year == y) ->
-        currAgProdChange
-
-      if(nrow(currAgProdChange)) {
-        aLandLeaf$mAgProdChange[per] <- as.numeric(currAgProdChange[[c("AgProdChange")]])
-      } else{
+      if(y %in% unique(agProdChange$year)) {
+        aLandLeaf$mAgProdChange[per] <- as.numeric(agProdChange$AgProdChange[agProdChange$year == y])
+      } else {
         aLandLeaf$mAgProdChange[per] <- 0.0
       }
 
@@ -455,17 +415,14 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       aLandLeaf$mNonLandCostTechChange[[per]] <- 0
     }
 
-    # Filter cost for current year
-    cost %>%
-      filter(year == y) ->
-      currCost
-
     # Set cost in the LandLeaf
-    if(nrow(currCost) & aScenarioInfo$mUseZeroCost == FALSE) {
-      aLandLeaf$mCost[[per]] <- as.numeric(currCost[[c("nonLandVariableCost")]])
+    if(aScenarioInfo$mUseZeroCost == FALSE & name %in% unique(cost$AgProductionTechnology))  {
+      aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y & cost$AgProductionTechnology == name])
     } else {
-      aLandLeaf$mCost[[per]] <- 0
+      aLandLeaf$mCost[per] <- 0
     }
+
+
   }
 }
 
