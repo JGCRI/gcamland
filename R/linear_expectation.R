@@ -86,11 +86,8 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
     yr <- get_per_to_yr(per, aScenarioInfo$mScenarioType)
     price_table <- PRICES[[aScenarioInfo$mScenarioType]]
     if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
-      price_table %>%
-        filter(year == yr, sector == aLandLeaf$mProductName[1]) ->
-        curr.price
-
-      all.prices$price[all.prices$year == i] <- curr.price[[c("price")]]
+      all.prices$price[all.prices$year == i] <- price_table$price[price_table$year == yr &
+                                                                    price_table$sector == aLandLeaf$mProductName[1]]
     } else {
       # TODO: Figure out what to do if price is missing.
       all.prices$price[all.prices$year == i] <- 1
