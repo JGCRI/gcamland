@@ -244,7 +244,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
       # Check whether leaf is a new technology
       if(!is.null(newTechData)) {
-         if(childName %in% unique(newTechData$LandLeaf)) {
+         if(childName %in% newTechData$LandLeaf) {
           newLeaf$mIsNewTech <- TRUE
         }
       }
@@ -377,7 +377,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
     if(per <= TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
 
       # Set calOutput
-      if(y %in% unique(calOutput$year) & name %in% unique(calOutput$AgProductionTechnology)) {
+      if(y %in% calOutput$year & name %in% calOutput$AgProductionTechnology) {
         aLandLeaf$mCalOutput[per] <- as.numeric(calOutput$calOutputValue[calOutput$year == y &
                                                                            calOutput$AgProductionTechnology == name])
       } else {
@@ -388,7 +388,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       # Get yield for bioenergy for this period combination
       if(aLandLeaf$mProductName == "biomass") {
          # Set bioYield
-        if(y %in% unique(bioYield$year) & name %in% unique(bioYield$AgProductionTechnology)) {
+        if(y %in% bioYield$year & name %in% bioYield$AgProductionTechnology) {
           aLandLeaf$mYield[per] <- as.numeric(bioYield$yield[bioYield$year == y &
                                                                bioYield$AgProductionTechnology == name])
         } else {
@@ -401,7 +401,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       aLandLeaf$mNonLandCostTechChange[per] <- 0
     } else{
       # Only read in technical change information for future periods
-      if(y %in% unique(agProdChange$year)) {
+      if(y %in% agProdChange$year) {
         aLandLeaf$mAgProdChange[per] <- as.numeric(agProdChange$AgProdChange[agProdChange$year == y])
       } else {
         aLandLeaf$mAgProdChange[per] <- 0.0
@@ -416,9 +416,9 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
     }
 
     # Set cost in the LandLeaf
-    if(aScenarioInfo$mUseZeroCost == FALSE &
-       name %in% unique(cost$AgProductionTechnology) & y %in% unique(cost$year))  {
-      aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &
+    if(aScenarioInfo$mUseZeroCost == FALSE &&
+       name %in% unique(cost$AgProductionTechnology) && y %in% unique(cost$year))  {
+      aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &&
                                                                     cost$AgProductionTechnology == name])
     } else {
       aLandLeaf$mCost[per] <- 0
