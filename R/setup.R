@@ -416,8 +416,10 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
     }
 
     # Set cost in the LandLeaf
-    if(aScenarioInfo$mUseZeroCost == FALSE & name %in% unique(cost$AgProductionTechnology))  {
-      aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y & cost$AgProductionTechnology == name])
+    if(aScenarioInfo$mUseZeroCost == FALSE &
+       name %in% unique(cost$AgProductionTechnology) & y %in% unique(cost$year))  {
+      aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &
+                                                                    cost$AgProductionTechnology == name])
     } else {
       aLandLeaf$mCost[per] <- 0
     }
