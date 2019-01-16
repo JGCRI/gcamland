@@ -168,7 +168,7 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
           if(per <= finalCalPer) {
             # We only want ghost shares in future periods
             newNode$mGhostUnnormalizedShare[per] <- 0.0
-          } else if(y %in% unique(tempGhostShare$year)) {
+          } else if(y %in% tempGhostShare$year) {
             newNode$mGhostUnnormalizedShare[per] <- as.numeric(tempGhostShare$default.share[tempGhostShare$year == y])
           } else {
             # If nothing is read in, set ghost share to zero
@@ -417,7 +417,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
 
     # Set cost in the LandLeaf
     if(aScenarioInfo$mUseZeroCost == FALSE &
-       name %in% unique(cost$AgProductionTechnology) & y %in% unique(cost$year))  {
+       name %in% cost$AgProductionTechnology & y %in% cost$year)  {
       aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &
                                                                     cost$AgProductionTechnology == name])
     } else {

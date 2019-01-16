@@ -42,9 +42,7 @@ ReadData_LN0 <- function(aRegionName) {
     data
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   return(data)
 }
@@ -66,15 +64,11 @@ ReadData_LN1_Node <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L211.LN1_ValueLogit.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, data$LandNode1))
   }
 
   return(data)
@@ -97,15 +91,11 @@ ReadData_LN1_LeafChildren <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L211.LN1_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, data$LandNode1))
   }
 
   return(data)
@@ -127,16 +117,12 @@ ReadData_LN2_Node <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L212.LN2_Logit.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    rename(year.fillout = logit.year.fillout) %>%
-    filter(region == aRegionName) ->
-    data
+  data <- rename(data, year.fillout = logit.year.fillout)
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -158,15 +144,11 @@ ReadData_LN2_LandLeaf <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L212.LN2_MgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -188,15 +170,11 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L212.LN2_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -218,16 +196,12 @@ ReadData_LN3_Node <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_Logit.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    rename(year.fillout = logit.year.fillout) %>%
-    filter(region == aRegionName) ->
-    data
+  data <- rename(data, year.fillout = logit.year.fillout)
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -248,16 +222,12 @@ ReadData_LN3_GhostShare <- function(aRegionName) {
   # Read in calibration data
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_DefaultShare.csv", package = "gcamland"), skip = 3))
 
-  # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  # Filter data for the specified region -- using dplyr::filter for data frames with more than 15,000 entries
+  data <- filter(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- filter(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -283,16 +253,12 @@ ReadData_LN3_LandLeaf <- function(aRegionName) {
     bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_MgdAllocation_noncrop.csv", package = "gcamland"), skip = 3))) ->
     data
 
-  # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  # Filter data for the specified region -- using dplyr::filter for data frames with more than 15000 entries
+  data <- filter(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- filter(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -314,15 +280,11 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -343,15 +305,11 @@ ReadData_LN3_NewTech <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L213.LN3_NewTech.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data %>%
-    filter(region == aRegionName) ->
-    data
+  data <- subset(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data %>%
-      filter(grepl(AEZ, LandNode1)) ->
-      data
+    data <- subset(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -385,43 +343,22 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
   suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgYield_bio_ref.csv", package = "gcamland"), skip = 3)) ->
     bioYield
 
-  # Filter data for the specified region
-  calOutput %>%
-    filter(region == aRegionName) ->
-    calOutput
-
-  agProdChange %>%
-    filter(region == aRegionName) ->
-    agProdChange
-
-  cost %>%
-    filter(region == aRegionName) ->
-    cost
-
-  bioYield %>%
-    filter(region == aRegionName) ->
-    bioYield
+  # Filter data for the specified region -- note using dplyr::filter for data frames with more than 15000 entries
+  calOutput <- filter(calOutput, region == aRegionName)
+  agProdChange <- filter(agProdChange, region == aRegionName)
+  cost <- filter(cost, region == aRegionName)
+  bioYield <- subset(bioYield, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    calOutput %>%
-      filter(grepl(AEZ, AgSupplySubsector)) ->
-      calOutput
+    calOutput <- filter(calOutput, grepl(AEZ, AgSupplySubsector))
 
     if(ascentype != "Hindcast") {
       # Hindcast data is only at the region level
-      agProdChange %>%
-        filter(grepl(AEZ, AgSupplySubsector)) ->
-        agProdChange
+      agProdChange <- filter(agProdChange, grepl(AEZ, AgSupplySubsector))
     }
-
-    cost %>%
-      filter(grepl(AEZ, AgSupplySubsector)) ->
-      cost
-
-    bioYield %>%
-      filter(grepl(AEZ, AgSupplySubsector)) ->
-      bioYield
+    cost <- filter(cost, grepl(AEZ, AgSupplySubsector))
+    bioYield <- subset(bioYield, grepl(AEZ, AgSupplySubsector))
   }
 
   return(list(calOutput, agProdChange, cost, bioYield))

@@ -72,7 +72,8 @@ plotRegionalLandAllocation <- function(aScenarioInfo) {
   allLand %>%
     separate(name, into=c("land.type", "AEZ"), sep="AEZ") %>%
     group_by(land.type, year) %>%
-    summarize(land.allocation = sum(land.allocation)) ->
+    summarize(land.allocation = sum(land.allocation)) %>%
+    ungroup() ->
     regionalLand
 
   # Define a color palette (default for ggplot2 is rainbow which is hard to read)
