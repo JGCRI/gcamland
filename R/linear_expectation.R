@@ -85,7 +85,7 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 
     yr <- get_per_to_yr(per, aScenarioInfo$mScenarioType)
     price_table <- PRICES[[aScenarioInfo$mScenarioType]]
-    if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
+    if(aLandLeaf$mProductName[1] %in% price_table$sector) {
       all.prices$price[all.prices$year == i] <- price_table$price[price_table$year == yr &
                                                                     price_table$sector == aLandLeaf$mProductName[1]]
     } else {

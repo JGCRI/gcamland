@@ -62,10 +62,8 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
       previousExpectation <- aLandLeaf$mExpectedPrice[[aPeriod-1]]
 
       # Get new information (i.e., last years actual price)
-      price_table %>%
-        filter(year == prevYear, sector == aLandLeaf$mProductName[1]) ->
-        currPrice
-      newInformation <- currPrice[[c("price")]]
+      newInformation <- price_table$price[price_table$year == prevYear &
+                                            price_table$sector == aLandLeaf$mProductName[1]]
 
       # Calculate expected price
       expectedPrice <- aScenarioInfo$mLaggedShareOld * previousExpectation +
@@ -73,10 +71,8 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
     } else {
       # If we don't have data, then use current price as expectation
       currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-      price_table %>%
-        filter(year == currYear, sector == aLandLeaf$mProductName[1]) ->
-        currPrice
-      expectedPrice <- currPrice[[c("price")]]
+      expectedPrice <- price_table$price[price_table$year == currYear &
+                                           price_table$sector == aLandLeaf$mProductName[1]]
     }
   } else {
     expectedPrice <- 1

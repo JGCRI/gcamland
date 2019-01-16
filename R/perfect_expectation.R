@@ -34,12 +34,8 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioIn
 
   # Get price for this leaf in this period only
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
-  if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
-    price_table %>%
-      filter(year == y, sector == aLandLeaf$mProductName[1]) ->
-      currPrice
-
-    expectedPrice <- currPrice[[c("price")]]
+  if(aLandLeaf$mProductName[1] %in% price_table$sector) {
+    expectedPrice <- price_table$price[price_table$year == y & price_table$sector == aLandLeaf$mProductName[1]]
   } else {
     # TODO: Figure out what to do if price is missing.
     expectedPrice <- 1
