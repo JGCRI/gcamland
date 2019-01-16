@@ -139,7 +139,7 @@ LandNode_calcLandShares <- function(aLandNode, aChoiceFnAbove, aPeriod) {
   # if the current node will have fixed shares.
   # Note: these are the log( unnormalized shares )
   i <- 1
-  unNormalizedShares <- tibble::tibble(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
+  unNormalizedShares <- data.frame(unnormalized.share = rep(NA, length(aLandNode$mChildren)))
   for(child in aLandNode$mChildren) {
     if(inherits(child, "LandNode")) {
       unNormalizedShares$unnormalized.share[i] <- LandNode_calcLandShares(child, aLandNode$mChoiceFunction, aPeriod)

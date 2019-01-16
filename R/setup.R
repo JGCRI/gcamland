@@ -179,10 +179,8 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
     }
 
     # Get the names of the land nodes that are parents to this node
-    temp %>%
-      select(-region, -LandAllocatorRoot, -year.fillout, -logit.exponent, -aColumnName) %>%
-      distinct() ->
-      parentNames
+    parentNames <- temp[ , names(temp) %!in% c("region", "LandAllocatorRoot", "year.fillout",
+                                        "logit.exponent", "aColumnName")]
 
     # Remove the node name from the parent list.
     # TODO: find a more elegant way of doing this
@@ -224,20 +222,16 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
   # Loop over all children in the data set
   for(childName in unique(aData[[aColName]])){
     # Get data for the leaf
-    allData %>%
-      filter(aColName == childName) %>%
-      select(-region, -LandAllocatorRoot, -aColName) ->
-      temp
+    temp <- subset(allData, aColName == childName)
+    temp <- temp[ , names(temp) %!in% c("region", "LandAllocatorRoot", "aColName")]
 
     if(aColName == "UnmanagedLandLeaf") {
       # Create an UnmanagedLandLeaf
       newLeaf <- UnmanagedLandLeaf(temp[[aColName]], finalCalPer)
 
       # Get the names of the land nodes that are parents to this leaf
-      temp %>%
-        select(-UnmanagedLandLeaf, -allocation, -year) %>%
-        distinct() ->
-        parentNames
+      parentNames <- temp[ , names(temp) %!in% c("UnmanagedLandLeaf", "allocation", "year")]
+      parentNames <- unique(parentNames)
 
     } else if (aColName == "LandLeaf") {
       newLeaf <- LandLeaf(temp[[aColName]], finalCalPer, finalPer)
@@ -250,10 +244,8 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
       }
 
       # Get the names of the land nodes that are parents to this leaf
-      temp %>%
-        select(-LandLeaf, -allocation, -year) %>%
-        distinct() ->
-        parentNames
+      parentNames <- temp[ , names(temp) %!in% c("LandLeaf", "allocation", "year")]
+      parentNames <- unique(parentNames)
 
       # Read-in yield, cost, tech change
       AgProductionTechnology_setup(newLeaf, aAgData, aScenarioInfo)
@@ -360,13 +352,9 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
 
   if(aScenarioInfo$mScenarioType == "Hindcast") {
     # We only have AgProdChange at region level for historical data
-    agProdChange %>%
-      filter(GCAM_commodity == aLandLeaf$mProductName[1]) ->
-      agProdChange
+    agProdChange <- filter(agProdChange, GCAM_commodity == aLandLeaf$mProductName[1])
   } else {
-    agProdChange %>%
-      filter(AgProductionTechnology == name) ->
-      agProdChange
+    agProdChange <- filter(agProdChange, AgProductionTechnology == name)
   }
 
   # Loop through all periods and read in data

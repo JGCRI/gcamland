@@ -170,11 +170,11 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName) {
   data <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/L212.LN2_UnmgdAllocation.csv", package = "gcamland"), skip = 3))
 
   # Filter data for the specified region
-  data <- subset(data, region == aRegionName)
+  data <- filter(data, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
-    data <- subset(data, grepl(AEZ, LandNode1))
+    data <- filter(data, grepl(AEZ, LandNode1))
   }
 
   return(data)
@@ -383,9 +383,7 @@ get_AgProdChange <- function(ascentype) {
   }
 
   # Filter for years in model only
-  agProdChange %>%
-    filter(year %in% YEARS[[ascentype]]) ->
-    agProdChange
+  agProdChange <- filter(agProdChange, year %in% YEARS[[ascentype]])
 
   return(agProdChange)
 }
