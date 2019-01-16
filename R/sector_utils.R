@@ -12,14 +12,10 @@ SectorUtils_normalizeShares <- function(aShares) {
   unnormalized.share <- totalValue <- NULL
 
   # Calculate total
-  aShares %>%
-    summarize(total = sum(unnormalized.share)) ->
-    totalValue
+  totalValue <- summarize(aShares, total = sum(unnormalized.share))
 
   # Set up normalized share dataframe
-  aShares %>%
-    rename(share = unnormalized.share) ->
-    normalizedShares
+  normalizedShares <- rename(aShares, share = unnormalized.share)
 
   unnormalizedSum <- 0.0
   i <- 1
