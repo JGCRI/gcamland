@@ -4,7 +4,8 @@
 \alias{printAllOutputs}
 \title{printAllOutputs}
 \usage{
-printAllOutputs(aLandAllocator, aScenarioInfo, aNest, aFileOutput = FALSE)
+printAllOutputs(aLandAllocator, aScenarioInfo, aNest,
+  aFileOutput = FALSE)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator}

@@ -7,10 +7,10 @@
 ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
-  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWeights = NULL,
-  aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
-  aRegion = DEFAULT.REGION)
+  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
+  aShareWeights = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aScenarioName = NULL, aFileName = NULL, aOutputDir = "./outputs",
+  aSerialNum = NA, aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}
