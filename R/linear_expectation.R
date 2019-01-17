@@ -19,7 +19,7 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   startYear <- currYear - aScenarioInfo$mLinearYears
 
   # Create a tibble with yields and years
-  tibble(yield = rep(-1, aScenarioInfo$mLinearYears),
+  data.frame(yield = rep(-1, aScenarioInfo$mLinearYears),
          year = seq(from=startYear, to=(currYear - 1), by=1)) ->
     all.yields
 
@@ -67,9 +67,13 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   startYear <- currYear - aScenarioInfo$mLinearYears
 
   # Create a tibble with yields and years
-  tibble(price = rep(-1, aScenarioInfo$mLinearYears),
+  data.frame(price = rep(-1, aScenarioInfo$mLinearYears),
          year = seq(from=startYear, to=(currYear - 1), by=1)) ->
     all.prices
+
+  # Get prices for this land leaf/scenario type
+  price_table <- PRICES[[aScenarioInfo$mScenarioType]]
+  price_table <- subset(price_table, sector == aLandLeaf$mProductName[1])
 
   # Update yield tibble to include actual yields
   i <- startYear
@@ -82,12 +86,10 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
     } else {
       per <- get_yr_to_per(i, aScenarioInfo$mScenarioType)
     }
-
     yr <- get_per_to_yr(per, aScenarioInfo$mScenarioType)
-    price_table <- PRICES[[aScenarioInfo$mScenarioType]]
+
     if(aLandLeaf$mProductName[1] %in% price_table$sector) {
-      all.prices$price[all.prices$year == i] <- price_table$price[price_table$year == yr &
-                                                                    price_table$sector == aLandLeaf$mProductName[1]]
+      all.prices$price[all.prices$year == i] <- price_table$price[price_table$year == yr]
     } else {
       # TODO: Figure out what to do if price is missing.
       all.prices$price[all.prices$year == i] <- 1
