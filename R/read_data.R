@@ -361,7 +361,8 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
     bioYield <- subset(bioYield, grepl(AEZ, AgSupplySubsector))
   }
 
-  return(list(calOutput, agProdChange, cost, bioYield))
+  return(structure(list(calOutput, agProdChange, cost, bioYield),
+                   rgn = aRegionName, scentype = ascentype))
 }
 
 #' get_AgProdChange

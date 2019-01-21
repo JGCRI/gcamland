@@ -7,15 +7,27 @@
 #'          it in the node, leaf, technology structure
 #' @param aLandAllocator LandAllocator that needs set up
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param agData Ag data read by \code{\link{ReadData_AgProd}}.  The data must
+#' be for the same region and scenario type as the \code{aScenarioInfo} object.
 #' @author KVC October 2017
 #' @export
-LandAllocator_setup <- function(aLandAllocator, aScenarioInfo) {
+LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
   message("Initializing LandAllocator")
 
   scentype <- aScenarioInfo$mScenarioType
 
   # Read ag data -- we'll use this for all leafs, including bioenergy
-  agData <- ReadData_AgProd(aLandAllocator$mRegionName, scentype)
+  if(!is.null(agData)) {
+      ## Validate data, if supplied
+      assert_that(has_attr(agData, 'rgn'))
+      assert_that(attr(agData, 'rgn') == aScenarioInfo$mRegion)
+      assert_that(has_attr(agData, 'scentype'))
+      assert_that(attr(agData, 'scentype') == scentype)
+  }
+  else {
+      ## Read data if not supplied.
+      agData <- ReadData_AgProd(aLandAllocator$mRegionName, scentype)
+  }
 
   # Read in top-level information and save total land
   data <- ReadData_LN0(aLandAllocator$mRegionName)

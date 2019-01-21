@@ -25,3 +25,30 @@ test_that("Output directories are created automatically when model is run", {
 
     unlink(basepath, recursive=TRUE)
 })
+
+
+test_that("Incompatible agData generates an error", {
+    scentype <- test.info$mScenarioType
+    if(scentype == 'Reference') {
+        wrongtype <- 'Hindcast'
+    }
+    else {
+        wrongtype <- 'Reference'
+    }
+    agData_bad <- ReadData_AgProd(test.info$mRegion, wrongtype)
+    expect_error(run_model(test.info, 4, agData=agData_bad))
+
+    agData_worse <- ReadData_AgProd('European Free Trade Association', scentype)
+    expect_error(run_model(test.info, 4, agData=agData_worse))
+
+})
+
+test_that("Results are the same whether agData is read or passed in.", {
+    r1 <- run_model(test.info, 1:4)
+
+    agData <- ReadData_AgProd(test.info$mRegion, test.info$mScenarioType)
+    r2 <- run_model(test.info, 1:4, agData=agData)
+
+    expect_equal(r1, r2)
+
+})

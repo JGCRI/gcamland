@@ -230,15 +230,19 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 #' @param aPeriods Integer vector of periods to run.  Default is all periods
 #' defined for the scenario type.
 #' @param aVerbose If \code{TRUE}, output additional debugging information.
+#' @param agData Ag data read by \code{\link{ReadData_AgProd}}.  The data must
+#' be for the same region and scenario type as the \code{aScenarioInfo} object.
 #' @return Table of model results.
 #' @author KVC
+#' @importFrom assertthat assert_that has_attr
 #' @export
 #' @examples
 #' \dontrun{
 #' run_model(SCENARIO.INFO, aVerbose=TRUE)
 #' run_model(SCENARIO.INFO, aPeriods = 1:5)
 #' }
-run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
+run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL) {
+
   #### Step 1: Setup
   # Ensure that output directories exist
   odnorm <- outdir_setup(aScenarioInfo$mOutputDir)
@@ -255,7 +259,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE) {
   mLandAllocator <-
       LandAllocator(aScenarioInfo$mRegion,
                     TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD)
-  LandAllocator_setup(mLandAllocator, aScenarioInfo)
+  LandAllocator_setup(mLandAllocator, aScenarioInfo, agData)
 
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions
