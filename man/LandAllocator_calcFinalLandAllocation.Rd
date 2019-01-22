@@ -4,8 +4,7 @@
 \alias{LandAllocator_calcFinalLandAllocation}
 \title{LandAllocator_calcFinalLandAllocation}
 \usage{
-LandAllocator_calcFinalLandAllocation(aLandAllocator, aPeriod,
-  aScenarioInfo)
+LandAllocator_calcFinalLandAllocation(aLandAllocator, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator for this region.}

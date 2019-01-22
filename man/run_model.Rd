@@ -4,8 +4,7 @@
 \alias{run_model}
 \title{Run the GCAM land model}
 \usage{
-run_model(aScenarioInfo, aPeriods = NULL, aVerbose = FALSE,
-  agData = NULL)
+run_model(aScenarioInfo, aPeriods = NULL, aVerbose = FALSE, agData = NULL)
 }
 \arguments{
 \item{aScenarioInfo}{A structure containing scenario-related information,
