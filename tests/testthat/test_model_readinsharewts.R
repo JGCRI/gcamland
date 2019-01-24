@@ -52,7 +52,7 @@ test_that("land cover with read in share weights matches reference values", {
   # digits; otherwise spurious mismatches occur)
   # Also first converts integer columns to numeric (otherwise test will
   # fail when comparing <int> and <dbl> columns)
-  DIGITS <- 1
+  DIGITS <- 0
   round_df <- function(x, digits = DIGITS) {
     integer_columns <- sapply(x, class) == "integer"
     x[integer_columns] <- lapply(x[integer_columns], as.numeric)
@@ -66,28 +66,22 @@ test_that("land cover with read in share weights matches reference values", {
   compareData <- read_csv("./comparison-data/LandAllocation_Reference_Perfect.csv", skip = 1, col_types='cdic')
   compareData %>%
     filter(region == SCENARIO.INFO$mRegion,
-           year %in% YEARS[[SCENARIO.INFO$mScenarioType]]) ->
+           year >= 2010) -> # We are using 2010 share weights, so 1990 & 2005 won't match
     compareData
 
   # Look for output data in outputs under top level
   # (as this code will be run in tests/testthat)
   file <- file.path(basepath, paste0("output_", test.info$mScenarioName, ".rds"))
   readRDS(file) %>%
-    select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight) %>%
-    mutate(region = SCENARIO.INFO$mRegion) ->
-    outputData
-
-  compareData %>%
-    select(-land.allocation) %>%
-    left_join(outputData, by=c("region", "year", "name")) %>%
-    replace_na(list(land.allocation = 0)) %>%
-    select(-scenario) ->
+    select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight, -scenario) %>%
+    mutate(region = SCENARIO.INFO$mRegion) %>%
+    filter(year >= 2010) -> # We are using 2010 share weights, so 1990 & 2005 won't match
     outputData
 
   expect_identical(dim(outputData), dim(compareData),
                    info = paste("Dimensions are not the same with read in shareweights"))
 
-  expect_equivalent(round_df(outputData), round_df(compareData),
+  expect_equal(outputData$land.allocation, compareData$land.allocation, tolerance = 0.01,
                     info = paste("read in share weight land allocation doesn't match reference"))
 
 })
