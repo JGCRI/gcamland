@@ -61,15 +61,10 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FA
 
   # Get a list of leafs
   nodes <- unique(aNest$parent)
-  aNest %>%
-    filter(node %!in% nodes) ->
-    leafs
+  leafs <- subset(aNest, node %!in% nodes)
 
   # Some leafs have the same parent node name. We need to add those
-  aNest %>%
-    filter(parent == node) %>%
-    bind_rows(leafs) ->
-    leafs
+  leafs <- rbind(subset(aNest, parent == node), leafs)
 
   # Get data into a data frame
   tibble::tibble(name = leafs$node,

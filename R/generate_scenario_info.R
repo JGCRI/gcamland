@@ -24,7 +24,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' FALSE)
 #' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
 #' @param aCalibrateShareWt Boolean indicating that the model should calculate share weights during calibration
-#' @param aShareWeights Named vector of share weights to use instead of calibrating.  
+#' @param aShareWeights Named vector of share weights to use instead of calibrating.
 #' The names should correspond to the names of the land leaf nodes.
 #' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
 #' @param aScenarioName Complete scenario name, with expectations & logit info
@@ -183,6 +183,8 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   new_scen_info$mUseZeroCost <- aUseZeroCost
   new_scen_info$mScenarioName <- new_name
   new_scen_info$mFileName <- new_name
+  new_scen_info$mCalibrateShareWt <- aCalibrateShareWt
+  new_scen_info$mShareWeights <- aShareWts
 
   if(aCalibrateShareWt == FALSE & is.null(aShareWts)) {
     # If share weights aren't calculated or provided, get them from a file

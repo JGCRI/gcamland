@@ -4,7 +4,7 @@
 \alias{run_model}
 \title{Run the GCAM land model}
 \usage{
-run_model(aScenarioInfo, aPeriods = NULL, aVerbose = FALSE)
+run_model(aScenarioInfo, aPeriods = NULL, aVerbose = FALSE, agData = NULL)
 }
 \arguments{
 \item{aScenarioInfo}{A structure containing scenario-related information,
@@ -15,6 +15,9 @@ default scenario called \code{\link{SCENARIO.INFO}}.}
 defined for the scenario type.}
 
 \item{aVerbose}{If \code{TRUE}, output additional debugging information.}
+
+\item{agData}{Ag data read by \code{\link{ReadData_AgProd}}.  The data must
+be for the same region and scenario type as the \code{aScenarioInfo} object.}
 }
 \value{
 Table of model results.

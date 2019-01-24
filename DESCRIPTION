@@ -20,7 +20,7 @@ Imports:
     foreach (>= 1.4)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: testthat,
     covr
 BugReports: https://github.com/JGCRI/gcamland/issues

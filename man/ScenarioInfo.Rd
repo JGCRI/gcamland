@@ -32,7 +32,8 @@ FALSE)}
 
 \item{aCalibrateShareWt}{Boolean indicating that the model should calculate share weights during calibration}
 
-\item{aShareWeights}{Share weights to use instead of calibrating}
+\item{aShareWeights}{Named vector of share weights to use instead of calibrating.
+The names should correspond to the names of the land leaf nodes.}
 
 \item{aScenarioType}{Type of scenario to run: either "Reference" or "Hindcast".}
 
