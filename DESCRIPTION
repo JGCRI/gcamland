@@ -42,6 +42,7 @@ Collate:
     'perfect_expectation.R'
     'plot_land.R'
     'process_hindcast_data.R'
+    'read_data_subregion.R'
     'read_data.R'
     'relative_cost_logit.R'
     'reporting.R'
