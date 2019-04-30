@@ -11,7 +11,7 @@
 #' be for the same region and scenario type as the \code{aScenarioInfo} object.
 #' @author KVC October 2017
 #' @export
-LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
+LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL, subregion=NULL) {
   message("Initializing LandAllocator")
 
   scentype <- aScenarioInfo$mScenarioType
@@ -30,48 +30,85 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
   }
 
   # Read in top-level information and save total land
-  data <- ReadData_LN0(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    data <- ReadData_LN0_subregion(aLandAllocator$mRegionName)
+  } else{
+    data <- ReadData_LN0(aLandAllocator$mRegionName)
+  }
+
   aLandAllocator$mLandAllocation <- as.numeric(data[[c("landAllocation")]])
 
   # Read information on LN1 nodes (children of land allocator)
-  childrenData <- ReadData_LN1_Node(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN1_Node_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN1_Node(aLandAllocator$mRegionName)
+  }
   LN1_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
             "LandNode1", aScenarioInfo)
 
   # Read information on leaf children of LN1 nodes
-  childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN1_LeafChildren_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName)
+  }
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
   # Read information on LN2 nodes
-  childrenData <- ReadData_LN2_Node(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN2_Node_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN2_Node(aLandAllocator$mRegionName)
+  }
   LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
                  "LandNode2", aScenarioInfo)
 
   # Read information on LandLeaf children of LN2 nodes
-  childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN2_LandLeaf_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
+  }
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData)
 
   # Read information on UnmanagedLandLeaf children of LN2 nodes
-  childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN2_UnmanagedLandLeaf_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  }
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
   # Read information on LN3 nodes
-  childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN3_Node_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName)
+  }
   ghostShareData <- ReadData_LN3_GhostShare(aLandAllocator$mRegionName)
   LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
                  "LandNode3", aScenarioInfo, ghostShareData)
 
   # Read information on LandLeaf children of LN3 nodes
-  childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN3_LandLeaf_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
+  }
   newTechData <- ReadData_LN3_NewTech(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData, newTechData)
 
   # Read information on UnmanagedLandLeaf children of LN3 nodes
-  childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  if(!is.null(subregion)) {
+    childrenData <- ReadData_LN3_UnmanagedLandLeaf_subregion(aLandAllocator$mRegionName)
+  } else {
+    childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  }
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
