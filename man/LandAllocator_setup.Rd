@@ -4,7 +4,8 @@
 \alias{LandAllocator_setup}
 \title{LandAllocator_setup}
 \usage{
-LandAllocator_setup(aLandAllocator, aScenarioInfo, agData = NULL)
+LandAllocator_setup(aLandAllocator, aScenarioInfo, agData = NULL,
+  SUBREGION = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}
@@ -13,6 +14,8 @@ LandAllocator_setup(aLandAllocator, aScenarioInfo, agData = NULL)
 
 \item{agData}{Ag data read by \code{\link{ReadData_AgProd}}.  The data must
 be for the same region and scenario type as the \code{aScenarioInfo} object.}
+
+\item{SUBREGION}{Subregion to read data for}
 }
 \description{
 LandAllocator_setup

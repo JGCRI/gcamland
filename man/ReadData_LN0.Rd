@@ -4,10 +4,14 @@
 \alias{ReadData_LN0}
 \title{ReadData_LN0}
 \usage{
-ReadData_LN0(aRegionName)
+ReadData_LN0(aRegionName, SUBREGION = NULL, subregionData = NULL)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
+
+\item{SUBREGION}{Subregion to read data for}
+
+\item{subregionData}{Subregion data}
 }
 \value{
 Land allocator data

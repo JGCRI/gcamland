@@ -4,10 +4,14 @@
 \alias{ReadData_LN1_Node}
 \title{ReadData_LN1_Node}
 \usage{
-ReadData_LN1_Node(aRegionName)
+ReadData_LN1_Node(aRegionName, SUBREGION = NULL, subregionData = NULL)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
+
+\item{SUBREGION}{Subregion to read data for}
+
+\item{subregionData}{Subregion data}
 }
 \value{
 Data on children of the land allocator
