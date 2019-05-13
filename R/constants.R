@@ -38,3 +38,4 @@ BIOMASS_TYPES <- c("biomass", "willow")
 # * TODO: enable multiple regions as an option
 DEFAULT.REGION <- "USA"
 AEZ <- NULL
+SUBREGION <- 'SnakeRiverBasin'
