@@ -3,1135 +3,1135 @@ Variable ID
 AgYield
 
 region,AgSupplySector,AgSupplySubsector,AgProductionTechnology,year,yield
-USA,biomass,biomassAEZ07,biomassAEZ07,1975,0.0123065
-USA,biomass,biomassAEZ08,biomassAEZ08,1975,0.0113284
-USA,biomass,biomassAEZ09,biomassAEZ09,1975,0.0156476
-USA,biomass,biomassAEZ10,biomassAEZ10,1975,0.0212705
-USA,biomass,biomassAEZ11,biomassAEZ11,1975,0.0212705
+USA,biomass,biomassAEZ07,biomassAEZ07,1975,0.0117317
+USA,biomass,biomassAEZ08,biomassAEZ08,1975,0.0105292
+USA,biomass,biomassAEZ09,biomassAEZ09,1975,0.0146695
+USA,biomass,biomassAEZ10,biomassAEZ10,1975,0.0199187
+USA,biomass,biomassAEZ11,biomassAEZ11,1975,0.0199187
 USA,biomass,biomassAEZ12,biomassAEZ12,1975,0.0192562
-USA,biomass,biomassAEZ13,biomassAEZ13,1975,0.0067014
-USA,biomass,willowAEZ14,willowAEZ14,1975,0.0116559
-USA,biomass,willowAEZ15,willowAEZ15,1975,0.0181908
-USA,biomass,willowAEZ16,willowAEZ16,1975,0.0283895
-Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,1975,0.0059338
-Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,1975,0.0018086
-Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0032731
-Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,1975,0.0028704
-Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,1975,0.0029769
-Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,1975,0.0035744
-Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,1975,0.0040664
-Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,1975,0.0037432
-Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,1975,0.0051704
-Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,1975,0.0070284
-Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,1975,0.0070284
-Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,1975,0.0063628
-Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1975,0.0034703
-Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1975,0.0010578
-Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0072708
-Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,1975,0.0063762
-Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,1975,0.0090331
-Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,1975,0.0083151
-Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,1975,0.0114855
-Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,1975,0.0156128
-Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,1975,0.0043581
-Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,1975,0.0013284
-Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0024039
-Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,1975,0.0021082
-Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,1975,0.0021864
-Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,1975,0.0026253
-Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1975,0.0049031
-Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1975,0.0045134
-Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1975,0.0062342
-Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1975,0.0084745
-Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1975,0.0084745
-Africa_Western,biomass,biomassAEZ01,biomassAEZ01,1975,0.0043896
-Africa_Western,biomass,biomassAEZ02,biomassAEZ02,1975,0.001338
-Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1975,0.0039752
-Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1975,0.003486
-Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1975,0.0036154
-Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1975,0.0043412
-Africa_Western,biomass,biomassAEZ07,biomassAEZ07,1975,0.0030082
-Africa_Western,biomass,biomassAEZ09,biomassAEZ09,1975,0.0038249
-Africa_Western,biomass,biomassAEZ10,biomassAEZ10,1975,0.0051994
-Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,1975,0.0101222
-Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,1975,0.0030853
-Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,1975,0.0055835
-Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,1975,0.0048965
-Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,1975,0.0050782
-Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,1975,0.0060975
-Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,1975,0.0069368
-Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,1975,0.0063855
-Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,1975,0.0088201
-Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,1975,0.0119895
-Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,1975,0.0119895
-Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,1975,0.0108541
-Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,1975,0.0076526
-Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,1975,0.0119431
-Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,1975,0.0086903
-Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,1975,0.0229536
-Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,1975,0.0069963
-Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1975,0.0126614
-Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1975,0.0111036
-Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1975,0.0115156
-Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1975,0.013827
-Brazil,biomass,biomassAEZ10,biomassAEZ10,1975,0.0165607
-Brazil,biomass,biomassAEZ11,biomassAEZ11,1975,0.0165607
-Brazil,biomass,biomassAEZ12,biomassAEZ12,1975,0.0149925
-Canada,biomass,biomassAEZ07,biomassAEZ07,1975,0.0112628
-Canada,biomass,biomassAEZ08,biomassAEZ08,1975,0.0103677
-Canada,biomass,biomassAEZ09,biomassAEZ09,1975,0.0143206
-Canada,biomass,biomassAEZ10,biomassAEZ10,1975,0.0194666
-Canada,biomass,biomassAEZ11,biomassAEZ11,1975,0.0194666
-Canada,biomass,biomassAEZ13,biomassAEZ13,1975,0.0061331
-Canada,biomass,biomassAEZ14,biomassAEZ14,1975,0.0079614
-Canada,biomass,biomassAEZ15,biomassAEZ15,1975,0.0124251
-Canada,biomass,biomassAEZ16,biomassAEZ16,1975,0.0193912
-Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,1975,0.0029223
-Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,1975,0.0030308
-Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,1975,0.0036391
-Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,1975,0.006478
-Central Asia,biomass,biomassAEZ07,biomassAEZ07,1975,0.0064992
-Central Asia,biomass,biomassAEZ08,biomassAEZ08,1975,0.0059827
-Central Asia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0082637
-Central Asia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0112333
-Central Asia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0112333
-Central Asia,biomass,biomassAEZ12,biomassAEZ12,1975,0.0101695
-Central Asia,biomass,biomassAEZ13,biomassAEZ13,1975,0.0035391
-Central Asia,biomass,biomassAEZ14,biomassAEZ14,1975,0.0045942
-Central Asia,biomass,biomassAEZ15,biomassAEZ15,1975,0.0071699
-Central Asia,biomass,biomassAEZ16,biomassAEZ16,1975,0.0111897
-China,biomass,biomassAEZ04,biomassAEZ04,1975,0.0086868
-China,biomass,biomassAEZ05,biomassAEZ05,1975,0.0090092
-China,biomass,biomassAEZ06,biomassAEZ06,1975,0.0108176
-China,biomass,biomassAEZ07,biomassAEZ07,1975,0.0123065
-China,biomass,biomassAEZ08,biomassAEZ08,1975,0.0113284
-China,biomass,biomassAEZ09,biomassAEZ09,1975,0.0156476
-China,biomass,biomassAEZ10,biomassAEZ10,1975,0.0212705
-China,biomass,biomassAEZ11,biomassAEZ11,1975,0.0212705
+USA,biomass,biomassAEZ13,biomassAEZ13,1975,0.0055414
+USA,biomass,willowAEZ14,willowAEZ14,1975,0.0102743
+USA,biomass,willowAEZ15,willowAEZ15,1975,0.0172484
+USA,biomass,willowAEZ16,willowAEZ16,1975,0.0285
+Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,1975,0.0052936
+Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,1975,0.0017007
+Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0030357
+Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,1975,0.0027374
+Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,1975,0.0028901
+Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,1975,0.003558
+Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,1975,0.003752
+Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,1975,0.0033674
+Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,1975,0.0046916
+Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,1975,0.0063704
+Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,1975,0.0063704
+Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,1975,0.0061585
+Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1975,0.0031021
+Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1975,0.0009966
+Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0064421
+Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,1975,0.005809
+Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,1975,0.0079622
+Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,1975,0.007146
+Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,1975,0.009956
+Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,1975,0.0135186
+Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,1975,0.0045746
+Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,1975,0.0014697
+Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0026234
+Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,1975,0.0023656
+Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,1975,0.0024976
+Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,1975,0.0030748
+Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1975,0.0055833
+Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1975,0.0050111
+Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1975,0.0069816
+Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1975,0.0094798
+Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1975,0.0094798
+Africa_Western,biomass,biomassAEZ01,biomassAEZ01,1975,0.0039501
+Africa_Western,biomass,biomassAEZ02,biomassAEZ02,1975,0.0012691
+Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1975,0.0039008
+Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1975,0.0035175
+Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1975,0.0037136
+Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1975,0.0045719
+Africa_Western,biomass,biomassAEZ07,biomassAEZ07,1975,0.0027998
+Africa_Western,biomass,biomassAEZ09,biomassAEZ09,1975,0.0035009
+Africa_Western,biomass,biomassAEZ10,biomassAEZ10,1975,0.0047536
+Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,1975,0.0086446
+Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,1975,0.0027773
+Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,1975,0.0049574
+Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,1975,0.0044702
+Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,1975,0.0047196
+Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,1975,0.0058103
+Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,1975,0.0061272
+Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,1975,0.0054991
+Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,1975,0.0076615
+Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,1975,0.010403
+Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,1975,0.010403
+Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,1975,0.010057
+Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,1975,0.0064098
+Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,1975,0.0105912
+Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,1975,0.0078345
+Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,1975,0.0235589
+Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,1975,0.007569
+Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1975,0.0135105
+Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1975,0.0121827
+Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1975,0.0128621
+Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1975,0.0158348
+Brazil,biomass,biomassAEZ10,biomassAEZ10,1975,0.0164643
+Brazil,biomass,biomassAEZ11,biomassAEZ11,1975,0.0164643
+Brazil,biomass,biomassAEZ12,biomassAEZ12,1975,0.0159167
+Canada,biomass,biomassAEZ07,biomassAEZ07,1975,0.010091
+Canada,biomass,biomassAEZ08,biomassAEZ08,1975,0.0090567
+Canada,biomass,biomassAEZ09,biomassAEZ09,1975,0.0126179
+Canada,biomass,biomassAEZ10,biomassAEZ10,1975,0.017133
+Canada,biomass,biomassAEZ11,biomassAEZ11,1975,0.017133
+Canada,biomass,biomassAEZ13,biomassAEZ13,1975,0.0047664
+Canada,biomass,biomassAEZ14,biomassAEZ14,1975,0.0062881
+Canada,biomass,biomassAEZ15,biomassAEZ15,1975,0.0105566
+Canada,biomass,biomassAEZ16,biomassAEZ16,1975,0.0174429
+Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,1975,0.0023274
+Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,1975,0.0024572
+Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,1975,0.0030251
+Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,1975,0.0052362
+Central Asia,biomass,biomassAEZ07,biomassAEZ07,1975,0.0048979
+Central Asia,biomass,biomassAEZ08,biomassAEZ08,1975,0.0043959
+Central Asia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0061244
+Central Asia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0083159
+Central Asia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0083159
+Central Asia,biomass,biomassAEZ12,biomassAEZ12,1975,0.0080393
+Central Asia,biomass,biomassAEZ13,biomassAEZ13,1975,0.0023135
+Central Asia,biomass,biomassAEZ14,biomassAEZ14,1975,0.0030521
+Central Asia,biomass,biomassAEZ15,biomassAEZ15,1975,0.0051239
+Central Asia,biomass,biomassAEZ16,biomassAEZ16,1975,0.0084663
+China,biomass,biomassAEZ04,biomassAEZ04,1975,0.0085592
+China,biomass,biomassAEZ05,biomassAEZ05,1975,0.0090366
+China,biomass,biomassAEZ06,biomassAEZ06,1975,0.0111251
+China,biomass,biomassAEZ07,biomassAEZ07,1975,0.0117317
+China,biomass,biomassAEZ08,biomassAEZ08,1975,0.0105292
+China,biomass,biomassAEZ09,biomassAEZ09,1975,0.0146695
+China,biomass,biomassAEZ10,biomassAEZ10,1975,0.0199187
+China,biomass,biomassAEZ11,biomassAEZ11,1975,0.0199187
 China,biomass,biomassAEZ12,biomassAEZ12,1975,0.0192562
-China,biomass,willowAEZ13,willowAEZ13,1975,0.0089791
-China,biomass,willowAEZ14,willowAEZ14,1975,0.0116559
-China,biomass,willowAEZ15,willowAEZ15,1975,0.0181908
-China,biomass,willowAEZ16,willowAEZ16,1975,0.0283895
-China,biomass,willowAEZ17,willowAEZ17,1975,0.0206574
-EU-12,biomass,biomassAEZ08,biomassAEZ08,1975,0.0113284
-EU-12,biomass,biomassAEZ09,biomassAEZ09,1975,0.0156476
-EU-12,biomass,biomassAEZ10,biomassAEZ10,1975,0.0212705
-EU-12,biomass,biomassAEZ11,biomassAEZ11,1975,0.0212705
-EU-12,biomass,biomassAEZ15,biomassAEZ15,1975,0.0135764
-EU-12,biomass,biomassAEZ16,biomassAEZ16,1975,0.021188
-EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,1975,0.0168606
-EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,1975,0.0219878
-EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,1975,0.0303711
-EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,1975,0.0412848
-EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,1975,0.0412848
-EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,1975,0.0373752
-EU-15,biomass,willowAEZ13,willowAEZ13,1975,0.0089791
-EU-15,biomass,willowAEZ14,willowAEZ14,1975,0.0116559
-EU-15,biomass,willowAEZ15,willowAEZ15,1975,0.0181908
-EU-15,biomass,willowAEZ16,willowAEZ16,1975,0.0283895
-Europe_Eastern,biomass,willowAEZ08,willowAEZ08,1975,0.0136646
-Europe_Eastern,biomass,willowAEZ09,willowAEZ09,1975,0.0188744
-Europe_Eastern,biomass,willowAEZ10,willowAEZ10,1975,0.0256569
-Europe_Eastern,biomass,willowAEZ16,willowAEZ16,1975,0.0255575
-Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,1975,0.0100643
-Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,1975,0.0092644
-Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,1975,0.0127967
-Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,1975,0.0173951
-Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,1975,0.0173951
-Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,1975,0.0157478
-Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,1975,0.0071142
-Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,1975,0.0111028
-Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,1975,0.0173277
-European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,1975,0.0212705
-European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,1975,0.0067014
-European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,1975,0.0086992
-European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,1975,0.0135764
-European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,1975,0.021188
-India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1975,0.003897
-India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1975,0.0011878
-India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,1975,0.0021496
-India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,1975,0.0018851
-India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,1975,0.0019551
-India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,1975,0.0023475
-India,biomass,biomassAEZ07,biomassAEZ07,1975,0.0101439
-India,biomass,biomassAEZ08,biomassAEZ08,1975,0.0093377
-India,biomass,biomassAEZ09,biomassAEZ09,1975,0.0128979
-India,biomass,biomassAEZ10,biomassAEZ10,1975,0.0175327
-India,biomass,biomassAEZ11,biomassAEZ11,1975,0.0175327
-India,biomass,biomassAEZ12,biomassAEZ12,1975,0.0158723
-India,biomass,biomassAEZ13,biomassAEZ13,1975,0.0055238
-India,biomass,biomassAEZ14,biomassAEZ14,1975,0.0071705
-India,biomass,biomassAEZ15,biomassAEZ15,1975,0.0111907
-India,biomass,biomassAEZ16,biomassAEZ16,1975,0.0174647
+China,biomass,willowAEZ13,willowAEZ13,1975,0.0077879
+China,biomass,willowAEZ14,willowAEZ14,1975,0.0102743
+China,biomass,willowAEZ15,willowAEZ15,1975,0.0172484
+China,biomass,willowAEZ16,willowAEZ16,1975,0.0285
+China,biomass,willowAEZ17,willowAEZ17,1975,0.0210819
+EU-12,biomass,biomassAEZ08,biomassAEZ08,1975,0.0103415
+EU-12,biomass,biomassAEZ09,biomassAEZ09,1975,0.014408
+EU-12,biomass,biomassAEZ10,biomassAEZ10,1975,0.0195637
+EU-12,biomass,biomassAEZ11,biomassAEZ11,1975,0.0195637
+EU-12,biomass,biomassAEZ15,biomassAEZ15,1975,0.0120542
+EU-12,biomass,biomassAEZ16,biomassAEZ16,1975,0.0199175
+EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,1975,0.0174252
+EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,1975,0.0214358
+EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,1975,0.0298648
+EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,1975,0.0405513
+EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,1975,0.0405513
+EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,1975,0.0392025
+EU-15,biomass,willowAEZ13,willowAEZ13,1975,0.0077879
+EU-15,biomass,willowAEZ14,willowAEZ14,1975,0.0102743
+EU-15,biomass,willowAEZ15,willowAEZ15,1975,0.0172484
+EU-15,biomass,willowAEZ16,willowAEZ16,1975,0.0285
+Europe_Eastern,biomass,willowAEZ08,willowAEZ08,1975,0.0106903
+Europe_Eastern,biomass,willowAEZ09,willowAEZ09,1975,0.014894
+Europe_Eastern,biomass,willowAEZ10,willowAEZ10,1975,0.0202235
+Europe_Eastern,biomass,willowAEZ16,willowAEZ16,1975,0.0205893
+Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,1975,0.008952
+Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,1975,0.0080344
+Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,1975,0.0111937
+Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,1975,0.0151992
+Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,1975,0.0151992
+Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,1975,0.0146936
+Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,1975,0.0055784
+Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,1975,0.009365
+Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,1975,0.0154741
+European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,1975,0.0199187
+European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,1975,0.0055414
+European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,1975,0.0073106
+European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,1975,0.012273
+European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,1975,0.020279
+India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1975,0.0035592
+India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1975,0.0011435
+India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,1975,0.0020411
+India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,1975,0.0018405
+India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,1975,0.0019432
+India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,1975,0.0023923
+India,biomass,biomassAEZ07,biomassAEZ07,1975,0.0091353
+India,biomass,biomassAEZ08,biomassAEZ08,1975,0.008199
+India,biomass,biomassAEZ09,biomassAEZ09,1975,0.011423
+India,biomass,biomassAEZ10,biomassAEZ10,1975,0.0155105
+India,biomass,biomassAEZ11,biomassAEZ11,1975,0.0155105
+India,biomass,biomassAEZ12,biomassAEZ12,1975,0.0149946
+India,biomass,biomassAEZ13,biomassAEZ13,1975,0.004315
+India,biomass,biomassAEZ14,biomassAEZ14,1975,0.0056926
+India,biomass,biomassAEZ15,biomassAEZ15,1975,0.0095568
+India,biomass,biomassAEZ16,biomassAEZ16,1975,0.015791
 Indonesia,biomass,biomassAEZ04,biomassAEZ04,1975,0
 Indonesia,biomass,biomassAEZ05,biomassAEZ05,1975,0
 Indonesia,biomass,biomassAEZ06,biomassAEZ06,1975,0
-Japan,biomass,biomassAEZ09,biomassAEZ09,1975,0.0156476
-Japan,biomass,biomassAEZ10,biomassAEZ10,1975,0.0212705
-Japan,biomass,biomassAEZ11,biomassAEZ11,1975,0.0212705
-Japan,biomass,biomassAEZ12,biomassAEZ12,1975,0.0192562
-Japan,biomass,biomassAEZ15,biomassAEZ15,1975,0.0135764
-Mexico,biomass,biomassAEZ01,biomassAEZ01,1975,0.0179577
-Mexico,biomass,biomassAEZ02,biomassAEZ02,1975,0.0054736
-Mexico,biomass,biomassAEZ03,biomassAEZ03,1975,0.0099056
-Mexico,biomass,biomassAEZ04,biomassAEZ04,1975,0.0086868
-Mexico,biomass,biomassAEZ05,biomassAEZ05,1975,0.0090092
-Mexico,biomass,biomassAEZ06,biomassAEZ06,1975,0.0108176
-Mexico,biomass,biomassAEZ07,biomassAEZ07,1975,0.0123065
-Mexico,biomass,biomassAEZ08,biomassAEZ08,1975,0.0113284
-Mexico,biomass,biomassAEZ09,biomassAEZ09,1975,0.0156476
-Mexico,biomass,biomassAEZ10,biomassAEZ10,1975,0.0212705
-Mexico,biomass,biomassAEZ11,biomassAEZ11,1975,0.0212705
+Japan,biomass,biomassAEZ09,biomassAEZ09,1975,0.0114372
+Japan,biomass,biomassAEZ10,biomassAEZ10,1975,0.0155299
+Japan,biomass,biomassAEZ11,biomassAEZ11,1975,0.0155299
+Japan,biomass,biomassAEZ12,biomassAEZ12,1975,0.0150133
+Japan,biomass,biomassAEZ15,biomassAEZ15,1975,0.0095687
+Mexico,biomass,biomassAEZ01,biomassAEZ01,1975,0.0165518
+Mexico,biomass,biomassAEZ02,biomassAEZ02,1975,0.0053178
+Mexico,biomass,biomassAEZ03,biomassAEZ03,1975,0.009492
+Mexico,biomass,biomassAEZ04,biomassAEZ04,1975,0.0085592
+Mexico,biomass,biomassAEZ05,biomassAEZ05,1975,0.0090366
+Mexico,biomass,biomassAEZ06,biomassAEZ06,1975,0.0111251
+Mexico,biomass,biomassAEZ07,biomassAEZ07,1975,0.0117317
+Mexico,biomass,biomassAEZ08,biomassAEZ08,1975,0.0105292
+Mexico,biomass,biomassAEZ09,biomassAEZ09,1975,0.0146695
+Mexico,biomass,biomassAEZ10,biomassAEZ10,1975,0.0199187
+Mexico,biomass,biomassAEZ11,biomassAEZ11,1975,0.0199187
 Mexico,biomass,biomassAEZ12,biomassAEZ12,1975,0.0192562
-Middle East,biomass,biomassAEZ01,biomassAEZ01,1975,0.0107775
-Middle East,biomass,biomassAEZ02,biomassAEZ02,1975,0.003285
-Middle East,biomass,biomassAEZ03,biomassAEZ03,1975,0.005945
-Middle East,biomass,biomassAEZ07,biomassAEZ07,1975,0.0073858
-Middle East,biomass,biomassAEZ08,biomassAEZ08,1975,0.0067988
-Middle East,biomass,biomassAEZ09,biomassAEZ09,1975,0.009391
-Middle East,biomass,biomassAEZ10,biomassAEZ10,1975,0.0127656
-Pakistan,biomass,biomassAEZ01,biomassAEZ01,1975,0.0153474
-Pakistan,biomass,biomassAEZ07,biomassAEZ07,1975,0.0105176
-Pakistan,biomass,biomassAEZ08,biomassAEZ08,1975,0.0096817
-Pakistan,biomass,biomassAEZ09,biomassAEZ09,1975,0.0133731
-Pakistan,biomass,biomassAEZ10,biomassAEZ10,1975,0.0181786
-Pakistan,biomass,biomassAEZ11,biomassAEZ11,1975,0.0181786
-Pakistan,biomass,biomassAEZ12,biomassAEZ12,1975,0.0164571
-Pakistan,biomass,biomassAEZ13,biomassAEZ13,1975,0.0057273
-Pakistan,biomass,biomassAEZ14,biomassAEZ14,1975,0.0074347
-Russia,biomass,biomassAEZ07,biomassAEZ07,1975,0.0083882
-Russia,biomass,biomassAEZ08,biomassAEZ08,1975,0.0077215
-Russia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0106656
-Russia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0144982
-Russia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0144982
-Russia,biomass,biomassAEZ13,biomassAEZ13,1975,0.0045677
-Russia,biomass,biomassAEZ14,biomassAEZ14,1975,0.0059294
-Russia,biomass,biomassAEZ15,biomassAEZ15,1975,0.0092538
-Russia,biomass,biomassAEZ16,biomassAEZ16,1975,0.014442
-South Africa,biomass,biomassAEZ01,biomassAEZ01,1975,0.0161316
-South Africa,biomass,biomassAEZ02,biomassAEZ02,1975,0.004917
-South Africa,biomass,biomassAEZ03,biomassAEZ03,1975,0.0088983
-South Africa,biomass,biomassAEZ04,biomassAEZ04,1975,0.0078034
-South Africa,biomass,biomassAEZ05,biomassAEZ05,1975,0.0080931
-South Africa,biomass,biomassAEZ06,biomassAEZ06,1975,0.0097175
-South Africa,biomass,biomassAEZ07,biomassAEZ07,1975,0.011055
-South Africa,biomass,biomassAEZ08,biomassAEZ08,1975,0.0101764
-South Africa,biomass,biomassAEZ09,biomassAEZ09,1975,0.0140564
-South Africa,biomass,biomassAEZ10,biomassAEZ10,1975,0.0191074
-South Africa,biomass,biomassAEZ11,biomassAEZ11,1975,0.0191074
+Middle East,biomass,biomassAEZ01,biomassAEZ01,1975,0.0095109
+Middle East,biomass,biomassAEZ02,biomassAEZ02,1975,0.0030557
+Middle East,biomass,biomassAEZ03,biomassAEZ03,1975,0.0054543
+Middle East,biomass,biomassAEZ07,biomassAEZ07,1975,0.0067412
+Middle East,biomass,biomassAEZ08,biomassAEZ08,1975,0.0060502
+Middle East,biomass,biomassAEZ09,biomassAEZ09,1975,0.0084293
+Middle East,biomass,biomassAEZ10,biomassAEZ10,1975,0.0114456
+Pakistan,biomass,biomassAEZ01,biomassAEZ01,1975,0.0133055
+Pakistan,biomass,biomassAEZ07,biomassAEZ07,1975,0.0094308
+Pakistan,biomass,biomassAEZ08,biomassAEZ08,1975,0.0084641
+Pakistan,biomass,biomassAEZ09,biomassAEZ09,1975,0.0117924
+Pakistan,biomass,biomassAEZ10,biomassAEZ10,1975,0.0160121
+Pakistan,biomass,biomassAEZ11,biomassAEZ11,1975,0.0160121
+Pakistan,biomass,biomassAEZ12,biomassAEZ12,1975,0.0154795
+Pakistan,biomass,biomassAEZ13,biomassAEZ13,1975,0.0044546
+Pakistan,biomass,biomassAEZ14,biomassAEZ14,1975,0.0058767
+Russia,biomass,biomassAEZ07,biomassAEZ07,1975,0.006548
+Russia,biomass,biomassAEZ08,biomassAEZ08,1975,0.0058768
+Russia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0081877
+Russia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0111175
+Russia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0111175
+Russia,biomass,biomassAEZ13,biomassAEZ13,1975,0.0030929
+Russia,biomass,biomassAEZ14,biomassAEZ14,1975,0.0040803
+Russia,biomass,biomassAEZ15,biomassAEZ15,1975,0.00685
+Russia,biomass,biomassAEZ16,biomassAEZ16,1975,0.0113186
+South Africa,biomass,biomassAEZ01,biomassAEZ01,1975,0.0122517
+South Africa,biomass,biomassAEZ02,biomassAEZ02,1975,0.0039362
+South Africa,biomass,biomassAEZ03,biomassAEZ03,1975,0.0070261
+South Africa,biomass,biomassAEZ04,biomassAEZ04,1975,0.0063356
+South Africa,biomass,biomassAEZ05,biomassAEZ05,1975,0.0066889
+South Africa,biomass,biomassAEZ06,biomassAEZ06,1975,0.0082348
+South Africa,biomass,biomassAEZ07,biomassAEZ07,1975,0.0086839
+South Africa,biomass,biomassAEZ08,biomassAEZ08,1975,0.0077938
+South Africa,biomass,biomassAEZ09,biomassAEZ09,1975,0.0108584
+South Africa,biomass,biomassAEZ10,biomassAEZ10,1975,0.014744
+South Africa,biomass,biomassAEZ11,biomassAEZ11,1975,0.014744
 South America_Northern,biomass,biomassAEZ01,biomassAEZ01,1975,0
 South America_Northern,biomass,biomassAEZ02,biomassAEZ02,1975,0
 South America_Northern,biomass,biomassAEZ03,biomassAEZ03,1975,0
 South America_Northern,biomass,biomassAEZ04,biomassAEZ04,1975,0
 South America_Northern,biomass,biomassAEZ05,biomassAEZ05,1975,0
 South America_Northern,biomass,biomassAEZ06,biomassAEZ06,1975,0
-South America_Southern,biomass,biomassAEZ01,biomassAEZ01,1975,0.0156169
-South America_Southern,biomass,biomassAEZ02,biomassAEZ02,1975,0.0047601
-South America_Southern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0086144
-South America_Southern,biomass,biomassAEZ04,biomassAEZ04,1975,0.0075545
-South America_Southern,biomass,biomassAEZ05,biomassAEZ05,1975,0.0078349
-South America_Southern,biomass,biomassAEZ06,biomassAEZ06,1975,0.0094075
-South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1975,0.0175701
-South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1975,0.0161737
-South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1975,0.0223403
-South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1975,0.0303681
-South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1975,0.0303681
-South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1975,0.0274923
-South America_Southern,biomass,biomassAEZ13,biomassAEZ13,1975,0.0058279
-South America_Southern,biomass,biomassAEZ14,biomassAEZ14,1975,0.0075652
-South America_Southern,biomass,biomassAEZ15,biomassAEZ15,1975,0.0118067
-South America_Southern,biomass,biomassAEZ16,biomassAEZ16,1975,0.0184262
-South America_Southern,biomass,biomassAEZ17,biomassAEZ17,1975,0.0134077
+South America_Southern,biomass,biomassAEZ01,biomassAEZ01,1975,0.0145713
+South America_Southern,biomass,biomassAEZ02,biomassAEZ02,1975,0.0046815
+South America_Southern,biomass,biomassAEZ03,biomassAEZ03,1975,0.0083563
+South America_Southern,biomass,biomassAEZ04,biomassAEZ04,1975,0.007535
+South America_Southern,biomass,biomassAEZ05,biomassAEZ05,1975,0.0079553
+South America_Southern,biomass,biomassAEZ06,biomassAEZ06,1975,0.0097939
+South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1975,0.0177844
+South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1975,0.0159615
+South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1975,0.022238
+South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1975,0.0301954
+South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1975,0.0301954
+South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1975,0.0291911
+South America_Southern,biomass,biomassAEZ13,biomassAEZ13,1975,0.0048783
+South America_Southern,biomass,biomassAEZ14,biomassAEZ14,1975,0.0064358
+South America_Southern,biomass,biomassAEZ15,biomassAEZ15,1975,0.0108044
+South America_Southern,biomass,biomassAEZ16,biomassAEZ16,1975,0.0178525
+South America_Southern,biomass,biomassAEZ17,biomassAEZ17,1975,0.0132057
 South America_Southern,biomass,biomassAEZ18,biomassAEZ18,1975,0
-South Asia,biomass,biomassAEZ03,biomassAEZ03,1975,0.0058155
-South Asia,biomass,biomassAEZ04,biomassAEZ04,1975,0.0050999
-South Asia,biomass,biomassAEZ05,biomassAEZ05,1975,0.0052892
-South Asia,biomass,biomassAEZ06,biomassAEZ06,1975,0.0063509
-South Asia,biomass,biomassAEZ07,biomassAEZ07,1975,0.007225
-South Asia,biomass,biomassAEZ08,biomassAEZ08,1975,0.0066507
-South Asia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0091865
-South Asia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0124876
-South Asia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0124876
-South Asia,biomass,biomassAEZ12,biomassAEZ12,1975,0.0113051
-South Asia,biomass,biomassAEZ13,biomassAEZ13,1975,0.0039343
-South Asia,biomass,biomassAEZ14,biomassAEZ14,1975,0.0051072
-South Asia,biomass,biomassAEZ15,biomassAEZ15,1975,0.0079705
-South Asia,biomass,biomassAEZ16,biomassAEZ16,1975,0.0124392
-South Korea,biomass,biomassAEZ10,biomassAEZ10,1975,0.0163528
-South Korea,biomass,biomassAEZ11,biomassAEZ11,1975,0.0163528
-Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,1975,0.0037048
-Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,1975,0.0038423
-Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,1975,0.0046135
-Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0066734
-Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0090715
-Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0090715
-Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,1975,0.0082125
-Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,1975,0.0057901
-Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,1975,0.0090364
-Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1975,0.0201512
-Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1975,0.0185495
-Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1975,0.0256222
-Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1975,0.0348294
-Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1975,0.0348294
-Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1975,0.0315311
-Argentina,biomass,biomassAEZ13,biomassAEZ13,1975,0.006684
-Argentina,biomass,biomassAEZ14,biomassAEZ14,1975,0.0086766
-Argentina,biomass,biomassAEZ15,biomassAEZ15,1975,0.0135412
-Argentina,biomass,biomassAEZ16,biomassAEZ16,1975,0.021133
-Colombia,biomass,biomassAEZ02,biomassAEZ02,1975,0.0046262
-Colombia,biomass,biomassAEZ03,biomassAEZ03,1975,0.0083721
-Colombia,biomass,biomassAEZ04,biomassAEZ04,1975,0.0073419
-Colombia,biomass,biomassAEZ05,biomassAEZ05,1975,0.0076145
-Colombia,biomass,biomassAEZ06,biomassAEZ06,1975,0.0091428
-Colombia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0179775
-Colombia,biomass,biomassAEZ12,biomassAEZ12,1975,0.016275
-USA,biomass,biomassAEZ07,biomassAEZ07,1990,0.0123065
-USA,biomass,biomassAEZ08,biomassAEZ08,1990,0.0113284
-USA,biomass,biomassAEZ09,biomassAEZ09,1990,0.0156476
-USA,biomass,biomassAEZ10,biomassAEZ10,1990,0.0212705
-USA,biomass,biomassAEZ11,biomassAEZ11,1990,0.0212705
+South Asia,biomass,biomassAEZ03,biomassAEZ03,1975,0.0058972
+South Asia,biomass,biomassAEZ04,biomassAEZ04,1975,0.0053177
+South Asia,biomass,biomassAEZ05,biomassAEZ05,1975,0.0056143
+South Asia,biomass,biomassAEZ06,biomassAEZ06,1975,0.0069118
+South Asia,biomass,biomassAEZ07,biomassAEZ07,1975,0.0072887
+South Asia,biomass,biomassAEZ08,biomassAEZ08,1975,0.0065416
+South Asia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0091139
+South Asia,biomass,biomassAEZ10,biomassAEZ10,1975,0.0123752
+South Asia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0123752
+South Asia,biomass,biomassAEZ12,biomassAEZ12,1975,0.0119635
+South Asia,biomass,biomassAEZ13,biomassAEZ13,1975,0.0034428
+South Asia,biomass,biomassAEZ14,biomassAEZ14,1975,0.0045419
+South Asia,biomass,biomassAEZ15,biomassAEZ15,1975,0.007625
+South Asia,biomass,biomassAEZ16,biomassAEZ16,1975,0.012599
+South Korea,biomass,biomassAEZ10,biomassAEZ10,1975,0.0128613
+South Korea,biomass,biomassAEZ11,biomassAEZ11,1975,0.0128613
+Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,1975,0.0035146
+Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,1975,0.0037106
+Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,1975,0.0045682
+Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,1975,0.0060236
+Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,1975,0.008179
+Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,1975,0.008179
+Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,1975,0.007907
+Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,1975,0.0050395
+Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,1975,0.008327
+Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1975,0.0202017
+Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1975,0.0181311
+Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1975,0.0252606
+Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1975,0.0342996
+Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1975,0.0342996
+Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1975,0.0331588
+Argentina,biomass,biomassAEZ13,biomassAEZ13,1975,0.0055414
+Argentina,biomass,biomassAEZ14,biomassAEZ14,1975,0.0073106
+Argentina,biomass,biomassAEZ15,biomassAEZ15,1975,0.012273
+Argentina,biomass,biomassAEZ16,biomassAEZ16,1975,0.020279
+Colombia,biomass,biomassAEZ02,biomassAEZ02,1975,0.004258
+Colombia,biomass,biomassAEZ03,biomassAEZ03,1975,0.0076004
+Colombia,biomass,biomassAEZ04,biomassAEZ04,1975,0.0068535
+Colombia,biomass,biomassAEZ05,biomassAEZ05,1975,0.0072357
+Colombia,biomass,biomassAEZ06,biomassAEZ06,1975,0.008908
+Colombia,biomass,biomassAEZ11,biomassAEZ11,1975,0.0159492
+Colombia,biomass,biomassAEZ12,biomassAEZ12,1975,0.0154187
+USA,biomass,biomassAEZ07,biomassAEZ07,1990,0.0117317
+USA,biomass,biomassAEZ08,biomassAEZ08,1990,0.0105292
+USA,biomass,biomassAEZ09,biomassAEZ09,1990,0.0146695
+USA,biomass,biomassAEZ10,biomassAEZ10,1990,0.0199187
+USA,biomass,biomassAEZ11,biomassAEZ11,1990,0.0199187
 USA,biomass,biomassAEZ12,biomassAEZ12,1990,0.0192562
-USA,biomass,biomassAEZ13,biomassAEZ13,1990,0.0067014
-USA,biomass,willowAEZ14,willowAEZ14,1990,0.0116559
-USA,biomass,willowAEZ15,willowAEZ15,1990,0.0181908
-USA,biomass,willowAEZ16,willowAEZ16,1990,0.0283895
-Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,1990,0.0059338
-Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,1990,0.0018086
-Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0032731
-Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,1990,0.0028704
-Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,1990,0.0029769
-Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,1990,0.0035744
-Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,1990,0.0040664
-Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,1990,0.0037432
-Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,1990,0.0051704
-Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,1990,0.0070284
-Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,1990,0.0070284
-Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,1990,0.0063628
-Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1990,0.0034703
-Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1990,0.0010578
-Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0072708
-Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,1990,0.0063762
-Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,1990,0.0090331
-Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,1990,0.0083151
-Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,1990,0.0114855
-Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,1990,0.0156128
-Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,1990,0.0043581
-Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,1990,0.0013284
-Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0024039
-Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,1990,0.0021082
-Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,1990,0.0021864
-Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,1990,0.0026253
-Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1990,0.0049031
-Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1990,0.0045134
-Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1990,0.0062342
-Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1990,0.0084745
-Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1990,0.0084745
-Africa_Western,biomass,biomassAEZ01,biomassAEZ01,1990,0.0043896
-Africa_Western,biomass,biomassAEZ02,biomassAEZ02,1990,0.001338
-Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1990,0.0039752
-Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1990,0.003486
-Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1990,0.0036154
-Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1990,0.0043412
-Africa_Western,biomass,biomassAEZ07,biomassAEZ07,1990,0.0030082
-Africa_Western,biomass,biomassAEZ09,biomassAEZ09,1990,0.0038249
-Africa_Western,biomass,biomassAEZ10,biomassAEZ10,1990,0.0051994
-Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,1990,0.0101222
-Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,1990,0.0030853
-Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,1990,0.0055835
-Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,1990,0.0048965
-Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,1990,0.0050782
-Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,1990,0.0060975
-Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,1990,0.0069368
-Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,1990,0.0063855
-Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,1990,0.0088201
-Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,1990,0.0119895
-Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,1990,0.0119895
-Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,1990,0.0108541
-Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,1990,0.0076526
-Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,1990,0.0119431
-Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,1990,0.0086903
-Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,1990,0.0229536
-Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,1990,0.0069963
-Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1990,0.0126614
-Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1990,0.0111036
-Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1990,0.0115156
-Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1990,0.013827
-Brazil,biomass,biomassAEZ10,biomassAEZ10,1990,0.0165607
-Brazil,biomass,biomassAEZ11,biomassAEZ11,1990,0.0165607
-Brazil,biomass,biomassAEZ12,biomassAEZ12,1990,0.0149925
-Canada,biomass,biomassAEZ07,biomassAEZ07,1990,0.0112628
-Canada,biomass,biomassAEZ08,biomassAEZ08,1990,0.0103677
-Canada,biomass,biomassAEZ09,biomassAEZ09,1990,0.0143206
-Canada,biomass,biomassAEZ10,biomassAEZ10,1990,0.0194666
-Canada,biomass,biomassAEZ11,biomassAEZ11,1990,0.0194666
-Canada,biomass,biomassAEZ13,biomassAEZ13,1990,0.0061331
-Canada,biomass,biomassAEZ14,biomassAEZ14,1990,0.0079614
-Canada,biomass,biomassAEZ15,biomassAEZ15,1990,0.0124251
-Canada,biomass,biomassAEZ16,biomassAEZ16,1990,0.0193912
-Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,1990,0.0029223
-Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,1990,0.0030308
-Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,1990,0.0036391
-Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,1990,0.006478
-Central Asia,biomass,biomassAEZ07,biomassAEZ07,1990,0.0064992
-Central Asia,biomass,biomassAEZ08,biomassAEZ08,1990,0.0059827
-Central Asia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0082637
-Central Asia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0112333
-Central Asia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0112333
-Central Asia,biomass,biomassAEZ12,biomassAEZ12,1990,0.0101695
-Central Asia,biomass,biomassAEZ13,biomassAEZ13,1990,0.0035391
-Central Asia,biomass,biomassAEZ14,biomassAEZ14,1990,0.0045942
-Central Asia,biomass,biomassAEZ15,biomassAEZ15,1990,0.0071699
-Central Asia,biomass,biomassAEZ16,biomassAEZ16,1990,0.0111897
-China,biomass,biomassAEZ04,biomassAEZ04,1990,0.0086868
-China,biomass,biomassAEZ05,biomassAEZ05,1990,0.0090092
-China,biomass,biomassAEZ06,biomassAEZ06,1990,0.0108176
-China,biomass,biomassAEZ07,biomassAEZ07,1990,0.0123065
-China,biomass,biomassAEZ08,biomassAEZ08,1990,0.0113284
-China,biomass,biomassAEZ09,biomassAEZ09,1990,0.0156476
-China,biomass,biomassAEZ10,biomassAEZ10,1990,0.0212705
-China,biomass,biomassAEZ11,biomassAEZ11,1990,0.0212705
+USA,biomass,biomassAEZ13,biomassAEZ13,1990,0.0055414
+USA,biomass,willowAEZ14,willowAEZ14,1990,0.0102743
+USA,biomass,willowAEZ15,willowAEZ15,1990,0.0172484
+USA,biomass,willowAEZ16,willowAEZ16,1990,0.0285
+Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,1990,0.0052936
+Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,1990,0.0017007
+Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0030357
+Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,1990,0.0027374
+Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,1990,0.0028901
+Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,1990,0.003558
+Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,1990,0.003752
+Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,1990,0.0033674
+Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,1990,0.0046916
+Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,1990,0.0063704
+Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,1990,0.0063704
+Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,1990,0.0061585
+Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1990,0.0031021
+Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1990,0.0009966
+Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0064421
+Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,1990,0.005809
+Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,1990,0.0079622
+Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,1990,0.007146
+Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,1990,0.009956
+Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,1990,0.0135186
+Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,1990,0.0045746
+Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,1990,0.0014697
+Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0026234
+Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,1990,0.0023656
+Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,1990,0.0024976
+Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,1990,0.0030748
+Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1990,0.0055833
+Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1990,0.0050111
+Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1990,0.0069816
+Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1990,0.0094798
+Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1990,0.0094798
+Africa_Western,biomass,biomassAEZ01,biomassAEZ01,1990,0.0039501
+Africa_Western,biomass,biomassAEZ02,biomassAEZ02,1990,0.0012691
+Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1990,0.0039008
+Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1990,0.0035175
+Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1990,0.0037136
+Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1990,0.0045719
+Africa_Western,biomass,biomassAEZ07,biomassAEZ07,1990,0.0027998
+Africa_Western,biomass,biomassAEZ09,biomassAEZ09,1990,0.0035009
+Africa_Western,biomass,biomassAEZ10,biomassAEZ10,1990,0.0047536
+Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,1990,0.0086446
+Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,1990,0.0027773
+Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,1990,0.0049574
+Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,1990,0.0044702
+Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,1990,0.0047196
+Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,1990,0.0058103
+Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,1990,0.0061272
+Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,1990,0.0054991
+Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,1990,0.0076615
+Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,1990,0.010403
+Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,1990,0.010403
+Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,1990,0.010057
+Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,1990,0.0064098
+Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,1990,0.0105912
+Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,1990,0.0078345
+Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,1990,0.0235589
+Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,1990,0.007569
+Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,1990,0.0135105
+Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,1990,0.0121827
+Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,1990,0.0128621
+Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,1990,0.0158348
+Brazil,biomass,biomassAEZ10,biomassAEZ10,1990,0.0164643
+Brazil,biomass,biomassAEZ11,biomassAEZ11,1990,0.0164643
+Brazil,biomass,biomassAEZ12,biomassAEZ12,1990,0.0159167
+Canada,biomass,biomassAEZ07,biomassAEZ07,1990,0.010091
+Canada,biomass,biomassAEZ08,biomassAEZ08,1990,0.0090567
+Canada,biomass,biomassAEZ09,biomassAEZ09,1990,0.0126179
+Canada,biomass,biomassAEZ10,biomassAEZ10,1990,0.017133
+Canada,biomass,biomassAEZ11,biomassAEZ11,1990,0.017133
+Canada,biomass,biomassAEZ13,biomassAEZ13,1990,0.0047664
+Canada,biomass,biomassAEZ14,biomassAEZ14,1990,0.0062881
+Canada,biomass,biomassAEZ15,biomassAEZ15,1990,0.0105566
+Canada,biomass,biomassAEZ16,biomassAEZ16,1990,0.0174429
+Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,1990,0.0023274
+Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,1990,0.0024572
+Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,1990,0.0030251
+Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,1990,0.0052362
+Central Asia,biomass,biomassAEZ07,biomassAEZ07,1990,0.0048979
+Central Asia,biomass,biomassAEZ08,biomassAEZ08,1990,0.0043959
+Central Asia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0061244
+Central Asia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0083159
+Central Asia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0083159
+Central Asia,biomass,biomassAEZ12,biomassAEZ12,1990,0.0080393
+Central Asia,biomass,biomassAEZ13,biomassAEZ13,1990,0.0023135
+Central Asia,biomass,biomassAEZ14,biomassAEZ14,1990,0.0030521
+Central Asia,biomass,biomassAEZ15,biomassAEZ15,1990,0.0051239
+Central Asia,biomass,biomassAEZ16,biomassAEZ16,1990,0.0084663
+China,biomass,biomassAEZ04,biomassAEZ04,1990,0.0085592
+China,biomass,biomassAEZ05,biomassAEZ05,1990,0.0090366
+China,biomass,biomassAEZ06,biomassAEZ06,1990,0.0111251
+China,biomass,biomassAEZ07,biomassAEZ07,1990,0.0117317
+China,biomass,biomassAEZ08,biomassAEZ08,1990,0.0105292
+China,biomass,biomassAEZ09,biomassAEZ09,1990,0.0146695
+China,biomass,biomassAEZ10,biomassAEZ10,1990,0.0199187
+China,biomass,biomassAEZ11,biomassAEZ11,1990,0.0199187
 China,biomass,biomassAEZ12,biomassAEZ12,1990,0.0192562
-China,biomass,willowAEZ13,willowAEZ13,1990,0.0089791
-China,biomass,willowAEZ14,willowAEZ14,1990,0.0116559
-China,biomass,willowAEZ15,willowAEZ15,1990,0.0181908
-China,biomass,willowAEZ16,willowAEZ16,1990,0.0283895
-China,biomass,willowAEZ17,willowAEZ17,1990,0.0206574
-EU-12,biomass,biomassAEZ08,biomassAEZ08,1990,0.0113284
-EU-12,biomass,biomassAEZ09,biomassAEZ09,1990,0.0156476
-EU-12,biomass,biomassAEZ10,biomassAEZ10,1990,0.0212705
-EU-12,biomass,biomassAEZ11,biomassAEZ11,1990,0.0212705
-EU-12,biomass,biomassAEZ15,biomassAEZ15,1990,0.0135764
-EU-12,biomass,biomassAEZ16,biomassAEZ16,1990,0.021188
-EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,1990,0.0168606
-EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,1990,0.0219878
-EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,1990,0.0303711
-EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,1990,0.0412848
-EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,1990,0.0412848
-EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,1990,0.0373752
-EU-15,biomass,willowAEZ13,willowAEZ13,1990,0.0089791
-EU-15,biomass,willowAEZ14,willowAEZ14,1990,0.0116559
-EU-15,biomass,willowAEZ15,willowAEZ15,1990,0.0181908
-EU-15,biomass,willowAEZ16,willowAEZ16,1990,0.0283895
-Europe_Eastern,biomass,willowAEZ08,willowAEZ08,1990,0.0136646
-Europe_Eastern,biomass,willowAEZ09,willowAEZ09,1990,0.0188744
-Europe_Eastern,biomass,willowAEZ10,willowAEZ10,1990,0.0256569
-Europe_Eastern,biomass,willowAEZ16,willowAEZ16,1990,0.0255575
-Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,1990,0.0100643
-Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,1990,0.0092644
-Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,1990,0.0127967
-Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,1990,0.0173951
-Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,1990,0.0173951
-Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,1990,0.0157478
-Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,1990,0.0071142
-Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,1990,0.0111028
-Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,1990,0.0173277
-European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,1990,0.0212705
-European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,1990,0.0067014
-European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,1990,0.0086992
-European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,1990,0.0135764
-European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,1990,0.021188
-India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1990,0.003897
-India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1990,0.0011878
-India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,1990,0.0021496
-India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,1990,0.0018851
-India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,1990,0.0019551
-India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,1990,0.0023475
-India,biomass,biomassAEZ07,biomassAEZ07,1990,0.0101439
-India,biomass,biomassAEZ08,biomassAEZ08,1990,0.0093377
-India,biomass,biomassAEZ09,biomassAEZ09,1990,0.0128979
-India,biomass,biomassAEZ10,biomassAEZ10,1990,0.0175327
-India,biomass,biomassAEZ11,biomassAEZ11,1990,0.0175327
-India,biomass,biomassAEZ12,biomassAEZ12,1990,0.0158723
-India,biomass,biomassAEZ13,biomassAEZ13,1990,0.0055238
-India,biomass,biomassAEZ14,biomassAEZ14,1990,0.0071705
-India,biomass,biomassAEZ15,biomassAEZ15,1990,0.0111907
-India,biomass,biomassAEZ16,biomassAEZ16,1990,0.0174647
+China,biomass,willowAEZ13,willowAEZ13,1990,0.0077879
+China,biomass,willowAEZ14,willowAEZ14,1990,0.0102743
+China,biomass,willowAEZ15,willowAEZ15,1990,0.0172484
+China,biomass,willowAEZ16,willowAEZ16,1990,0.0285
+China,biomass,willowAEZ17,willowAEZ17,1990,0.0210819
+EU-12,biomass,biomassAEZ08,biomassAEZ08,1990,0.0103415
+EU-12,biomass,biomassAEZ09,biomassAEZ09,1990,0.014408
+EU-12,biomass,biomassAEZ10,biomassAEZ10,1990,0.0195637
+EU-12,biomass,biomassAEZ11,biomassAEZ11,1990,0.0195637
+EU-12,biomass,biomassAEZ15,biomassAEZ15,1990,0.0120542
+EU-12,biomass,biomassAEZ16,biomassAEZ16,1990,0.0199175
+EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,1990,0.0174252
+EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,1990,0.0214358
+EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,1990,0.0298648
+EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,1990,0.0405513
+EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,1990,0.0405513
+EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,1990,0.0392025
+EU-15,biomass,willowAEZ13,willowAEZ13,1990,0.0077879
+EU-15,biomass,willowAEZ14,willowAEZ14,1990,0.0102743
+EU-15,biomass,willowAEZ15,willowAEZ15,1990,0.0172484
+EU-15,biomass,willowAEZ16,willowAEZ16,1990,0.0285
+Europe_Eastern,biomass,willowAEZ08,willowAEZ08,1990,0.0106903
+Europe_Eastern,biomass,willowAEZ09,willowAEZ09,1990,0.014894
+Europe_Eastern,biomass,willowAEZ10,willowAEZ10,1990,0.0202235
+Europe_Eastern,biomass,willowAEZ16,willowAEZ16,1990,0.0205893
+Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,1990,0.008952
+Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,1990,0.0080344
+Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,1990,0.0111937
+Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,1990,0.0151992
+Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,1990,0.0151992
+Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,1990,0.0146936
+Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,1990,0.0055784
+Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,1990,0.009365
+Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,1990,0.0154741
+European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,1990,0.0199187
+European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,1990,0.0055414
+European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,1990,0.0073106
+European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,1990,0.012273
+European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,1990,0.020279
+India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,1990,0.0035592
+India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,1990,0.0011435
+India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,1990,0.0020411
+India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,1990,0.0018405
+India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,1990,0.0019432
+India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,1990,0.0023923
+India,biomass,biomassAEZ07,biomassAEZ07,1990,0.0091353
+India,biomass,biomassAEZ08,biomassAEZ08,1990,0.008199
+India,biomass,biomassAEZ09,biomassAEZ09,1990,0.011423
+India,biomass,biomassAEZ10,biomassAEZ10,1990,0.0155105
+India,biomass,biomassAEZ11,biomassAEZ11,1990,0.0155105
+India,biomass,biomassAEZ12,biomassAEZ12,1990,0.0149946
+India,biomass,biomassAEZ13,biomassAEZ13,1990,0.004315
+India,biomass,biomassAEZ14,biomassAEZ14,1990,0.0056926
+India,biomass,biomassAEZ15,biomassAEZ15,1990,0.0095568
+India,biomass,biomassAEZ16,biomassAEZ16,1990,0.015791
 Indonesia,biomass,biomassAEZ04,biomassAEZ04,1990,0
 Indonesia,biomass,biomassAEZ05,biomassAEZ05,1990,0
 Indonesia,biomass,biomassAEZ06,biomassAEZ06,1990,0
-Japan,biomass,biomassAEZ09,biomassAEZ09,1990,0.0156476
-Japan,biomass,biomassAEZ10,biomassAEZ10,1990,0.0212705
-Japan,biomass,biomassAEZ11,biomassAEZ11,1990,0.0212705
-Japan,biomass,biomassAEZ12,biomassAEZ12,1990,0.0192562
-Japan,biomass,biomassAEZ15,biomassAEZ15,1990,0.0135764
-Mexico,biomass,biomassAEZ01,biomassAEZ01,1990,0.0179577
-Mexico,biomass,biomassAEZ02,biomassAEZ02,1990,0.0054736
-Mexico,biomass,biomassAEZ03,biomassAEZ03,1990,0.0099056
-Mexico,biomass,biomassAEZ04,biomassAEZ04,1990,0.0086868
-Mexico,biomass,biomassAEZ05,biomassAEZ05,1990,0.0090092
-Mexico,biomass,biomassAEZ06,biomassAEZ06,1990,0.0108176
-Mexico,biomass,biomassAEZ07,biomassAEZ07,1990,0.0123065
-Mexico,biomass,biomassAEZ08,biomassAEZ08,1990,0.0113284
-Mexico,biomass,biomassAEZ09,biomassAEZ09,1990,0.0156476
-Mexico,biomass,biomassAEZ10,biomassAEZ10,1990,0.0212705
-Mexico,biomass,biomassAEZ11,biomassAEZ11,1990,0.0212705
+Japan,biomass,biomassAEZ09,biomassAEZ09,1990,0.0114372
+Japan,biomass,biomassAEZ10,biomassAEZ10,1990,0.0155299
+Japan,biomass,biomassAEZ11,biomassAEZ11,1990,0.0155299
+Japan,biomass,biomassAEZ12,biomassAEZ12,1990,0.0150133
+Japan,biomass,biomassAEZ15,biomassAEZ15,1990,0.0095687
+Mexico,biomass,biomassAEZ01,biomassAEZ01,1990,0.0165518
+Mexico,biomass,biomassAEZ02,biomassAEZ02,1990,0.0053178
+Mexico,biomass,biomassAEZ03,biomassAEZ03,1990,0.009492
+Mexico,biomass,biomassAEZ04,biomassAEZ04,1990,0.0085592
+Mexico,biomass,biomassAEZ05,biomassAEZ05,1990,0.0090366
+Mexico,biomass,biomassAEZ06,biomassAEZ06,1990,0.0111251
+Mexico,biomass,biomassAEZ07,biomassAEZ07,1990,0.0117317
+Mexico,biomass,biomassAEZ08,biomassAEZ08,1990,0.0105292
+Mexico,biomass,biomassAEZ09,biomassAEZ09,1990,0.0146695
+Mexico,biomass,biomassAEZ10,biomassAEZ10,1990,0.0199187
+Mexico,biomass,biomassAEZ11,biomassAEZ11,1990,0.0199187
 Mexico,biomass,biomassAEZ12,biomassAEZ12,1990,0.0192562
-Middle East,biomass,biomassAEZ01,biomassAEZ01,1990,0.0107775
-Middle East,biomass,biomassAEZ02,biomassAEZ02,1990,0.003285
-Middle East,biomass,biomassAEZ03,biomassAEZ03,1990,0.005945
-Middle East,biomass,biomassAEZ07,biomassAEZ07,1990,0.0073858
-Middle East,biomass,biomassAEZ08,biomassAEZ08,1990,0.0067988
-Middle East,biomass,biomassAEZ09,biomassAEZ09,1990,0.009391
-Middle East,biomass,biomassAEZ10,biomassAEZ10,1990,0.0127656
-Pakistan,biomass,biomassAEZ01,biomassAEZ01,1990,0.0153474
-Pakistan,biomass,biomassAEZ07,biomassAEZ07,1990,0.0105176
-Pakistan,biomass,biomassAEZ08,biomassAEZ08,1990,0.0096817
-Pakistan,biomass,biomassAEZ09,biomassAEZ09,1990,0.0133731
-Pakistan,biomass,biomassAEZ10,biomassAEZ10,1990,0.0181786
-Pakistan,biomass,biomassAEZ11,biomassAEZ11,1990,0.0181786
-Pakistan,biomass,biomassAEZ12,biomassAEZ12,1990,0.0164571
-Pakistan,biomass,biomassAEZ13,biomassAEZ13,1990,0.0057273
-Pakistan,biomass,biomassAEZ14,biomassAEZ14,1990,0.0074347
-Russia,biomass,biomassAEZ07,biomassAEZ07,1990,0.0083882
-Russia,biomass,biomassAEZ08,biomassAEZ08,1990,0.0077215
-Russia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0106656
-Russia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0144982
-Russia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0144982
-Russia,biomass,biomassAEZ13,biomassAEZ13,1990,0.0045677
-Russia,biomass,biomassAEZ14,biomassAEZ14,1990,0.0059294
-Russia,biomass,biomassAEZ15,biomassAEZ15,1990,0.0092538
-Russia,biomass,biomassAEZ16,biomassAEZ16,1990,0.014442
-South Africa,biomass,biomassAEZ01,biomassAEZ01,1990,0.0161316
-South Africa,biomass,biomassAEZ02,biomassAEZ02,1990,0.004917
-South Africa,biomass,biomassAEZ03,biomassAEZ03,1990,0.0088983
-South Africa,biomass,biomassAEZ04,biomassAEZ04,1990,0.0078034
-South Africa,biomass,biomassAEZ05,biomassAEZ05,1990,0.0080931
-South Africa,biomass,biomassAEZ06,biomassAEZ06,1990,0.0097175
-South Africa,biomass,biomassAEZ07,biomassAEZ07,1990,0.011055
-South Africa,biomass,biomassAEZ08,biomassAEZ08,1990,0.0101764
-South Africa,biomass,biomassAEZ09,biomassAEZ09,1990,0.0140564
-South Africa,biomass,biomassAEZ10,biomassAEZ10,1990,0.0191074
-South Africa,biomass,biomassAEZ11,biomassAEZ11,1990,0.0191074
+Middle East,biomass,biomassAEZ01,biomassAEZ01,1990,0.0095109
+Middle East,biomass,biomassAEZ02,biomassAEZ02,1990,0.0030557
+Middle East,biomass,biomassAEZ03,biomassAEZ03,1990,0.0054543
+Middle East,biomass,biomassAEZ07,biomassAEZ07,1990,0.0067412
+Middle East,biomass,biomassAEZ08,biomassAEZ08,1990,0.0060502
+Middle East,biomass,biomassAEZ09,biomassAEZ09,1990,0.0084293
+Middle East,biomass,biomassAEZ10,biomassAEZ10,1990,0.0114456
+Pakistan,biomass,biomassAEZ01,biomassAEZ01,1990,0.0133055
+Pakistan,biomass,biomassAEZ07,biomassAEZ07,1990,0.0094308
+Pakistan,biomass,biomassAEZ08,biomassAEZ08,1990,0.0084641
+Pakistan,biomass,biomassAEZ09,biomassAEZ09,1990,0.0117924
+Pakistan,biomass,biomassAEZ10,biomassAEZ10,1990,0.0160121
+Pakistan,biomass,biomassAEZ11,biomassAEZ11,1990,0.0160121
+Pakistan,biomass,biomassAEZ12,biomassAEZ12,1990,0.0154795
+Pakistan,biomass,biomassAEZ13,biomassAEZ13,1990,0.0044546
+Pakistan,biomass,biomassAEZ14,biomassAEZ14,1990,0.0058767
+Russia,biomass,biomassAEZ07,biomassAEZ07,1990,0.006548
+Russia,biomass,biomassAEZ08,biomassAEZ08,1990,0.0058768
+Russia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0081877
+Russia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0111175
+Russia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0111175
+Russia,biomass,biomassAEZ13,biomassAEZ13,1990,0.0030929
+Russia,biomass,biomassAEZ14,biomassAEZ14,1990,0.0040803
+Russia,biomass,biomassAEZ15,biomassAEZ15,1990,0.00685
+Russia,biomass,biomassAEZ16,biomassAEZ16,1990,0.0113186
+South Africa,biomass,biomassAEZ01,biomassAEZ01,1990,0.0122517
+South Africa,biomass,biomassAEZ02,biomassAEZ02,1990,0.0039362
+South Africa,biomass,biomassAEZ03,biomassAEZ03,1990,0.0070261
+South Africa,biomass,biomassAEZ04,biomassAEZ04,1990,0.0063356
+South Africa,biomass,biomassAEZ05,biomassAEZ05,1990,0.0066889
+South Africa,biomass,biomassAEZ06,biomassAEZ06,1990,0.0082348
+South Africa,biomass,biomassAEZ07,biomassAEZ07,1990,0.0086839
+South Africa,biomass,biomassAEZ08,biomassAEZ08,1990,0.0077938
+South Africa,biomass,biomassAEZ09,biomassAEZ09,1990,0.0108584
+South Africa,biomass,biomassAEZ10,biomassAEZ10,1990,0.014744
+South Africa,biomass,biomassAEZ11,biomassAEZ11,1990,0.014744
 South America_Northern,biomass,biomassAEZ01,biomassAEZ01,1990,0
 South America_Northern,biomass,biomassAEZ02,biomassAEZ02,1990,0
 South America_Northern,biomass,biomassAEZ03,biomassAEZ03,1990,0
 South America_Northern,biomass,biomassAEZ04,biomassAEZ04,1990,0
 South America_Northern,biomass,biomassAEZ05,biomassAEZ05,1990,0
 South America_Northern,biomass,biomassAEZ06,biomassAEZ06,1990,0
-South America_Southern,biomass,biomassAEZ01,biomassAEZ01,1990,0.0156169
-South America_Southern,biomass,biomassAEZ02,biomassAEZ02,1990,0.0047601
-South America_Southern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0086144
-South America_Southern,biomass,biomassAEZ04,biomassAEZ04,1990,0.0075545
-South America_Southern,biomass,biomassAEZ05,biomassAEZ05,1990,0.0078349
-South America_Southern,biomass,biomassAEZ06,biomassAEZ06,1990,0.0094075
-South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1990,0.0175701
-South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1990,0.0161737
-South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1990,0.0223403
-South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1990,0.0303681
-South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1990,0.0303681
-South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1990,0.0274923
-South America_Southern,biomass,biomassAEZ13,biomassAEZ13,1990,0.0058279
-South America_Southern,biomass,biomassAEZ14,biomassAEZ14,1990,0.0075652
-South America_Southern,biomass,biomassAEZ15,biomassAEZ15,1990,0.0118067
-South America_Southern,biomass,biomassAEZ16,biomassAEZ16,1990,0.0184262
-South America_Southern,biomass,biomassAEZ17,biomassAEZ17,1990,0.0134077
+South America_Southern,biomass,biomassAEZ01,biomassAEZ01,1990,0.0145713
+South America_Southern,biomass,biomassAEZ02,biomassAEZ02,1990,0.0046815
+South America_Southern,biomass,biomassAEZ03,biomassAEZ03,1990,0.0083563
+South America_Southern,biomass,biomassAEZ04,biomassAEZ04,1990,0.007535
+South America_Southern,biomass,biomassAEZ05,biomassAEZ05,1990,0.0079553
+South America_Southern,biomass,biomassAEZ06,biomassAEZ06,1990,0.0097939
+South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1990,0.0177844
+South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1990,0.0159615
+South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1990,0.022238
+South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1990,0.0301954
+South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1990,0.0301954
+South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1990,0.0291911
+South America_Southern,biomass,biomassAEZ13,biomassAEZ13,1990,0.0048783
+South America_Southern,biomass,biomassAEZ14,biomassAEZ14,1990,0.0064358
+South America_Southern,biomass,biomassAEZ15,biomassAEZ15,1990,0.0108044
+South America_Southern,biomass,biomassAEZ16,biomassAEZ16,1990,0.0178525
+South America_Southern,biomass,biomassAEZ17,biomassAEZ17,1990,0.0132057
 South America_Southern,biomass,biomassAEZ18,biomassAEZ18,1990,0
-South Asia,biomass,biomassAEZ03,biomassAEZ03,1990,0.0058155
-South Asia,biomass,biomassAEZ04,biomassAEZ04,1990,0.0050999
-South Asia,biomass,biomassAEZ05,biomassAEZ05,1990,0.0052892
-South Asia,biomass,biomassAEZ06,biomassAEZ06,1990,0.0063509
-South Asia,biomass,biomassAEZ07,biomassAEZ07,1990,0.007225
-South Asia,biomass,biomassAEZ08,biomassAEZ08,1990,0.0066507
-South Asia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0091865
-South Asia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0124876
-South Asia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0124876
-South Asia,biomass,biomassAEZ12,biomassAEZ12,1990,0.0113051
-South Asia,biomass,biomassAEZ13,biomassAEZ13,1990,0.0039343
-South Asia,biomass,biomassAEZ14,biomassAEZ14,1990,0.0051072
-South Asia,biomass,biomassAEZ15,biomassAEZ15,1990,0.0079705
-South Asia,biomass,biomassAEZ16,biomassAEZ16,1990,0.0124392
-South Korea,biomass,biomassAEZ10,biomassAEZ10,1990,0.0163528
-South Korea,biomass,biomassAEZ11,biomassAEZ11,1990,0.0163528
-Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,1990,0.0037048
-Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,1990,0.0038423
-Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,1990,0.0046135
-Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0066734
-Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0090715
-Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0090715
-Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,1990,0.0082125
-Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,1990,0.0057901
-Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,1990,0.0090364
-Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1990,0.0201512
-Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1990,0.0185495
-Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1990,0.0256222
-Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1990,0.0348294
-Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1990,0.0348294
-Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1990,0.0315311
-Argentina,biomass,biomassAEZ13,biomassAEZ13,1990,0.006684
-Argentina,biomass,biomassAEZ14,biomassAEZ14,1990,0.0086766
-Argentina,biomass,biomassAEZ15,biomassAEZ15,1990,0.0135412
-Argentina,biomass,biomassAEZ16,biomassAEZ16,1990,0.021133
-Colombia,biomass,biomassAEZ02,biomassAEZ02,1990,0.0046262
-Colombia,biomass,biomassAEZ03,biomassAEZ03,1990,0.0083721
-Colombia,biomass,biomassAEZ04,biomassAEZ04,1990,0.0073419
-Colombia,biomass,biomassAEZ05,biomassAEZ05,1990,0.0076145
-Colombia,biomass,biomassAEZ06,biomassAEZ06,1990,0.0091428
-Colombia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0179775
-Colombia,biomass,biomassAEZ12,biomassAEZ12,1990,0.016275
-USA,biomass,biomassAEZ07,biomassAEZ07,2005,0.0123065
-USA,biomass,biomassAEZ08,biomassAEZ08,2005,0.0113284
-USA,biomass,biomassAEZ09,biomassAEZ09,2005,0.0156476
-USA,biomass,biomassAEZ10,biomassAEZ10,2005,0.0212705
-USA,biomass,biomassAEZ11,biomassAEZ11,2005,0.0212705
+South Asia,biomass,biomassAEZ03,biomassAEZ03,1990,0.0058972
+South Asia,biomass,biomassAEZ04,biomassAEZ04,1990,0.0053177
+South Asia,biomass,biomassAEZ05,biomassAEZ05,1990,0.0056143
+South Asia,biomass,biomassAEZ06,biomassAEZ06,1990,0.0069118
+South Asia,biomass,biomassAEZ07,biomassAEZ07,1990,0.0072887
+South Asia,biomass,biomassAEZ08,biomassAEZ08,1990,0.0065416
+South Asia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0091139
+South Asia,biomass,biomassAEZ10,biomassAEZ10,1990,0.0123752
+South Asia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0123752
+South Asia,biomass,biomassAEZ12,biomassAEZ12,1990,0.0119635
+South Asia,biomass,biomassAEZ13,biomassAEZ13,1990,0.0034428
+South Asia,biomass,biomassAEZ14,biomassAEZ14,1990,0.0045419
+South Asia,biomass,biomassAEZ15,biomassAEZ15,1990,0.007625
+South Asia,biomass,biomassAEZ16,biomassAEZ16,1990,0.012599
+South Korea,biomass,biomassAEZ10,biomassAEZ10,1990,0.0128613
+South Korea,biomass,biomassAEZ11,biomassAEZ11,1990,0.0128613
+Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,1990,0.0035146
+Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,1990,0.0037106
+Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,1990,0.0045682
+Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,1990,0.0060236
+Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,1990,0.008179
+Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,1990,0.008179
+Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,1990,0.007907
+Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,1990,0.0050395
+Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,1990,0.008327
+Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,1990,0.0202017
+Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,1990,0.0181311
+Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,1990,0.0252606
+Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,1990,0.0342996
+Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,1990,0.0342996
+Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,1990,0.0331588
+Argentina,biomass,biomassAEZ13,biomassAEZ13,1990,0.0055414
+Argentina,biomass,biomassAEZ14,biomassAEZ14,1990,0.0073106
+Argentina,biomass,biomassAEZ15,biomassAEZ15,1990,0.012273
+Argentina,biomass,biomassAEZ16,biomassAEZ16,1990,0.020279
+Colombia,biomass,biomassAEZ02,biomassAEZ02,1990,0.004258
+Colombia,biomass,biomassAEZ03,biomassAEZ03,1990,0.0076004
+Colombia,biomass,biomassAEZ04,biomassAEZ04,1990,0.0068535
+Colombia,biomass,biomassAEZ05,biomassAEZ05,1990,0.0072357
+Colombia,biomass,biomassAEZ06,biomassAEZ06,1990,0.008908
+Colombia,biomass,biomassAEZ11,biomassAEZ11,1990,0.0159492
+Colombia,biomass,biomassAEZ12,biomassAEZ12,1990,0.0154187
+USA,biomass,biomassAEZ07,biomassAEZ07,2005,0.0117317
+USA,biomass,biomassAEZ08,biomassAEZ08,2005,0.0105292
+USA,biomass,biomassAEZ09,biomassAEZ09,2005,0.0146695
+USA,biomass,biomassAEZ10,biomassAEZ10,2005,0.0199187
+USA,biomass,biomassAEZ11,biomassAEZ11,2005,0.0199187
 USA,biomass,biomassAEZ12,biomassAEZ12,2005,0.0192562
-USA,biomass,biomassAEZ13,biomassAEZ13,2005,0.0067014
-USA,biomass,willowAEZ14,willowAEZ14,2005,0.0116559
-USA,biomass,willowAEZ15,willowAEZ15,2005,0.0181908
-USA,biomass,willowAEZ16,willowAEZ16,2005,0.0283895
-Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,2005,0.0059338
-Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,2005,0.0018086
-Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0032731
-Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,2005,0.0028704
-Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,2005,0.0029769
-Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,2005,0.0035744
-Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,2005,0.0040664
-Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,2005,0.0037432
-Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,2005,0.0051704
-Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,2005,0.0070284
-Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,2005,0.0070284
-Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,2005,0.0063628
-Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2005,0.0034703
-Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2005,0.0010578
-Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0072708
-Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,2005,0.0063762
-Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,2005,0.0090331
-Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,2005,0.0083151
-Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,2005,0.0114855
-Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,2005,0.0156128
-Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,2005,0.0043581
-Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,2005,0.0013284
-Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0024039
-Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,2005,0.0021082
-Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,2005,0.0021864
-Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,2005,0.0026253
-Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2005,0.0049031
-Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2005,0.0045134
-Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2005,0.0062342
-Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2005,0.0084745
-Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2005,0.0084745
-Africa_Western,biomass,biomassAEZ01,biomassAEZ01,2005,0.0043896
-Africa_Western,biomass,biomassAEZ02,biomassAEZ02,2005,0.001338
-Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2005,0.0039752
-Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2005,0.003486
-Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2005,0.0036154
-Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2005,0.0043412
-Africa_Western,biomass,biomassAEZ07,biomassAEZ07,2005,0.0030082
-Africa_Western,biomass,biomassAEZ09,biomassAEZ09,2005,0.0038249
-Africa_Western,biomass,biomassAEZ10,biomassAEZ10,2005,0.0051994
-Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,2005,0.0101222
-Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,2005,0.0030853
-Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,2005,0.0055835
-Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,2005,0.0048965
-Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,2005,0.0050782
-Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,2005,0.0060975
-Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,2005,0.0069368
-Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,2005,0.0063855
-Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,2005,0.0088201
-Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,2005,0.0119895
-Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,2005,0.0119895
-Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,2005,0.0108541
-Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,2005,0.0076526
-Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,2005,0.0119431
-Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,2005,0.0086903
-Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,2005,0.0229536
-Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,2005,0.0069963
-Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2005,0.0126614
-Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2005,0.0111036
-Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2005,0.0115156
-Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2005,0.013827
-Brazil,biomass,biomassAEZ10,biomassAEZ10,2005,0.0165607
-Brazil,biomass,biomassAEZ11,biomassAEZ11,2005,0.0165607
-Brazil,biomass,biomassAEZ12,biomassAEZ12,2005,0.0149925
-Canada,biomass,biomassAEZ07,biomassAEZ07,2005,0.0112628
-Canada,biomass,biomassAEZ08,biomassAEZ08,2005,0.0103677
-Canada,biomass,biomassAEZ09,biomassAEZ09,2005,0.0143206
-Canada,biomass,biomassAEZ10,biomassAEZ10,2005,0.0194666
-Canada,biomass,biomassAEZ11,biomassAEZ11,2005,0.0194666
-Canada,biomass,biomassAEZ13,biomassAEZ13,2005,0.0061331
-Canada,biomass,biomassAEZ14,biomassAEZ14,2005,0.0079614
-Canada,biomass,biomassAEZ15,biomassAEZ15,2005,0.0124251
-Canada,biomass,biomassAEZ16,biomassAEZ16,2005,0.0193912
-Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,2005,0.0029223
-Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,2005,0.0030308
-Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,2005,0.0036391
-Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,2005,0.006478
-Central Asia,biomass,biomassAEZ07,biomassAEZ07,2005,0.0064992
-Central Asia,biomass,biomassAEZ08,biomassAEZ08,2005,0.0059827
-Central Asia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0082637
-Central Asia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0112333
-Central Asia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0112333
-Central Asia,biomass,biomassAEZ12,biomassAEZ12,2005,0.0101695
-Central Asia,biomass,biomassAEZ13,biomassAEZ13,2005,0.0035391
-Central Asia,biomass,biomassAEZ14,biomassAEZ14,2005,0.0045942
-Central Asia,biomass,biomassAEZ15,biomassAEZ15,2005,0.0071699
-Central Asia,biomass,biomassAEZ16,biomassAEZ16,2005,0.0111897
-China,biomass,biomassAEZ04,biomassAEZ04,2005,0.0086868
-China,biomass,biomassAEZ05,biomassAEZ05,2005,0.0090092
-China,biomass,biomassAEZ06,biomassAEZ06,2005,0.0108176
-China,biomass,biomassAEZ07,biomassAEZ07,2005,0.0123065
-China,biomass,biomassAEZ08,biomassAEZ08,2005,0.0113284
-China,biomass,biomassAEZ09,biomassAEZ09,2005,0.0156476
-China,biomass,biomassAEZ10,biomassAEZ10,2005,0.0212705
-China,biomass,biomassAEZ11,biomassAEZ11,2005,0.0212705
+USA,biomass,biomassAEZ13,biomassAEZ13,2005,0.0055414
+USA,biomass,willowAEZ14,willowAEZ14,2005,0.0102743
+USA,biomass,willowAEZ15,willowAEZ15,2005,0.0172484
+USA,biomass,willowAEZ16,willowAEZ16,2005,0.0285
+Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,2005,0.0052936
+Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,2005,0.0017007
+Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0030357
+Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,2005,0.0027374
+Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,2005,0.0028901
+Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,2005,0.003558
+Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,2005,0.003752
+Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,2005,0.0033674
+Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,2005,0.0046916
+Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,2005,0.0063704
+Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,2005,0.0063704
+Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,2005,0.0061585
+Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2005,0.0031021
+Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2005,0.0009966
+Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0064421
+Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,2005,0.005809
+Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,2005,0.0079622
+Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,2005,0.007146
+Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,2005,0.009956
+Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,2005,0.0135186
+Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,2005,0.0045746
+Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,2005,0.0014697
+Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0026234
+Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,2005,0.0023656
+Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,2005,0.0024976
+Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,2005,0.0030748
+Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2005,0.0055833
+Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2005,0.0050111
+Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2005,0.0069816
+Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2005,0.0094798
+Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2005,0.0094798
+Africa_Western,biomass,biomassAEZ01,biomassAEZ01,2005,0.0039501
+Africa_Western,biomass,biomassAEZ02,biomassAEZ02,2005,0.0012691
+Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2005,0.0039008
+Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2005,0.0035175
+Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2005,0.0037136
+Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2005,0.0045719
+Africa_Western,biomass,biomassAEZ07,biomassAEZ07,2005,0.0027998
+Africa_Western,biomass,biomassAEZ09,biomassAEZ09,2005,0.0035009
+Africa_Western,biomass,biomassAEZ10,biomassAEZ10,2005,0.0047536
+Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,2005,0.0086446
+Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,2005,0.0027773
+Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,2005,0.0049574
+Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,2005,0.0044702
+Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,2005,0.0047196
+Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,2005,0.0058103
+Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,2005,0.0061272
+Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,2005,0.0054991
+Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,2005,0.0076615
+Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,2005,0.010403
+Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,2005,0.010403
+Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,2005,0.010057
+Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,2005,0.0064098
+Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,2005,0.0105912
+Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,2005,0.0078345
+Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,2005,0.0235589
+Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,2005,0.007569
+Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2005,0.0135105
+Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2005,0.0121827
+Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2005,0.0128621
+Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2005,0.0158348
+Brazil,biomass,biomassAEZ10,biomassAEZ10,2005,0.0164643
+Brazil,biomass,biomassAEZ11,biomassAEZ11,2005,0.0164643
+Brazil,biomass,biomassAEZ12,biomassAEZ12,2005,0.0159167
+Canada,biomass,biomassAEZ07,biomassAEZ07,2005,0.010091
+Canada,biomass,biomassAEZ08,biomassAEZ08,2005,0.0090567
+Canada,biomass,biomassAEZ09,biomassAEZ09,2005,0.0126179
+Canada,biomass,biomassAEZ10,biomassAEZ10,2005,0.017133
+Canada,biomass,biomassAEZ11,biomassAEZ11,2005,0.017133
+Canada,biomass,biomassAEZ13,biomassAEZ13,2005,0.0047664
+Canada,biomass,biomassAEZ14,biomassAEZ14,2005,0.0062881
+Canada,biomass,biomassAEZ15,biomassAEZ15,2005,0.0105566
+Canada,biomass,biomassAEZ16,biomassAEZ16,2005,0.0174429
+Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,2005,0.0023274
+Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,2005,0.0024572
+Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,2005,0.0030251
+Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,2005,0.0052362
+Central Asia,biomass,biomassAEZ07,biomassAEZ07,2005,0.0048979
+Central Asia,biomass,biomassAEZ08,biomassAEZ08,2005,0.0043959
+Central Asia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0061244
+Central Asia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0083159
+Central Asia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0083159
+Central Asia,biomass,biomassAEZ12,biomassAEZ12,2005,0.0080393
+Central Asia,biomass,biomassAEZ13,biomassAEZ13,2005,0.0023135
+Central Asia,biomass,biomassAEZ14,biomassAEZ14,2005,0.0030521
+Central Asia,biomass,biomassAEZ15,biomassAEZ15,2005,0.0051239
+Central Asia,biomass,biomassAEZ16,biomassAEZ16,2005,0.0084663
+China,biomass,biomassAEZ04,biomassAEZ04,2005,0.0085592
+China,biomass,biomassAEZ05,biomassAEZ05,2005,0.0090366
+China,biomass,biomassAEZ06,biomassAEZ06,2005,0.0111251
+China,biomass,biomassAEZ07,biomassAEZ07,2005,0.0117317
+China,biomass,biomassAEZ08,biomassAEZ08,2005,0.0105292
+China,biomass,biomassAEZ09,biomassAEZ09,2005,0.0146695
+China,biomass,biomassAEZ10,biomassAEZ10,2005,0.0199187
+China,biomass,biomassAEZ11,biomassAEZ11,2005,0.0199187
 China,biomass,biomassAEZ12,biomassAEZ12,2005,0.0192562
-China,biomass,willowAEZ13,willowAEZ13,2005,0.0089791
-China,biomass,willowAEZ14,willowAEZ14,2005,0.0116559
-China,biomass,willowAEZ15,willowAEZ15,2005,0.0181908
-China,biomass,willowAEZ16,willowAEZ16,2005,0.0283895
-China,biomass,willowAEZ17,willowAEZ17,2005,0.0206574
-EU-12,biomass,biomassAEZ08,biomassAEZ08,2005,0.0113284
-EU-12,biomass,biomassAEZ09,biomassAEZ09,2005,0.0156476
-EU-12,biomass,biomassAEZ10,biomassAEZ10,2005,0.0212705
-EU-12,biomass,biomassAEZ11,biomassAEZ11,2005,0.0212705
-EU-12,biomass,biomassAEZ15,biomassAEZ15,2005,0.0135764
-EU-12,biomass,biomassAEZ16,biomassAEZ16,2005,0.021188
-EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,2005,0.0168606
-EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,2005,0.0219878
-EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,2005,0.0303711
-EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,2005,0.0412848
-EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,2005,0.0412848
-EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,2005,0.0373752
-EU-15,biomass,willowAEZ13,willowAEZ13,2005,0.0089791
-EU-15,biomass,willowAEZ14,willowAEZ14,2005,0.0116559
-EU-15,biomass,willowAEZ15,willowAEZ15,2005,0.0181908
-EU-15,biomass,willowAEZ16,willowAEZ16,2005,0.0283895
-Europe_Eastern,biomass,willowAEZ08,willowAEZ08,2005,0.0136646
-Europe_Eastern,biomass,willowAEZ09,willowAEZ09,2005,0.0188744
-Europe_Eastern,biomass,willowAEZ10,willowAEZ10,2005,0.0256569
-Europe_Eastern,biomass,willowAEZ16,willowAEZ16,2005,0.0255575
-Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,2005,0.0100643
-Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,2005,0.0092644
-Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,2005,0.0127967
-Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,2005,0.0173951
-Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,2005,0.0173951
-Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,2005,0.0157478
-Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,2005,0.0071142
-Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,2005,0.0111028
-Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,2005,0.0173277
-European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,2005,0.0212705
-European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,2005,0.0067014
-European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,2005,0.0086992
-European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,2005,0.0135764
-European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,2005,0.021188
-India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2005,0.003897
-India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2005,0.0011878
-India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,2005,0.0021496
-India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,2005,0.0018851
-India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,2005,0.0019551
-India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,2005,0.0023475
-India,biomass,biomassAEZ07,biomassAEZ07,2005,0.0101439
-India,biomass,biomassAEZ08,biomassAEZ08,2005,0.0093377
-India,biomass,biomassAEZ09,biomassAEZ09,2005,0.0128979
-India,biomass,biomassAEZ10,biomassAEZ10,2005,0.0175327
-India,biomass,biomassAEZ11,biomassAEZ11,2005,0.0175327
-India,biomass,biomassAEZ12,biomassAEZ12,2005,0.0158723
-India,biomass,biomassAEZ13,biomassAEZ13,2005,0.0055238
-India,biomass,biomassAEZ14,biomassAEZ14,2005,0.0071705
-India,biomass,biomassAEZ15,biomassAEZ15,2005,0.0111907
-India,biomass,biomassAEZ16,biomassAEZ16,2005,0.0174647
+China,biomass,willowAEZ13,willowAEZ13,2005,0.0077879
+China,biomass,willowAEZ14,willowAEZ14,2005,0.0102743
+China,biomass,willowAEZ15,willowAEZ15,2005,0.0172484
+China,biomass,willowAEZ16,willowAEZ16,2005,0.0285
+China,biomass,willowAEZ17,willowAEZ17,2005,0.0210819
+EU-12,biomass,biomassAEZ08,biomassAEZ08,2005,0.0103415
+EU-12,biomass,biomassAEZ09,biomassAEZ09,2005,0.014408
+EU-12,biomass,biomassAEZ10,biomassAEZ10,2005,0.0195637
+EU-12,biomass,biomassAEZ11,biomassAEZ11,2005,0.0195637
+EU-12,biomass,biomassAEZ15,biomassAEZ15,2005,0.0120542
+EU-12,biomass,biomassAEZ16,biomassAEZ16,2005,0.0199175
+EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,2005,0.0174252
+EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,2005,0.0214358
+EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,2005,0.0298648
+EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,2005,0.0405513
+EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,2005,0.0405513
+EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,2005,0.0392025
+EU-15,biomass,willowAEZ13,willowAEZ13,2005,0.0077879
+EU-15,biomass,willowAEZ14,willowAEZ14,2005,0.0102743
+EU-15,biomass,willowAEZ15,willowAEZ15,2005,0.0172484
+EU-15,biomass,willowAEZ16,willowAEZ16,2005,0.0285
+Europe_Eastern,biomass,willowAEZ08,willowAEZ08,2005,0.0106903
+Europe_Eastern,biomass,willowAEZ09,willowAEZ09,2005,0.014894
+Europe_Eastern,biomass,willowAEZ10,willowAEZ10,2005,0.0202235
+Europe_Eastern,biomass,willowAEZ16,willowAEZ16,2005,0.0205893
+Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,2005,0.008952
+Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,2005,0.0080344
+Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,2005,0.0111937
+Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,2005,0.0151992
+Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,2005,0.0151992
+Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,2005,0.0146936
+Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,2005,0.0055784
+Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,2005,0.009365
+Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,2005,0.0154741
+European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,2005,0.0199187
+European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,2005,0.0055414
+European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,2005,0.0073106
+European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,2005,0.012273
+European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,2005,0.020279
+India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2005,0.0035592
+India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2005,0.0011435
+India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,2005,0.0020411
+India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,2005,0.0018405
+India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,2005,0.0019432
+India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,2005,0.0023923
+India,biomass,biomassAEZ07,biomassAEZ07,2005,0.0091353
+India,biomass,biomassAEZ08,biomassAEZ08,2005,0.008199
+India,biomass,biomassAEZ09,biomassAEZ09,2005,0.011423
+India,biomass,biomassAEZ10,biomassAEZ10,2005,0.0155105
+India,biomass,biomassAEZ11,biomassAEZ11,2005,0.0155105
+India,biomass,biomassAEZ12,biomassAEZ12,2005,0.0149946
+India,biomass,biomassAEZ13,biomassAEZ13,2005,0.004315
+India,biomass,biomassAEZ14,biomassAEZ14,2005,0.0056926
+India,biomass,biomassAEZ15,biomassAEZ15,2005,0.0095568
+India,biomass,biomassAEZ16,biomassAEZ16,2005,0.015791
 Indonesia,biomass,biomassAEZ04,biomassAEZ04,2005,0
 Indonesia,biomass,biomassAEZ05,biomassAEZ05,2005,0
 Indonesia,biomass,biomassAEZ06,biomassAEZ06,2005,0
-Japan,biomass,biomassAEZ09,biomassAEZ09,2005,0.0156476
-Japan,biomass,biomassAEZ10,biomassAEZ10,2005,0.0212705
-Japan,biomass,biomassAEZ11,biomassAEZ11,2005,0.0212705
-Japan,biomass,biomassAEZ12,biomassAEZ12,2005,0.0192562
-Japan,biomass,biomassAEZ15,biomassAEZ15,2005,0.0135764
-Mexico,biomass,biomassAEZ01,biomassAEZ01,2005,0.0179577
-Mexico,biomass,biomassAEZ02,biomassAEZ02,2005,0.0054736
-Mexico,biomass,biomassAEZ03,biomassAEZ03,2005,0.0099056
-Mexico,biomass,biomassAEZ04,biomassAEZ04,2005,0.0086868
-Mexico,biomass,biomassAEZ05,biomassAEZ05,2005,0.0090092
-Mexico,biomass,biomassAEZ06,biomassAEZ06,2005,0.0108176
-Mexico,biomass,biomassAEZ07,biomassAEZ07,2005,0.0123065
-Mexico,biomass,biomassAEZ08,biomassAEZ08,2005,0.0113284
-Mexico,biomass,biomassAEZ09,biomassAEZ09,2005,0.0156476
-Mexico,biomass,biomassAEZ10,biomassAEZ10,2005,0.0212705
-Mexico,biomass,biomassAEZ11,biomassAEZ11,2005,0.0212705
+Japan,biomass,biomassAEZ09,biomassAEZ09,2005,0.0114372
+Japan,biomass,biomassAEZ10,biomassAEZ10,2005,0.0155299
+Japan,biomass,biomassAEZ11,biomassAEZ11,2005,0.0155299
+Japan,biomass,biomassAEZ12,biomassAEZ12,2005,0.0150133
+Japan,biomass,biomassAEZ15,biomassAEZ15,2005,0.0095687
+Mexico,biomass,biomassAEZ01,biomassAEZ01,2005,0.0165518
+Mexico,biomass,biomassAEZ02,biomassAEZ02,2005,0.0053178
+Mexico,biomass,biomassAEZ03,biomassAEZ03,2005,0.009492
+Mexico,biomass,biomassAEZ04,biomassAEZ04,2005,0.0085592
+Mexico,biomass,biomassAEZ05,biomassAEZ05,2005,0.0090366
+Mexico,biomass,biomassAEZ06,biomassAEZ06,2005,0.0111251
+Mexico,biomass,biomassAEZ07,biomassAEZ07,2005,0.0117317
+Mexico,biomass,biomassAEZ08,biomassAEZ08,2005,0.0105292
+Mexico,biomass,biomassAEZ09,biomassAEZ09,2005,0.0146695
+Mexico,biomass,biomassAEZ10,biomassAEZ10,2005,0.0199187
+Mexico,biomass,biomassAEZ11,biomassAEZ11,2005,0.0199187
 Mexico,biomass,biomassAEZ12,biomassAEZ12,2005,0.0192562
-Middle East,biomass,biomassAEZ01,biomassAEZ01,2005,0.0107775
-Middle East,biomass,biomassAEZ02,biomassAEZ02,2005,0.003285
-Middle East,biomass,biomassAEZ03,biomassAEZ03,2005,0.005945
-Middle East,biomass,biomassAEZ07,biomassAEZ07,2005,0.0073858
-Middle East,biomass,biomassAEZ08,biomassAEZ08,2005,0.0067988
-Middle East,biomass,biomassAEZ09,biomassAEZ09,2005,0.009391
-Middle East,biomass,biomassAEZ10,biomassAEZ10,2005,0.0127656
-Pakistan,biomass,biomassAEZ01,biomassAEZ01,2005,0.0153474
-Pakistan,biomass,biomassAEZ07,biomassAEZ07,2005,0.0105176
-Pakistan,biomass,biomassAEZ08,biomassAEZ08,2005,0.0096817
-Pakistan,biomass,biomassAEZ09,biomassAEZ09,2005,0.0133731
-Pakistan,biomass,biomassAEZ10,biomassAEZ10,2005,0.0181786
-Pakistan,biomass,biomassAEZ11,biomassAEZ11,2005,0.0181786
-Pakistan,biomass,biomassAEZ12,biomassAEZ12,2005,0.0164571
-Pakistan,biomass,biomassAEZ13,biomassAEZ13,2005,0.0057273
-Pakistan,biomass,biomassAEZ14,biomassAEZ14,2005,0.0074347
-Russia,biomass,biomassAEZ07,biomassAEZ07,2005,0.0083882
-Russia,biomass,biomassAEZ08,biomassAEZ08,2005,0.0077215
-Russia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0106656
-Russia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0144982
-Russia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0144982
-Russia,biomass,biomassAEZ13,biomassAEZ13,2005,0.0045677
-Russia,biomass,biomassAEZ14,biomassAEZ14,2005,0.0059294
-Russia,biomass,biomassAEZ15,biomassAEZ15,2005,0.0092538
-Russia,biomass,biomassAEZ16,biomassAEZ16,2005,0.014442
-South Africa,biomass,biomassAEZ01,biomassAEZ01,2005,0.0161316
-South Africa,biomass,biomassAEZ02,biomassAEZ02,2005,0.004917
-South Africa,biomass,biomassAEZ03,biomassAEZ03,2005,0.0088983
-South Africa,biomass,biomassAEZ04,biomassAEZ04,2005,0.0078034
-South Africa,biomass,biomassAEZ05,biomassAEZ05,2005,0.0080931
-South Africa,biomass,biomassAEZ06,biomassAEZ06,2005,0.0097175
-South Africa,biomass,biomassAEZ07,biomassAEZ07,2005,0.011055
-South Africa,biomass,biomassAEZ08,biomassAEZ08,2005,0.0101764
-South Africa,biomass,biomassAEZ09,biomassAEZ09,2005,0.0140564
-South Africa,biomass,biomassAEZ10,biomassAEZ10,2005,0.0191074
-South Africa,biomass,biomassAEZ11,biomassAEZ11,2005,0.0191074
+Middle East,biomass,biomassAEZ01,biomassAEZ01,2005,0.0095109
+Middle East,biomass,biomassAEZ02,biomassAEZ02,2005,0.0030557
+Middle East,biomass,biomassAEZ03,biomassAEZ03,2005,0.0054543
+Middle East,biomass,biomassAEZ07,biomassAEZ07,2005,0.0067412
+Middle East,biomass,biomassAEZ08,biomassAEZ08,2005,0.0060502
+Middle East,biomass,biomassAEZ09,biomassAEZ09,2005,0.0084293
+Middle East,biomass,biomassAEZ10,biomassAEZ10,2005,0.0114456
+Pakistan,biomass,biomassAEZ01,biomassAEZ01,2005,0.0133055
+Pakistan,biomass,biomassAEZ07,biomassAEZ07,2005,0.0094308
+Pakistan,biomass,biomassAEZ08,biomassAEZ08,2005,0.0084641
+Pakistan,biomass,biomassAEZ09,biomassAEZ09,2005,0.0117924
+Pakistan,biomass,biomassAEZ10,biomassAEZ10,2005,0.0160121
+Pakistan,biomass,biomassAEZ11,biomassAEZ11,2005,0.0160121
+Pakistan,biomass,biomassAEZ12,biomassAEZ12,2005,0.0154795
+Pakistan,biomass,biomassAEZ13,biomassAEZ13,2005,0.0044546
+Pakistan,biomass,biomassAEZ14,biomassAEZ14,2005,0.0058767
+Russia,biomass,biomassAEZ07,biomassAEZ07,2005,0.006548
+Russia,biomass,biomassAEZ08,biomassAEZ08,2005,0.0058768
+Russia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0081877
+Russia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0111175
+Russia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0111175
+Russia,biomass,biomassAEZ13,biomassAEZ13,2005,0.0030929
+Russia,biomass,biomassAEZ14,biomassAEZ14,2005,0.0040803
+Russia,biomass,biomassAEZ15,biomassAEZ15,2005,0.00685
+Russia,biomass,biomassAEZ16,biomassAEZ16,2005,0.0113186
+South Africa,biomass,biomassAEZ01,biomassAEZ01,2005,0.0122517
+South Africa,biomass,biomassAEZ02,biomassAEZ02,2005,0.0039362
+South Africa,biomass,biomassAEZ03,biomassAEZ03,2005,0.0070261
+South Africa,biomass,biomassAEZ04,biomassAEZ04,2005,0.0063356
+South Africa,biomass,biomassAEZ05,biomassAEZ05,2005,0.0066889
+South Africa,biomass,biomassAEZ06,biomassAEZ06,2005,0.0082348
+South Africa,biomass,biomassAEZ07,biomassAEZ07,2005,0.0086839
+South Africa,biomass,biomassAEZ08,biomassAEZ08,2005,0.0077938
+South Africa,biomass,biomassAEZ09,biomassAEZ09,2005,0.0108584
+South Africa,biomass,biomassAEZ10,biomassAEZ10,2005,0.014744
+South Africa,biomass,biomassAEZ11,biomassAEZ11,2005,0.014744
 South America_Northern,biomass,biomassAEZ01,biomassAEZ01,2005,0
 South America_Northern,biomass,biomassAEZ02,biomassAEZ02,2005,0
 South America_Northern,biomass,biomassAEZ03,biomassAEZ03,2005,0
 South America_Northern,biomass,biomassAEZ04,biomassAEZ04,2005,0
 South America_Northern,biomass,biomassAEZ05,biomassAEZ05,2005,0
 South America_Northern,biomass,biomassAEZ06,biomassAEZ06,2005,0
-South America_Southern,biomass,biomassAEZ01,biomassAEZ01,2005,0.0156169
-South America_Southern,biomass,biomassAEZ02,biomassAEZ02,2005,0.0047601
-South America_Southern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0086144
-South America_Southern,biomass,biomassAEZ04,biomassAEZ04,2005,0.0075545
-South America_Southern,biomass,biomassAEZ05,biomassAEZ05,2005,0.0078349
-South America_Southern,biomass,biomassAEZ06,biomassAEZ06,2005,0.0094075
-South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2005,0.0175701
-South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2005,0.0161737
-South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2005,0.0223403
-South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2005,0.0303681
-South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2005,0.0303681
-South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2005,0.0274923
-South America_Southern,biomass,biomassAEZ13,biomassAEZ13,2005,0.0058279
-South America_Southern,biomass,biomassAEZ14,biomassAEZ14,2005,0.0075652
-South America_Southern,biomass,biomassAEZ15,biomassAEZ15,2005,0.0118067
-South America_Southern,biomass,biomassAEZ16,biomassAEZ16,2005,0.0184262
-South America_Southern,biomass,biomassAEZ17,biomassAEZ17,2005,0.0134077
+South America_Southern,biomass,biomassAEZ01,biomassAEZ01,2005,0.0145713
+South America_Southern,biomass,biomassAEZ02,biomassAEZ02,2005,0.0046815
+South America_Southern,biomass,biomassAEZ03,biomassAEZ03,2005,0.0083563
+South America_Southern,biomass,biomassAEZ04,biomassAEZ04,2005,0.007535
+South America_Southern,biomass,biomassAEZ05,biomassAEZ05,2005,0.0079553
+South America_Southern,biomass,biomassAEZ06,biomassAEZ06,2005,0.0097939
+South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2005,0.0177844
+South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2005,0.0159615
+South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2005,0.022238
+South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2005,0.0301954
+South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2005,0.0301954
+South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2005,0.0291911
+South America_Southern,biomass,biomassAEZ13,biomassAEZ13,2005,0.0048783
+South America_Southern,biomass,biomassAEZ14,biomassAEZ14,2005,0.0064358
+South America_Southern,biomass,biomassAEZ15,biomassAEZ15,2005,0.0108044
+South America_Southern,biomass,biomassAEZ16,biomassAEZ16,2005,0.0178525
+South America_Southern,biomass,biomassAEZ17,biomassAEZ17,2005,0.0132057
 South America_Southern,biomass,biomassAEZ18,biomassAEZ18,2005,0
-South Asia,biomass,biomassAEZ03,biomassAEZ03,2005,0.0058155
-South Asia,biomass,biomassAEZ04,biomassAEZ04,2005,0.0050999
-South Asia,biomass,biomassAEZ05,biomassAEZ05,2005,0.0052892
-South Asia,biomass,biomassAEZ06,biomassAEZ06,2005,0.0063509
-South Asia,biomass,biomassAEZ07,biomassAEZ07,2005,0.007225
-South Asia,biomass,biomassAEZ08,biomassAEZ08,2005,0.0066507
-South Asia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0091865
-South Asia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0124876
-South Asia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0124876
-South Asia,biomass,biomassAEZ12,biomassAEZ12,2005,0.0113051
-South Asia,biomass,biomassAEZ13,biomassAEZ13,2005,0.0039343
-South Asia,biomass,biomassAEZ14,biomassAEZ14,2005,0.0051072
-South Asia,biomass,biomassAEZ15,biomassAEZ15,2005,0.0079705
-South Asia,biomass,biomassAEZ16,biomassAEZ16,2005,0.0124392
-South Korea,biomass,biomassAEZ10,biomassAEZ10,2005,0.0163528
-South Korea,biomass,biomassAEZ11,biomassAEZ11,2005,0.0163528
-Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,2005,0.0037048
-Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,2005,0.0038423
-Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,2005,0.0046135
-Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0066734
-Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0090715
-Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0090715
-Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,2005,0.0082125
-Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,2005,0.0057901
-Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,2005,0.0090364
-Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2005,0.0201512
-Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2005,0.0185495
-Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2005,0.0256222
-Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2005,0.0348294
-Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2005,0.0348294
-Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2005,0.0315311
-Argentina,biomass,biomassAEZ13,biomassAEZ13,2005,0.006684
-Argentina,biomass,biomassAEZ14,biomassAEZ14,2005,0.0086766
-Argentina,biomass,biomassAEZ15,biomassAEZ15,2005,0.0135412
-Argentina,biomass,biomassAEZ16,biomassAEZ16,2005,0.021133
-Colombia,biomass,biomassAEZ02,biomassAEZ02,2005,0.0046262
-Colombia,biomass,biomassAEZ03,biomassAEZ03,2005,0.0083721
-Colombia,biomass,biomassAEZ04,biomassAEZ04,2005,0.0073419
-Colombia,biomass,biomassAEZ05,biomassAEZ05,2005,0.0076145
-Colombia,biomass,biomassAEZ06,biomassAEZ06,2005,0.0091428
-Colombia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0179775
-Colombia,biomass,biomassAEZ12,biomassAEZ12,2005,0.016275
-USA,biomass,biomassAEZ07,biomassAEZ07,2010,0.0123065
-USA,biomass,biomassAEZ08,biomassAEZ08,2010,0.0113284
-USA,biomass,biomassAEZ09,biomassAEZ09,2010,0.0156476
-USA,biomass,biomassAEZ10,biomassAEZ10,2010,0.0212705
-USA,biomass,biomassAEZ11,biomassAEZ11,2010,0.0212705
+South Asia,biomass,biomassAEZ03,biomassAEZ03,2005,0.0058972
+South Asia,biomass,biomassAEZ04,biomassAEZ04,2005,0.0053177
+South Asia,biomass,biomassAEZ05,biomassAEZ05,2005,0.0056143
+South Asia,biomass,biomassAEZ06,biomassAEZ06,2005,0.0069118
+South Asia,biomass,biomassAEZ07,biomassAEZ07,2005,0.0072887
+South Asia,biomass,biomassAEZ08,biomassAEZ08,2005,0.0065416
+South Asia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0091139
+South Asia,biomass,biomassAEZ10,biomassAEZ10,2005,0.0123752
+South Asia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0123752
+South Asia,biomass,biomassAEZ12,biomassAEZ12,2005,0.0119635
+South Asia,biomass,biomassAEZ13,biomassAEZ13,2005,0.0034428
+South Asia,biomass,biomassAEZ14,biomassAEZ14,2005,0.0045419
+South Asia,biomass,biomassAEZ15,biomassAEZ15,2005,0.007625
+South Asia,biomass,biomassAEZ16,biomassAEZ16,2005,0.012599
+South Korea,biomass,biomassAEZ10,biomassAEZ10,2005,0.0128613
+South Korea,biomass,biomassAEZ11,biomassAEZ11,2005,0.0128613
+Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,2005,0.0035146
+Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,2005,0.0037106
+Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,2005,0.0045682
+Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,2005,0.0060236
+Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,2005,0.008179
+Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,2005,0.008179
+Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,2005,0.007907
+Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,2005,0.0050395
+Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,2005,0.008327
+Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2005,0.0202017
+Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2005,0.0181311
+Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2005,0.0252606
+Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2005,0.0342996
+Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2005,0.0342996
+Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2005,0.0331588
+Argentina,biomass,biomassAEZ13,biomassAEZ13,2005,0.0055414
+Argentina,biomass,biomassAEZ14,biomassAEZ14,2005,0.0073106
+Argentina,biomass,biomassAEZ15,biomassAEZ15,2005,0.012273
+Argentina,biomass,biomassAEZ16,biomassAEZ16,2005,0.020279
+Colombia,biomass,biomassAEZ02,biomassAEZ02,2005,0.004258
+Colombia,biomass,biomassAEZ03,biomassAEZ03,2005,0.0076004
+Colombia,biomass,biomassAEZ04,biomassAEZ04,2005,0.0068535
+Colombia,biomass,biomassAEZ05,biomassAEZ05,2005,0.0072357
+Colombia,biomass,biomassAEZ06,biomassAEZ06,2005,0.008908
+Colombia,biomass,biomassAEZ11,biomassAEZ11,2005,0.0159492
+Colombia,biomass,biomassAEZ12,biomassAEZ12,2005,0.0154187
+USA,biomass,biomassAEZ07,biomassAEZ07,2010,0.0117317
+USA,biomass,biomassAEZ08,biomassAEZ08,2010,0.0105292
+USA,biomass,biomassAEZ09,biomassAEZ09,2010,0.0146695
+USA,biomass,biomassAEZ10,biomassAEZ10,2010,0.0199187
+USA,biomass,biomassAEZ11,biomassAEZ11,2010,0.0199187
 USA,biomass,biomassAEZ12,biomassAEZ12,2010,0.0192562
-USA,biomass,biomassAEZ13,biomassAEZ13,2010,0.0067014
-USA,biomass,willowAEZ14,willowAEZ14,2010,0.0116559
-USA,biomass,willowAEZ15,willowAEZ15,2010,0.0181908
-USA,biomass,willowAEZ16,willowAEZ16,2010,0.0283895
-Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,2010,0.0059338
-Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,2010,0.0018086
-Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0032731
-Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,2010,0.0028704
-Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,2010,0.0029769
-Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,2010,0.0035744
-Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,2010,0.0040664
-Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,2010,0.0037432
-Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,2010,0.0051704
-Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,2010,0.0070284
-Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,2010,0.0070284
-Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,2010,0.0063628
-Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2010,0.0034703
-Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2010,0.0010578
-Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0072708
-Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,2010,0.0063762
-Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,2010,0.0090331
-Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,2010,0.0083151
-Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,2010,0.0114855
-Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,2010,0.0156128
-Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,2010,0.0043581
-Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,2010,0.0013284
-Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0024039
-Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,2010,0.0021082
-Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,2010,0.0021864
-Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,2010,0.0026253
-Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2010,0.0049031
-Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2010,0.0045134
-Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2010,0.0062342
-Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2010,0.0084745
-Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2010,0.0084745
-Africa_Western,biomass,biomassAEZ01,biomassAEZ01,2010,0.0043896
-Africa_Western,biomass,biomassAEZ02,biomassAEZ02,2010,0.001338
-Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2010,0.0039752
-Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2010,0.003486
-Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2010,0.0036154
-Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2010,0.0043412
-Africa_Western,biomass,biomassAEZ07,biomassAEZ07,2010,0.0030082
-Africa_Western,biomass,biomassAEZ09,biomassAEZ09,2010,0.0038249
-Africa_Western,biomass,biomassAEZ10,biomassAEZ10,2010,0.0051994
-Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,2010,0.0101222
-Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,2010,0.0030853
-Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,2010,0.0055835
-Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,2010,0.0048965
-Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,2010,0.0050782
-Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,2010,0.0060975
-Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,2010,0.0069368
-Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,2010,0.0063855
-Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,2010,0.0088201
-Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,2010,0.0119895
-Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,2010,0.0119895
-Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,2010,0.0108541
-Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,2010,0.0076526
-Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,2010,0.0119431
-Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,2010,0.0086903
-Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,2010,0.0229536
-Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,2010,0.0069963
-Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2010,0.0126614
-Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2010,0.0111036
-Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2010,0.0115156
-Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2010,0.013827
-Brazil,biomass,biomassAEZ10,biomassAEZ10,2010,0.0165607
-Brazil,biomass,biomassAEZ11,biomassAEZ11,2010,0.0165607
-Brazil,biomass,biomassAEZ12,biomassAEZ12,2010,0.0149925
-Canada,biomass,biomassAEZ07,biomassAEZ07,2010,0.0112628
-Canada,biomass,biomassAEZ08,biomassAEZ08,2010,0.0103677
-Canada,biomass,biomassAEZ09,biomassAEZ09,2010,0.0143206
-Canada,biomass,biomassAEZ10,biomassAEZ10,2010,0.0194666
-Canada,biomass,biomassAEZ11,biomassAEZ11,2010,0.0194666
-Canada,biomass,biomassAEZ13,biomassAEZ13,2010,0.0061331
-Canada,biomass,biomassAEZ14,biomassAEZ14,2010,0.0079614
-Canada,biomass,biomassAEZ15,biomassAEZ15,2010,0.0124251
-Canada,biomass,biomassAEZ16,biomassAEZ16,2010,0.0193912
-Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,2010,0.0029223
-Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,2010,0.0030308
-Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,2010,0.0036391
-Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,2010,0.006478
-Central Asia,biomass,biomassAEZ07,biomassAEZ07,2010,0.0064992
-Central Asia,biomass,biomassAEZ08,biomassAEZ08,2010,0.0059827
-Central Asia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0082637
-Central Asia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0112333
-Central Asia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0112333
-Central Asia,biomass,biomassAEZ12,biomassAEZ12,2010,0.0101695
-Central Asia,biomass,biomassAEZ13,biomassAEZ13,2010,0.0035391
-Central Asia,biomass,biomassAEZ14,biomassAEZ14,2010,0.0045942
-Central Asia,biomass,biomassAEZ15,biomassAEZ15,2010,0.0071699
-Central Asia,biomass,biomassAEZ16,biomassAEZ16,2010,0.0111897
-China,biomass,biomassAEZ04,biomassAEZ04,2010,0.0086868
-China,biomass,biomassAEZ05,biomassAEZ05,2010,0.0090092
-China,biomass,biomassAEZ06,biomassAEZ06,2010,0.0108176
-China,biomass,biomassAEZ07,biomassAEZ07,2010,0.0123065
-China,biomass,biomassAEZ08,biomassAEZ08,2010,0.0113284
-China,biomass,biomassAEZ09,biomassAEZ09,2010,0.0156476
-China,biomass,biomassAEZ10,biomassAEZ10,2010,0.0212705
-China,biomass,biomassAEZ11,biomassAEZ11,2010,0.0212705
+USA,biomass,biomassAEZ13,biomassAEZ13,2010,0.0055414
+USA,biomass,willowAEZ14,willowAEZ14,2010,0.0102743
+USA,biomass,willowAEZ15,willowAEZ15,2010,0.0172484
+USA,biomass,willowAEZ16,willowAEZ16,2010,0.0285
+Africa_Eastern,biomass,biomassAEZ01,biomassAEZ01,2010,0.0052936
+Africa_Eastern,biomass,biomassAEZ02,biomassAEZ02,2010,0.0017007
+Africa_Eastern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0030357
+Africa_Eastern,biomass,biomassAEZ04,biomassAEZ04,2010,0.0027374
+Africa_Eastern,biomass,biomassAEZ05,biomassAEZ05,2010,0.0028901
+Africa_Eastern,biomass,biomassAEZ06,biomassAEZ06,2010,0.003558
+Africa_Eastern,biomass,biomassAEZ07,biomassAEZ07,2010,0.003752
+Africa_Eastern,biomass,biomassAEZ08,biomassAEZ08,2010,0.0033674
+Africa_Eastern,biomass,biomassAEZ09,biomassAEZ09,2010,0.0046916
+Africa_Eastern,biomass,biomassAEZ10,biomassAEZ10,2010,0.0063704
+Africa_Eastern,biomass,biomassAEZ11,biomassAEZ11,2010,0.0063704
+Africa_Eastern,biomass,biomassAEZ12,biomassAEZ12,2010,0.0061585
+Africa_Northern,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2010,0.0031021
+Africa_Northern,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2010,0.0009966
+Africa_Northern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0064421
+Africa_Northern,biomass,biomassAEZ04,biomassAEZ04,2010,0.005809
+Africa_Northern,biomass,biomassAEZ07,biomassAEZ07,2010,0.0079622
+Africa_Northern,biomass,biomassAEZ08,biomassAEZ08,2010,0.007146
+Africa_Northern,biomass,biomassAEZ09,biomassAEZ09,2010,0.009956
+Africa_Northern,biomass,biomassAEZ10,biomassAEZ10,2010,0.0135186
+Africa_Southern,biomass,biomassAEZ01,biomassAEZ01,2010,0.0045746
+Africa_Southern,biomass,biomassAEZ02,biomassAEZ02,2010,0.0014697
+Africa_Southern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0026234
+Africa_Southern,biomass,biomassAEZ04,biomassAEZ04,2010,0.0023656
+Africa_Southern,biomass,biomassAEZ05,biomassAEZ05,2010,0.0024976
+Africa_Southern,biomass,biomassAEZ06,biomassAEZ06,2010,0.0030748
+Africa_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2010,0.0055833
+Africa_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2010,0.0050111
+Africa_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2010,0.0069816
+Africa_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2010,0.0094798
+Africa_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2010,0.0094798
+Africa_Western,biomass,biomassAEZ01,biomassAEZ01,2010,0.0039501
+Africa_Western,biomass,biomassAEZ02,biomassAEZ02,2010,0.0012691
+Africa_Western,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2010,0.0039008
+Africa_Western,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2010,0.0035175
+Africa_Western,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2010,0.0037136
+Africa_Western,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2010,0.0045719
+Africa_Western,biomass,biomassAEZ07,biomassAEZ07,2010,0.0027998
+Africa_Western,biomass,biomassAEZ09,biomassAEZ09,2010,0.0035009
+Africa_Western,biomass,biomassAEZ10,biomassAEZ10,2010,0.0047536
+Australia_NZ,biomass,biomassAEZ01,biomassAEZ01,2010,0.0086446
+Australia_NZ,biomass,biomassAEZ02,biomassAEZ02,2010,0.0027773
+Australia_NZ,biomass,biomassAEZ03,biomassAEZ03,2010,0.0049574
+Australia_NZ,biomass,biomassAEZ04,biomassAEZ04,2010,0.0044702
+Australia_NZ,biomass,biomassAEZ05,biomassAEZ05,2010,0.0047196
+Australia_NZ,biomass,biomassAEZ06,biomassAEZ06,2010,0.0058103
+Australia_NZ,biomass,biomassAEZ07,biomassAEZ07,2010,0.0061272
+Australia_NZ,biomass,biomassAEZ08,biomassAEZ08,2010,0.0054991
+Australia_NZ,biomass,biomassAEZ09,biomassAEZ09,2010,0.0076615
+Australia_NZ,biomass,biomassAEZ10,biomassAEZ10,2010,0.010403
+Australia_NZ,biomass,biomassAEZ11,biomassAEZ11,2010,0.010403
+Australia_NZ,biomass,biomassAEZ12,biomassAEZ12,2010,0.010057
+Australia_NZ,biomass,biomassAEZ15,biomassAEZ15,2010,0.0064098
+Australia_NZ,biomass,biomassAEZ16,biomassAEZ16,2010,0.0105912
+Australia_NZ,biomass,biomassAEZ17,biomassAEZ17,2010,0.0078345
+Brazil,biomass,eucalyptusAEZ01,eucalyptusAEZ01,2010,0.0235589
+Brazil,biomass,eucalyptusAEZ02,eucalyptusAEZ02,2010,0.007569
+Brazil,biomass,eucalyptusAEZ03,eucalyptusAEZ03,2010,0.0135105
+Brazil,biomass,eucalyptusAEZ04,eucalyptusAEZ04,2010,0.0121827
+Brazil,biomass,eucalyptusAEZ05,eucalyptusAEZ05,2010,0.0128621
+Brazil,biomass,eucalyptusAEZ06,eucalyptusAEZ06,2010,0.0158348
+Brazil,biomass,biomassAEZ10,biomassAEZ10,2010,0.0164643
+Brazil,biomass,biomassAEZ11,biomassAEZ11,2010,0.0164643
+Brazil,biomass,biomassAEZ12,biomassAEZ12,2010,0.0159167
+Canada,biomass,biomassAEZ07,biomassAEZ07,2010,0.010091
+Canada,biomass,biomassAEZ08,biomassAEZ08,2010,0.0090567
+Canada,biomass,biomassAEZ09,biomassAEZ09,2010,0.0126179
+Canada,biomass,biomassAEZ10,biomassAEZ10,2010,0.017133
+Canada,biomass,biomassAEZ11,biomassAEZ11,2010,0.017133
+Canada,biomass,biomassAEZ13,biomassAEZ13,2010,0.0047664
+Canada,biomass,biomassAEZ14,biomassAEZ14,2010,0.0062881
+Canada,biomass,biomassAEZ15,biomassAEZ15,2010,0.0105566
+Canada,biomass,biomassAEZ16,biomassAEZ16,2010,0.0174429
+Central America and Caribbean,biomass,biomassAEZ04,biomassAEZ04,2010,0.0023274
+Central America and Caribbean,biomass,biomassAEZ05,biomassAEZ05,2010,0.0024572
+Central America and Caribbean,biomass,biomassAEZ06,biomassAEZ06,2010,0.0030251
+Central America and Caribbean,biomass,biomassAEZ12,biomassAEZ12,2010,0.0052362
+Central Asia,biomass,biomassAEZ07,biomassAEZ07,2010,0.0048979
+Central Asia,biomass,biomassAEZ08,biomassAEZ08,2010,0.0043959
+Central Asia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0061244
+Central Asia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0083159
+Central Asia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0083159
+Central Asia,biomass,biomassAEZ12,biomassAEZ12,2010,0.0080393
+Central Asia,biomass,biomassAEZ13,biomassAEZ13,2010,0.0023135
+Central Asia,biomass,biomassAEZ14,biomassAEZ14,2010,0.0030521
+Central Asia,biomass,biomassAEZ15,biomassAEZ15,2010,0.0051239
+Central Asia,biomass,biomassAEZ16,biomassAEZ16,2010,0.0084663
+China,biomass,biomassAEZ04,biomassAEZ04,2010,0.0085592
+China,biomass,biomassAEZ05,biomassAEZ05,2010,0.0090366
+China,biomass,biomassAEZ06,biomassAEZ06,2010,0.0111251
+China,biomass,biomassAEZ07,biomassAEZ07,2010,0.0117317
+China,biomass,biomassAEZ08,biomassAEZ08,2010,0.0105292
+China,biomass,biomassAEZ09,biomassAEZ09,2010,0.0146695
+China,biomass,biomassAEZ10,biomassAEZ10,2010,0.0199187
+China,biomass,biomassAEZ11,biomassAEZ11,2010,0.0199187
 China,biomass,biomassAEZ12,biomassAEZ12,2010,0.0192562
-China,biomass,willowAEZ13,willowAEZ13,2010,0.0089791
-China,biomass,willowAEZ14,willowAEZ14,2010,0.0116559
-China,biomass,willowAEZ15,willowAEZ15,2010,0.0181908
-China,biomass,willowAEZ16,willowAEZ16,2010,0.0283895
-China,biomass,willowAEZ17,willowAEZ17,2010,0.0206574
-EU-12,biomass,biomassAEZ08,biomassAEZ08,2010,0.0113284
-EU-12,biomass,biomassAEZ09,biomassAEZ09,2010,0.0156476
-EU-12,biomass,biomassAEZ10,biomassAEZ10,2010,0.0212705
-EU-12,biomass,biomassAEZ11,biomassAEZ11,2010,0.0212705
-EU-12,biomass,biomassAEZ15,biomassAEZ15,2010,0.0135764
-EU-12,biomass,biomassAEZ16,biomassAEZ16,2010,0.021188
-EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,2010,0.0168606
-EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,2010,0.0219878
-EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,2010,0.0303711
-EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,2010,0.0412848
-EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,2010,0.0412848
-EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,2010,0.0373752
-EU-15,biomass,willowAEZ13,willowAEZ13,2010,0.0089791
-EU-15,biomass,willowAEZ14,willowAEZ14,2010,0.0116559
-EU-15,biomass,willowAEZ15,willowAEZ15,2010,0.0181908
-EU-15,biomass,willowAEZ16,willowAEZ16,2010,0.0283895
-Europe_Eastern,biomass,willowAEZ08,willowAEZ08,2010,0.0136646
-Europe_Eastern,biomass,willowAEZ09,willowAEZ09,2010,0.0188744
-Europe_Eastern,biomass,willowAEZ10,willowAEZ10,2010,0.0256569
-Europe_Eastern,biomass,willowAEZ16,willowAEZ16,2010,0.0255575
-Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,2010,0.0100643
-Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,2010,0.0092644
-Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,2010,0.0127967
-Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,2010,0.0173951
-Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,2010,0.0173951
-Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,2010,0.0157478
-Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,2010,0.0071142
-Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,2010,0.0111028
-Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,2010,0.0173277
-European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,2010,0.0212705
-European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,2010,0.0067014
-European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,2010,0.0086992
-European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,2010,0.0135764
-European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,2010,0.021188
-India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2010,0.003897
-India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2010,0.0011878
-India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,2010,0.0021496
-India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,2010,0.0018851
-India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,2010,0.0019551
-India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,2010,0.0023475
-India,biomass,biomassAEZ07,biomassAEZ07,2010,0.0101439
-India,biomass,biomassAEZ08,biomassAEZ08,2010,0.0093377
-India,biomass,biomassAEZ09,biomassAEZ09,2010,0.0128979
-India,biomass,biomassAEZ10,biomassAEZ10,2010,0.0175327
-India,biomass,biomassAEZ11,biomassAEZ11,2010,0.0175327
-India,biomass,biomassAEZ12,biomassAEZ12,2010,0.0158723
-India,biomass,biomassAEZ13,biomassAEZ13,2010,0.0055238
-India,biomass,biomassAEZ14,biomassAEZ14,2010,0.0071705
-India,biomass,biomassAEZ15,biomassAEZ15,2010,0.0111907
-India,biomass,biomassAEZ16,biomassAEZ16,2010,0.0174647
+China,biomass,willowAEZ13,willowAEZ13,2010,0.0077879
+China,biomass,willowAEZ14,willowAEZ14,2010,0.0102743
+China,biomass,willowAEZ15,willowAEZ15,2010,0.0172484
+China,biomass,willowAEZ16,willowAEZ16,2010,0.0285
+China,biomass,willowAEZ17,willowAEZ17,2010,0.0210819
+EU-12,biomass,biomassAEZ08,biomassAEZ08,2010,0.0103415
+EU-12,biomass,biomassAEZ09,biomassAEZ09,2010,0.014408
+EU-12,biomass,biomassAEZ10,biomassAEZ10,2010,0.0195637
+EU-12,biomass,biomassAEZ11,biomassAEZ11,2010,0.0195637
+EU-12,biomass,biomassAEZ15,biomassAEZ15,2010,0.0120542
+EU-12,biomass,biomassAEZ16,biomassAEZ16,2010,0.0199175
+EU-15,biomass,miscanthusAEZ04,miscanthusAEZ04,2010,0.0174252
+EU-15,biomass,miscanthusAEZ08,miscanthusAEZ08,2010,0.0214358
+EU-15,biomass,miscanthusAEZ09,miscanthusAEZ09,2010,0.0298648
+EU-15,biomass,miscanthusAEZ10,miscanthusAEZ10,2010,0.0405513
+EU-15,biomass,miscanthusAEZ11,miscanthusAEZ11,2010,0.0405513
+EU-15,biomass,miscanthusAEZ12,miscanthusAEZ12,2010,0.0392025
+EU-15,biomass,willowAEZ13,willowAEZ13,2010,0.0077879
+EU-15,biomass,willowAEZ14,willowAEZ14,2010,0.0102743
+EU-15,biomass,willowAEZ15,willowAEZ15,2010,0.0172484
+EU-15,biomass,willowAEZ16,willowAEZ16,2010,0.0285
+Europe_Eastern,biomass,willowAEZ08,willowAEZ08,2010,0.0106903
+Europe_Eastern,biomass,willowAEZ09,willowAEZ09,2010,0.014894
+Europe_Eastern,biomass,willowAEZ10,willowAEZ10,2010,0.0202235
+Europe_Eastern,biomass,willowAEZ16,willowAEZ16,2010,0.0205893
+Europe_Non_EU,biomass,biomassAEZ07,biomassAEZ07,2010,0.008952
+Europe_Non_EU,biomass,biomassAEZ08,biomassAEZ08,2010,0.0080344
+Europe_Non_EU,biomass,biomassAEZ09,biomassAEZ09,2010,0.0111937
+Europe_Non_EU,biomass,biomassAEZ10,biomassAEZ10,2010,0.0151992
+Europe_Non_EU,biomass,biomassAEZ11,biomassAEZ11,2010,0.0151992
+Europe_Non_EU,biomass,biomassAEZ12,biomassAEZ12,2010,0.0146936
+Europe_Non_EU,biomass,biomassAEZ14,biomassAEZ14,2010,0.0055784
+Europe_Non_EU,biomass,biomassAEZ15,biomassAEZ15,2010,0.009365
+Europe_Non_EU,biomass,biomassAEZ16,biomassAEZ16,2010,0.0154741
+European Free Trade Association,biomass,biomassAEZ10,biomassAEZ10,2010,0.0199187
+European Free Trade Association,biomass,biomassAEZ13,biomassAEZ13,2010,0.0055414
+European Free Trade Association,biomass,biomassAEZ14,biomassAEZ14,2010,0.0073106
+European Free Trade Association,biomass,biomassAEZ15,biomassAEZ15,2010,0.012273
+European Free Trade Association,biomass,biomassAEZ16,biomassAEZ16,2010,0.020279
+India,biomassOil,JatrophaAEZ01,JatrophaAEZ01,2010,0.0035592
+India,biomassOil,JatrophaAEZ02,JatrophaAEZ02,2010,0.0011435
+India,biomassOil,JatrophaAEZ03,JatrophaAEZ03,2010,0.0020411
+India,biomassOil,JatrophaAEZ04,JatrophaAEZ04,2010,0.0018405
+India,biomassOil,JatrophaAEZ05,JatrophaAEZ05,2010,0.0019432
+India,biomassOil,JatrophaAEZ06,JatrophaAEZ06,2010,0.0023923
+India,biomass,biomassAEZ07,biomassAEZ07,2010,0.0091353
+India,biomass,biomassAEZ08,biomassAEZ08,2010,0.008199
+India,biomass,biomassAEZ09,biomassAEZ09,2010,0.011423
+India,biomass,biomassAEZ10,biomassAEZ10,2010,0.0155105
+India,biomass,biomassAEZ11,biomassAEZ11,2010,0.0155105
+India,biomass,biomassAEZ12,biomassAEZ12,2010,0.0149946
+India,biomass,biomassAEZ13,biomassAEZ13,2010,0.004315
+India,biomass,biomassAEZ14,biomassAEZ14,2010,0.0056926
+India,biomass,biomassAEZ15,biomassAEZ15,2010,0.0095568
+India,biomass,biomassAEZ16,biomassAEZ16,2010,0.015791
 Indonesia,biomass,biomassAEZ04,biomassAEZ04,2010,0
 Indonesia,biomass,biomassAEZ05,biomassAEZ05,2010,0
 Indonesia,biomass,biomassAEZ06,biomassAEZ06,2010,0
-Japan,biomass,biomassAEZ09,biomassAEZ09,2010,0.0156476
-Japan,biomass,biomassAEZ10,biomassAEZ10,2010,0.0212705
-Japan,biomass,biomassAEZ11,biomassAEZ11,2010,0.0212705
-Japan,biomass,biomassAEZ12,biomassAEZ12,2010,0.0192562
-Japan,biomass,biomassAEZ15,biomassAEZ15,2010,0.0135764
-Mexico,biomass,biomassAEZ01,biomassAEZ01,2010,0.0179577
-Mexico,biomass,biomassAEZ02,biomassAEZ02,2010,0.0054736
-Mexico,biomass,biomassAEZ03,biomassAEZ03,2010,0.0099056
-Mexico,biomass,biomassAEZ04,biomassAEZ04,2010,0.0086868
-Mexico,biomass,biomassAEZ05,biomassAEZ05,2010,0.0090092
-Mexico,biomass,biomassAEZ06,biomassAEZ06,2010,0.0108176
-Mexico,biomass,biomassAEZ07,biomassAEZ07,2010,0.0123065
-Mexico,biomass,biomassAEZ08,biomassAEZ08,2010,0.0113284
-Mexico,biomass,biomassAEZ09,biomassAEZ09,2010,0.0156476
-Mexico,biomass,biomassAEZ10,biomassAEZ10,2010,0.0212705
-Mexico,biomass,biomassAEZ11,biomassAEZ11,2010,0.0212705
+Japan,biomass,biomassAEZ09,biomassAEZ09,2010,0.0114372
+Japan,biomass,biomassAEZ10,biomassAEZ10,2010,0.0155299
+Japan,biomass,biomassAEZ11,biomassAEZ11,2010,0.0155299
+Japan,biomass,biomassAEZ12,biomassAEZ12,2010,0.0150133
+Japan,biomass,biomassAEZ15,biomassAEZ15,2010,0.0095687
+Mexico,biomass,biomassAEZ01,biomassAEZ01,2010,0.0165518
+Mexico,biomass,biomassAEZ02,biomassAEZ02,2010,0.0053178
+Mexico,biomass,biomassAEZ03,biomassAEZ03,2010,0.009492
+Mexico,biomass,biomassAEZ04,biomassAEZ04,2010,0.0085592
+Mexico,biomass,biomassAEZ05,biomassAEZ05,2010,0.0090366
+Mexico,biomass,biomassAEZ06,biomassAEZ06,2010,0.0111251
+Mexico,biomass,biomassAEZ07,biomassAEZ07,2010,0.0117317
+Mexico,biomass,biomassAEZ08,biomassAEZ08,2010,0.0105292
+Mexico,biomass,biomassAEZ09,biomassAEZ09,2010,0.0146695
+Mexico,biomass,biomassAEZ10,biomassAEZ10,2010,0.0199187
+Mexico,biomass,biomassAEZ11,biomassAEZ11,2010,0.0199187
 Mexico,biomass,biomassAEZ12,biomassAEZ12,2010,0.0192562
-Middle East,biomass,biomassAEZ01,biomassAEZ01,2010,0.0107775
-Middle East,biomass,biomassAEZ02,biomassAEZ02,2010,0.003285
-Middle East,biomass,biomassAEZ03,biomassAEZ03,2010,0.005945
-Middle East,biomass,biomassAEZ07,biomassAEZ07,2010,0.0073858
-Middle East,biomass,biomassAEZ08,biomassAEZ08,2010,0.0067988
-Middle East,biomass,biomassAEZ09,biomassAEZ09,2010,0.009391
-Middle East,biomass,biomassAEZ10,biomassAEZ10,2010,0.0127656
-Pakistan,biomass,biomassAEZ01,biomassAEZ01,2010,0.0153474
-Pakistan,biomass,biomassAEZ07,biomassAEZ07,2010,0.0105176
-Pakistan,biomass,biomassAEZ08,biomassAEZ08,2010,0.0096817
-Pakistan,biomass,biomassAEZ09,biomassAEZ09,2010,0.0133731
-Pakistan,biomass,biomassAEZ10,biomassAEZ10,2010,0.0181786
-Pakistan,biomass,biomassAEZ11,biomassAEZ11,2010,0.0181786
-Pakistan,biomass,biomassAEZ12,biomassAEZ12,2010,0.0164571
-Pakistan,biomass,biomassAEZ13,biomassAEZ13,2010,0.0057273
-Pakistan,biomass,biomassAEZ14,biomassAEZ14,2010,0.0074347
-Russia,biomass,biomassAEZ07,biomassAEZ07,2010,0.0083882
-Russia,biomass,biomassAEZ08,biomassAEZ08,2010,0.0077215
-Russia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0106656
-Russia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0144982
-Russia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0144982
-Russia,biomass,biomassAEZ13,biomassAEZ13,2010,0.0045677
-Russia,biomass,biomassAEZ14,biomassAEZ14,2010,0.0059294
-Russia,biomass,biomassAEZ15,biomassAEZ15,2010,0.0092538
-Russia,biomass,biomassAEZ16,biomassAEZ16,2010,0.014442
-South Africa,biomass,biomassAEZ01,biomassAEZ01,2010,0.0161316
-South Africa,biomass,biomassAEZ02,biomassAEZ02,2010,0.004917
-South Africa,biomass,biomassAEZ03,biomassAEZ03,2010,0.0088983
-South Africa,biomass,biomassAEZ04,biomassAEZ04,2010,0.0078034
-South Africa,biomass,biomassAEZ05,biomassAEZ05,2010,0.0080931
-South Africa,biomass,biomassAEZ06,biomassAEZ06,2010,0.0097175
-South Africa,biomass,biomassAEZ07,biomassAEZ07,2010,0.011055
-South Africa,biomass,biomassAEZ08,biomassAEZ08,2010,0.0101764
-South Africa,biomass,biomassAEZ09,biomassAEZ09,2010,0.0140564
-South Africa,biomass,biomassAEZ10,biomassAEZ10,2010,0.0191074
-South Africa,biomass,biomassAEZ11,biomassAEZ11,2010,0.0191074
+Middle East,biomass,biomassAEZ01,biomassAEZ01,2010,0.0095109
+Middle East,biomass,biomassAEZ02,biomassAEZ02,2010,0.0030557
+Middle East,biomass,biomassAEZ03,biomassAEZ03,2010,0.0054543
+Middle East,biomass,biomassAEZ07,biomassAEZ07,2010,0.0067412
+Middle East,biomass,biomassAEZ08,biomassAEZ08,2010,0.0060502
+Middle East,biomass,biomassAEZ09,biomassAEZ09,2010,0.0084293
+Middle East,biomass,biomassAEZ10,biomassAEZ10,2010,0.0114456
+Pakistan,biomass,biomassAEZ01,biomassAEZ01,2010,0.0133055
+Pakistan,biomass,biomassAEZ07,biomassAEZ07,2010,0.0094308
+Pakistan,biomass,biomassAEZ08,biomassAEZ08,2010,0.0084641
+Pakistan,biomass,biomassAEZ09,biomassAEZ09,2010,0.0117924
+Pakistan,biomass,biomassAEZ10,biomassAEZ10,2010,0.0160121
+Pakistan,biomass,biomassAEZ11,biomassAEZ11,2010,0.0160121
+Pakistan,biomass,biomassAEZ12,biomassAEZ12,2010,0.0154795
+Pakistan,biomass,biomassAEZ13,biomassAEZ13,2010,0.0044546
+Pakistan,biomass,biomassAEZ14,biomassAEZ14,2010,0.0058767
+Russia,biomass,biomassAEZ07,biomassAEZ07,2010,0.006548
+Russia,biomass,biomassAEZ08,biomassAEZ08,2010,0.0058768
+Russia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0081877
+Russia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0111175
+Russia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0111175
+Russia,biomass,biomassAEZ13,biomassAEZ13,2010,0.0030929
+Russia,biomass,biomassAEZ14,biomassAEZ14,2010,0.0040803
+Russia,biomass,biomassAEZ15,biomassAEZ15,2010,0.00685
+Russia,biomass,biomassAEZ16,biomassAEZ16,2010,0.0113186
+South Africa,biomass,biomassAEZ01,biomassAEZ01,2010,0.0122517
+South Africa,biomass,biomassAEZ02,biomassAEZ02,2010,0.0039362
+South Africa,biomass,biomassAEZ03,biomassAEZ03,2010,0.0070261
+South Africa,biomass,biomassAEZ04,biomassAEZ04,2010,0.0063356
+South Africa,biomass,biomassAEZ05,biomassAEZ05,2010,0.0066889
+South Africa,biomass,biomassAEZ06,biomassAEZ06,2010,0.0082348
+South Africa,biomass,biomassAEZ07,biomassAEZ07,2010,0.0086839
+South Africa,biomass,biomassAEZ08,biomassAEZ08,2010,0.0077938
+South Africa,biomass,biomassAEZ09,biomassAEZ09,2010,0.0108584
+South Africa,biomass,biomassAEZ10,biomassAEZ10,2010,0.014744
+South Africa,biomass,biomassAEZ11,biomassAEZ11,2010,0.014744
 South America_Northern,biomass,biomassAEZ01,biomassAEZ01,2010,0
 South America_Northern,biomass,biomassAEZ02,biomassAEZ02,2010,0
 South America_Northern,biomass,biomassAEZ03,biomassAEZ03,2010,0
 South America_Northern,biomass,biomassAEZ04,biomassAEZ04,2010,0
 South America_Northern,biomass,biomassAEZ05,biomassAEZ05,2010,0
 South America_Northern,biomass,biomassAEZ06,biomassAEZ06,2010,0
-South America_Southern,biomass,biomassAEZ01,biomassAEZ01,2010,0.0156169
-South America_Southern,biomass,biomassAEZ02,biomassAEZ02,2010,0.0047601
-South America_Southern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0086144
-South America_Southern,biomass,biomassAEZ04,biomassAEZ04,2010,0.0075545
-South America_Southern,biomass,biomassAEZ05,biomassAEZ05,2010,0.0078349
-South America_Southern,biomass,biomassAEZ06,biomassAEZ06,2010,0.0094075
-South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2010,0.0175701
-South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2010,0.0161737
-South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2010,0.0223403
-South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2010,0.0303681
-South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2010,0.0303681
-South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2010,0.0274923
-South America_Southern,biomass,biomassAEZ13,biomassAEZ13,2010,0.0058279
-South America_Southern,biomass,biomassAEZ14,biomassAEZ14,2010,0.0075652
-South America_Southern,biomass,biomassAEZ15,biomassAEZ15,2010,0.0118067
-South America_Southern,biomass,biomassAEZ16,biomassAEZ16,2010,0.0184262
-South America_Southern,biomass,biomassAEZ17,biomassAEZ17,2010,0.0134077
+South America_Southern,biomass,biomassAEZ01,biomassAEZ01,2010,0.0145713
+South America_Southern,biomass,biomassAEZ02,biomassAEZ02,2010,0.0046815
+South America_Southern,biomass,biomassAEZ03,biomassAEZ03,2010,0.0083563
+South America_Southern,biomass,biomassAEZ04,biomassAEZ04,2010,0.007535
+South America_Southern,biomass,biomassAEZ05,biomassAEZ05,2010,0.0079553
+South America_Southern,biomass,biomassAEZ06,biomassAEZ06,2010,0.0097939
+South America_Southern,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2010,0.0177844
+South America_Southern,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2010,0.0159615
+South America_Southern,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2010,0.022238
+South America_Southern,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2010,0.0301954
+South America_Southern,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2010,0.0301954
+South America_Southern,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2010,0.0291911
+South America_Southern,biomass,biomassAEZ13,biomassAEZ13,2010,0.0048783
+South America_Southern,biomass,biomassAEZ14,biomassAEZ14,2010,0.0064358
+South America_Southern,biomass,biomassAEZ15,biomassAEZ15,2010,0.0108044
+South America_Southern,biomass,biomassAEZ16,biomassAEZ16,2010,0.0178525
+South America_Southern,biomass,biomassAEZ17,biomassAEZ17,2010,0.0132057
 South America_Southern,biomass,biomassAEZ18,biomassAEZ18,2010,0
-South Asia,biomass,biomassAEZ03,biomassAEZ03,2010,0.0058155
-South Asia,biomass,biomassAEZ04,biomassAEZ04,2010,0.0050999
-South Asia,biomass,biomassAEZ05,biomassAEZ05,2010,0.0052892
-South Asia,biomass,biomassAEZ06,biomassAEZ06,2010,0.0063509
-South Asia,biomass,biomassAEZ07,biomassAEZ07,2010,0.007225
-South Asia,biomass,biomassAEZ08,biomassAEZ08,2010,0.0066507
-South Asia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0091865
-South Asia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0124876
-South Asia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0124876
-South Asia,biomass,biomassAEZ12,biomassAEZ12,2010,0.0113051
-South Asia,biomass,biomassAEZ13,biomassAEZ13,2010,0.0039343
-South Asia,biomass,biomassAEZ14,biomassAEZ14,2010,0.0051072
-South Asia,biomass,biomassAEZ15,biomassAEZ15,2010,0.0079705
-South Asia,biomass,biomassAEZ16,biomassAEZ16,2010,0.0124392
-South Korea,biomass,biomassAEZ10,biomassAEZ10,2010,0.0163528
-South Korea,biomass,biomassAEZ11,biomassAEZ11,2010,0.0163528
-Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,2010,0.0037048
-Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,2010,0.0038423
-Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,2010,0.0046135
-Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0066734
-Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0090715
-Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0090715
-Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,2010,0.0082125
-Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,2010,0.0057901
-Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,2010,0.0090364
-Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2010,0.0201512
-Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2010,0.0185495
-Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2010,0.0256222
-Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2010,0.0348294
-Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2010,0.0348294
-Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2010,0.0315311
-Argentina,biomass,biomassAEZ13,biomassAEZ13,2010,0.006684
-Argentina,biomass,biomassAEZ14,biomassAEZ14,2010,0.0086766
-Argentina,biomass,biomassAEZ15,biomassAEZ15,2010,0.0135412
-Argentina,biomass,biomassAEZ16,biomassAEZ16,2010,0.021133
-Colombia,biomass,biomassAEZ02,biomassAEZ02,2010,0.0046262
-Colombia,biomass,biomassAEZ03,biomassAEZ03,2010,0.0083721
-Colombia,biomass,biomassAEZ04,biomassAEZ04,2010,0.0073419
-Colombia,biomass,biomassAEZ05,biomassAEZ05,2010,0.0076145
-Colombia,biomass,biomassAEZ06,biomassAEZ06,2010,0.0091428
-Colombia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0179775
-Colombia,biomass,biomassAEZ12,biomassAEZ12,2010,0.016275
+South Asia,biomass,biomassAEZ03,biomassAEZ03,2010,0.0058972
+South Asia,biomass,biomassAEZ04,biomassAEZ04,2010,0.0053177
+South Asia,biomass,biomassAEZ05,biomassAEZ05,2010,0.0056143
+South Asia,biomass,biomassAEZ06,biomassAEZ06,2010,0.0069118
+South Asia,biomass,biomassAEZ07,biomassAEZ07,2010,0.0072887
+South Asia,biomass,biomassAEZ08,biomassAEZ08,2010,0.0065416
+South Asia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0091139
+South Asia,biomass,biomassAEZ10,biomassAEZ10,2010,0.0123752
+South Asia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0123752
+South Asia,biomass,biomassAEZ12,biomassAEZ12,2010,0.0119635
+South Asia,biomass,biomassAEZ13,biomassAEZ13,2010,0.0034428
+South Asia,biomass,biomassAEZ14,biomassAEZ14,2010,0.0045419
+South Asia,biomass,biomassAEZ15,biomassAEZ15,2010,0.007625
+South Asia,biomass,biomassAEZ16,biomassAEZ16,2010,0.012599
+South Korea,biomass,biomassAEZ10,biomassAEZ10,2010,0.0128613
+South Korea,biomass,biomassAEZ11,biomassAEZ11,2010,0.0128613
+Southeast Asia,biomass,biomassAEZ04,biomassAEZ04,2010,0.0035146
+Southeast Asia,biomass,biomassAEZ05,biomassAEZ05,2010,0.0037106
+Southeast Asia,biomass,biomassAEZ06,biomassAEZ06,2010,0.0045682
+Southeast Asia,biomass,biomassAEZ09,biomassAEZ09,2010,0.0060236
+Southeast Asia,biomass,biomassAEZ10,biomassAEZ10,2010,0.008179
+Southeast Asia,biomass,biomassAEZ11,biomassAEZ11,2010,0.008179
+Southeast Asia,biomass,biomassAEZ12,biomassAEZ12,2010,0.007907
+Southeast Asia,biomass,biomassAEZ15,biomassAEZ15,2010,0.0050395
+Southeast Asia,biomass,biomassAEZ16,biomassAEZ16,2010,0.008327
+Argentina,biomass,eucalyptusAEZ07,eucalyptusAEZ07,2010,0.0202017
+Argentina,biomass,eucalyptusAEZ08,eucalyptusAEZ08,2010,0.0181311
+Argentina,biomass,eucalyptusAEZ09,eucalyptusAEZ09,2010,0.0252606
+Argentina,biomass,eucalyptusAEZ10,eucalyptusAEZ10,2010,0.0342996
+Argentina,biomass,eucalyptusAEZ11,eucalyptusAEZ11,2010,0.0342996
+Argentina,biomass,eucalyptusAEZ12,eucalyptusAEZ12,2010,0.0331588
+Argentina,biomass,biomassAEZ13,biomassAEZ13,2010,0.0055414
+Argentina,biomass,biomassAEZ14,biomassAEZ14,2010,0.0073106
+Argentina,biomass,biomassAEZ15,biomassAEZ15,2010,0.012273
+Argentina,biomass,biomassAEZ16,biomassAEZ16,2010,0.020279
+Colombia,biomass,biomassAEZ02,biomassAEZ02,2010,0.004258
+Colombia,biomass,biomassAEZ03,biomassAEZ03,2010,0.0076004
+Colombia,biomass,biomassAEZ04,biomassAEZ04,2010,0.0068535
+Colombia,biomass,biomassAEZ05,biomassAEZ05,2010,0.0072357
+Colombia,biomass,biomassAEZ06,biomassAEZ06,2010,0.008908
+Colombia,biomass,biomassAEZ11,biomassAEZ11,2010,0.0159492
+Colombia,biomass,biomassAEZ12,biomassAEZ12,2010,0.0154187
