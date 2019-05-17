@@ -220,14 +220,16 @@ ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @param aRegionName Region to read data for
 #' @param SUBREGION Subregion to read data for
 #' @param subregionData Subregion data
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @return Data on LandLeaf children of LandNode2
 #' @importFrom readr read_csv
-#' @importFrom dplyr rename select group_by summarize
+#' @importFrom dplyr rename select group_by summarize mutate full_join
+#' @importFrom tibble tibble
 #' @author KVC October 2017
-ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL, aScenarioInfo) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
-    LandLeaf <- year.fillout <- allocation <- year <- NULL
+    LandLeaf <- year.fillout <- allocation <- year <- UNIQUE_JOIN_FIELD <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
@@ -245,6 +247,17 @@ ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
       group_by(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
+
+    # For the SUBREGION if data not available for all historical years then repeat data for all historical years
+    if (! identical(data$year , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
+      data %>%
+        select(-year) %>%
+        mutate(UNIQUE_JOIN_FIELD = 1) %>%
+        full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
+        select(-UNIQUE_JOIN_FIELD) ->
+        data
+    }
+
   }
   else {
     # Read in calibration data
@@ -393,15 +406,17 @@ ReadData_LN3_GhostShare <- function(aRegionName) {
 #' @param aRegionName Region to read data for
 #' @param SUBREGION Subregion to read data for
 #' @param subregionData Subregion data
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @return Data on LandLeaf children of LandNode2
 #' @importFrom readr read_csv
-#' @importFrom dplyr bind_rows rename select group_by summarize
+#' @importFrom dplyr bind_rows rename select group_by summarize mutate full_join
+#' @importFrom tibble tibble
 #' @author KVC October 2017
 #' @export
-ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL, aScenarioInfo) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <- LandNode3 <-
-    year <- LandLeaf <- year.fillout <- allocation <- NULL
+    year <- LandLeaf <- year.fillout <- allocation <- UNIQUE_JOIN_FIELD <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode3 is not NA
@@ -419,6 +434,17 @@ ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
       group_by(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandNode3, LandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
+
+    # For the SUBREGION if data not available for all historical years then repeat data for all historical years
+    if (! identical(data$year , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
+      data %>%
+        select(-year) %>%
+        mutate(UNIQUE_JOIN_FIELD = 1) %>%
+        full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
+        select(-UNIQUE_JOIN_FIELD) ->
+        data
+    }
+
   }
   else {
     # Read in calibration data
@@ -523,6 +549,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #' @return All AgProductionTechnology information
 #' @importFrom readr read_csv
 #' @importFrom dplyr bind_rows rename select
+#' @importFrom tibble tibble
 #' @import tidyr
 #' @author KVC October 2017
 #' @export

@@ -4,7 +4,8 @@
 \alias{get_historical_land_data}
 \title{Get historical land use data}
 \usage{
-get_historical_land_data(regions = NULL, years = NULL, commodities = NULL)
+get_historical_land_data(regions = NULL, years = NULL,
+  commodities = NULL)
 }
 \arguments{
 \item{regions}{Regions to keep in filtered data. (Default is use all regions.)}

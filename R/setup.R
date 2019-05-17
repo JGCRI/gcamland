@@ -57,7 +57,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL, SUBR
                  "LandNode2", aScenarioInfo)
 
   # Read information on LandLeaf children of LN2 nodes
-  childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName, SUBREGION, subregionData)
+  childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName, SUBREGION, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData)
 
@@ -73,7 +73,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL, SUBR
                  "LandNode3", aScenarioInfo, ghostShareData)
 
   # Read information on LandLeaf children of LN3 nodes
-  childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName, SUBREGION, subregionData)
+  childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName, SUBREGION, subregionData, aScenarioInfo)
   newTechData <- ReadData_LN3_NewTech(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData, newTechData)
