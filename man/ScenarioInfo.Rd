@@ -10,7 +10,7 @@ ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWeights = NULL,
   aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
   aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
-  aRegion = DEFAULT.REGION)
+  aRegion = DEFAULT.REGION, aSubRegion = NULL)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}
@@ -47,6 +47,8 @@ The names should correspond to the names of the land leaf nodes.}
 
 \item{aRegion}{Region to use in the calculation.  Right now we only run a
 single region at a time.}
+
+\item{aSubRegion}{Subregion name. Note we can only run a full region or a subregion not both}
 }
 \value{
 New ScenarioInfo object

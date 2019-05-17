@@ -259,7 +259,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL)
   mLandAllocator <-
       LandAllocator(aScenarioInfo$mRegion,
                     TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD)
-  LandAllocator_setup(mLandAllocator, aScenarioInfo, agData)
+  LandAllocator_setup(mLandAllocator, aScenarioInfo, agData, SUBREGION=aScenarioInfo$mSubRegion)
 
   # Loop through each period and run the model
   # TODO: put model running in a function, add loop on regions

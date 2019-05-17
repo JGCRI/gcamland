@@ -19,6 +19,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL, SUBR
 
   # Read SUBREGION data
   if(!is.null(SUBREGION)){
+    message("Running a Subregional Model")
     # Read in calibration data
     subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland")))
   } else subregionData <- NULL
