@@ -4,8 +4,8 @@
 \alias{LandNode_setup}
 \title{LandNode_setup}
 \usage{
-LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName,
-  aScenarioInfo, aGhostShareData = NULL)
+LandNode_setup(aLandAllocator, aRegionName, aData, aColumnName, aScenarioInfo,
+  aGhostShareData = NULL)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}

@@ -31,12 +31,13 @@
 #' @author KVC October 2017
 ReadData_LN0 <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- land <- year.fillout <- logit.year.fillout <- NULL
+  region <- land <- year.fillout <- logit.year.fillout <- Root.logit.exponent <- landAllocation <-
+    allocation <- subregion <- LandAllocatorRoot <- logit.exponent <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep select columns pertaining to root
     subregionData %>%
-      select("region","subregion","LandAllocatorRoot","year.fillout","allocation","Root.logit.exponent") %>%
+      select(region, subregion, LandAllocatorRoot, year.fillout, allocation, Root.logit.exponent) %>%
       rename(logit.exponent = Root.logit.exponent,
              landAllocation = allocation) ->
       data
@@ -80,12 +81,13 @@ ReadData_LN0 <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @author KVC October 2017
 ReadData_LN1_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- NULL
+  region <- subregion <- LandAllocatorRoot <- LandNode1 <- year.fillout <- logit.exponent <-
+    LandNode1.logit.exponent <- unManagedLandValue <- logit.year.fillout <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep select columns pertaining to LandNode1 and logit exponent for LandNode1
     subregionData %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","year.fillout","LandNode1.logit.exponent","unManagedLandValue") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, year.fillout, LandNode1.logit.exponent, unManagedLandValue) %>%
       rename(logit.exponent = LandNode1.logit.exponent,
              logit.year.fillout = year.fillout) ->
       data
@@ -127,7 +129,7 @@ ReadData_LN1_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @author KVC October 2017
 ReadData_LN1_LeafChildren <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- NULL
+  region <- LandNode1 <- year.fillout <- subregion <- LandAllocatorRoot <- UnmanagedLandLeaf <- allocation <- year <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode2 is NA
@@ -136,7 +138,7 @@ ReadData_LN1_LeafChildren <- function(aRegionName, SUBREGION=NULL, subregionData
 
     # Only keep select columns pertaining to LandNode1
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","UnmanagedLandLeaf","year.fillout","allocation") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, UnmanagedLandLeaf, year.fillout, allocation) %>%
       rename(year = year.fillout) ->
       data
 
@@ -174,7 +176,8 @@ ReadData_LN1_LeafChildren <- function(aRegionName, SUBREGION=NULL, subregionData
 #' @author KVC October 2017
 ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- year.fillout <- logit.year.fillout <- NULL
+  region <- LandNode1 <- year.fillout <- logit.year.fillout <- logit.exponent <-
+    subregion <- LandAllocatorRoot <- LandNode2 <- LandNode2.logit.exponent <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
@@ -183,7 +186,7 @@ ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 
     # Only keep select columns pertaining to LandNode2 and logit exponent for LandNode2
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","LandNode2","year.fillout","LandNode2.logit.exponent") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, year.fillout, LandNode2.logit.exponent) %>%
       rename(logit.exponent = LandNode2.logit.exponent) ->
       data
 
@@ -223,7 +226,8 @@ ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @author KVC October 2017
 ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- NULL
+  region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
+    LandLeaf <- year.fillout <- allocation <- year <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
@@ -232,7 +236,7 @@ ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
 
     # Only keep select columns pertaining to LandNode2
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","LandNode2","LandLeaf","year.fillout","allocation") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandLeaf, year.fillout, allocation) %>%
       rename(year = year.fillout) ->
       data
 
@@ -271,7 +275,8 @@ ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
 #' @author KVC October 2017
 ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- NULL
+  region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
+    UnmanagedLandLeaf <- year.fillout <- allocation <- year <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
@@ -280,7 +285,7 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregio
 
     # Only keep select columns pertaining to LandNode2
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","LandNode2","UnmanagedLandLeaf","year.fillout","allocation") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, UnmanagedLandLeaf, year.fillout, allocation) %>%
       rename(year = year.fillout) ->
       data
 
@@ -318,7 +323,8 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregio
 #' @author KVC October 2017
 ReadData_LN3_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- year.fillout <- logit.year.fillout <- NULL
+  region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
+    logit.exponent <- LandNode3 <- year.fillout <- LandNode3.logit.exponent <- logit.year.fillout <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode3 is not NA
@@ -327,7 +333,7 @@ ReadData_LN3_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 
     # Only keep select columns pertaining to LandNode3 and logit exponent for LandNode3
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","LandNode2","LandNode3","year.fillout","LandNode3.logit.exponent") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandNode3, year.fillout, LandNode3.logit.exponent) %>%
       rename(logit.exponent = LandNode3.logit.exponent) ->
       data
 
@@ -394,7 +400,8 @@ ReadData_LN3_GhostShare <- function(aRegionName) {
 #' @export
 ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- NULL
+  region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <- LandNode3 <-
+    year <- LandLeaf <- year.fillout <- allocation <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode3 is not NA
@@ -403,7 +410,7 @@ ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
 
     # Only keep select columns pertaining to LandNode3
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","LandNode2","LandNode3","LandLeaf","year.fillout","allocation") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandNode3, LandLeaf, year.fillout, allocation) %>%
       rename(year = year.fillout) ->
       data
 
@@ -445,7 +452,8 @@ ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
 #' @author KVC October 2017
 ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- LandNode1 <- NULL
+  region <- LandNode1 <- LandNode3 <- allocation <- LandAllocatorRoot <- subregion <- LandNode2 <-
+    year <- UnmanagedLandLeaf <- year.fillout <- NULL
 
   if(!is.null(SUBREGION)){
     # For SUBREGION only keep rows for which LandNode3 is not NA
@@ -454,7 +462,7 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregio
 
     # Only keep select columns pertaining to LandNode3
     data %>%
-      select("region","subregion","LandAllocatorRoot","LandNode1","LandNode2","LandNode3","UnmanagedLandLeaf","year.fillout","allocation") %>%
+      select(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandNode3, UnmanagedLandLeaf, year.fillout, allocation) %>%
       rename(year = year.fillout) ->
       data
 
@@ -520,7 +528,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #' @export
 ReadData_AgProd <- function(aRegionName, ascentype, SUBREGION=NULL, subregionData=NULL) {
   # Silence package checks
-  region <- AgSupplySubsector <- NULL
+  region <- AgSupplySubsector <- year.fillout <- NULL
 
   if(!is.null(SUBREGION)){
 
