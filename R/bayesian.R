@@ -76,7 +76,7 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 #' @export
 get_scenario_land_data <- function(aScenarioList)
 {
-    land.type <- year <- land.allocation <- scenario <- NULL # silence package notes
+    land.type <- year <- harvested.area <- scenario <- NULL # silence package notes
 
     if(inherits(aScenarioList, "ScenarioInfo")) {
         ## user passed a single scenario.  Convert it to a list and press on
@@ -104,7 +104,7 @@ get_scenario_land_data <- function(aScenarioList)
           tidyr::extract('name', c('land.type', 'AEZ'),
                          '(.+)(AEZ[0-9]+)') %>%
           dplyr::group_by(land.type, year, scenario) %>%
-          dplyr::summarise(model = sum(land.allocation)) %>%
+          dplyr::summarise(model = sum(harvested.area)) %>%
           dplyr::ungroup() %>%
           dplyr::mutate(variable = "Land Area") %>%
           dplyr::mutate(region = region)

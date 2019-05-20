@@ -73,7 +73,7 @@ test_that("land cover with read in share weights matches reference values", {
   # (as this code will be run in tests/testthat)
   file <- file.path(basepath, paste0("output_", test.info$mScenarioName, ".rds"))
   readRDS(file) %>%
-    select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight, -scenario) %>%
+    select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight, -scenario, -harvested.land) %>%
     mutate(region = SCENARIO.INFO$mRegion) %>%
     filter(year >= 2010) -> # We are using 2010 share weights, so 1990 & 2005 won't match
     outputData
