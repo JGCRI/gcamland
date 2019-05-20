@@ -69,6 +69,7 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FA
   # Get data into a data frame
   tibble::tibble(name = leafs$node,
                  land.allocation = rep(NA, length(leafs$node)),
+                 harvested.land = rep(NA, length(leafs$node)),
                  yield = rep(NA, length(leafs$node)),
                  expectedYield = rep(NA, length(leafs$node)),
                  expectedPrice = rep(NA, length(leafs$node)),
@@ -158,6 +159,8 @@ LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
 
     # Only get yield and price information for LandLeafs
     if(inherits(aLandLeaf, "LandLeaf")) {
+      aAllOutputs$harvested.land[aAllOutputs$year == currYear &
+                                   aAllOutputs$name == currName] <- aLandLeaf$mHarvestedLand[[per]]
       aAllOutputs$yield[aAllOutputs$name == currName &
                           aAllOutputs$year == currYear] <- aLandLeaf$mYield[[per]]
       aAllOutputs$expectedYield[aAllOutputs$name == currName &
