@@ -23,19 +23,19 @@
 #' @details Read in total land allocation and logit exponents
 #'          for the LandAllocator.
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Land allocator data
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN0 <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN0 <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- land <- year.fillout <- logit.year.fillout <- Root.logit.exponent <- landAllocation <-
     allocation <- subregion <- LandAllocatorRoot <- logit.exponent <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep select columns pertaining to root
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep select columns pertaining to root
     subregionData %>%
       select(region, subregion, LandAllocatorRoot, year.fillout, allocation, Root.logit.exponent) %>%
       rename(logit.exponent = Root.logit.exponent,
@@ -73,19 +73,19 @@ ReadData_LN0 <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @details Read in unmanaged land value, names of children, and logit exponents
 #'          for the LandAllocator.
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Data on children of the land allocator
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN1_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN1_Node <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- year.fillout <- logit.exponent <-
     LandNode1.logit.exponent <- unManagedLandValue <- logit.year.fillout <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep select columns pertaining to LandNode1 and logit exponent for LandNode1
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep select columns pertaining to LandNode1 and logit exponent for LandNode1
     subregionData %>%
       select(region, subregion, LandAllocatorRoot, LandNode1, year.fillout, LandNode1.logit.exponent, unManagedLandValue) %>%
       rename(logit.exponent = LandNode1.logit.exponent,
@@ -121,18 +121,18 @@ ReadData_LN1_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #'          read in information on children that only have one
 #'          node above them.
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Data on children of the land allocator
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN1_LeafChildren <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN1_LeafChildren <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- LandNode1 <- year.fillout <- subregion <- LandAllocatorRoot <- UnmanagedLandLeaf <- allocation <- year <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode2 is NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode2 is NA
     # That is read in information on children that only have one node above them.
     data <- subregionData[is.na(subregionData$LandNode2),]
 
@@ -168,19 +168,19 @@ ReadData_LN1_LeafChildren <- function(aRegionName, SUBREGION=NULL, subregionData
 #'
 #' @details Read in names of children and logit exponents for LN2
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Data on level 2 nodes of the land allocator
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN2_Node <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- LandNode1 <- year.fillout <- logit.year.fillout <- logit.exponent <-
     subregion <- LandAllocatorRoot <- LandNode2 <- LandNode2.logit.exponent <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode2 is not NA and LandNode3 is NA
     # That is read in information on children that have two node above them.
     data <- subregionData[!is.na(subregionData$LandNode2),]
 
@@ -218,7 +218,7 @@ ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @details Read in names of information on LandLeafs that are
 #'          children of LandNode2 nodes
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @return Data on LandLeaf children of LandNode2
@@ -226,13 +226,13 @@ ReadData_LN2_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
 #' @importFrom dplyr rename select group_by summarize mutate full_join
 #' @importFrom tibble tibble
 #' @author KVC October 2017
-ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL, aScenarioInfo) {
+ReadData_LN2_LandLeaf <- function(aRegionName, aSubRegion, subregionData, aScenarioInfo) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
     LandLeaf <- year.fillout <- allocation <- year <- UNIQUE_JOIN_FIELD <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode2 is not NA and LandNode3 is NA
     # That is read in information on children that have two node above them.
     data <- subregionData[!is.na(subregionData$LandNode2) & is.na(subregionData$LandNode3) & !is.na(subregionData$LandLeaf),]
 
@@ -248,7 +248,7 @@ ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
       summarize(allocation = sum(allocation)) ->
       data
 
-    # For the SUBREGION if data not available for all historical years then repeat data for all historical years
+    # For the SubRegion if data not available for all historical years then repeat data for all historical years
     if (! identical(data$year , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
       data %>%
         select(-year) %>%
@@ -280,19 +280,19 @@ ReadData_LN2_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
 #' @details Read in names of information on UnmanagedLandLeafs that are
 #'          children of LandNode2 nodes
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Data on UnmanagedLandLeaf children of LandNode2
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
     UnmanagedLandLeaf <- year.fillout <- allocation <- year <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode2 is not NA and LandNode3 is NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode2 is not NA and LandNode3 is NA
     # That is read in information on children that have two node above them.
     data <- subregionData[!is.na(subregionData$LandNode2) & is.na(subregionData$LandNode3) & !is.na(subregionData$UnmanagedLandLeaf),]
 
@@ -328,19 +328,19 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregio
 #'
 #' @details Read in names of children and logit exponents for LN2
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Data on level 3 nodes of the land allocator
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN3_Node <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN3_Node <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <-
     logit.exponent <- LandNode3 <- year.fillout <- LandNode3.logit.exponent <- logit.year.fillout <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode3 is not NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode3 is not NA
     # That is read in information on children that have three node above them.
     data <- subregionData[!is.na(subregionData$LandNode3),]
 
@@ -404,7 +404,7 @@ ReadData_LN3_GhostShare <- function(aRegionName) {
 #' @details Read in names of information on LandLeafs that are
 #'          children of LandNode3 nodes
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @return Data on LandLeaf children of LandNode2
@@ -413,13 +413,13 @@ ReadData_LN3_GhostShare <- function(aRegionName) {
 #' @importFrom tibble tibble
 #' @author KVC October 2017
 #' @export
-ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL, aScenarioInfo) {
+ReadData_LN3_LandLeaf <- function(aRegionName, aSubRegion, subregionData, aScenarioInfo) {
   # Silence package checks
   region <- subregion <- LandAllocatorRoot <- LandNode1 <- LandNode2 <- LandNode3 <-
     year <- LandLeaf <- year.fillout <- allocation <- UNIQUE_JOIN_FIELD <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode3 is not NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode3 is not NA
     # That is read in information on children that have three node above them.
     data <- subregionData[!is.na(subregionData$LandNode3) & !is.na(subregionData$LandLeaf),]
 
@@ -435,7 +435,7 @@ ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
       summarize(allocation = sum(allocation)) ->
       data
 
-    # For the SUBREGION if data not available for all historical years then repeat data for all historical years
+    # For the SubRegion if data not available for all historical years then repeat data for all historical years
     if (! identical(data$year , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
       data %>%
         select(-year) %>%
@@ -470,19 +470,19 @@ ReadData_LN3_LandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NUL
 #' @details Read in names of information on UnmanagedLandLeafs that are
 #'          children of LandNode3 nodes
 #' @param aRegionName Region to read data for
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return Data on UnmanagedLandLeaf children of LandNode3
 #' @importFrom readr read_csv
 #' @importFrom dplyr rename select group_by summarize
 #' @author KVC October 2017
-ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName, SUBREGION=NULL, subregionData=NULL) {
+ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName, aSubRegion, subregionData) {
   # Silence package checks
   region <- LandNode1 <- LandNode3 <- allocation <- LandAllocatorRoot <- subregion <- LandNode2 <-
     year <- UnmanagedLandLeaf <- year.fillout <- NULL
 
-  if(!is.null(SUBREGION)){
-    # For SUBREGION only keep rows for which LandNode3 is not NA
+  if(!is.null(aSubRegion)){
+    # For SubRegion only keep rows for which LandNode3 is not NA
     # That is read in information on children that have three node above them.
     data <- subregionData[!is.na(subregionData$LandNode3) & !is.na(subregionData$UnmanagedLandLeaf),]
 
@@ -544,7 +544,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #' @details Read in ag production data
 #' @param aRegionName Region to read data for
 #' @param ascentype Scenario type: either "Reference" or "Hindcast"
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return All AgProductionTechnology information
 #' @importFrom readr read_csv
@@ -553,11 +553,11 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #' @import tidyr
 #' @author KVC October 2017
 #' @export
-ReadData_AgProd <- function(aRegionName, ascentype, SUBREGION=NULL, subregionData=NULL) {
+ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NULL) {
   # Silence package checks
   region <- AgSupplySubsector <- year.fillout <- NULL
 
-  if(!is.null(SUBREGION)){
+  if(!is.null(aSubRegion)){
 
     # Only keep rows for which AgSupplySector is not NA
     data <- subregionData[!is.na(subregionData$AgSupplySector),]
@@ -568,7 +568,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, SUBREGION=NULL, subregionDat
       rename(year = year.fillout) ->
       calOutput
 
-    agProdChange <- get_AgProdChange(ascentype, SUBREGION)
+    agProdChange <- get_AgProdChange(ascentype, aSubRegion)
 
     cost <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/AgCost_SRB.csv", package = "gcamland")))
 
@@ -586,7 +586,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, SUBREGION=NULL, subregionDat
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgProduction_For.csv", package = "gcamland"), skip = 3))) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgProduction_Past.csv", package = "gcamland"), skip = 3))) ->
       calOutput
-    agProdChange <- get_AgProdChange(ascentype)
+    agProdChange <- get_AgProdChange(ascentype, aSubRegion)
     suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_ag.csv", package = "gcamland"), skip = 3)) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
@@ -620,15 +620,15 @@ ReadData_AgProd <- function(aRegionName, ascentype, SUBREGION=NULL, subregionDat
 #'
 #' @details Read in AgProdChange for all periods and return them
 #' @param ascentype Scenario type: either "Reference" or "Hindcast"
-#' @param SUBREGION Subregion to read data for
+#' @param aSubRegion Subregion to read data for
 #' @return Tibble containing AgProdChange by commodity and year
 #' @importFrom readr read_csv
 #' @author KVC October 2017
-get_AgProdChange <- function(ascentype, SUBREGION=NULL) {
+get_AgProdChange <- function(ascentype, aSubRegion) {
   # Silence package checks
   year <- NULL
 
-  if(!is.null(SUBREGION)){
+  if(!is.null(aSubRegion)){
     agProdChange <- suppressMessages(read_csv(system.file("extdata", "./scenario-data/AgProdChange_SRB.csv", package = "gcamland")))
   }
   else {

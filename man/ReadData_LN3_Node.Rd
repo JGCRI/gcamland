@@ -4,12 +4,12 @@
 \alias{ReadData_LN3_Node}
 \title{ReadData_LN3_Node}
 \usage{
-ReadData_LN3_Node(aRegionName, SUBREGION = NULL, subregionData = NULL)
+ReadData_LN3_Node(aRegionName, aSubRegion, subregionData)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
 
-\item{SUBREGION}{Subregion to read data for}
+\item{aSubRegion}{Subregion to read data for}
 
 \item{subregionData}{Subregion data}
 }

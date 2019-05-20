@@ -35,10 +35,10 @@ test_that("Incompatible agData generates an error", {
     else {
         wrongtype <- 'Reference'
     }
-    agData_bad <- ReadData_AgProd(test.info$mRegion, wrongtype)
+    agData_bad <- ReadData_AgProd(test.info$mRegion, wrongtype, test.info$mSubRegion)
     expect_error(run_model(test.info, 4, agData=agData_bad))
 
-    agData_worse <- ReadData_AgProd('European Free Trade Association', scentype)
+    agData_worse <- ReadData_AgProd('European Free Trade Association', scentype, test.info$mSubRegion)
     expect_error(run_model(test.info, 4, agData=agData_worse))
 
 })
@@ -46,7 +46,7 @@ test_that("Incompatible agData generates an error", {
 test_that("Results are the same whether agData is read or passed in.", {
     r1 <- run_model(test.info, 1:4)
 
-    agData <- ReadData_AgProd(test.info$mRegion, test.info$mScenarioType)
+    agData <- ReadData_AgProd(test.info$mRegion, test.info$mScenarioType, test.info$mSubRegion)
     r2 <- run_model(test.info, 1:4, agData=agData)
 
     expect_equal(r1, r2)

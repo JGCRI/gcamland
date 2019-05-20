@@ -4,6 +4,7 @@
 #'
 #' @details Initialize an Class called LandAllocator
 #' @param aRegionName Region name
+#' @param aSubRegion Subregion name
 #' @param aFinalCalPeriod Final calibration period
 #' @field mRegionName Region name
 #' @field mFinalCalPeriod Final calibration period
@@ -16,9 +17,10 @@
 #' @return New, initialized LandAllocator
 #' @author KVC September 2017
 #' @export
-LandAllocator <- function(aRegionName, aFinalCalPeriod) {
+LandAllocator <- function(aRegionName, aSubRegion, aFinalCalPeriod) {
   self <- new.env(parent=emptyenv())
   self$mRegionName <- aRegionName
+  self$mSubRegion <- aSubRegion
   self$mFinalCalPeriod <- aFinalCalPeriod
   self$mChoiceFunction = ChoiceFunction("relative-cost", 0)
   self$mLandAllocation = NULL

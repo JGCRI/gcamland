@@ -4,12 +4,12 @@
 \alias{ReadData_LN0}
 \title{ReadData_LN0}
 \usage{
-ReadData_LN0(aRegionName, SUBREGION = NULL, subregionData = NULL)
+ReadData_LN0(aRegionName, aSubRegion, subregionData)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
 
-\item{SUBREGION}{Subregion to read data for}
+\item{aSubRegion}{Subregion to read data for}
 
 \item{subregionData}{Subregion data}
 }

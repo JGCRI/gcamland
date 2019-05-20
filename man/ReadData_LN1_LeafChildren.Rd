@@ -4,13 +4,12 @@
 \alias{ReadData_LN1_LeafChildren}
 \title{ReadData_LN1_LeafChildren}
 \usage{
-ReadData_LN1_LeafChildren(aRegionName, SUBREGION = NULL,
-  subregionData = NULL)
+ReadData_LN1_LeafChildren(aRegionName, aSubRegion, subregionData)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
 
-\item{SUBREGION}{Subregion to read data for}
+\item{aSubRegion}{Subregion to read data for}
 
 \item{subregionData}{Subregion data}
 }
