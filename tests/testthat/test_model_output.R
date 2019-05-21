@@ -253,10 +253,8 @@ test_that("log-likelihood is calculated correctly", {
     ## Comparison data
     ll_ref <-
         structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
-                       ll_ = c(-107.815639492531, -107.524496758494, -108.420661612172,
-                       -109.539941147891, -110.682083919338, -111.790184816942, -112.847577781434,
-                       -113.85112936962, -114.802588313354,
-                       -115.70539810398)),
+                       ll_ = c(-281.9122911, -268.9815562, -261.6548, -256.5840234, -252.7320043,
+                               -249.6415219, -247.07096, -244.8773163, -242.9690639, -241.284152)),
                   .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
 
 
@@ -267,7 +265,6 @@ test_that("log-likelihood is calculated correctly", {
 
     ll_out <- test.info$mLogPost
 
-
     ## Not sure why the data frames refuse to compare as equal, when the
     ## individual data columns do.  Whatever.
     expect_equal(ll_out$xi, ll_ref$xi)
@@ -277,9 +274,8 @@ test_that("log-likelihood is calculated correctly", {
 test_that("posterior pdf table is calculated correctly", {
     ## This test possibly obviates the need for the log-likelihood test.
     gt_ref <- structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-                1), lp_ = c(-107.815639492531, -107.524496758494, -108.420661612172,
-                -109.539941147891, -110.682083919338, -111.790184816942, -112.847577781434,
-                -113.85112936962, -114.802588313354, -115.70539810398), expectation.type =
+                1), lp_ = c(-281.9122911, -268.9815562, -261.6548, -256.5840234, -252.7320043,
+                -249.6415219, -247.07096, -244.8773163, -242.9690639, -241.284152), expectation.type =
                 c("Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect",
                 "Perfect", "Perfect", "Perfect"), share.old = c(NA, NA, NA, NA, NA, NA, NA, NA,
                 NA, NA), linear.years = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
