@@ -75,18 +75,20 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
   price_table <- subset(price_table, sector == aLandLeaf$mProductName[1])
 
-  # Update yield tibble to include actual yields
+  # Update price tibble to include actual prices
   i <- startYear
   while(i < currYear){
-    if(i < getStartYear(aScenarioInfo$mScenarioType)) {
-      # We won't have data prior to the start year, so we'll want
-      # to just use its data as many times as needed
-      # TODO: do we want to read in data prior to startYear so this works?
-      per <- 1
+    if(i %in% price_table$year) {
+      yr <- i
+    } else if(i < getStartYear(aScenarioInfo$mScenarioType)) {
+      # If we don't have data and it is prior to the start year,
+      # then use information from the first period
+      yr <- min(price_table$year)
     } else {
+      # Get closest period
       per <- get_yr_to_per(i, aScenarioInfo$mScenarioType)
+      yr <- get_per_to_yr(per, aScenarioInfo$mScenarioType)
     }
-    yr <- get_per_to_yr(per, aScenarioInfo$mScenarioType)
 
     if(aLandLeaf$mProductName[1] %in% price_table$sector) {
       all.prices$price[all.prices$year == i] <- price_table$price[price_table$year == yr]
