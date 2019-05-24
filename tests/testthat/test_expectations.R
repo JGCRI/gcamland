@@ -37,3 +37,39 @@ test_that("yield expectation calculation works", {
 
 })
 
+test_that('lagged expectation function is equivalent to loop', {
+  year <- c(1971, 1972, 1973)
+  price <- c(1.0, 2.0, 3.0)
+  pricetable <- data.frame(year=year, price=price)
+  ntbl <- nrow(pricetable)
+  loopcalc <- function(t, alpha) {
+    i <- year[1]
+    y <- price[1]
+    maxyear <- year[ntbl]
+    while(i <= t) {
+      if(i <= maxyear) {
+        y <- alpha*y + (1-alpha) * price[year==i]
+      }
+      else {
+        y <- alpha*y + (1-alpha) * price[ntbl]
+      }
+      i <- i+1
+    }
+    y
+  }
+
+    ## for alpha==0, and years in the table, we should just get back the price
+    for(t in year) {
+      expect_equal(calc_lagged_expectation(t, 0, pricetable),
+                   price[year==t],
+                   info=paste('t=',t))
+    }
+
+    for(alpha in c(0.1, 0.5, 0.9)) {
+      for(t in c(1900, year, 1975)) {
+        expect_equal(calc_lagged_expectation(t, alpha, pricetable),
+                     loopcalc(t, alpha),
+                     info=paste('alpha=',alpha,' t=',t))
+      }
+    }
+})

@@ -102,3 +102,57 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 
   return(expectedPrice)
 }
+
+#' Compute autoregressive model for price expectation
+#'
+#' This function computes price expectation as an autoregressive
+#' function of the price time series.
+#' \deqn{
+#' y_i = \alpha y_{i-1} + (1-\alpha) x_i
+#' }
+#'
+#' There is some dispute over what the final term in this series
+#' should be.  In this implementation the final term is just like
+#' all the others; therefore, for \eqn{\alpha = 0} this formula
+#' reduces to \eqn{y_i = x_i}, the equivalent of perfect expectation.
+#'
+#' This function is not currently vectorized; a separate call is needed
+#' for each value of \code{t}.
+#'
+#' @param t The current year, for which we wish to calculate the expected
+#' price.
+#' @param alpha Coefficient of previous year term in the autoregressive
+#' series.
+#' @param pricetable Table of price vs. year.  This series is assumed
+#' not to have any gaps in it and to be in year order, but neither of
+#' these conditions are checked.
+#' @export
+calc_lagged_expectation <- function(t, alpha, pricetable)
+{
+  year <- pricetable[['year']]
+  x <- pricetable[['price']]
+  startyear <- year[1]
+  N <- length(year)
+  endyear <- year[N]
+  if(t <= startyear) {
+    ## For times at or before the beginning of the time series, just return
+    ## the initial value
+    return(x[year==startyear])
+  }
+  else if(t > endyear) {
+    ## For times after the end year, fill out the time series to the
+    ## required length with its final value
+    nfill <- t-endyear
+    x <- c(x, rep(x[N], nfill))
+  }
+  else {
+    x <- x[year <= t]
+  }
+
+  N <- length(x)    # Update N, since we have either extended or truncated x
+  i <- seq(2,N)
+  fac <- alpha^(N-i)
+
+  ## return value
+  alpha^(N-1) * x[1] + (1-alpha)*sum(fac*x[i])
+}
