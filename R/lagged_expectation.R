@@ -103,9 +103,9 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   return(expectedPrice)
 }
 
-#' Compute autoregressive model for price expectation
+#' Compute autoregressive model for expectation
 #'
-#' This function computes price expectation as an autoregressive
+#' This function computes expectation (generally for price or yield) as an autoregressive
 #' function of the price time series.
 #' \deqn{
 #' y_i = \alpha y_{i-1} + (1-\alpha) x_i
@@ -123,14 +123,16 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 #' price.
 #' @param alpha Coefficient of previous year term in the autoregressive
 #' series.
-#' @param pricetable Table of price vs. year.  This series is assumed
+#' @param datatbl Table of price vs. year.  This series is assumed
 #' not to have any gaps in it and to be in year order, but neither of
 #' these conditions are checked.
+#' @param colname Name of the column that has the data for which we are
+#' computing the expectation (e.g. \code{'price'})
 #' @export
-calc_lagged_expectation <- function(t, alpha, pricetable)
+calc_lagged_expectation <- function(t, alpha, datatbl, colname)
 {
-  year <- pricetable[['year']]
-  x <- pricetable[['price']]
+  year <- datatbl[['year']]
+  x <- datatbl[[colname]]
   startyear <- year[1]
   N <- length(year)
   endyear <- year[N]

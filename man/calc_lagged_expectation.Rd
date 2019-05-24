@@ -2,9 +2,9 @@
 % Please edit documentation in R/lagged_expectation.R
 \name{calc_lagged_expectation}
 \alias{calc_lagged_expectation}
-\title{Compute autoregressive model for price expectation}
+\title{Compute autoregressive model for expectation}
 \usage{
-calc_lagged_expectation(t, alpha, pricetable)
+calc_lagged_expectation(t, alpha, datatbl, colname)
 }
 \arguments{
 \item{t}{The current year, for which we wish to calculate the expected
@@ -13,12 +13,15 @@ price.}
 \item{alpha}{Coefficient of previous year term in the autoregressive
 series.}
 
-\item{pricetable}{Table of price vs. year.  This series is assumed
+\item{datatbl}{Table of price vs. year.  This series is assumed
 not to have any gaps in it and to be in year order, but neither of
 these conditions are checked.}
+
+\item{colname}{Name of the column that has the data for which we are
+computing the expectation (e.g. \code{'price'})}
 }
 \description{
-This function computes price expectation as an autoregressive
+This function computes expectation (generally for price or yield) as an autoregressive
 function of the price time series.
 \deqn{
 y_i = \alpha y_{i-1} + (1-\alpha) x_i
