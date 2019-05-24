@@ -37,7 +37,7 @@ test_that("yield expectation calculation works", {
 
 })
 
-test_that('lagged expectation function is equivalent to loop', {
+test_that('lagged expectation function is equivalent to simple loop', {
   year <- c(1971, 1972, 1973)
   qty <- c(1.0, 2.0, 3.0)
   pricetable <- data.frame(year=year, qty=qty)

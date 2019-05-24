@@ -53,46 +53,12 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 
   # Get price table for the scenario/land type
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
-  price_table <- subset(price_table, sector == aLandLeaf$mProductName[1])
+  price_table <- dplyr::filter(price_table, sector == aLandLeaf$mProductName[1])
 
   if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
-    # Calculate expectations
-    if ( aPeriod > 1 ) {
-      prevYear <- get_per_to_yr(aPeriod - 1, aScenarioInfo$mScenarioType)
-
-      # Get previous expectation
-      previousExpectation <- aLandLeaf$mExpectedPrice[[aPeriod-1]]
-
-      # Get new information (i.e., last years actual price)
-      newInformation <- price_table$price[price_table$year == prevYear]
-    } else {
-      # Define current year, previous year, start year, and time step
-      currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-      timeStep <- get_per_to_yr(aPeriod + 1, aScenarioInfo$mScenarioType) - currYear
-      prevYear <- currYear - timeStep
-      startYear <- min(price_table$year)
-
-      # Get new information, if we have a previous year's data. If not, set to current year's information
-      if(prevYear %in% price_table$year) {
-        newInformation <- price_table$price[price_table$year == prevYear]
-      } else {
-        newInformation <- price_table$price[price_table$year == currYear]
-      }
-
-      # Calculate previousExpectation by looping from startYear to previous year
-      # Note: prevYear isn't included (i.e., "<" not "<=") because it is counted as newInformation
-      previousExpectation <- price_table$price[price_table$year == startYear]
-      i <- startYear
-      while(i < prevYear) {
-        previousExpectation <- aScenarioInfo$mLaggedShareOld * previousExpectation +
-          (1 - aScenarioInfo$mLaggedShareOld) * price_table$price[price_table$year == i]
-        i <- i + timeStep
-      }
-    }
-
     # Calculate expected price
-    expectedPrice <- aScenarioInfo$mLaggedShareOld * previousExpectation +
-      (1 - aScenarioInfo$mLaggedShareOld) * newInformation
+    currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
+    expectedPrice <- calc_lagged_expectation(currYear, aScenarioInfo$mLaggedShareOld, price_table, 'price')
   } else {
     expectedPrice <- 1
   }
