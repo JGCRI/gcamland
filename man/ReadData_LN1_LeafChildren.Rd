@@ -4,7 +4,8 @@
 \alias{ReadData_LN1_LeafChildren}
 \title{ReadData_LN1_LeafChildren}
 \usage{
-ReadData_LN1_LeafChildren(aRegionName, aSubRegion, subregionData)
+ReadData_LN1_LeafChildren(aRegionName, aSubRegion, subregionData,
+  aScenarioInfo)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
@@ -12,6 +13,8 @@ ReadData_LN1_LeafChildren(aRegionName, aSubRegion, subregionData)
 \item{aSubRegion}{Subregion to read data for}
 
 \item{subregionData}{Subregion data}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \value{
 Data on children of the land allocator

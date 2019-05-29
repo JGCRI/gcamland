@@ -46,7 +46,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
             "LandNode1", aScenarioInfo)
 
   # Read information on leaf children of LN1 nodes
-  childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
+  childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
@@ -61,7 +61,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
              "LandLeaf", aScenarioInfo, agData)
 
   # Read information on UnmanagedLandLeaf children of LN2 nodes
-  childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
+  childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
@@ -78,7 +78,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
              "LandLeaf", aScenarioInfo, agData, newTechData)
 
   # Read information on UnmanagedLandLeaf children of LN3 nodes
-  childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
+  childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
@@ -198,7 +198,7 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
     }
 
     # Get the names of the land nodes that are parents to this node
-    parentNames <- temp[ , names(temp) %!in% c("region", "LandAllocatorRoot", "year.fillout",
+    parentNames <- temp[ , names(temp) %!in% c("region", "subregion", "LandAllocatorRoot", "year.fillout",
                                                "logit.exponent", "aColumnName")]
 
     # Remove the node name from the parent list.
@@ -242,7 +242,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
   for(childName in unique(aData[[aColName]])){
     # Get data for the leaf
     temp <- subset(allData, aColName == childName)
-    temp <- temp[ , names(temp) %!in% c("region", "LandAllocatorRoot", "aColName")]
+    temp <- temp[ , names(temp) %!in% c("region", "subregion", "LandAllocatorRoot", "aColName")]
 
     if(aColName == "UnmanagedLandLeaf") {
       # Create an UnmanagedLandLeaf

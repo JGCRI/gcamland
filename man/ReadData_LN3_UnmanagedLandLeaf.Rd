@@ -4,7 +4,8 @@
 \alias{ReadData_LN3_UnmanagedLandLeaf}
 \title{ReadData_LN3_UnmanagedLandLeaf}
 \usage{
-ReadData_LN3_UnmanagedLandLeaf(aRegionName, aSubRegion, subregionData)
+ReadData_LN3_UnmanagedLandLeaf(aRegionName, aSubRegion, subregionData,
+  aScenarioInfo)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
@@ -12,6 +13,8 @@ ReadData_LN3_UnmanagedLandLeaf(aRegionName, aSubRegion, subregionData)
 \item{aSubRegion}{Subregion to read data for}
 
 \item{subregionData}{Subregion data}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \value{
 Data on UnmanagedLandLeaf children of LandNode3
