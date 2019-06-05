@@ -4,8 +4,8 @@
 \alias{LandAllocator_calculateShareWeights}
 \title{LandAllocator_calculateShareWeights}
 \usage{
-LandAllocator_calculateShareWeights(aLandAllocator, aChoiceFunction,
-  aPeriod, aScenarioInfo)
+LandAllocator_calculateShareWeights(aLandAllocator, aChoiceFunction, aPeriod,
+  aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land Allocator}

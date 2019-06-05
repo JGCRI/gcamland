@@ -23,7 +23,11 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
 
   # Get new information (the yield that has happened since last decision)
   if ( aPeriod > 1 ) {
-    newInformation <- aLandLeaf$mYield[[aPeriod - 1]]
+    if( aScenarioInfo$mLaggedIncludeCurr ) {
+      newInformation <- aLandLeaf$mYield[[aPeriod]]
+    } else {
+      newInformation <- aLandLeaf$mYield[[aPeriod - 1]]
+    }
   } else {
     newInformation <- aLandLeaf$mYield[[aPeriod]]
   }
@@ -57,8 +61,18 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 
   if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
     # Calculate expected price
-    currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-    expectedPrice <- calc_lagged_expectation(currYear, aScenarioInfo$mLaggedShareOld, price_table, 'price')
+    if( aScenarioInfo$mLaggedIncludeCurr ) {
+      currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
+      expectedPrice <- calc_lagged_expectation(currYear, aScenarioInfo$mLaggedShareOld, price_table, 'price')
+    } else {
+      if( aPeriod > 1 ) {
+        prevYear <- get_per_to_yr(aPeriod-1, aScenarioInfo$mScenarioType)
+      } else {
+        prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - 1
+      }
+      expectedPrice <- calc_lagged_expectation(prevYear, aScenarioInfo$mLaggedShareOld, price_table, 'price')
+    }
+
   } else {
     expectedPrice <- 1
   }
