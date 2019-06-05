@@ -13,28 +13,50 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   # Silence package checks
   sector <- year <- yield <- lm <- predict <- NULL
 
-  # Get previous expectation
+  # Calculate expectations. For model periods > 1, we calculate this iteratively to save time.
   if ( aPeriod > 1 ) {
+    # Get previous expectation
     previousExpectation <- aLandLeaf$mExpectedYield[[aPeriod - 1]]
-  } else {
-    # If we don't have data, then use current yield
-    previousExpectation <- aLandLeaf$mYield[[aPeriod]]
-  }
 
-  # Get new information (the yield that has happened since last decision)
-  if ( aPeriod > 1 ) {
+    # Get new information
     if( aScenarioInfo$mLaggedIncludeCurr ) {
       newInformation <- aLandLeaf$mYield[[aPeriod]]
     } else {
       newInformation <- aLandLeaf$mYield[[aPeriod - 1]]
     }
-  } else {
-    newInformation <- aLandLeaf$mYield[[aPeriod]]
-  }
 
-  # Calculate expected yield
-  expectedYield <- aScenarioInfo$mLaggedShareOld * previousExpectation +
+    # Calculate expected yield
+    expectedYield <- aScenarioInfo$mLaggedShareOld * previousExpectation +
       (1 - aScenarioInfo$mLaggedShareOld) * newInformation
+  } else {
+    # If we don't have saved previousExpectations, we need to generate them
+    # using calc_lagged_expectation(). First, we need to set up a yield table
+    years <- seq(from=min(YIELD.RATIOS$year), to=get_per_to_yr(aPeriod, aScenType=aScenarioInfo$mScenarioType), by=1)
+    yield_table <- data.frame(year = years,
+                              base_yield = rep_len(aLandLeaf$mYield[[aPeriod]], length(years)),
+                              yield_ratio = rep_len(1, length(years)))
+    if(aLandLeaf$mProductName[1] %in% YIELD.RATIOS$GCAM_commodity) {
+      for(i in years) {
+        if(i %in% YIELD.RATIOS$year) {
+          temp <- subset(YIELD.RATIOS, year == i & GCAM_commodity == aLandLeaf$mProductName[1])
+          yield_table$yield_ratio[yield_table$year == i] <- temp$yieldRatio
+        } else {
+          temp <- subset(YIELD.RATIOS, year == min(YIELD.RATIOS$year) & GCAM_commodity == aLandLeaf$mProductName[1])
+          yield_table$yield_ratio[yield_table$year == i] <- temp$yieldRatio
+        }
+      }
+    }
+    yield_table$yield <- yield_table$base_yield * yield_table$yield_ratio
+
+    # Now, we call calc_lagged_expectation() to calculate the expectations
+    if( aScenarioInfo$mLaggedIncludeCurr ) {
+      currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
+      expectedYield <- calc_lagged_expectation(currYear, aScenarioInfo$mLaggedShareOld, yield_table, 'yield')
+    } else {
+      prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - 1
+      expectedYield <- calc_lagged_expectation(prevYear, aScenarioInfo$mLaggedShareOld, yield_table, 'yield')
+    }
+  }
 
   # Save expected yield
   aLandLeaf$mExpectedYield[aPeriod] <- expectedYield
