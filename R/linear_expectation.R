@@ -27,15 +27,22 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   i <- startYear
   while(i < currYear){
     if(i < getStartYear(scentype)) {
-      # We won't have data prior to the start year, so we'll want
-      # to just use its data as many times as needed
-      # TODO: do we want to read in data prior to startYear so this works?
-      per <- 1
+      if(aLandLeaf$mProductName[1] %in% YIELD.RATIOS$GCAM_commodity) {
+        if(i %in% YIELD.RATIOS$year) {
+          temp <- subset(YIELD.RATIOS, year == i & GCAM_commodity == aLandLeaf$mProductName[1])
+          ratio <- temp$yieldRatio
+        } else {
+          temp <- subset(YIELD.RATIOS, year == min(YIELD.RATIOS$year) & GCAM_commodity == aLandLeaf$mProductName[1])
+          ratio <- temp$yieldRatio
+        }
+      } else {
+        ratio <- 1
+      }
+      all.yields$yield[all.yields$year == i] <- aLandLeaf$mYield[[1]] * ratio
     } else {
       per <- get_yr_to_per(i, aScenarioInfo$mScenarioType)
+      all.yields$yield[all.yields$year == i] <- aLandLeaf$mYield[[per]]
     }
-
-    all.yields$yield[all.yields$year == i] <- aLandLeaf$mYield[[per]]
 
     i <- i + 1
   }

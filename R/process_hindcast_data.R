@@ -1,21 +1,18 @@
 # process_hindcast_data.R
 
-#' get_hindcast_AgProdChange
+#' get_historic_yields
 #'
 #' @details Read in FAO production & ha by country and crop,
 #'          Aggregate to GCAM regions and commodities,
-#'          Compute & return AgProdChange in historical period
-#' @return AgProdChange in historical period
+#' @return YieldRatio in historical period
 #' @import readr
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate select left_join filter
-#' @author KVC October 2017
+#' @author KVC June 2019
 #' @export
-get_hindcast_AgProdChange <- function(){
+get_historic_yields <- function(){
   # Silence package checks
-  prod <- ha <- year <- value <- yield.x <- yield.y <- iso <- GCAM_region_ID <- region <-
-    GCAM_commodity <- FAO_country <- item <- na.omit <- prev_year <- yield <-
-    AgProdChange <- NULL
+
 
   # Read in mappings
   agluCtry <- suppressMessages(read_csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3))
@@ -41,7 +38,6 @@ get_hindcast_AgProdChange <- function(){
 
   # Join data and compute average yield
   faoHA %>%
-    filter(year %in% YEARS$Hindcast) %>%
     left_join(faoProd, by=c("FAO_country", "item", "year")) %>%
     left_join(select(agluCtry, FAO_country, iso), by="FAO_country") %>%
     left_join(select(iso_GCAM_regID, iso, GCAM_region_ID), by="iso") %>%
@@ -55,10 +51,28 @@ get_hindcast_AgProdChange <- function(){
     select(region, GCAM_commodity, year, yield) ->
     faoYield
 
-  # # Print yields
-  # file.path <- normalizePath(aScenarioInfo$mOutputDir)
-  # file <- paste0(file.path, "hindcast_yield.csv")
-  # write_csv(faoYield, file)
+  return(faoYield)
+}
+
+#' get_hindcast_AgProdChange
+#'
+#' @details Read in FAO production & ha by country and crop,
+#'          Aggregate to GCAM regions and commodities,
+#'          Compute & return AgProdChange in historical period
+#' @return AgProdChange in historical period
+#' @import readr
+#' @importFrom tidyr gather
+#' @importFrom dplyr mutate select left_join filter
+#' @author KVC October 2017
+#' @export
+get_hindcast_AgProdChange <- function(){
+  # Silence package checks
+
+
+  # Get yields and filter for hindcast years
+  YIELDS.HIST %>%
+    filter(year %in% YEARS$Hindcast) ->
+    faoYield
 
   # Compute AgProdChange
   faoYield %>%
@@ -72,3 +86,51 @@ get_hindcast_AgProdChange <- function(){
   return(faoAgProdChange)
 }
 
+#' get_historic_yield_ratios
+#'
+#' @details Read in FAO production & ha by country and crop,
+#'          Aggregate to GCAM regions and commodities,
+#'          Calculate ratio of yield to first GCAM historical year
+#' @return YieldRatio in historical period
+#' @import readr
+#' @importFrom tidyr gather
+#' @importFrom dplyr mutate select left_join filter
+#' @author KVC June 2019
+#' @export
+get_historic_yield_ratios <- function(){
+  # Silence package checks
+
+  # Get yields and filter for years up to and including the final historical year
+  YIELDS.HIST %>%
+    filter(year <= min(YEARS$Hindcast),
+           region == DEFAULT.REGION) ->
+    faoYield
+
+  # Calculate ratio to final historical year
+  faoYield %>%
+    filter(year == min(YEARS$Hindcast)) %>%
+    select(-year) %>%
+    rename(base_yield = yield) ->
+    byYield
+
+  faoYield %>%
+    left_join(byYield, by=c("region", "GCAM_commodity")) %>%
+    mutate(yieldRatio = yield / base_yield) %>%
+    select(-yield, -base_yield) ->
+    histYieldRatio
+
+  return(histYieldRatio)
+}
+
+#' Historic FAO Yields
+#'
+#' Yields at geopolitical region level for all FAO years
+#' @author Kate Calvin
+YIELDS.HIST <- get_historic_yields()
+
+#' Ratio of Yield to First Historical Year
+#'
+#' Yields at geopolitical region level for all FAO years
+#' @include constants.R
+#' @author Kate Calvin
+YIELD.RATIOS <- get_historic_yield_ratios()
