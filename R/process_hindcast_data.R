@@ -12,7 +12,7 @@
 #' @export
 get_historic_yields <- function(){
   # Silence package checks
-
+  region <- yield <- na.omit <- FAO_country <- item <- iso <- GCAM_region_ID <- GCAM_commodity <- year <- ha <- NULL
 
   # Read in mappings
   agluCtry <- suppressMessages(read_csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3))
@@ -67,7 +67,7 @@ get_historic_yields <- function(){
 #' @export
 get_hindcast_AgProdChange <- function(){
   # Silence package checks
-
+  year <- prev_year <- GCAM_commodity <- yield.x <- yield.y <- region <- AgProdChange <- NULL
 
   # Get yields and filter for hindcast years
   YIELDS.HIST %>%
@@ -99,6 +99,7 @@ get_hindcast_AgProdChange <- function(){
 #' @export
 get_historic_yield_ratios <- function(){
   # Silence package checks
+  year <- region <- yield <- base_yield <- NULL
 
   # Get yields and filter for years up to and including the final historical year
   YIELDS.HIST %>%

@@ -11,7 +11,7 @@
 #' @author KVC November 2017
 LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
-  sector <- year <- yield <- lm <- predict <- NULL
+  sector <- year <- yield <- lm <- predict <- GCAM_commodity <- NULL
 
   # Calculate expectations. For model periods > 1, we calculate this iteratively to save time.
   if ( aPeriod > 1 ) {

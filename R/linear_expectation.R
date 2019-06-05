@@ -11,7 +11,7 @@
 #' @author KVC October 2017
 LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
-  sector <- year <- yield <- lm <- predict <- NULL
+  sector <- year <- yield <- lm <- predict <- GCAM_commodity <- NULL
 
   scentype <- aScenarioInfo$mScenarioType
 
