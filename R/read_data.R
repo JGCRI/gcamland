@@ -342,12 +342,15 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
     cost
   suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgYield_bio_ref.csv", package = "gcamland"), skip = 3)) ->
     bioYield
+  suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgHAtoCL.csv", package = "gcamland"), skip = 3)) ->
+    HAtoCL
 
   # Filter data for the specified region -- note using dplyr::filter for data frames with more than 15000 entries
   calOutput <- filter(calOutput, region == aRegionName)
   agProdChange <- filter(agProdChange, region == aRegionName)
   cost <- filter(cost, region == aRegionName)
   bioYield <- subset(bioYield, region == aRegionName)
+  HAtoCL <- subset(HAtoCL, region == aRegionName)
 
   # Filter data for specified AEZ
   if(!is.null(AEZ)){
@@ -359,9 +362,10 @@ ReadData_AgProd <- function(aRegionName, ascentype) {
     }
     cost <- filter(cost, grepl(AEZ, AgSupplySubsector))
     bioYield <- subset(bioYield, grepl(AEZ, AgSupplySubsector))
+    HAtoCL <- subset(HAtoCL, grepl(AEZ, AgSupplySubsector))
   }
 
-  return(structure(list(calOutput, agProdChange, cost, bioYield),
+  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL),
                    rgn = aRegionName, scentype = ascentype))
 }
 

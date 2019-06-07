@@ -11,6 +11,8 @@
 #' @field mFinalPeriod Final model period
 #' @field mProductName Name of product produced by this leaf
 #' @field mLandAllocation Land allocation for this leaf
+#' @field mHarvestedLand Harvested land for this leaf
+#' @field mHAtoCL Ratio of harvested area to physical crop land
 #' @field mCalLandAllocation Calibration land allocation for this leaf
 #' @field mShare Share of land allocated to this leaf
 #' @field mShareWeight Share weight of this leaf
@@ -34,6 +36,8 @@ LandLeaf <- function(aName, aFinalCalPeriod, aFinalPeriod) {
   self$mFinalPeriod <- aFinalPeriod
   self$mProductName = NULL
   self$mLandAllocation = list()
+  self$mHarvestedLand = list()
+  self$mHAtoCL = list()
   self$mCalLandAllocation = list()
   self$mShare = list()
   self$mShareWeight = list()
@@ -133,6 +137,7 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
   #   assert( mShare[ aPeriod ] >= 0 && mShare[ aPeriod ] <= 1 );
   if(aLandAllocationAbove > 0.0) {
     aLandLeaf$mLandAllocation[aPeriod] <- aLandAllocationAbove * aLandLeaf$mShare[[aPeriod]]
+    aLandLeaf$mHarvestedLand[aPeriod] <- aLandLeaf$mLandAllocation[[aPeriod]] * aLandLeaf$mHAtoCL[[aPeriod]]
   } else {
     aLandLeaf$mLandAllocation[aPeriod] <- 0.0;
   }

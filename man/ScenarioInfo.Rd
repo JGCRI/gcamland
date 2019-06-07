@@ -5,17 +5,19 @@
 \title{ScenarioInfo constructor}
 \usage{
 ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
-  aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
-  aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
-  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWeights = NULL,
-  aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
-  aRegion = DEFAULT.REGION)
+  aLaggedIncludeCurr = FALSE, aLinearYears = NA, aLogitUseDefault = TRUE,
+  aLogitAgroForest = NA, aLogitAgroForest_NonPasture = NA,
+  aLogitCropland = NA, aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
+  aShareWeights = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aScenarioName = NULL, aFileName = NULL, aOutputDir = "./outputs",
+  aSerialNum = NA, aRegion = DEFAULT.REGION)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}
 
 \item{aLaggedShareOld}{Share of old expectations included in current expectation}
+
+\item{aLaggedIncludeCurr}{Boolean indicating whether the terminal value in the lagged should be the current year (TRUE) or previous year (FALSE)}
 
 \item{aLinearYears}{Years for linear expectations}
 
