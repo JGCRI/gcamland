@@ -22,6 +22,10 @@ test_that("yield expectation calculation works", {
   tempScen$mLaggedShareOld <- 0.5
   tempScen$mLinearYears <- 2
 
+  # Expectation type needs to be set for lagged expectations to work
+  # (other types will ignore this field)
+  tempScen$mExpectationType <- "Lagged"
+
   # Now, calculate expectations using all methods
   perfectYield <- PerfectExpectation_calcExpectedYield(testLeaf, 4)
   laggedYield <- LaggedExpectation_calcExpectedYield(testLeaf, 4, tempScen)

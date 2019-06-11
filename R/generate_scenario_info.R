@@ -16,7 +16,6 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #'
 #' @param aExpectationType Expectation type
 #' @param aLaggedShareOld Share of old expectations included in current expectation
-#' @param aLaggedIncludeCurr Boolean indicating whether the terminal value in the lagged should be the current year (TRUE) or previous year (FALSE)
 #' @param aLinearYears Years for linear expectations
 #' @param aLogitUseDefault Boolean indicating whether to use default logits
 #' @param aLogitAgroForest AgroForest logit exponent (assuming mLogitUseDefault == FALSE)
@@ -37,10 +36,9 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
-ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" ExpectationType are supported
+ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "LaggedCurr" ExpectationType are supported
                          aExpectationType = NULL,
                          aLaggedShareOld = NA,
-                         aLaggedIncludeCurr = FALSE,
                          aLinearYears = NA,
                          aLogitUseDefault = TRUE,
                          aLogitAgroForest = NA,
@@ -61,7 +59,6 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" Expe
 
   self$mExpectationType <- aExpectationType
   self$mLaggedShareOld <- aLaggedShareOld
-  self$mLaggedIncludeCurr <- aLaggedIncludeCurr
   self$mLinearYears <- aLinearYears
   self$mLogitUseDefault <- aLogitUseDefault
   self$mLogitAgroForest <- aLogitAgroForest
