@@ -9,7 +9,7 @@ runperiods <- 1:4
 
 test_that('Alternate scenario types run successfully', {
     types <- c("Reference", "Hindcast")
-    expectations <- c("Perfect", "Lagged", "Linear")
+    expectations <- c("Perfect", "Lagged", "Linear", "LaggedCurr")
 
     for (type in types) {
         for (expectation in expectations) {

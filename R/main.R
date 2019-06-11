@@ -205,10 +205,9 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
   scenName <- getScenName(scentype, "LaggedCurr", share, agFor, agForNonPast, crop)
 
   lagcurrscen <- ScenarioInfo(aScenarioType = scentype,
-                          aExpectationType = "Lagged",
+                          aExpectationType = "LaggedCurr",
                           aLinearYears = NA,
                           aLaggedShareOld = share,
-                          aLaggedIncludeCurr = TRUE,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
