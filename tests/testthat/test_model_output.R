@@ -253,8 +253,8 @@ test_that("log-likelihood is calculated correctly", {
     ## Comparison data
     ll_ref <-
         structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
-                       ll_ = c(-281.9122911, -268.9815562, -261.6548, -256.5840234, -252.7320043,
-                               -249.6415219, -247.07096, -244.8773163, -242.9690639, -241.284152)),
+                       ll_ = c(-60.03074683, -71.50344177, -78.38416523, -83.34031264, -87.22533533,
+                               -90.42507778, -93.14772819, -95.51869678, -97.61948446, -99.50609026)),
                   .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
 
 
@@ -274,8 +274,8 @@ test_that("log-likelihood is calculated correctly", {
 test_that("posterior pdf table is calculated correctly", {
     ## This test possibly obviates the need for the log-likelihood test.
     gt_ref <- structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-                1), lp_ = c(-281.9122911, -268.9815562, -261.6548, -256.5840234, -252.7320043,
-                -249.6415219, -247.07096, -244.8773163, -242.9690639, -241.284152), expectation.type =
+                1), lp_ = c(-60.03074683, -71.50344177, -78.38416523, -83.34031264, -87.22533533,
+                            -90.42507778, -93.14772819, -95.51869678, -97.61948446, -99.50609026), expectation.type =
                 c("Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect",
                 "Perfect", "Perfect", "Perfect"), share.old = c(NA, NA, NA, NA, NA, NA, NA, NA,
                 NA, NA), linear.years = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
