@@ -249,6 +249,22 @@ test_that("scenario land data can be retrieved", {
     }
 })
 
+test_that("scenario land data is correct", {
+  ldl <- get_scenario_land_data(test.info)
+
+  # Filter model data for 2010 only
+  ldl$Reference_Perfect %>%
+    filter(year == 2010) %>%
+    na.omit() ->
+    modeldata
+
+  comparedata <- c(0.000000, 331.982760,  43.296600,  85.523100,  94.471800, 408.951480,
+                   41.582560, 331.204490, 37.888590,   0.000000,
+                   8.280702,  14.629500,  4.569620,  8.229700, 192.709000, 0.000000)
+
+  expect_equal(sort(modeldata$model), sort(comparedata))
+})
+
 test_that("log-likelihood is calculated correctly", {
     ## Comparison data
     ll_ref <-
