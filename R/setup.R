@@ -358,6 +358,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
   agProdChange <- aAgData[[2]]
   cost <- aAgData[[3]]
   bioYield <- aAgData[[4]]
+  HAtoCL <- aAgData[[5]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
@@ -431,6 +432,18 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       aLandLeaf$mCost[per] <- 0
     }
 
+    # Set harvested to cropped ratio in the LandLeaf
+    if(name %in% HAtoCL$AgProductionTechnology & y %in% HAtoCL$year)  {
+      aLandLeaf$mHAtoCL[per] <- as.numeric(HAtoCL$harvests.per.year[HAtoCL$year == y &
+                                                                        HAtoCL$AgProductionTechnology == name])
+    } else if (name %in% HAtoCL$AgProductionTechnology & aScenarioInfo$mScenarioType == "Hindcast") {
+      # Note we only have data for model periods defined in the reference. For Hindcasts, we should
+      # use 1975 values for all periods.
+      aLandLeaf$mHAtoCL[per] <- as.numeric(HAtoCL$harvests.per.year[HAtoCL$year == min(YEARS[[aScenarioInfo$mScenarioType]]) &
+                                                                      HAtoCL$AgProductionTechnology == name])
+    } else {
+      aLandLeaf$mHAtoCL[per] <- 1
+    }
 
   }
 }

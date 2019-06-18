@@ -90,7 +90,7 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioI
   } else if(aScenarioInfo$mExpectationType == "Linear") {
     expectedPrice <- LinearExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
     expectedYield <- LinearExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
-  } else if(aScenarioInfo$mExpectationType == "Lagged") {
+  } else if(aScenarioInfo$mExpectationType == "Lagged" | aScenarioInfo$mExpectationType == "LaggedCurr") {
     expectedPrice <- LaggedExpectation_calcExpectedPrice(aLandLeaf, aPeriod, aScenarioInfo)
     expectedYield <- LaggedExpectation_calcExpectedYield(aLandLeaf, aPeriod, aScenarioInfo)
   }

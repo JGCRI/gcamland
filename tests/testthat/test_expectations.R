@@ -22,6 +22,10 @@ test_that("yield expectation calculation works", {
   tempScen$mLaggedShareOld <- 0.5
   tempScen$mLinearYears <- 2
 
+  # Expectation type needs to be set for lagged expectations to work
+  # (other types will ignore this field)
+  tempScen$mExpectationType <- "Lagged"
+
   # Now, calculate expectations using all methods
   perfectYield <- PerfectExpectation_calcExpectedYield(testLeaf, 4)
   laggedYield <- LaggedExpectation_calcExpectedYield(testLeaf, 4, tempScen)
@@ -37,3 +41,40 @@ test_that("yield expectation calculation works", {
 
 })
 
+test_that('lagged expectation function is equivalent to simple loop', {
+  year <- c(1971, 1972, 1973)
+  qty <- c(1.0, 2.0, 3.0)
+  pricetable <- data.frame(year=year, qty=qty)
+  ntbl <- nrow(pricetable)
+  loopcalc <- function(t, alpha) {
+    i <- year[1]
+    y <- qty[1]
+    maxyear <- year[ntbl]
+    while(i <= t) {
+      if(i <= maxyear) {
+        y <- alpha*y + (1-alpha) * qty[year==i]
+      }
+      else {
+        y <- alpha*y + (1-alpha) * qty[ntbl]
+      }
+      i <- i+1
+    }
+    y
+  }
+
+  ## for alpha==0, and years in the table, we should just get back the original value
+  for(t in year) {
+    expect_equal(calc_lagged_expectation(t, 0, pricetable, 'qty'),
+                 qty[year==t],
+                 info=paste('t=',t))
+  }
+
+  ## Compare the package implementation with the loop version above.
+  for(alpha in c(0.1, 0.5, 0.9)) {
+    for(t in c(1900, year, 1975)) {
+      expect_equal(calc_lagged_expectation(t, alpha, pricetable, 'qty'),
+                   loopcalc(t, alpha),
+                   info=paste('alpha=',alpha,' t=',t))
+    }
+  }
+})

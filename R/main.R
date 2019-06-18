@@ -184,7 +184,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aOutputDir = aOutputDir)
 
 
-  ## Lagged scenario
+  ## Lagged scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
   scenName <- getScenName(scentype, "Lagged", share, agFor, agForNonPast, crop)
 
   lagscen <- ScenarioInfo(aScenarioType = scentype,
@@ -200,6 +200,21 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
+  ## Lagged scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
+  scenName <- getScenName(scentype, "LaggedCurr", share, agFor, agForNonPast, crop)
+
+  lagcurrscen <- ScenarioInfo(aScenarioType = scentype,
+                          aExpectationType = "LaggedCurr",
+                          aLinearYears = NA,
+                          aLaggedShareOld = share,
+                          aLogitUseDefault = FALSE,
+                          aLogitAgroForest = agFor,
+                          aLogitAgroForest_NonPasture = agForNonPast,
+                          aLogitCropland = crop,
+                          aScenarioName = scenName,
+                          aFileName = paste0("ensemble", suffix),
+                          aSerialNum = serialnum+0.2,
+                          aOutputDir = aOutputDir)
 
   ## Linear scenario
   scenName <- getScenName(scentype, "Linear", linyears, agFor, agForNonPast, crop)
@@ -216,7 +231,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
-  list(perfscen, lagscen, linscen)
+  list(perfscen, lagscen, lagcurrscen, linscen)
 }
 
 

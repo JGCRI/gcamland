@@ -44,7 +44,7 @@ test_that("land cover matches calibration data", {
   file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
   expect_true(file.exists(file))
   readRDS(file) %>%
-    select(-yield, -expectedPrice, -expectedYield, -expectedProfit, -shareWeight) %>%
+    select(-yield, -expectedPrice, -expectedYield, -expectedProfit, -shareWeight, -harvested.land) %>%
     mutate(region = test.info$mRegion) ->
     outputData
 
@@ -91,7 +91,7 @@ test_that("land cover matches reference values", {
     # (as this code will be run in tests/testthat)
     file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".rds"))
     readRDS(file) %>%
-      select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight) %>%
+      select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight, -harvested.land) %>%
       mutate(region = SCENARIO.INFO$mRegion) ->
       outputData
 
@@ -238,56 +238,6 @@ test_that("land area doesn't change over time", {
 
 })
 
-
-test_that("land cover matches reference values", {
-  # Finally, test (NB rounding numeric columns to a sensible number of
-  # digits; otherwise spurious mismatches occur)
-  # Also first converts integer columns to numeric (otherwise test will
-  # fail when comparing <int> and <dbl> columns)
-  DIGITS <- 1
-  round_df <- function(x, digits = DIGITS) {
-    integer_columns <- sapply(x, class) == "integer"
-    x[integer_columns] <- lapply(x[integer_columns], as.numeric)
-
-    numeric_columns <- sapply(x, class) == "numeric"
-    x[numeric_columns] <- round(x[numeric_columns], digits)
-    x
-  }
-
-  if (test.info$mScenarioName == "Reference_Perfect") {
-
-    # Get comparison data
-    compareData <- read_csv("./comparison-data/LandAllocation_Reference_Perfect.csv", col_types='cdic', skip = 1)
-    compareData %>%
-      filter(region == test.info$mRegion, year %in% YEARS[[scentype]]) ->
-      compareData
-
-    # Look for output data in outputs under top level
-    # (as this code will be run in tests/testthat)
-    path <- basepath
-    file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
-    readRDS(file) %>%
-      select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight) %>%
-      mutate(region = test.info$mRegion) ->
-      outputData
-
-    compareData %>%
-      select(-land.allocation) %>%
-      left_join(outputData, by=c("region", "year", "name")) %>%
-      replace_na(list(land.allocation = 0)) %>%
-      select(-scenario) ->
-      outputData
-
-    expect_identical(dim(outputData), dim(compareData),
-                     info = paste("Dimensions are not the same for reference land allocation"))
-
-    expect_equivalent(round_df(outputData), round_df(compareData),
-                      info = paste("reference land allocation doesn't match"))
-
-  }
-
-})
-
 test_that("scenario land data can be retrieved", {
     ldl <- get_scenario_land_data(test.info)
     expect_true(is.list(ldl))
@@ -299,14 +249,28 @@ test_that("scenario land data can be retrieved", {
     }
 })
 
+test_that("scenario land data is correct", {
+  ldl <- get_scenario_land_data(test.info)
+
+  # Filter model data for 2010 only
+  ldl$Reference_Perfect %>%
+    filter(year == 2010) %>%
+    na.omit() ->
+    modeldata
+
+  comparedata <- c(0.000000, 331.982760,  43.296600,  85.523100,  94.471800, 408.951480,
+                   41.582560, 331.204490, 37.888590,   0.000000,
+                   8.280702,  14.629500,  4.569620,  8.229700, 192.709000, 0.000000)
+
+  expect_equal(sort(modeldata$model), sort(comparedata))
+})
+
 test_that("log-likelihood is calculated correctly", {
     ## Comparison data
     ll_ref <-
         structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
-                       ll_ = c(-107.815639492531, -107.524496758494, -108.420661612172,
-                       -109.539941147891, -110.682083919338, -111.790184816942, -112.847577781434,
-                       -113.85112936962, -114.802588313354,
-                       -115.70539810398)),
+                       ll_ = c(-60.03074683, -71.50344177, -78.38416523, -83.34031264, -87.22533533,
+                               -90.42507778, -93.14772819, -95.51869678, -97.61948446, -99.50609026)),
                   .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
 
 
@@ -317,7 +281,6 @@ test_that("log-likelihood is calculated correctly", {
 
     ll_out <- test.info$mLogPost
 
-
     ## Not sure why the data frames refuse to compare as equal, when the
     ## individual data columns do.  Whatever.
     expect_equal(ll_out$xi, ll_ref$xi)
@@ -327,9 +290,8 @@ test_that("log-likelihood is calculated correctly", {
 test_that("posterior pdf table is calculated correctly", {
     ## This test possibly obviates the need for the log-likelihood test.
     gt_ref <- structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-                1), lp_ = c(-107.815639492531, -107.524496758494, -108.420661612172,
-                -109.539941147891, -110.682083919338, -111.790184816942, -112.847577781434,
-                -113.85112936962, -114.802588313354, -115.70539810398), expectation.type =
+                1), lp_ = c(-60.03074683, -71.50344177, -78.38416523, -83.34031264, -87.22533533,
+                            -90.42507778, -93.14772819, -95.51869678, -97.61948446, -99.50609026), expectation.type =
                 c("Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect",
                 "Perfect", "Perfect", "Perfect"), share.old = c(NA, NA, NA, NA, NA, NA, NA, NA,
                 NA, NA), linear.years = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),

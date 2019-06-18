@@ -37,7 +37,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
-ScenarioInfo <- function(# Currently only "Perfect", "Linear", and "Lagged" ExpectationType are supported
+ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "LaggedCurr" ExpectationType are supported
                          aExpectationType = NULL,
                          aLaggedShareOld = NA,
                          aLinearYears = NA,
