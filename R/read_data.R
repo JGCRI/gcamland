@@ -625,6 +625,12 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
                        AgProductionTechnology=character(),
                        year=numeric(),
                        yield=numeric())
+
+    # Only keep select columns pertaining to Agricultural production
+    data %>%
+      select("region","subregion","AgSupplySector",	"AgSupplySubsector", "AgProductionTechnology","year.fillout","harvests.per.year") %>%
+      rename(year = year.fillout) ->
+      HAtoCL
   }
   else {
     # Read in data
@@ -632,7 +638,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgProduction_For.csv", package = "gcamland"), skip = 3))) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgProduction_Past.csv", package = "gcamland"), skip = 3))) ->
       calOutput
-    agProdChange <- get_AgProdChange(ascentype)
+    agProdChange <- get_AgProdChange(ascentype, aSubRegion)
     suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_ag.csv", package = "gcamland"), skip = 3)) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
@@ -641,7 +647,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       bioYield
     suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgHAtoCL.csv", package = "gcamland"), skip = 3)) ->
       HAtoCL
-    
+
     # Filter data for the specified region -- note using dplyr::filter for data frames with more than 15000 entries
     calOutput <- filter(calOutput, region == aRegionName)
     agProdChange <- filter(agProdChange, region == aRegionName)
@@ -660,10 +666,11 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       cost <- filter(cost, grepl(AEZ, AgSupplySubsector))
       bioYield <- subset(bioYield, grepl(AEZ, AgSupplySubsector))
       HAtoCL <- subset(HAtoCL, grepl(AEZ, AgSupplySubsector))
-      
+
     }
   }
   return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL),
+         rgn = aRegionName, scentype = ascentype))
 }
 
 #' get_AgProdChange

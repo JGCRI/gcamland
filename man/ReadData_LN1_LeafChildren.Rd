@@ -4,8 +4,7 @@
 \alias{ReadData_LN1_LeafChildren}
 \title{ReadData_LN1_LeafChildren}
 \usage{
-ReadData_LN1_LeafChildren(aRegionName, aSubRegion, subregionData,
-  aScenarioInfo)
+ReadData_LN1_LeafChildren(aRegionName, aSubRegion, subregionData, aScenarioInfo)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}

@@ -21,7 +21,9 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
     message("Running a Subregional Model")
     # Read in calibration data
     subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland")))
-  } else subregionData <- NULL
+  } else {
+    subregionData <- NULL
+  }
 
   # Read ag data -- we'll use this for all leafs, including bioenergy
   if(!is.null(agData)) {
@@ -81,7 +83,6 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
   childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
-
 }
 
 #' LN1_setup
@@ -254,7 +255,6 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
     } else if (aColName == "LandLeaf") {
       newLeaf <- LandLeaf(temp[[aColName]], finalCalPer, finalPer)
-
       # Check whether leaf is a new technology
       if(!is.null(newTechData)) {
         if(childName %in% newTechData$LandLeaf) {
