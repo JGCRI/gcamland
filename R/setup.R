@@ -16,65 +16,73 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
 
   scentype <- aScenarioInfo$mScenarioType
 
+  # Read SubRegion data
+  if(!is.null(aLandAllocator$mSubRegion)){
+    message("Running a Subregional Model")
+    # Read in calibration data
+    subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland")))
+  } else {
+    subregionData <- NULL
+  }
+
   # Read ag data -- we'll use this for all leafs, including bioenergy
   if(!is.null(agData)) {
-      ## Validate data, if supplied
-      assert_that(has_attr(agData, 'rgn'))
-      assert_that(attr(agData, 'rgn') == aScenarioInfo$mRegion)
-      assert_that(has_attr(agData, 'scentype'))
-      assert_that(attr(agData, 'scentype') == scentype)
+    ## Validate data, if supplied
+    assert_that(has_attr(agData, 'rgn'))
+    assert_that(attr(agData, 'rgn') == aScenarioInfo$mRegion)
+    assert_that(has_attr(agData, 'scentype'))
+    assert_that(attr(agData, 'scentype') == scentype)
   }
   else {
-      ## Read data if not supplied.
-      agData <- ReadData_AgProd(aLandAllocator$mRegionName, scentype)
+    ## Read data if not supplied.
+    agData <- ReadData_AgProd(aLandAllocator$mRegionName, scentype, aLandAllocator$mSubRegion, subregionData)
   }
 
   # Read in top-level information and save total land
-  data <- ReadData_LN0(aLandAllocator$mRegionName)
+  data <- ReadData_LN0(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
   aLandAllocator$mLandAllocation <- as.numeric(data[[c("landAllocation")]])
 
   # Read information on LN1 nodes (children of land allocator)
-  childrenData <- ReadData_LN1_Node(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN1_Node(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
   LN1_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
             "LandNode1", aScenarioInfo)
 
   # Read information on leaf children of LN1 nodes
-  childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN1_LeafChildren(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
   # Read information on LN2 nodes
-  childrenData <- ReadData_LN2_Node(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN2_Node(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
   LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
                  "LandNode2", aScenarioInfo)
 
   # Read information on LandLeaf children of LN2 nodes
-  childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN2_LandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData)
 
   # Read information on UnmanagedLandLeaf children of LN2 nodes
-  childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN2_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
 
   # Read information on LN3 nodes
-  childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN3_Node(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData)
   ghostShareData <- ReadData_LN3_GhostShare(aLandAllocator$mRegionName)
   LandNode_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
                  "LandNode3", aScenarioInfo, ghostShareData)
 
   # Read information on LandLeaf children of LN3 nodes
-  childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN3_LandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   newTechData <- ReadData_LN3_NewTech(aLandAllocator$mRegionName)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "LandLeaf", aScenarioInfo, agData, newTechData)
 
   # Read information on UnmanagedLandLeaf children of LN3 nodes
-  childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName)
+  childrenData <- ReadData_LN3_UnmanagedLandLeaf(aLandAllocator$mRegionName, aLandAllocator$mSubRegion, subregionData, aScenarioInfo)
   Leaf_setup(aLandAllocator, aLandAllocator$mRegionName, childrenData,
              "UnmanagedLandLeaf", aScenarioInfo)
-
 }
 
 #' LN1_setup
@@ -191,8 +199,8 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
     }
 
     # Get the names of the land nodes that are parents to this node
-    parentNames <- temp[ , names(temp) %!in% c("region", "LandAllocatorRoot", "year.fillout",
-                                        "logit.exponent", "aColumnName")]
+    parentNames <- temp[ , names(temp) %!in% c("region", "subregion", "LandAllocatorRoot", "year.fillout",
+                                               "logit.exponent", "aColumnName")]
 
     # Remove the node name from the parent list.
     # TODO: find a more elegant way of doing this
@@ -222,7 +230,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
   region <- LandAllocatorRoot <- allocation <- year <- NULL
 
   finalCalPer <-
-      TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD
+    TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD
 
   finalPer <- max(PERIODS[[aScenarioInfo$mScenarioType]])
 
@@ -235,7 +243,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
   for(childName in unique(aData[[aColName]])){
     # Get data for the leaf
     temp <- subset(allData, aColName == childName)
-    temp <- temp[ , names(temp) %!in% c("region", "LandAllocatorRoot", "aColName")]
+    temp <- temp[ , names(temp) %!in% c("region", "subregion", "LandAllocatorRoot", "aColName")]
 
     if(aColName == "UnmanagedLandLeaf") {
       # Create an UnmanagedLandLeaf
@@ -247,10 +255,9 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
 
     } else if (aColName == "LandLeaf") {
       newLeaf <- LandLeaf(temp[[aColName]], finalCalPer, finalPer)
-
       # Check whether leaf is a new technology
       if(!is.null(newTechData)) {
-         if(childName %in% newTechData$LandLeaf) {
+        if(childName %in% newTechData$LandLeaf) {
           newLeaf$mIsNewTech <- TRUE
         }
       }
@@ -388,7 +395,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
 
       # Get yield for bioenergy for this period combination
       if(aLandLeaf$mProductName == "biomass") {
-         # Set bioYield
+        # Set bioYield
         if(y %in% bioYield$year & name %in% bioYield$AgProductionTechnology) {
           aLandLeaf$mYield[per] <- as.numeric(bioYield$yield[bioYield$year == y &
                                                                bioYield$AgProductionTechnology == name])
@@ -457,14 +464,14 @@ REQD.SUBDIRS <- c()
 #' @export
 outdir_setup <- function(outdir)
 {
-    alldirs <- c(outdir, file.path(outdir, REQD.SUBDIRS))
-    for(dir in alldirs[!dir.exists(alldirs)]) {
-        dir.create(dir)
-    }
-    if(!all(dir.exists(alldirs))) {
-        fail <- paste(alldirs[!dir.exists(alldirs)], collapse=", ")
-        stop("Unable to create the following directories: ", fail)
-    }
+  alldirs <- c(outdir, file.path(outdir, REQD.SUBDIRS))
+  for(dir in alldirs[!dir.exists(alldirs)]) {
+    dir.create(dir)
+  }
+  if(!all(dir.exists(alldirs))) {
+    fail <- paste(alldirs[!dir.exists(alldirs)], collapse=", ")
+    stop("Unable to create the following directories: ", fail)
+  }
 
-    invisible(normalizePath(outdir))
+  invisible(normalizePath(outdir))
 }

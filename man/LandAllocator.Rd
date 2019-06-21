@@ -4,10 +4,12 @@
 \alias{LandAllocator}
 \title{LandAllocator}
 \usage{
-LandAllocator(aRegionName, aFinalCalPeriod)
+LandAllocator(aRegionName, aSubRegion, aFinalCalPeriod)
 }
 \arguments{
 \item{aRegionName}{Region name}
+
+\item{aSubRegion}{Subregion name}
 
 \item{aFinalCalPeriod}{Final calibration period}
 }

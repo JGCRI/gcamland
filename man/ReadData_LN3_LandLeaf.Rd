@@ -4,10 +4,16 @@
 \alias{ReadData_LN3_LandLeaf}
 \title{ReadData_LN3_LandLeaf}
 \usage{
-ReadData_LN3_LandLeaf(aRegionName)
+ReadData_LN3_LandLeaf(aRegionName, aSubRegion, subregionData, aScenarioInfo)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
+
+\item{aSubRegion}{Subregion to read data for}
+
+\item{subregionData}{Subregion data}
+
+\item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
 }
 \value{
 Data on LandLeaf children of LandNode2

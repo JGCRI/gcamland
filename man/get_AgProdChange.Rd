@@ -4,10 +4,12 @@
 \alias{get_AgProdChange}
 \title{get_AgProdChange}
 \usage{
-get_AgProdChange(ascentype)
+get_AgProdChange(ascentype, aSubRegion)
 }
 \arguments{
 \item{ascentype}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{aSubRegion}{Subregion to read data for}
 }
 \value{
 Tibble containing AgProdChange by commodity and year

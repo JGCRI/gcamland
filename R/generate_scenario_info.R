@@ -33,6 +33,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aSerialNum Serial number for a run that is part of a series.
 #' @param aRegion Region to use in the calculation.  Right now we only run a
 #' single region at a time.
+#' @param aSubRegion Subregion name. Note we can only run a full region or a subregion not both
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
@@ -52,7 +53,8 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "La
                          aFileName = NULL,
                          aOutputDir = "./outputs",
                          aSerialNum = NA,
-                         aRegion = DEFAULT.REGION) {
+                         aRegion = DEFAULT.REGION,
+                         aSubRegion = NULL) {
 
   self <- new.env(parent=emptyenv())
   class(self) <- c("ScenarioInfo", class(self))
@@ -73,6 +75,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "La
   self$mFileName <- aFileName
   self$mOutputDir <- aOutputDir
   self$mRegion <- aRegion
+  self$mSubRegion <- aSubRegion
   self$mSerialNumber <- aSerialNum          # Used in run_ensemble
   self$mPointwiseLikelihood <- data.frame() # actually log-likelihood, tabulated
                                         # by data point.

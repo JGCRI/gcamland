@@ -272,7 +272,7 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL)
 
   # Initialize LandAllocator and read in calibration data
   mLandAllocator <-
-      LandAllocator(aScenarioInfo$mRegion,
+      LandAllocator(aScenarioInfo$mRegion, aScenarioInfo$mSubRegion,
                     TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD)
   LandAllocator_setup(mLandAllocator, aScenarioInfo, agData)
 
