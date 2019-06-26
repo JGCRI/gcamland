@@ -213,7 +213,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
-                          aSerialNum = serialnum+0.2,
+                          aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
@@ -228,7 +228,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
-                          aSerialNum = serialnum+0.3,
+                          aSerialNum = serialnum+0.4,
                           aOutputDir = aOutputDir)
 
   list(perfscen, lagscen, lagcurrscen, linscen)
