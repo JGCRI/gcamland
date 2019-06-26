@@ -132,6 +132,7 @@ as.ScenarioInfo.list <- function(object)
 #' @author Kate Calvin
 SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aExpectationType = "Perfect",
+                              aSubRegion = "PCHES",
                               aLinearYears = NA,
                               aLaggedShareOld = NA,
                               aLogitUseDefault = TRUE,
@@ -140,8 +141,8 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLogitCropland = NA,
                               aUseZeroCost = FALSE,
                               aCalibrateShareWt = TRUE,
-                              aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
-                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
+                              aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"),
+                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"))
 
 
 #' update_scen_info
