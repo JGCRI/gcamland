@@ -49,11 +49,11 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 6)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 6)
-  limits.CROPLAND <- c(0.1, 6)
-  limits.LAGSHARE <- c(0.1, 0.9)
-  limits.LINYEARS <- round(c(2, 20))
+  limits.AGROFOREST <- c(0.1, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
+  limits.CROPLAND <- c(0.1, 2)
+  limits.LAGSHARE <- c(0.5, 0.99)
+  limits.LINYEARS <- round(c(10, 20))
 
   serialnumber <- skip + (1:N)
   rn <- randtoolbox::sobol(N+skip, NPARAM)
@@ -213,7 +213,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
-                          aSerialNum = serialnum+0.2,
+                          aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
@@ -228,7 +228,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitCropland = crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
-                          aSerialNum = serialnum+0.3,
+                          aSerialNum = serialnum+0.4,
                           aOutputDir = aOutputDir)
 
   list(perfscen, lagscen, lagcurrscen, linscen)
