@@ -149,19 +149,6 @@ ReadData_LN1_LeafChildren <- function(aRegionName, aSubRegion, subregionData, aS
       group_by(region, subregion, LandAllocatorRoot, LandNode1, UnmanagedLandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
-
-    # For the SubRegion if data not available for all historical years then repeat data for all historical years
-    if(nrow(data) != 0) {
-      if (! identical(unique(data$year) , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
-        data %>%
-          select(-year) %>%
-          mutate(UNIQUE_JOIN_FIELD = 1) %>%
-          full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
-          select(-UNIQUE_JOIN_FIELD) ->
-          data
-      }
-    }
-
   }
   else {
     # Read in calibration data
@@ -262,19 +249,6 @@ ReadData_LN2_LandLeaf <- function(aRegionName, aSubRegion, subregionData, aScena
       group_by(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
-
-    # For the SubRegion if data not available for all historical years then repeat data for all historical years
-    if(nrow(data) != 0) {
-      if (! identical(unique(data$year) , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
-        data %>%
-          select(-year) %>%
-          mutate(UNIQUE_JOIN_FIELD = 1) %>%
-          full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
-          select(-UNIQUE_JOIN_FIELD) ->
-          data
-      }
-    }
-
   }
   else {
     # Read in calibration data
@@ -325,19 +299,6 @@ ReadData_LN2_UnmanagedLandLeaf <- function(aRegionName, aSubRegion, subregionDat
       group_by(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, UnmanagedLandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
-
-    # For the SubRegion if data not available for all historical years then repeat data for all historical years
-    if(nrow(data) != 0) {
-      if (! identical(unique(data$year) , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
-        data %>%
-          select(-year) %>%
-          mutate(UNIQUE_JOIN_FIELD = 1) %>%
-          full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
-          select(-UNIQUE_JOIN_FIELD) ->
-          data
-      }
-    }
-
   }
   else {
     # Read in calibration data
@@ -465,19 +426,6 @@ ReadData_LN3_LandLeaf <- function(aRegionName, aSubRegion, subregionData, aScena
       group_by(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandNode3, LandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
-
-    # For the SubRegion if data not available for all historical years then repeat data for all historical years
-    if(nrow(data) != 0) {
-      if (! identical(unique(data$year) , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
-        data %>%
-          select(-year) %>%
-          mutate(UNIQUE_JOIN_FIELD = 1) %>%
-          full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
-          select(-UNIQUE_JOIN_FIELD) ->
-          data
-      }
-    }
-
   }
   else {
     # Read in calibration data
@@ -531,19 +479,6 @@ ReadData_LN3_UnmanagedLandLeaf <- function(aRegionName, aSubRegion, subregionDat
       group_by(region, subregion, LandAllocatorRoot, LandNode1, LandNode2, LandNode3, UnmanagedLandLeaf, year) %>%
       summarize(allocation = sum(allocation)) ->
       data
-
-    # For the SubRegion if data not available for all historical years then repeat data for all historical years
-    if(nrow(data) != 0) {
-      if (! identical(unique(data$year) , TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS) ){
-        data %>%
-          select(-year) %>%
-          mutate(UNIQUE_JOIN_FIELD = 1) %>%
-          full_join(mutate(tibble::tibble(year=TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS), UNIQUE_JOIN_FIELD = 1), by = "UNIQUE_JOIN_FIELD") %>%
-          select(-UNIQUE_JOIN_FIELD) ->
-          data
-      }
-    }
-
   }
   else {
     # Read in calibration data
