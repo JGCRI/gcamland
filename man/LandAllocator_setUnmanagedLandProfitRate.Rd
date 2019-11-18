@@ -4,8 +4,8 @@
 \alias{LandAllocator_setUnmanagedLandProfitRate}
 \title{LandAllocator_setUnmanagedLandProfitRate}
 \usage{
-LandAllocator_setUnmanagedLandProfitRate(aLandAllocator, aUnmanagedLandValue,
-  aPeriod)
+LandAllocator_setUnmanagedLandProfitRate(aLandAllocator,
+  aUnmanagedLandValue, aPeriod)
 }
 \arguments{
 \item{aLandAllocator}{Current land allocator}

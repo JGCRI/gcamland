@@ -4,9 +4,12 @@
 \alias{AgProductionTechnology_setup}
 \title{AgProductionTechnology_setup}
 \usage{
-AgProductionTechnology_setup(aLandLeaf, aAgData, aScenarioInfo)
+AgProductionTechnology_setup(aLandAllocator, aLandLeaf, aAgData,
+  aScenarioInfo)
 }
 \arguments{
+\item{aLandAllocator}{LandAllocator that needs set up}
+
 \item{aLandLeaf}{Land leaf}
 
 \item{aAgData}{Agricultural technology data}

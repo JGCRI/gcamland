@@ -4,7 +4,8 @@
 \alias{ReadData_LN2_LandLeaf}
 \title{ReadData_LN2_LandLeaf}
 \usage{
-ReadData_LN2_LandLeaf(aRegionName, aSubRegion, subregionData, aScenarioInfo)
+ReadData_LN2_LandLeaf(aRegionName, aSubRegion, subregionData,
+  aScenarioInfo)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}

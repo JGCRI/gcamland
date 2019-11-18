@@ -267,7 +267,7 @@ Leaf_setup <- function(aLandAllocator, aRegionName, aData, aColName,
       parentNames <- unique(parentNames)
 
       # Read-in yield, cost, tech change
-      AgProductionTechnology_setup(newLeaf, aAgData, aScenarioInfo)
+      AgProductionTechnology_setup(aLandAllocator, newLeaf, aAgData, aScenarioInfo)
     }
 
     # Loop over years and add allocation
@@ -345,11 +345,12 @@ LandNode_addChild <- function(aLandNode, aChild, aParentNames) {
 #' AgProductionTechnology_setup
 #'
 #' @details Setup technology (e.g., CalOutput, technical change, cost, etc.)
+#' @param aLandAllocator LandAllocator that needs set up
 #' @param aLandLeaf Land leaf
 #' @param aAgData Agricultural technology data
 #' @param aScenarioInfo Scenario info object
 #' @author KVC October 2017
-AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
+AgProductionTechnology_setup <- function(aLandAllocator, aLandLeaf, aAgData, aScenarioInfo) {
   # Silence package checks
   per <- year <- AgProductionTechnology <- GCAM_commodity <- NULL
 
@@ -365,7 +366,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
 
   # Set product name
   # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
-  aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
+  if(!is.null(aLandAllocator$mSubRegion)){
+    aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 3)  }
+  else {
+      aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
+  }
   if(aLandLeaf$mProductName %in% BIOMASS_TYPES) {
     aLandLeaf$mProductName <- "biomass"
   }
