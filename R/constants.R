@@ -10,6 +10,9 @@ TIME.PARAMS <- list(
     "Reference" = list(FINAL_CALIBRATION_PERIOD=4, HISTORY.YEARS=c(1975, 1990,
                                                                    2005, 2010),
                        FUTURE.YEARS=seq(2015, 2100, 5)),
+    "SRB" = list(FINAL_CALIBRATION_PERIOD=4, HISTORY.YEARS=c(1975, 1990,
+                                                                   2005, 2010),
+                       FUTURE.YEARS=seq(2015, 2100, 5)),
     "PCHES" = list(FINAL_CALIBRATION_PERIOD=1, HISTORY.YEARS=c(2010),
     FUTURE.YEARS=c(2050)))
 SCEN.TYPES <- names(TIME.PARAMS)
