@@ -602,7 +602,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #' @export
 ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NULL) {
   # Silence package checks
-  region <- AgSupplySubsector <- year.fillout <- NULL
+  region <- AgSupplySector <- AgSupplySubsector <- AgProductionTechnology <- year.fillout <- NULL
 
   if(!is.null(aSubRegion)){
     # Only keep rows for which AgSupplySector is not NA
