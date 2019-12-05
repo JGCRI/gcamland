@@ -123,7 +123,6 @@ as.ScenarioInfo.list <- function(object)
     as.ScenarioInfo(eobj)
 }
 
-
 #' SCENARIO.INFO
 #'
 #' A \code{ScenarioInfo} object with parameters for the default scenario.
@@ -131,6 +130,25 @@ as.ScenarioInfo.list <- function(object)
 #' @export
 #' @author Kate Calvin
 SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
+                              aExpectationType = "Perfect",
+                              aLinearYears = NA,
+                              aLaggedShareOld = NA,
+                              aLogitUseDefault = TRUE,
+                              aLogitAgroForest = NA,
+                              aLogitAgroForest_NonPasture = NA,
+                              aLogitCropland = NA,
+                              aUseZeroCost = FALSE,
+                              aCalibrateShareWt = TRUE,
+                              aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
+                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
+
+#' PCHES.SCENARIO.INFO
+#'
+#' A \code{ScenarioInfo} object with parameters for the PCHES scenario.
+#'
+#' @export
+#' @author Kate Calvin
+PCHES.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "PCHES",
                               aExpectationType = "Perfect",
                               aSubRegion = "PCHES",
                               aLinearYears = NA,

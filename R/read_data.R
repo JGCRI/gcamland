@@ -631,6 +631,11 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       select("region","subregion","AgSupplySector",	"AgSupplySubsector", "AgProductionTechnology","year.fillout","harvests.per.year") %>%
       rename(year = year.fillout) ->
       HAtoCL
+
+    # Only keep select columns pertaining to product name
+    data %>%
+      select("region", "subregion", "AgProductionTechnology", "AgSupplySector") ->
+      productName
   }
   else {
     # Read in data
@@ -668,8 +673,14 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       HAtoCL <- subset(HAtoCL, grepl(AEZ, AgSupplySubsector))
 
     }
+
+    # Set product name
+    calOutput %>%
+      select(region, AgSupplySector, AgProductionTechnology) %>%
+      unique() ->
+      productName
   }
-  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL),
+  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL, productName),
          rgn = aRegionName, scentype = ascentype))
 }
 

@@ -23,7 +23,7 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
     if(aLandAllocator$mSubRegion == "PCHES") {
       subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Data_PCHES.csv", package = "gcamland")))
     } else {
-      subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland")))  
+      subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland")))
     }
   } else {
     subregionData <- NULL
@@ -363,16 +363,20 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
   cost <- aAgData[[3]]
   bioYield <- aAgData[[4]]
   HAtoCL <- aAgData[[5]]
+  productName <- aAgData[[6]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
 
   # Set product name
-  # TODO: Find a better way to do this -- it will need updating when we go to irr/mgmt
-  aLandLeaf$mProductName <- substr(aLandLeaf$mName[[1]], 1, nchar(aLandLeaf$mName[[1]]) - 5)
-  if(aLandLeaf$mProductName %in% BIOMASS_TYPES) {
-    aLandLeaf$mProductName <- "biomass"
+  thisProductName <- filter(productName, AgProductionTechnology == name)
+  aLandLeaf$mProductName <- thisProductName$AgSupplySector
+  for(i in 1:length(BIOMASS_TYPES)) {
+    if(grepl(BIOMASS_TYPES[i], name)) {
+      aLandLeaf$mProductName <- "biomass"
+    }
   }
+
 
   if(aScenarioInfo$mScenarioType == "Hindcast") {
     # We only have AgProdChange at region level for historical data
