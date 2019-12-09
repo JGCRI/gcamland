@@ -123,7 +123,6 @@ as.ScenarioInfo.list <- function(object)
     as.ScenarioInfo(eobj)
 }
 
-
 #' SCENARIO.INFO
 #'
 #' A \code{ScenarioInfo} object with parameters for the default scenario.
@@ -142,6 +141,46 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aCalibrateShareWt = TRUE,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
+
+#' PCHES.SCENARIO.INFO
+#'
+#' A \code{ScenarioInfo} object with parameters for the PCHES scenario.
+#'
+#' @export
+#' @author Kate Calvin
+PCHES.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "PCHES",
+                              aExpectationType = "Perfect",
+                              aSubRegion = "PCHES",
+                              aLinearYears = NA,
+                              aLaggedShareOld = NA,
+                              aLogitUseDefault = TRUE,
+                              aLogitAgroForest = NA,
+                              aLogitAgroForest_NonPasture = NA,
+                              aLogitCropland = NA,
+                              aUseZeroCost = FALSE,
+                              aCalibrateShareWt = TRUE,
+                              aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"),
+                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"))
+
+#' SRB.SCENARIO.INFO
+#'
+#' A \code{ScenarioInfo} object with parameters for the PCHES scenario.
+#'
+#' @export
+#' @author Kate Calvin
+SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
+                                    aExpectationType = "Perfect",
+                                    aSubRegion = "SnakeRiverBasin",
+                                    aLinearYears = NA,
+                                    aLaggedShareOld = NA,
+                                    aLogitUseDefault = TRUE,
+                                    aLogitAgroForest = NA,
+                                    aLogitAgroForest_NonPasture = NA,
+                                    aLogitCropland = NA,
+                                    aUseZeroCost = FALSE,
+                                    aCalibrateShareWt = TRUE,
+                                    aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "SRB"),
+                                    aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "SRB"))
 
 
 #' update_scen_info
