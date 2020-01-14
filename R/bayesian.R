@@ -14,10 +14,6 @@
 #' This function also computes the grouped variance for use in subsequent
 #' calculations.
 #'
-#' @section TODO:
-#'
-#' Calculate obsvar as a detrended variance instead of total variance.
-#'
 #' @param regions Regions to keep in filtered data. (Default is use all regions.)
 #' @param years Years to keep in filtered data. (Default is use all years.)
 #' @param commodities GCAM commodities to keep in filtered data (Default is to
@@ -28,7 +24,7 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
                                      commodities = NULL)
 {
     ## silence notes
-    GCAM_commodity <- variable <- year <- area <- obsvar <-
+    GCAM_commodity <- variable <- year <- area <- obsvar <- trend <- detrended <-
         region <- land.type <- obs <- NULL
 
     FAO_land_history <- gcamland::FAO_land_history
@@ -45,7 +41,9 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
       dplyr::mutate(variable="Land Area") %>%
       dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area) %>%
       group_by(land.type, variable, region) %>%
-      mutate(obsvar = stats::var(obs)) %>%
+      mutate(trend = lm(obs ~ year)$fitted.values) %>%
+      mutate(detrended = obs - trend) %>%
+      mutate(obsvar = stats::var(detrended)) %>%
       ungroup
 }
 

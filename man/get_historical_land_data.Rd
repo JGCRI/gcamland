@@ -31,9 +31,3 @@ likelihoods.
 This function also computes the grouped variance for use in subsequent
 calculations.
 }
-\section{TODO}{
-
-
-Calculate obsvar as a detrended variance instead of total variance.
-}
-
