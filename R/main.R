@@ -231,7 +231,22 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aSerialNum = serialnum+0.4,
                           aOutputDir = aOutputDir)
 
-  list(perfscen, lagscen, lagcurrscen, linscen)
+  ## mixed scenario, using linear for yield and adaptive for prices
+  scenName <- getScenName(scentype, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
+  mixedscen <- ScenarioInfo(aScenarioType = scentype,
+                          aExpectationType = "Mixed",
+                          aLinearYears = linyears,
+                          aLaggedShareOld = share,
+                          aLogitUseDefault = FALSE,
+                          aLogitAgroForest = agFor,
+                          aLogitAgroForest_NonPasture = agForNonPast,
+                          aLogitCropland = crop,
+                          aScenarioName = scenName,
+                          aFileName = paste0("ensemble", suffix),
+                          aSerialNum = serialnum+0.5,
+                          aOutputDir = aOutputDir)
+
+  list(perfscen, lagscen, lagcurrscen, linscen, mixedscen)
 }
 
 

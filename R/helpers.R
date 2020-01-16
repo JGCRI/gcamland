@@ -86,6 +86,8 @@ getScenName <- function(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, 
     scenNameAdj <- paste(aScenName, "_", aExpectation, aYears, sep="")
   } else if (aExpectation == "Lagged") {
     scenNameAdj <- paste(aScenName, "_", aExpectation, aYears, sep="")
+  } else if (aExpectation == "Mixed") {
+    scenNameAdj <- paste(aScenName, "_", aExpectation, aYears, sep="")
   } else {
     scenNameAdj <- paste(aScenName, "_", aExpectation, sep="")
   }
