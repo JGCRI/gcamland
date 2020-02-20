@@ -44,7 +44,7 @@ test_that("land cover matches calibration data", {
   file <- file.path(path, paste0("output_", test.info$mScenarioName, ".rds"))
   expect_true(file.exists(file))
   readRDS(file) %>%
-    select(-yield, -expectedPrice, -expectedYield, -expectedProfit, -shareWeight, -harvested.land) %>%
+    select(-yield, -expectedPrice, -expectedYield, -cost, -expectedProfit, -shareWeight, -harvested.land) %>%
     mutate(region = test.info$mRegion) ->
     outputData
 
@@ -91,7 +91,7 @@ test_that("land cover matches reference values", {
     # (as this code will be run in tests/testthat)
     file <- file.path(basepath, paste0("output_", SCENARIO.INFO$mScenarioName, ".rds"))
     readRDS(file) %>%
-      select(-yield, -expectedYield, -expectedPrice, -expectedProfit, -shareWeight, -harvested.land) %>%
+      select(-yield, -expectedYield, -expectedPrice, -cost, -expectedProfit, -shareWeight, -harvested.land) %>%
       mutate(region = SCENARIO.INFO$mRegion) ->
       outputData
 
@@ -269,8 +269,8 @@ test_that("log-likelihood is calculated correctly", {
     ## Comparison data
     ll_ref <-
         structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
-                       ll_ = c(-60.03074683, -71.50344177, -78.38416523, -83.34031264, -87.22533533,
-                               -90.42507778, -93.14772819, -95.51869678, -97.61948446, -99.50609026)),
+                       ll_ = c(-48.6, -59.5, -66.0, -70.6, -74.2,
+                               -77.2, -79.7, -81.9, -83.8, -85.6)),
                   .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
 
 
@@ -284,14 +284,14 @@ test_that("log-likelihood is calculated correctly", {
     ## Not sure why the data frames refuse to compare as equal, when the
     ## individual data columns do.  Whatever.
     expect_equal(ll_out$xi, ll_ref$xi)
-    expect_equal(ll_out$lp_, ll_ref$ll_)
+    expect_equal(round(ll_out$lp_, digits = 1), ll_ref$ll_)
 })
 
 test_that("posterior pdf table is calculated correctly", {
     ## This test possibly obviates the need for the log-likelihood test.
     gt_ref <- structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-                1), lp_ = c(-60.03074683, -71.50344177, -78.38416523, -83.34031264, -87.22533533,
-                            -90.42507778, -93.14772819, -95.51869678, -97.61948446, -99.50609026), expectation.type =
+                1), lp_ = c(-48.6, -59.5, -66.0, -70.6, -74.2,
+                            -77.2, -79.7, -81.9, -83.8, -85.6), expectation.type =
                 c("Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect",
                 "Perfect", "Perfect", "Perfect"), share.old = c(NA, NA, NA, NA, NA, NA, NA, NA,
                 NA, NA), linear.years = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
@@ -305,7 +305,7 @@ test_that("posterior pdf table is calculated correctly", {
     gt <- grand_table(list(test.info))
 
     expect_equal(gt$xi, gt_ref$xi)
-    expect_equal(gt$lp_, gt_ref$lp_)
+    expect_equal(round(gt$lp_, digits = 1), gt_ref$lp_)
 
 })
 
