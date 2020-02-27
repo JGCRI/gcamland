@@ -632,6 +632,14 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       rename(year = year.fillout) ->
       HAtoCL
 
+    # Create a costTechChange data frame filled with blanks. We don't use this for subregions, but need it to run
+    costTechChange <- data.frame(region = "NULL",
+                                 AgSupplySector = "NULL",
+                                 AgSupplySubsector = "NULL",
+                                 AgProductionTechnology = "NULL",
+                                 year = "NULL",
+                                 nonLandCostTechChange = "NULL")
+
     # Only keep select columns pertaining to product name
     data %>%
       select("region", "subregion", "AgProductionTechnology", "AgSupplySector") ->
