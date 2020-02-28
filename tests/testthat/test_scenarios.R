@@ -31,20 +31,14 @@ test_that('Alternate scenario types run successfully', {
 })
 
 test_that('Sub region runs successfully', {
-  type <- "Reference"
-  subregion <- "SnakeRiverBasin"
   expectations <- c("Perfect", "Lagged", "Linear")
 
   for (expectation in expectations) {
-    testscen <- ScenarioInfo(aExpectationType = expectation,
-                             aLinearYears = 2,
-                             aLaggedShareOld = 0.5,
-                             aLogitUseDefault = TRUE,
-                             aScenarioType = type,
-                             aScenarioName = paste(type, expectation, sep='-'),
-                             aFileName = paste(type, expectation, sep='-'),
-                             aOutputDir = basepath,
-                             aSubRegion = subregion)
+    testscen <- SRB.SCENARIO.INFO
+    testscen$mExpectationType <- expectation
+    testscen$mLinearYears <- 2
+    testscen$mLaggedShareOld <- 0.5
+
     expect_message(run_model(testscen, runperiods),
                    info=paste('Failure in scenario type=', type,
                               'expectation= ', expectation,

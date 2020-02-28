@@ -632,6 +632,14 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       rename(year = year.fillout) ->
       HAtoCL
 
+    # Create a costTechChange data frame filled with blanks. We don't use this for subregions, but need it to run
+    costTechChange <- data.frame(region = "NULL",
+                                 AgSupplySector = "NULL",
+                                 AgSupplySubsector = "NULL",
+                                 AgProductionTechnology = "NULL",
+                                 year = "NULL",
+                                 nonLandCostTechChange = "NULL")
+
     # Only keep select columns pertaining to product name
     data %>%
       select("region", "subregion", "AgProductionTechnology", "AgSupplySector") ->
@@ -652,6 +660,8 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       bioYield
     suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgHAtoCL.csv", package = "gcamland"), skip = 3)) ->
       HAtoCL
+    suppressMessages(read_csv(system.file("extdata", "./initialization-data/AgCostTechChange.csv", package = "gcamland"), skip = 3)) ->
+      costTechChange
 
     # Filter data for the specified region -- note using dplyr::filter for data frames with more than 15000 entries
     calOutput <- filter(calOutput, region == aRegionName)
@@ -659,6 +669,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
     cost <- filter(cost, region == aRegionName)
     bioYield <- subset(bioYield, region == aRegionName)
     HAtoCL <- subset(HAtoCL, region == aRegionName)
+    costTechChange <- subset(costTechChange, region == aRegionName)
 
     # Filter data for specified AEZ
     if(!is.null(AEZ)){
@@ -671,6 +682,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       cost <- filter(cost, grepl(AEZ, AgSupplySubsector))
       bioYield <- subset(bioYield, grepl(AEZ, AgSupplySubsector))
       HAtoCL <- subset(HAtoCL, grepl(AEZ, AgSupplySubsector))
+      costTechChange <- subset(costTechChange, grepl(AEZ, AgSupplySubsector))
 
     }
 
@@ -680,7 +692,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       unique() ->
       productName
   }
-  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL, productName),
+  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL, productName, costTechChange),
          rgn = aRegionName, scentype = ascentype))
 }
 

@@ -1,10 +1,10 @@
-Ag Commodity Prices,,,,,
-scenario,region,sector,2010,2050,Units
-ConstantPrice,USA,Forest,1,1,Index (2010 = 1)
-ConstantPrice,USA,cotton,1,1,Index (2010 = 1)
-ConstantPrice,USA,grain,1,1,Index (2010 = 1)
-ConstantPrice,USA,misccrop,1,1,Index (2010 = 1)
-ConstantPrice,USA,oilseed,1,1,Index (2010 = 1)
-ConstantPrice,USA,othercrop,1,1,Index (2010 = 1)
-ConstantPrice,USA,sugarCrop,1,1,Index (2010 = 1)
-ConstantPrice,USA,Pasture,1,1,Index (2010 = 1)
+Ag Commodity Prices,,,,,,,
+scenario,region,sector,2010,2015,2020,2050,Units
+ConstantPrice,USA,Forest,1,0.982592463,0.971199306,0.971199306,Index (2010 = 1)
+ConstantPrice,USA,cotton,1,1.035673082,1.051903639,1.051903639,Index (2010 = 1)
+ConstantPrice,USA,grain,1,0.953533508,0.924250962,0.924250962,Index (2010 = 1)
+ConstantPrice,USA,misccrop,1,0.986303672,0.976346476,0.976346476,Index (2010 = 1)
+ConstantPrice,USA,oilseed,1,0.985990074,0.975636938,0.975636938,Index (2010 = 1)
+ConstantPrice,USA,othercrop,1,0.988082074,0.981514405,0.981514405,Index (2010 = 1)
+ConstantPrice,USA,sugarCrop,1,0.984913187,0.974600231,0.974600231,Index (2010 = 1)
+ConstantPrice,USA,Pasture,1,1,1,1,Index (2010 = 1)

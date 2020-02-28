@@ -14,7 +14,7 @@ TIME.PARAMS <- list(
                                                                    2005, 2010),
                        FUTURE.YEARS=seq(2015, 2100, 5)),
     "PCHES" = list(FINAL_CALIBRATION_PERIOD=1, HISTORY.YEARS=c(2010),
-    FUTURE.YEARS=c(2050)))
+    FUTURE.YEARS=c(2015, 2020, 2050)))
 SCEN.TYPES <- names(TIME.PARAMS)
 
 # Concatenate years

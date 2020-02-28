@@ -73,6 +73,7 @@ printAllOutputs <- function(aLandAllocator, aScenarioInfo, aNest, aFileOutput=FA
                  yield = rep(NA, length(leafs$node)),
                  expectedYield = rep(NA, length(leafs$node)),
                  expectedPrice = rep(NA, length(leafs$node)),
+                 cost = rep(NA, length(leafs$node)),
                  expectedProfit = rep(NA, length(leafs$node)),
                  shareWeight = rep(NA, length(leafs$node))) %>%
     mutate(uniqueJoinField = 1) %>%
@@ -167,6 +168,8 @@ LandLeaf_getOutputs <- function(aLandLeaf, aAllOutputs, aScenType) {
                                   aAllOutputs$year == currYear] <- aLandLeaf$mExpectedYield[[per]]
       aAllOutputs$expectedPrice[aAllOutputs$name == currName &
                                   aAllOutputs$year == currYear] <- aLandLeaf$mExpectedPrice[[per]]
+      aAllOutputs$cost[aAllOutputs$name == currName &
+                                  aAllOutputs$year == currYear] <- aLandLeaf$mCost[[per]]
     }
   }
 

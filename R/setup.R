@@ -364,6 +364,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
   bioYield <- aAgData[[4]]
   HAtoCL <- aAgData[[5]]
   productName <- aAgData[[6]]
+  costTechChange <- aAgData[[7]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
@@ -426,14 +427,31 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       # Set data that shouldn't exist in the future to -1
       aLandLeaf$mCalOutput[[per]] <- -1
 
-      # Set data that we aren't going to read in to 0
+      # Set non-land cost tech change
       # Note: we are including this parameter because it is in the C++ code, but GCAM doesn't use it
-      aLandLeaf$mNonLandCostTechChange[[per]] <- 0
+      #       So, we aren't using it in Reference scenarios. However, we are using it in Hindcast
+      #       to better represent the costs observed in the past.
+      if ( aScenarioInfo$mScenarioType == "Hindcast" &
+           name %in% costTechChange$AgProductionTechnology &
+           y %in% costTechChange$year) {
+        aLandLeaf$mNonLandCostTechChange[[per]] <- as.numeric(costTechChange$nonLandCostTechChange[costTechChange$year == y &
+                                                                                                   costTechChange$AgProductionTechnology == name])
+      } else {
+        aLandLeaf$mNonLandCostTechChange[[per]] <- 0
+      }
     }
 
     # Set cost in the LandLeaf
-    if(aScenarioInfo$mUseZeroCost == FALSE &
+    if(aScenarioInfo$mUseZeroCost == FALSE & aScenarioInfo$mScenarioType != "Hindcast" &
        name %in% cost$AgProductionTechnology & y %in% cost$year)  {
+      aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &
+                                                                    cost$AgProductionTechnology == name])
+    } else if ( aScenarioInfo$mUseZeroCost == FALSE & aScenarioInfo$mScenarioType == "Hindcast" &
+                name %in% cost$AgProductionTechnology & y %in% cost$year &
+                per <= TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
+      # Only set the cost for Hindcasts in the calibration years. We will use tech
+      # change to adjust costs in subsequent periods.
+      # TODO: find a way to read either tech change or costs more easily
       aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &
                                                                     cost$AgProductionTechnology == name])
     } else {
