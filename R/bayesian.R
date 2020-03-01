@@ -98,9 +98,7 @@ get_scenario_land_data <- function(aScenarioList)
     ## list we obtained above.
     read_landdata_file <- function(fn) {
         readRDS(fn) %>%
-          ## split name / AEZ
-          tidyr::extract('name', c('land.type', 'AEZ'),
-                         '(.+)(AEZ[0-9]+)') %>%
+          dplyr::rename(land.type = name) %>%
           dplyr::group_by(land.type, year, scenario) %>%
           dplyr::summarise(model = sum(harvested.land)) %>%
           dplyr::ungroup() %>%
