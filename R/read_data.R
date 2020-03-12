@@ -709,7 +709,8 @@ get_AgProdChange <- function(ascentype, aSubRegion) {
   year <- NULL
 
   if(!is.null(aSubRegion)){
-    agProdChange <- suppressMessages(read_csv(system.file("extdata", "./scenario-data/AgProdChange_SRB.csv", package = "gcamland")))
+    filename <- paste("./scenario-data/AgProdChange_", ascentype, ".csv", sep="")
+    agProdChange <- suppressMessages(read_csv(system.file("extdata", filename, package = "gcamland")))
   }
   else {
     # Read in data
