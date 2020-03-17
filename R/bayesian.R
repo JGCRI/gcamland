@@ -27,17 +27,17 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
     GCAM_commodity <- variable <- year <- area <- obsvar <- trend <- detrended <-
         region <- land.type <- obs <- NULL
 
-    FAO_land_history <- gcamland::FAO_land_history
+    Land_history <- gcamland::Land_history
 
-    filter <- rep(TRUE, nrow(FAO_land_history))
+    filter <- rep(TRUE, nrow(Land_history))
     if(!is.null(regions))
-        filter <- filter & FAO_land_history$region %in% regions
+        filter <- filter & Land_history$region %in% regions
     if(!is.null(years))
-        filter <- filter & FAO_land_history$year %in% years
+        filter <- filter & Land_history$year %in% years
     if(!is.null(commodities))
-        filter <- filter & FAO_land_history$GCAM_commodity %in% commodities
+        filter <- filter & Land_history$GCAM_commodity %in% commodities
 
-    FAO_land_history[filter,] %>%
+    Land_history[filter,] %>%
       dplyr::mutate(variable="Land Area") %>%
       dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area) %>%
       group_by(land.type, variable, region) %>%
@@ -99,8 +99,10 @@ get_scenario_land_data <- function(aScenarioList)
     read_landdata_file <- function(fn) {
         readRDS(fn) %>%
           dplyr::rename(land.type = name) %>%
+          dplyr::mutate(land = if_else(is.na(harvested.land), land.allocation, harvested.land),
+                        land.type = sub("Unmanaged", "", land.type)) %>%
           dplyr::group_by(land.type, year, scenario) %>%
-          dplyr::summarise(model = sum(harvested.land)) %>%
+          dplyr::summarise(model = sum(land)) %>%
           dplyr::ungroup() %>%
           dplyr::mutate(variable = "Land Area") %>%
           dplyr::mutate(region = region)
