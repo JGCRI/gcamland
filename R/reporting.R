@@ -401,3 +401,49 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 
   return(nest)
 }
+
+
+#' get_PCHES_results
+#'
+#' Process results for PCHES coupling. Specifically, report the fractional change in land
+#' from 2010 by crop and region
+#'
+#' @param aScenarioInfo Scenario-related information, including names, logits, expectations.
+#' @param aYear Year to get results
+#'
+#' @return Table of model results.
+#' @importFrom readr write_csv
+#' @author KVC
+#' @export
+get_PCHES_results <- function(aScenarioInfo, aYear) {
+  scenario <- NULL             # silence package checker.
+
+  # Get file name where results are curently stored
+  inFile <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")
+
+  # Read land allocation
+  allLand <- suppressMessages(readRDS(normalizePath(inFile)))
+
+  # Filter for requested scenario
+  allLand %>%
+    dplyr::filter(scenario == aScenarioInfo$mScenarioName) ->
+    scenResults
+
+  # Filter for the right years, calculate fractional change, print results
+  finalHistYear <- max( TIME.PARAMS[[aScenarioInfo$mScenarioType]]$HISTORY.YEARS)
+  scenResults %>%
+    dplyr::filter(year %in% c(finalHistYear, aYear),
+                  (grepl("IRR", name) | grepl("RFD", name))) %>%
+    select(name, land.allocation, year) %>%
+    spread(year, land.allocation) %>%
+    mutate(start = !!(as.name(finalHistYear)),
+           end = !!(as.name(aYear)),
+           delta.land = end / start) %>%
+    select(name, delta.land) ->
+    results
+
+  # Get file name to store outputs
+  file <- paste0(aScenarioInfo$mOutputDir, "/PCHES_output.csv")
+  write_csv(results, file)
+
+}
