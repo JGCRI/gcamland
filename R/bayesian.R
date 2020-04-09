@@ -74,7 +74,8 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 #' @export
 get_scenario_land_data <- function(aScenarioList)
 {
-    land.type <- year <- harvested.land <- scenario <- NULL # silence package notes
+    land.type <- year <- harvested.land <- scenario <-
+      land.allocation <- name <- land <- NULL # silence package notes
 
     if(inherits(aScenarioList, "ScenarioInfo")) {
         ## user passed a single scenario.  Convert it to a list and press on

@@ -69,12 +69,20 @@ plotRegionalLandAllocation <- function(aScenarioInfo) {
   # TODO: add error message if output doesn't exist
 
   # Aggregate land
-  allLand %>%
-    separate(name, into=c("land.type", "AEZ"), sep="AEZ") %>%
-    group_by(land.type, year) %>%
-    summarize(land.allocation = sum(land.allocation)) %>%
-    ungroup() ->
-    regionalLand
+  if(any(grepl("AEZ", allLand$name))) {
+    allLand %>%
+      separate(name, into=c("land.type", "AEZ"), sep="AEZ") %>%
+      group_by(land.type, year) %>%
+      summarize(land.allocation = sum(land.allocation)) %>%
+      ungroup() ->
+      regionalLand
+  } else {
+    allLand %>%
+      mutate(land.type = name) ->
+      regionalLand
+  }
+
+  print(head(regionalLand))
 
   # Define a color palette (default for ggplot2 is rainbow which is hard to read)
   my_palette <- c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928',
