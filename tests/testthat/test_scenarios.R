@@ -31,7 +31,7 @@ test_that('Alternate scenario types run successfully', {
 })
 
 test_that('Sub region runs successfully', {
-  expectations <- c("Perfect", "Lagged", "Linear")
+  expectations <- c("Perfect")
 
   for (expectation in expectations) {
     testscen <- SRB.SCENARIO.INFO

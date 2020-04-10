@@ -5,32 +5,37 @@ testscenarios <- readRDS('data/scenario-info.rds')
 test_that("get_historical_land_data returns filtered FAO data", {
     ## no filtering
     expect_equivalent(get_historical_land_data() %>% select(-variable, -obsvar, -trend, -detrended),
-                      FAO_land_history %>%
+                      Land_history %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## region filtering
     expect_equivalent(get_historical_land_data("USA") %>% select(-variable, -obsvar, -trend, -detrended),
-                      dplyr::filter(FAO_land_history, region=="USA") %>%
+                      dplyr::filter(Land_history, region=="USA") %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## year filtering
     expect_equivalent(get_historical_land_data(years=c(1972, 1984)) %>% select(-variable, -obsvar, -trend, -detrended),
-                      dplyr::filter(FAO_land_history, year==1972 | year==1984) %>%
+                      dplyr::filter(Land_history, year==1972 | year==1984) %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## commodity filtering
     expect_equivalent(get_historical_land_data(commodities="Corn") %>% select(-variable, -obsvar, -trend, -detrended),
-                      dplyr::filter(FAO_land_history, GCAM_commodity == "Corn") %>%
+                      dplyr::filter(Land_history, GCAM_commodity == "Corn") %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
 
-    ## complex filter
+    # ## complex filter
     all_output_commodities <-
         c("UrbanLand", "Tundra", "RockIceDesert", "UnmanagedPasture",
           "Pasture", "Grassland", "Shrubland", "OtherArableLand", "Wheat",
           "SugarCrop", "Root_Tuber", "Rice", "PalmFruit", "OtherGrain",
           "OilCrop", "MiscCrop", "FodderHerb", "FodderGrass", "FiberCrop",
           "Corn", "UnmanagedForest", "Forest", "willow", "biomass")
-    expect_equivalent(get_historical_land_data("Australia_NZ", 1972:1984,
-                                               all_output_commodities) %>% select(-variable, -obsvar, -trend, -detrended),
-                      readr::read_csv('data/complex_filter_ref.csv', col_types='ccid') %>%
-                        dplyr::rename(land.type=GCAM_commodity, obs=area))
+    get_historical_land_data("Australia_NZ", 1972:1984,
+                             all_output_commodities) %>% dplyr::select(-variable, -obsvar, -trend, -detrended) ->
+      modelData
+
+    readr::read_csv('data/complex_filter_ref.csv', col_types='ccdd') %>%
+      dplyr::rename(land.type=GCAM_commodity, obs=area) ->
+      compareData
+
+    expect_equivalent(modelData, compareData)
 })
 
 
