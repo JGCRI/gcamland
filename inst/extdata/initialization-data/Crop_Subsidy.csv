@@ -1,0 +1,6 @@
+# Source: NA,,,
+# Notes: Data currently set to zero. Using for testing,,,
+# ,,,
+region,GCAM_commodity,year,subsidy
+USA,Corn,1975,0
+USA,Corn,1976,0

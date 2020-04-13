@@ -24,6 +24,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' FALSE)
 #' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
 #' @param aCalibrateShareWt Boolean indicating that the model should calculate share weights during calibration
+#' @param aIncludeSubsidies Boolean indicating whether subsidy information should modify profit
 #' @param aShareWeights Named vector of share weights to use instead of calibrating.
 #' The names should correspond to the names of the land leaf nodes.
 #' @param aScenarioType Type of scenario to run: either "Reference" or "Hindcast".
@@ -47,6 +48,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "La
                          aLogitCropland = NA,
                          aUseZeroCost = FALSE,
                          aCalibrateShareWt = TRUE,
+                         aIncludeSubsidies = FALSE,
                          aShareWeights = NULL,
                          aScenarioType = DEFAULT.SCENARIO.TYPE,
                          aScenarioName = NULL,
@@ -68,6 +70,7 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "La
   self$mLogitCropland <- aLogitCropland
   self$mUseZeroCost <- aUseZeroCost
   self$mCalibrateShareWt <- aCalibrateShareWt
+  self$mIncludeSubsidies <- aIncludeSubsidies
   self$mShareWeights <- aShareWeights
   assertthat::assert_that(!is.null(aShareWeights) || aCalibrateShareWt, msg='If aShareWeights is not supplied, the aCalibrateShareWt must be TRUE.')
   self$mScenarioType <- aScenarioType
@@ -139,6 +142,7 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLogitCropland = NA,
                               aUseZeroCost = FALSE,
                               aCalibrateShareWt = TRUE,
+                              aIncludeSubsidies = FALSE,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"),
                               aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect"))
 
@@ -196,6 +200,7 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
 #' @param aLaggedShareOld New lagged share old (default = NULL)
 #' @param aUseZeroCost New cost assumption (default = FALSE)
 #' @param aCalibrateShareWt Flag indicating share weights should be calibrated
+#' @param aIncludeSubsidies Flag indicating subsidies should be added to profit
 #' @param aShareWts Vector of share weights
 #'
 #' @return Updated scenario info object
@@ -206,7 +211,7 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
 #' update_scen_info(aScenarioType = "Hindcast")
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
                              aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE,
-                             aCalibrateShareWt = TRUE, aShareWts = NULL) {
+                             aCalibrateShareWt = TRUE, aIncludeSubsidies = FALSE, aShareWts = NULL) {
 
   # Set the names of the scenario & file based on read in information
   if(is.null(aName)) {
@@ -226,6 +231,7 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   new_scen_info$mScenarioName <- new_name
   new_scen_info$mFileName <- new_name
   new_scen_info$mCalibrateShareWt <- aCalibrateShareWt
+  new_scen_info$mIncludeSubsidies <- aIncludeSubsidies
   new_scen_info$mShareWeights <- aShareWts
 
   if(aCalibrateShareWt == FALSE & is.null(aShareWts)) {

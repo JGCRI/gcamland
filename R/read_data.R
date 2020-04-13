@@ -600,7 +600,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #' @import tidyr
 #' @author KVC October 2017
 #' @export
-ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NULL) {
+ReadData_AgProd <- function(aRegionName, aScenType, aSubRegion, subregionData=NULL) {
   # Silence package checks
   region <- AgSupplySector <- AgSupplySubsector <- AgProductionTechnology <- year.fillout <- NULL
 
@@ -614,7 +614,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       rename(year = year.fillout) ->
       calOutput
 
-    agProdChange <- get_AgProdChange(ascentype, aSubRegion)
+    agProdChange <- get_AgProdChange(aScenType, aSubRegion)
 
     cost <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/AgCost_SRB.csv", package = "gcamland")))
 
@@ -651,7 +651,7 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgProduction_For.csv", package = "gcamland"), skip = 3))) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L201.AgProduction_Past.csv", package = "gcamland"), skip = 3))) ->
       calOutput
-    agProdChange <- get_AgProdChange(ascentype, aSubRegion)
+    agProdChange <- get_AgProdChange(aScenType, aSubRegion)
     suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_ag.csv", package = "gcamland"), skip = 3)) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_bio.csv", package = "gcamland"), skip = 3))) %>%
       bind_rows(suppressMessages(read_csv(system.file("extdata", "./initialization-data/L205.AgCost_For.csv", package = "gcamland"), skip = 3))) ->
@@ -662,6 +662,8 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       HAtoCL
     suppressMessages(read_csv(system.file("extdata", "./initialization-data/AgCostTechChange.csv", package = "gcamland"), skip = 3)) ->
       costTechChange
+    suppressMessages(read_csv(system.file("extdata", "./initialization-data/Crop_Subsidy.csv", package = "gcamland"), skip = 3)) ->
+      subsidy
 
     # Filter data for the specified region -- note using dplyr::filter for data frames with more than 15000 entries
     calOutput <- filter(calOutput, region == aRegionName)
@@ -670,12 +672,13 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
     bioYield <- subset(bioYield, region == aRegionName)
     HAtoCL <- subset(HAtoCL, region == aRegionName)
     costTechChange <- subset(costTechChange, region == aRegionName)
+    subsidy <- subset(subsidy, region == aRegionName)
 
     # Filter data for specified AEZ
     if(!is.null(AEZ)){
       calOutput <- filter(calOutput, grepl(AEZ, AgSupplySubsector))
 
-      if(ascentype != "Hindcast") {
+      if(aScenType != "Hindcast") {
         # Hindcast data is only at the region level
         agProdChange <- filter(agProdChange, grepl(AEZ, AgSupplySubsector))
       }
@@ -683,7 +686,6 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       bioYield <- subset(bioYield, grepl(AEZ, AgSupplySubsector))
       HAtoCL <- subset(HAtoCL, grepl(AEZ, AgSupplySubsector))
       costTechChange <- subset(costTechChange, grepl(AEZ, AgSupplySubsector))
-
     }
 
     # Set product name
@@ -692,8 +694,8 @@ ReadData_AgProd <- function(aRegionName, ascentype, aSubRegion, subregionData=NU
       unique() ->
       productName
   }
-  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL, productName, costTechChange),
-         rgn = aRegionName, scentype = ascentype))
+  return(structure(list(calOutput, agProdChange, cost, bioYield, HAtoCL, productName, costTechChange, subsidy),
+         rgn = aRegionName, scentype = aScenType))
 }
 
 #' get_AgProdChange

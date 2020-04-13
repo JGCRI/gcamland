@@ -7,7 +7,7 @@
 update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
   aExpectationType = "Perfect", aLinearYears = NULL,
   aLaggedShareOld = NULL, aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
-  aShareWts = NULL)
+  aIncludeSubsidies = FALSE, aShareWts = NULL)
 }
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}
@@ -23,6 +23,8 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 \item{aUseZeroCost}{New cost assumption (default = FALSE)}
 
 \item{aCalibrateShareWt}{Flag indicating share weights should be calibrated}
+
+\item{aIncludeSubsidies}{Flag indicating subsidies should be added to profit}
 
 \item{aShareWts}{Vector of share weights}
 }

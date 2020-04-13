@@ -30,7 +30,8 @@
 #' being run.
 #' @param lprior Log-prior probability density function.  Used only if Bayesian
 #' posteriors are being run.
-#' @param atype Scenario type: either "Reference" or "Hindcast"
+#' @param aType Scenario type: either "Reference" or "Hindcast"
+#' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members
@@ -40,7 +41,7 @@
 #' @export
 run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior,
-                         atype="Hindcast", logparallel=NULL) {
+                         aType="Hindcast", aIncludeSubsidies = FALSE, logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
@@ -75,7 +76,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, suffix, aOutputDir) %>%
+                     aType, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
@@ -126,7 +127,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
-  if(atype == "Hindcast") {
+  if(aType == "Hindcast") {
       ## For hindcast runs, calculate the Bayesian posteriors
       scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
   }
@@ -159,18 +160,19 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param share The share parameter for the lagged model
 #' @param linyears The number of years parameter for the linear model
 #' @param serialnum Serial number for the run
-#' @param scentype Scenario type, either "Hindcast" or "Reference"
+#' @param aScenType Scenario type, either "Hindcast" or "Reference"
+#' @param aIncludeSubsidies Boolean flag indicating whether subsidies should be included in profit
 #' @param suffix Suffix for output filenames.
 #' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
 gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                serialnum, scentype, suffix, aOutputDir)
+                                serialnum, aScenType, aIncludeSubsidies, suffix, aOutputDir)
 {
   ## Perfect expectations scenario
-  scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Perfect", NULL, agFor, agForNonPast, crop)
 
-  perfscen <- ScenarioInfo(aScenarioType = scentype,
+  perfscen <- ScenarioInfo(aScenarioType = aScenType,
                            aExpectationType = "Perfect",
                            aLinearYears = NA,
                            aLaggedShareOld = NA,
@@ -178,6 +180,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
+                           aIncludeSubsidies = aIncludeSubsidies,
                            aScenarioName = scenName,
                            aFileName = paste0("ensemble", suffix),
                            aSerialNum = serialnum+0.1,
@@ -185,9 +188,9 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 
 
   ## Lagged scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
-  scenName <- getScenName(scentype, "Lagged", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Lagged", share, agFor, agForNonPast, crop)
 
-  lagscen <- ScenarioInfo(aScenarioType = scentype,
+  lagscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Lagged",
                           aLinearYears = NA,
                           aLaggedShareOld = share,
@@ -195,15 +198,16 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
   ## Lagged scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
-  scenName <- getScenName(scentype, "LaggedCurr", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "LaggedCurr", share, agFor, agForNonPast, crop)
 
-  lagcurrscen <- ScenarioInfo(aScenarioType = scentype,
+  lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "LaggedCurr",
                           aLinearYears = NA,
                           aLaggedShareOld = share,
@@ -211,14 +215,15 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
-  scenName <- getScenName(scentype, "Linear", linyears, agFor, agForNonPast, crop)
-  linscen <- ScenarioInfo(aScenarioType = scentype,
+  scenName <- getScenName(aScenType, "Linear", linyears, agFor, agForNonPast, crop)
+  linscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Linear",
                           aLinearYears = linyears,
                           aLaggedShareOld = NA,
@@ -226,14 +231,15 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.4,
                           aOutputDir = aOutputDir)
 
   ## mixed scenario, using linear for yield and adaptive for prices
-  scenName <- getScenName(scentype, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
-  mixedscen <- ScenarioInfo(aScenarioType = scentype,
+  scenName <- getScenName(aScenType, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
+  mixedscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Mixed",
                           aLinearYears = linyears,
                           aLaggedShareOld = share,
@@ -241,6 +247,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.5,

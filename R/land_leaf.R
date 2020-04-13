@@ -52,6 +52,7 @@ LandLeaf <- function(aName, aFinalCalPeriod, aFinalPeriod) {
   self$mCalOutput = list() # Note: we read this in to calculate yield for consistency with C++
   self$mNonLandCostTechChange = list()
   self$mAgProdChange = list()
+  self$mSubsidy = list()
 
   class(self) <- c("LandLeaf", class(self))
   self

@@ -5,7 +5,7 @@
 \title{Generate the ensemble members for a single set of parameters}
 \usage{
 gen_ensemble_member(agFor, agForNonPast, crop, share, linyears, serialnum,
-  scentype, suffix, aOutputDir)
+  aScenType, aIncludeSubsidies, suffix, aOutputDir)
 }
 \arguments{
 \item{agFor}{The logit exponent the ag/forest nest, which controls
@@ -22,7 +22,9 @@ controls competition between crops, grass/shrub, and forest.}
 
 \item{serialnum}{Serial number for the run}
 
-\item{scentype}{Scenario type, either "Hindcast" or "Reference"}
+\item{aScenType}{Scenario type, either "Hindcast" or "Reference"}
+
+\item{aIncludeSubsidies}{Boolean flag indicating whether subsidies should be included in profit}
 
 \item{suffix}{Suffix for output filenames.}
 

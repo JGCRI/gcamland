@@ -103,4 +103,9 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioI
   # We multiply by 1e9 since profitRate initially is in $/m2
   # and the land allocator needs it in $/billion m2. This assumes yield is in kg/m2.
   aLandLeaf$mProfitRate[aPeriod] <- (expectedPrice - aLandLeaf$mCost[[aPeriod]]) * expectedYield * 1e9
+
+  if ( aScenarioInfo$mIncludeSubsidies ) {
+    # Subsidies are assumed to br in $/billion m2
+    aLandLeaf$mProfitRate[aPeriod] <- aLandLeaf$mProfitRate[[aPeriod]] + aLandLeaf$mSubsidy[[aPeriod]]
+  }
 }

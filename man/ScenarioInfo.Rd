@@ -7,7 +7,8 @@
 ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
   aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
-  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWeights = NULL,
+  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
+  aIncludeSubsidies = FALSE, aShareWeights = NULL,
   aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
   aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
   aRegion = DEFAULT.REGION, aSubRegion = NULL)
@@ -31,6 +32,8 @@ FALSE)}
 \item{aUseZeroCost}{Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)}
 
 \item{aCalibrateShareWt}{Boolean indicating that the model should calculate share weights during calibration}
+
+\item{aIncludeSubsidies}{Boolean indicating whether subsidy information should modify profit}
 
 \item{aShareWeights}{Named vector of share weights to use instead of calibrating.
 The names should correspond to the names of the land leaf nodes.}

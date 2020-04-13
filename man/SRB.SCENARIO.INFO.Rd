@@ -4,7 +4,7 @@
 \name{SRB.SCENARIO.INFO}
 \alias{SRB.SCENARIO.INFO}
 \title{SRB.SCENARIO.INFO}
-\format{An object of class \code{ScenarioInfo} (inherits from \code{environment}) of length 19.}
+\format{An object of class \code{ScenarioInfo} (inherits from \code{environment}) of length 20.}
 \usage{
 SRB.SCENARIO.INFO
 }
