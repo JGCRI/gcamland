@@ -590,7 +590,7 @@ ReadData_LN3_NewTech <- function(aRegionName) {
 #'
 #' @details Read in ag production data
 #' @param aRegionName Region to read data for
-#' @param ascentype Scenario type: either "Reference" or "Hindcast"
+#' @param aScenType Scenario type: either "Reference" or "Hindcast"
 #' @param aSubRegion Subregion to read data for
 #' @param subregionData Subregion data
 #' @return All AgProductionTechnology information
@@ -639,6 +639,12 @@ ReadData_AgProd <- function(aRegionName, aScenType, aSubRegion, subregionData=NU
                                  AgProductionTechnology = "NULL",
                                  year = "NULL",
                                  nonLandCostTechChange = "NULL")
+
+    # Create a subsidy data frame filled with blanks. We don't use this for subregions, but need it to run
+    subsidy <- data.frame(region = "NULL",
+                          GCAM_commodity = "NULL",
+                          year = "NULL",
+                          subsidy = "NULL")
 
     # Only keep select columns pertaining to product name
     data %>%
