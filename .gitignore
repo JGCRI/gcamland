@@ -38,3 +38,4 @@ vignettes/*.pdf
 
 # Temporary data for this project
 tests/testthat/data/land
+tests/testthat/data/land/*
