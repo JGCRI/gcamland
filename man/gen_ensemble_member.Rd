@@ -4,8 +4,9 @@
 \alias{gen_ensemble_member}
 \title{Generate the ensemble members for a single set of parameters}
 \usage{
-gen_ensemble_member(agFor, agForNonPast, crop, share, linyears, serialnum,
-  aScenType, aIncludeSubsidies, suffix, aOutputDir)
+gen_ensemble_member(agFor, agForNonPast, crop, share1, share2, share3,
+  linyears1, linyears2, linyears3, serialnum, aScenType, aIncludeSubsidies,
+  suffix, aOutputDir)
 }
 \arguments{
 \item{agFor}{The logit exponent the ag/forest nest, which controls
@@ -16,9 +17,17 @@ controls competition between crops, grass/shrub, and forest.}
 
 \item{crop}{The logit exponent for the crop nest}
 
-\item{share}{The share parameter for the lagged model}
+\item{share1}{The share parameter for the lagged model for crop group 1 (see constants.R)}
 
-\item{linyears}{The number of years parameter for the linear model}
+\item{share2}{The share parameter for the lagged model for crop group 2 (see constants.R)}
+
+\item{share3}{The share parameter for the lagged model for crop group 3 (see constants.R)}
+
+\item{linyears1}{The number of years parameter for the linear model for crop group 1 (see constants.R)}
+
+\item{linyears2}{The number of years parameter for the linear model for crop group 2 (see constants.R)}
+
+\item{linyears3}{The number of years parameter for the linear model for crop group 3 (see constants.R)}
 
 \item{serialnum}{Serial number for the run}
 

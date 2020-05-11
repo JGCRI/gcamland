@@ -15,8 +15,12 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' there is some behavior that our model is failing to capture.
 #'
 #' @param aExpectationType Expectation type
-#' @param aLaggedShareOld Share of old expectations included in current expectation
-#' @param aLinearYears Years for linear expectations
+#' @param aLaggedShareOld1 Share of old expectations included in current expectation for crop group 1 (see constants.R)
+#' @param aLaggedShareOld2 Share of old expectations included in current expectation for crop group 2 (see constants.R)
+#' @param aLaggedShareOld3 Share of old expectations included in current expectation for crop group 3 (see constants.R)
+#' @param aLinearYears1 Years for linear expectations for crop group 1 (see constants.R)
+#' @param aLinearYears2 Years for linear expectations for crop group 2 (see constants.R)
+#' @param aLinearYears3 Years for linear expectations for crop group 3 (see constants.R)
 #' @param aLogitUseDefault Boolean indicating whether to use default logits
 #' @param aLogitAgroForest AgroForest logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
@@ -40,8 +44,12 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @author KVC November 2017
 ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "LaggedCurr" ExpectationType are supported
                          aExpectationType = NULL,
-                         aLaggedShareOld = NA,
-                         aLinearYears = NA,
+                         aLaggedShareOld1 = NA,
+                         aLaggedShareOld2 = NA,
+                         aLaggedShareOld3 = NA,
+                         aLinearYears1 = NA,
+                         aLinearYears2 = NA,
+                         aLinearYears3 = NA,
                          aLogitUseDefault = TRUE,
                          aLogitAgroForest = NA,
                          aLogitAgroForest_NonPasture = NA,
@@ -62,8 +70,12 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "La
   class(self) <- c("ScenarioInfo", class(self))
 
   self$mExpectationType <- aExpectationType
-  self$mLaggedShareOld <- aLaggedShareOld
-  self$mLinearYears <- aLinearYears
+  self$mLaggedShareOld1 <- aLaggedShareOld1
+  self$mLaggedShareOld2 <- aLaggedShareOld2
+  self$mLaggedShareOld3 <- aLaggedShareOld3
+  self$mLinearYears1 <- aLinearYears1
+  self$mLinearYears2 <- aLinearYears2
+  self$mLinearYears3 <- aLinearYears3
   self$mLogitUseDefault <- aLogitUseDefault
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
@@ -134,8 +146,12 @@ as.ScenarioInfo.list <- function(object)
 #' @author Kate Calvin
 SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aExpectationType = "Perfect",
-                              aLinearYears = NA,
-                              aLaggedShareOld = NA,
+                              aLinearYears1 = NA,
+                              aLinearYears2 = NA,
+                              aLinearYears3 = NA,
+                              aLaggedShareOld1 = NA,
+                              aLaggedShareOld2 = NA,
+                              aLaggedShareOld3 = NA,
                               aLogitUseDefault = TRUE,
                               aLogitAgroForest = NA,
                               aLogitAgroForest_NonPasture = NA,
@@ -155,8 +171,12 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
 PCHES.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "PCHES",
                               aExpectationType = "Perfect",
                               aSubRegion = "PCHES",
-                              aLinearYears = NA,
-                              aLaggedShareOld = NA,
+                              aLinearYears1 = NA,
+                              aLinearYears2 = NA,
+                              aLinearYears3 = NA,
+                              aLaggedShareOld1 = NA,
+                              aLaggedShareOld2 = NA,
+                              aLaggedShareOld3 = NA,
                               aLogitUseDefault = TRUE,
                               aLogitAgroForest = NA,
                               aLogitAgroForest_NonPasture = NA,
@@ -175,8 +195,12 @@ PCHES.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "PCHES",
 SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
                                     aExpectationType = "Perfect",
                                     aSubRegion = "SnakeRiverBasin",
-                                    aLinearYears = NA,
-                                    aLaggedShareOld = NA,
+                                    aLinearYears1 = NA,
+                                    aLinearYears2 = NA,
+                                    aLinearYears3 = NA,
+                                    aLaggedShareOld1 = NA,
+                                    aLaggedShareOld2 = NA,
+                                    aLaggedShareOld3 = NA,
                                     aLogitUseDefault = TRUE,
                                     aLogitAgroForest = NA,
                                     aLogitAgroForest_NonPasture = NA,
@@ -197,7 +221,13 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
 #' @param aScenarioType New scenario type (default = \code{DEFAULT.SCENARIO.TYPE})
 #' @param aExpectationType New expectation type (default = "Perfect")
 #' @param aLinearYears New linear years (default = NULL)
+#' @param aLinearYears1 New linear years for crop group 1 (see constants.R) (default = NULL)
+#' @param aLinearYears2 New linear years for crop group 2 (see constants.R) (default = NULL)
+#' @param aLinearYears3 New linear years for crop group 3 (see constants.R) (default = NULL)
 #' @param aLaggedShareOld New lagged share old (default = NULL)
+#' @param aLaggedShareOld1 New lagged share old (group 1) (see constants.R) (default = NULL)
+#' @param aLaggedShareOld2 New lagged share old (group 2) (see constants.R) (default = NULL)
+#' @param aLaggedShareOld3 New lagged share old (group 3) (see constants.R) (default = NULL)
 #' @param aUseZeroCost New cost assumption (default = FALSE)
 #' @param aCalibrateShareWt Flag indicating share weights should be calibrated
 #' @param aIncludeSubsidies Flag indicating subsidies should be added to profit
@@ -210,8 +240,9 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
 #' update_scen_info(aCalibrateShareWt = FALSE, aShareWts=get_saved_share_weights())
 #' update_scen_info(aScenarioType = "Hindcast")
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
-                             aLinearYears = NULL, aLaggedShareOld = NULL, aUseZeroCost = FALSE,
-                             aCalibrateShareWt = TRUE, aIncludeSubsidies = FALSE, aShareWts = NULL) {
+                             aLinearYears = NULL, aLinearYears1 = NULL, aLinearYears2 = NULL, aLinearYears3 = NULL,
+                             aLaggedShareOld = NULL, aLaggedShareOld1 = NULL, aLaggedShareOld2 = NULL, aLaggedShareOld3 = NULL,
+                             aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aIncludeSubsidies = FALSE, aShareWts = NULL) {
 
   # Set the names of the scenario & file based on read in information
   if(is.null(aName)) {
@@ -225,14 +256,46 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   new_scen_info <- SCENARIO.INFO
   new_scen_info$mScenarioType <- aScenarioType
   new_scen_info$mExpectationType <- aExpectationType
-  new_scen_info$mLinearYears <- aLinearYears
-  new_scen_info$mLaggedShareOld <- aLaggedShareOld
   new_scen_info$mUseZeroCost <- aUseZeroCost
   new_scen_info$mScenarioName <- new_name
   new_scen_info$mFileName <- new_name
   new_scen_info$mCalibrateShareWt <- aCalibrateShareWt
   new_scen_info$mIncludeSubsidies <- aIncludeSubsidies
   new_scen_info$mShareWeights <- aShareWts
+
+  # Set number of linear years, if specified
+  if(is.numeric(aLinearYears)) {
+    # Set all groups to this value if it specified. These can be individually overwritten later.
+    new_scen_info$mLinearYears1 <- aLinearYears
+    new_scen_info$mLinearYears2 <- aLinearYears
+    new_scen_info$mLinearYears3 <- aLinearYears
+  }
+  if(is.numeric(aLinearYears1)) {
+    new_scen_info$mLinearYears1 <- aLinearYears1
+  }
+  if(is.numeric(aLinearYears2)) {
+    new_scen_info$mLinearYears2 <- aLinearYears2
+  }
+  if(is.numeric(aLinearYears3)) {
+    new_scen_info$mLinearYears3 <- aLinearYears3
+  }
+
+  # Set share of old expectations in lagged expectation if specified
+  if(is.numeric(aLaggedShareOld)) {
+    # Set all groups to this value if it specified. These can be individually overwritten later.
+    new_scen_info$mLaggedShareOld1 <- aLaggedShareOld
+    new_scen_info$mLaggedShareOld2 <- aLaggedShareOld
+    new_scen_info$mLaggedShareOld3 <- aLaggedShareOld
+  }
+  if(is.numeric(aLaggedShareOld1)) {
+    new_scen_info$mLaggedShareOld1 <- aLaggedShareOld1
+  }
+  if(is.numeric(aLaggedShareOld2)) {
+    new_scen_info$mLaggedShareOld2 <- aLaggedShareOld2
+  }
+  if(is.numeric(aLaggedShareOld3)) {
+    new_scen_info$mLaggedShareOld3 <- aLaggedShareOld3
+  }
 
   if(aCalibrateShareWt == FALSE & is.null(aShareWts)) {
     # If share weights aren't calculated or provided, get them from a file

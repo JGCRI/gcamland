@@ -13,13 +13,26 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   # Silence package checks
   sector <- year <- yield <- lm <- predict <- GCAM_commodity <- NULL
 
+  # Get number of years -- Note that numYears can differ based on crop group. Determine which crop this leaf belongs in
+  if(aLandLeaf$mProductName %in% CROP_GROUP1 ) {
+    numYears <- aScenarioInfo$mLinearYears1
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP2 ) {
+    numYears <- aScenarioInfo$mLinearYears2
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
+    numYears <- aScenarioInfo$mLinearYears3
+  } else {
+    message("Error: crop grouping not specified.")
+  }
+
+  # Get scenario type
   scentype <- aScenarioInfo$mScenarioType
 
+  # Get start year
   currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-  startYear <- currYear - aScenarioInfo$mLinearYears
+  startYear <- currYear - numYears
 
   # Create a tibble with yields and years
-  data.frame(yield = rep(-1, aScenarioInfo$mLinearYears),
+  data.frame(yield = rep(-1, numYears),
          year = seq(from=startYear, to=(currYear - 1), by=1)) ->
     all.yields
 
@@ -70,11 +83,23 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   # Silence package checks
   sector <- lm <- predict <- year <- price <- NULL
 
+  # Get number of years -- Note that numYears can differ based on crop group. Determine which crop this leaf belongs in
+  if(aLandLeaf$mProductName %in% CROP_GROUP1 ) {
+    numYears <- aScenarioInfo$mLinearYears1
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP2 ) {
+    numYears <- aScenarioInfo$mLinearYears2
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
+    numYears <- aScenarioInfo$mLinearYears3
+  } else {
+    message("Error: crop grouping not specified.")
+  }
+
+  # Get start year
   currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-  startYear <- currYear - aScenarioInfo$mLinearYears
+  startYear <- currYear - numYears
 
   # Create a tibble with yields and years
-  data.frame(price = rep(-1, aScenarioInfo$mLinearYears),
+  data.frame(price = rep(-1, numYears),
          year = seq(from=startYear, to=(currYear - 1), by=1)) ->
     all.prices
 

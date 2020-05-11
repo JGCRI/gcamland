@@ -40,21 +40,27 @@
 #' @importFrom utils capture.output sessionInfo
 #' @export
 run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
-                         lpdf=get_lpdf(1), lprior=uniform_prior,
-                         aType="Hindcast", aIncludeSubsidies = FALSE, logparallel=NULL) {
+                         lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
+                         aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE,
+                         logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
-  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
-                # or linyears is used in a single model design.
+  # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
+  # lagged share and linear years. If FALSE, then only one paramter for each. In both cases, there are 3 logit exponents
+  if( aDifferentiateParamByCrop ) {
+    NPARAM <- 9
+  } else {
+    NPARAM <- 5
+  }
 
   ## Set options for ensembles
   ## min and max values for each parameter
   limits.AGROFOREST <- c(0.1, 3)
   limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
   limits.CROPLAND <- c(0.1, 2)
-  limits.LAGSHARE <- c(0.5, 0.99)
-  limits.LINYEARS <- round(c(10, 20))
+  limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(10, 20)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
   rn <- randtoolbox::sobol(N+skip, NPARAM)
@@ -63,10 +69,23 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
   levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
   levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
-  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
-                                        # lagshare and linyears are mutually
-                                        # exclusive
+  if( aDifferentiateParamByCrop ) {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scl(rn[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- scl(rn[,5], limits.LAGSHARE)
+    levels.LAGSHARE3 <- scl(rn[,6], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scl(rn[,7], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scl(rn[,8], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scl(rn[,9], limits.LINYEARS))
+  } else {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scl(rn[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- levels.LAGSHARE1
+    levels.LAGSHARE3 <- levels.LAGSHARE1
+    levels.LINYEARS1 <- round(scl(rn[,5], limits.LINYEARS))
+    levels.LINYEARS2 <- levels.LINYEARS1
+    levels.LINYEARS3 <- levels.LINYEARS1
+  }
 
   ## Filename suffix.  This will be used to create unique filenames for the
   ## outputs across all worker processes, continuation runs, etc.
@@ -75,7 +94,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
+                     levels.LAGSHARE1, levels.LAGSHARE2, levels.LAGSHARE3,
+                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3, serialnumber,
                      aType, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
@@ -157,8 +177,12 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param agForNonPast The logit exponent for the non-pasture nest, which
 #' controls competition between crops, grass/shrub, and forest.
 #' @param crop The logit exponent for the crop nest
-#' @param share The share parameter for the lagged model
-#' @param linyears The number of years parameter for the linear model
+#' @param share1 The share parameter for the lagged model for crop group 1 (see constants.R)
+#' @param share2 The share parameter for the lagged model for crop group 2 (see constants.R)
+#' @param share3 The share parameter for the lagged model for crop group 3 (see constants.R)
+#' @param linyears1 The number of years parameter for the linear model for crop group 1 (see constants.R)
+#' @param linyears2 The number of years parameter for the linear model for crop group 2 (see constants.R)
+#' @param linyears3 The number of years parameter for the linear model for crop group 3 (see constants.R)
 #' @param serialnum Serial number for the run
 #' @param aScenType Scenario type, either "Hindcast" or "Reference"
 #' @param aIncludeSubsidies Boolean flag indicating whether subsidies should be included in profit
@@ -166,7 +190,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
-gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
+gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share3, linyears1, linyears2, linyears3,
                                 serialnum, aScenType, aIncludeSubsidies, suffix, aOutputDir)
 {
   ## Perfect expectations scenario
@@ -174,8 +198,12 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 
   perfscen <- ScenarioInfo(aScenarioType = aScenType,
                            aExpectationType = "Perfect",
-                           aLinearYears = NA,
-                           aLaggedShareOld = NA,
+                           aLinearYears1 = NA,
+                           aLinearYears2 = NA,
+                           aLinearYears3 = NA,
+                           aLaggedShareOld1 = NA,
+                           aLaggedShareOld2 = NA,
+                           aLaggedShareOld3 = NA,
                            aLogitUseDefault = FALSE,
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
@@ -188,12 +216,17 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 
 
   ## Lagged scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
+  share <- paste(share1, share2, share3, sep="-")
   scenName <- getScenName(aScenType, "Lagged", share, agFor, agForNonPast, crop)
 
   lagscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Lagged",
-                          aLinearYears = NA,
-                          aLaggedShareOld = share,
+                          aLinearYears1 = NA,
+                          aLinearYears2 = NA,
+                          aLinearYears3 = NA,
+                          aLaggedShareOld1 = share1,
+                          aLaggedShareOld2 = share2,
+                          aLaggedShareOld3 = share3,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
@@ -205,12 +238,17 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aOutputDir = aOutputDir)
 
   ## Lagged scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
+  share <- paste(share1, share2, share3, sep="-")
   scenName <- getScenName(aScenType, "LaggedCurr", share, agFor, agForNonPast, crop)
 
   lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "LaggedCurr",
-                          aLinearYears = NA,
-                          aLaggedShareOld = share,
+                          aLinearYears1 = NA,
+                          aLinearYears2 = NA,
+                          aLinearYears3 = NA,
+                          aLaggedShareOld1 = share1,
+                          aLaggedShareOld2 = share2,
+                          aLaggedShareOld3 = share3,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
@@ -222,11 +260,16 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
+  linyears <- paste(linyears1, linyears2, linyears3, sep="-")
   scenName <- getScenName(aScenType, "Linear", linyears, agFor, agForNonPast, crop)
   linscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Linear",
-                          aLinearYears = linyears,
-                          aLaggedShareOld = NA,
+                          aLinearYears1 = linyears1,
+                          aLinearYears2 = linyears2,
+                          aLinearYears3 = linyears3,
+                          aLaggedShareOld1 = NA,
+                          aLaggedShareOld2 = NA,
+                          aLaggedShareOld3 = NA,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
@@ -238,11 +281,17 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
                           aOutputDir = aOutputDir)
 
   ## mixed scenario, using linear for yield and adaptive for prices
+  linyears <- paste(linyears1, linyears2, linyears3, sep="-")
+  share <- paste(share1, share2, share3, sep="-")
   scenName <- getScenName(aScenType, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
   mixedscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Mixed",
-                          aLinearYears = linyears,
-                          aLaggedShareOld = share,
+                          aLinearYears1 = linyears1,
+                          aLinearYears2 = linyears2,
+                          aLinearYears3 = linyears3,
+                          aLaggedShareOld1 = share1,
+                          aLaggedShareOld2 = share2,
+                          aLaggedShareOld3 = share3,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,

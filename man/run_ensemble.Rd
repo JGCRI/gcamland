@@ -6,7 +6,8 @@
 \usage{
 run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
   lpdf = get_lpdf(1), lprior = uniform_prior, aType = "Hindcast",
-  aIncludeSubsidies = FALSE, logparallel = NULL)
+  aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE,
+  logparallel = NULL)
 }
 \arguments{
 \item{N}{Number of parameter sets to select}

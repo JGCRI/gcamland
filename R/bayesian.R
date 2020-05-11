@@ -143,8 +143,12 @@ add_parameter_data <- function(modeldata, aScenarioList)
     stbl <-
         lapply(aScenarioList, function(s) {
                    tibble::tibble(expectation.type = s$mExpectationType,
-                                  share.old = s$mLaggedShareOld,
-                                  linear.years = s$mLinearYears,
+                                  share.old1 = s$mLaggedShareOld1,
+                                  share.old2 = s$mLaggedShareOld2,
+                                  share.old3 = s$mLaggedShareOld3,
+                                  linear.years1 = s$mLinearYears1,
+                                  linear.years2 = s$mLinearYears2,
+                                  linear.years3 = s$mLinearYears3,
                                   logit.agforest = s$mLogitAgroForest,
                                   logit.afnonpast = s$mLogitAgroForest_NonPasture,
                                   logit.crop = s$mLogitCropland,
