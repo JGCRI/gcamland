@@ -365,6 +365,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
   HAtoCL <- aAgData[[5]]
   productName <- aAgData[[6]]
   costTechChange <- aAgData[[7]]
+  subsidy <- aAgData[[8]]
 
   # Get name of leaf
   name <- aLandLeaf$mName[[1]]
@@ -456,6 +457,14 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
                                                                     cost$AgProductionTechnology == name])
     } else {
       aLandLeaf$mCost[per] <- 0
+    }
+
+    # Set subsidy in the land leaf
+    if ( name %in% subsidy$GCAM_commodity & y %in% subsidy$year) {
+      aLandLeaf$mSubsidy[per] <- as.numeric(subsidy$subsidy[subsidy$year == y &
+                                                              subsidy$GCAM_commodity == name])
+    } else {
+      aLandLeaf$mSubsidy[per] <- 0
     }
 
     # Set harvested to cropped ratio in the LandLeaf

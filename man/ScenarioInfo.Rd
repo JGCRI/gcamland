@@ -4,10 +4,12 @@
 \alias{ScenarioInfo}
 \title{ScenarioInfo constructor}
 \usage{
-ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
-  aLinearYears = NA, aLogitUseDefault = TRUE, aLogitAgroForest = NA,
-  aLogitAgroForest_NonPasture = NA, aLogitCropland = NA,
-  aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aShareWeights = NULL,
+ScenarioInfo(aExpectationType = NULL, aLaggedShareOld1 = NA,
+  aLaggedShareOld2 = NA, aLaggedShareOld3 = NA, aLinearYears1 = NA,
+  aLinearYears2 = NA, aLinearYears3 = NA, aLogitUseDefault = TRUE,
+  aLogitAgroForest = NA, aLogitAgroForest_NonPasture = NA,
+  aLogitCropland = NA, aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
+  aIncludeSubsidies = FALSE, aShareWeights = NULL,
   aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
   aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
   aRegion = DEFAULT.REGION, aSubRegion = NULL)
@@ -15,9 +17,17 @@ ScenarioInfo(aExpectationType = NULL, aLaggedShareOld = NA,
 \arguments{
 \item{aExpectationType}{Expectation type}
 
-\item{aLaggedShareOld}{Share of old expectations included in current expectation}
+\item{aLaggedShareOld1}{Share of old expectations included in current expectation for crop group 1 (see constants.R)}
 
-\item{aLinearYears}{Years for linear expectations}
+\item{aLaggedShareOld2}{Share of old expectations included in current expectation for crop group 2 (see constants.R)}
+
+\item{aLaggedShareOld3}{Share of old expectations included in current expectation for crop group 3 (see constants.R)}
+
+\item{aLinearYears1}{Years for linear expectations for crop group 1 (see constants.R)}
+
+\item{aLinearYears2}{Years for linear expectations for crop group 2 (see constants.R)}
+
+\item{aLinearYears3}{Years for linear expectations for crop group 3 (see constants.R)}
 
 \item{aLogitUseDefault}{Boolean indicating whether to use default logits}
 
@@ -31,6 +41,8 @@ FALSE)}
 \item{aUseZeroCost}{Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)}
 
 \item{aCalibrateShareWt}{Boolean indicating that the model should calculate share weights during calibration}
+
+\item{aIncludeSubsidies}{Boolean indicating whether subsidy information should modify profit}
 
 \item{aShareWeights}{Named vector of share weights to use instead of calibrating.
 The names should correspond to the names of the land leaf nodes.}

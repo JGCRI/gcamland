@@ -27,17 +27,17 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
     GCAM_commodity <- variable <- year <- area <- obsvar <- trend <- detrended <-
         region <- land.type <- obs <- NULL
 
-    FAO_land_history <- gcamland::FAO_land_history
+    Land_history <- gcamland::Land_history
 
-    filter <- rep(TRUE, nrow(FAO_land_history))
+    filter <- rep(TRUE, nrow(Land_history))
     if(!is.null(regions))
-        filter <- filter & FAO_land_history$region %in% regions
+        filter <- filter & Land_history$region %in% regions
     if(!is.null(years))
-        filter <- filter & FAO_land_history$year %in% years
+        filter <- filter & Land_history$year %in% years
     if(!is.null(commodities))
-        filter <- filter & FAO_land_history$GCAM_commodity %in% commodities
+        filter <- filter & Land_history$GCAM_commodity %in% commodities
 
-    FAO_land_history[filter,] %>%
+    Land_history[filter,] %>%
       dplyr::mutate(variable="Land Area") %>%
       dplyr::select(region, land.type=GCAM_commodity, variable, year, obs=area) %>%
       group_by(land.type, variable, region) %>%
@@ -74,7 +74,8 @@ get_historical_land_data <- function(regions = NULL, years = NULL,
 #' @export
 get_scenario_land_data <- function(aScenarioList)
 {
-    land.type <- year <- harvested.land <- scenario <- NULL # silence package notes
+    land.type <- year <- harvested.land <- scenario <-
+      land.allocation <- name <- land <- NULL # silence package notes
 
     if(inherits(aScenarioList, "ScenarioInfo")) {
         ## user passed a single scenario.  Convert it to a list and press on
@@ -98,11 +99,11 @@ get_scenario_land_data <- function(aScenarioList)
     ## list we obtained above.
     read_landdata_file <- function(fn) {
         readRDS(fn) %>%
-          ## split name / AEZ
-          tidyr::extract('name', c('land.type', 'AEZ'),
-                         '(.+)(AEZ[0-9]+)') %>%
+          dplyr::rename(land.type = name) %>%
+          dplyr::mutate(land = if_else(is.na(harvested.land), land.allocation, harvested.land),
+                        land.type = sub("Unmanaged", "", land.type)) %>%
           dplyr::group_by(land.type, year, scenario) %>%
-          dplyr::summarise(model = sum(harvested.land)) %>%
+          dplyr::summarise(model = sum(land)) %>%
           dplyr::ungroup() %>%
           dplyr::mutate(variable = "Land Area") %>%
           dplyr::mutate(region = region)
@@ -142,8 +143,12 @@ add_parameter_data <- function(modeldata, aScenarioList)
     stbl <-
         lapply(aScenarioList, function(s) {
                    tibble::tibble(expectation.type = s$mExpectationType,
-                                  share.old = s$mLaggedShareOld,
-                                  linear.years = s$mLinearYears,
+                                  share.old1 = s$mLaggedShareOld1,
+                                  share.old2 = s$mLaggedShareOld2,
+                                  share.old3 = s$mLaggedShareOld3,
+                                  linear.years1 = s$mLinearYears1,
+                                  linear.years2 = s$mLinearYears2,
+                                  linear.years3 = s$mLinearYears3,
                                   logit.agforest = s$mLogitAgroForest,
                                   logit.afnonpast = s$mLogitAgroForest_NonPasture,
                                   logit.crop = s$mLogitCropland,
@@ -444,7 +449,8 @@ MAP <- function(samples, modelgroup='expectation.type', reportvars=NULL,
     if(is.null(reportvars)) {
         ## Use default values of reportvars
         reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                        'share.old', 'linear.years', 'xi')
+                        'share.old1', 'share.old2',  'share.old3',
+                        'linear.years1', 'linear.years2', 'linear.years3', 'xi')
     }
 
     samples_by_model <- split(samples, samples[,modelgroup])
@@ -497,7 +503,8 @@ EV <- function(samples, modelgroup='expectation.type', reportvars=NULL,
     if(is.null(reportvars)) {
         ## Use default values of reportvars
         reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                        'share.old', 'linear.years', 'xi')
+                        'share.old1',  'share.old2',  'share.old3',
+                        'linear.years1', 'linear.years2', 'linear.years3', 'xi')
     }
 
     samples_by_model <- split(samples, samples[,modelgroup])
@@ -569,8 +576,9 @@ HPDI <- function(samples, interval = 0.95, modelgroup = 'expectation.type', repo
 
     if(is.null(reportvars)) {
         ## Use default values of reportvars
-        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                        'share.old', 'linear.years', 'xi')
+      reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                      'share.old1',  'share.old2',  'share.old3',
+                      'linear.years1', 'linear.years2', 'linear.years3', 'xi')
     }
 
     samples_by_model <- split(samples, samples[,modelgroup])

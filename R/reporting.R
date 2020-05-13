@@ -416,7 +416,8 @@ LandNode_addToNest <- function(aLandNode, aNest) {
 #' @author KVC
 #' @export
 get_PCHES_results <- function(aScenarioInfo, aYear) {
-  scenario <- NULL             # silence package checker.
+  # Silence package check
+  scenario <- year <- name <- land.allocation <- start <- delta.land <- end <- NULL
 
   # Get file name where results are curently stored
   inFile <- paste0(aScenarioInfo$mOutputDir, "/output_", aScenarioInfo$mFileName, ".rds")

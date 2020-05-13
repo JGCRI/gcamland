@@ -5,7 +5,8 @@
 \title{Run an ensemble of offline land models}
 \usage{
 run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
-  lpdf = get_lpdf(1), lprior = uniform_prior, atype = "Hindcast",
+  lpdf = get_lpdf(1), lprior = uniform_prior, aType = "Hindcast",
+  aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE,
   logparallel = NULL)
 }
 \arguments{
@@ -21,7 +22,11 @@ being run.}
 \item{lprior}{Log-prior probability density function.  Used only if Bayesian
 posteriors are being run.}
 
-\item{atype}{Scenario type: either "Reference" or "Hindcast"}
+\item{aType}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
+
+\item{aDifferentiateParamByCrop}{Boolean indicating whether all crops should use the same expectation parameters}
 
 \item{logparallel}{Name of directory to use for parallel workers' log files.
 If \code{NULL}, then don't write log files.}
