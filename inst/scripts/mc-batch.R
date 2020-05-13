@@ -9,7 +9,7 @@ library('doParallel')
 ## outdir:   Output directory
 ## skip:     Number of iterations to skip (i.e., if resuming from a previous run)
 ## logdir:   Directory for logs
-run_mc <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL, aIncludeSubsidies=FALSE)
+run_mc <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL, aIncludeSubsidies=FALSE, aDifferentiateParamByCrop = FALSE)
 {
     print(getwd())
     nodes <- readr::read_lines(nodefile)
@@ -19,7 +19,7 @@ run_mc <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL, aIncludeSubs
     cl <- makeCluster(nodes, outfile="")
     registerDoParallel(cl)
 
-    print(system.time(run_ensemble(N, outdir, skip, aIncludeSubsidies=aIncludeSubsidies, logparallel=logdir)))
+    print(system.time(run_ensemble(N, outdir, skip, aIncludeSubsidies=aIncludeSubsidies, aDifferentiateParamByCrop=aDifferentiateParamByCrop, logparallel=logdir)))
     stopCluster(cl)
 }
 
