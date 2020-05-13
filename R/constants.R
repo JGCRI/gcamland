@@ -29,11 +29,12 @@ PERIODS <- sapply(SCEN.TYPES, function(type) {
 # **************************************************************************************************************
 # * Crop groupings for expectations. gcamland has the option of differentiating expectation
 # * parameters by crop. We do this in three groups, with the crops belonging to each group specified here.
-# TODO: Update these groupings based on correlation coefficients. Placeholders are used for testing right now.
-CROP_GROUP1 <- c("Wheat", "OtherGrain")
-CROP_GROUP2 <- c("Corn", "SugarCrop")
-CROP_GROUP3 <- c("OilCrop", "Pasture", "biomass", "Root_Tuber",
-                 "Rice", "PalmFruit", "MiscCrop", "FodderHerb",
+# * Groupings are based on correlation coefficients between profit & land for different expectations.
+# * We do not have correlations for PalmFruit, Pasture, biomass, FodderHerb, FodderGrass, or Forest so putting in group 3
+CROP_GROUP1 <- c("Wheat", "OtherGrain", "MiscCrop")
+CROP_GROUP2 <- c("Corn", "SugarCrop", "Root_Tuber")
+CROP_GROUP3 <- c("OilCrop", "Pasture", "biomass",
+                 "Rice", "PalmFruit", "FodderHerb",
                  "FodderGrass", "FiberCrop", "Forest", "willow")
 
 # **************************************************************************************************************

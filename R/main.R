@@ -32,6 +32,7 @@
 #' posteriors are being run.
 #' @param aType Scenario type: either "Reference" or "Hindcast"
 #' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
+#' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members

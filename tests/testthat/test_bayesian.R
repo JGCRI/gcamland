@@ -95,9 +95,9 @@ test_that("EV function produces correct answer.", {
     expect_true(inherits(ev, 'data.frame'))
     expect_equal(nrow(ev), 5)
     expect_equal(ncol(ev), 11)
-    expect_equal(map$logit.agforest, rep(1.55, 5), tolerance=1e-4)
-    expect_equal(map$logit.afnonpast, rep(1.05, 5), tolerance=1e-4)
-    expect_equal(map$logit.crop, rep(1.05, 5), tolerance=1e-4)
+    expect_equal(ev$logit.agforest, rep(1.55, 5), tolerance=1e-4)
+    expect_equal(ev$logit.afnonpast, rep(1.05, 5), tolerance=1e-4)
+    expect_equal(ev$logit.crop, rep(1.05, 5), tolerance=1e-4)
     expect_equal(ev$xi, rep(1, 5), tolerance=1e-4)
 })
 

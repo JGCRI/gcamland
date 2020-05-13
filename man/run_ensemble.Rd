@@ -26,6 +26,8 @@ posteriors are being run.}
 
 \item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
 
+\item{aDifferentiateParamByCrop}{Boolean indicating whether all crops should use the same expectation parameters}
+
 \item{logparallel}{Name of directory to use for parallel workers' log files.
 If \code{NULL}, then don't write log files.}
 }
