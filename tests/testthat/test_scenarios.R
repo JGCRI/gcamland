@@ -16,8 +16,12 @@ test_that('Alternate scenario types run successfully', {
             if(type=="Reference" && expectation=="Perfect")
                 next                    # already tested in test_model_output.R
             testscen <- ScenarioInfo(aExpectationType = expectation,
-                                     aLinearYears = 2,
-                                     aLaggedShareOld = 0.5,
+                                     aLinearYears1 = 2,
+                                     aLinearYears2 = 2,
+                                     aLinearYears3 = 2,
+                                     aLaggedShareOld1 = 0.5,
+                                     aLaggedShareOld2 = 0.5,
+                                     aLaggedShareOld3 = 0.5,
                                      aLogitUseDefault = TRUE,
                                      aScenarioType = type,
                                      aScenarioName = paste(type, expectation, sep='-'),
@@ -36,8 +40,12 @@ test_that('Sub region runs successfully', {
   for (expectation in expectations) {
     testscen <- SRB.SCENARIO.INFO
     testscen$mExpectationType <- expectation
-    testscen$mLinearYears <- 2
-    testscen$mLaggedShareOld <- 0.5
+    testscen$mLinearYears1 <- 2
+    testscen$mLinearYears2 <- 2
+    testscen$mLinearYears3 <- 2
+    testscen$mLaggedShareOld1 <- 0.5
+    testscen$mLaggedShareOld2 <- 0.5
+    testscen$mLaggedShareOld3 <- 0.5
 
     expect_message(run_model(testscen, runperiods),
                    info=paste('Failure in scenario type=', type,

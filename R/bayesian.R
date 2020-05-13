@@ -449,7 +449,8 @@ MAP <- function(samples, modelgroup='expectation.type', reportvars=NULL,
     if(is.null(reportvars)) {
         ## Use default values of reportvars
         reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                        'share.old', 'linear.years', 'xi')
+                        'share.old1', 'share.old2',  'share.old3',
+                        'linear.years1', 'linear.years2', 'linear.years3', 'xi')
     }
 
     samples_by_model <- split(samples, samples[,modelgroup])
@@ -502,7 +503,8 @@ EV <- function(samples, modelgroup='expectation.type', reportvars=NULL,
     if(is.null(reportvars)) {
         ## Use default values of reportvars
         reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                        'share.old', 'linear.years', 'xi')
+                        'share.old1',  'share.old2',  'share.old3',
+                        'linear.years1', 'linear.years2', 'linear.years3', 'xi')
     }
 
     samples_by_model <- split(samples, samples[,modelgroup])
@@ -574,8 +576,9 @@ HPDI <- function(samples, interval = 0.95, modelgroup = 'expectation.type', repo
 
     if(is.null(reportvars)) {
         ## Use default values of reportvars
-        reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                        'share.old', 'linear.years', 'xi')
+      reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                      'share.old1',  'share.old2',  'share.old3',
+                      'linear.years1', 'linear.years2', 'linear.years3', 'xi')
     }
 
     samples_by_model <- split(samples, samples[,modelgroup])
