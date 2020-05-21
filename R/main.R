@@ -126,6 +126,8 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
+return(list(rslt, scenObjects, lprior, lpdf))
+
   if(atype == "Hindcast") {
       ## For hindcast runs, calculate the Bayesian posteriors
       scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
