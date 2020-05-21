@@ -126,11 +126,10 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
-return(list(rslt, scenObjects, lprior, lpdf, outfile, suffix))
-
   if(atype == "Hindcast") {
       ## For hindcast runs, calculate the Bayesian posteriors
       scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
+      print('bayes ran')
   }
 
   ## Save the scenario info from the scenarios that we ran
@@ -145,6 +144,127 @@ return(list(rslt, scenObjects, lprior, lpdf, outfile, suffix))
   warnings()
 
   invisible(scenObjects)
+}
+
+
+#' Run an ensemble of offline land models without Bayes piece
+#'
+#'
+#' @section Output:
+#' The model results are written to a series of files in the specified output
+#' directory.
+#' The
+#' list of \code{ScenarioInfo} objects is written to a file called
+#' \code{scenario-info.rds} in the output directory.  This file can be loaded
+#' with a command such as \code{scenaro_list <-
+#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
+#' model output files, as well as the posterior probability density tables, if
+#' the Bayesian analysis was run.
+#'
+#' @param N Number of parameter sets to select
+#' @param aOutputDir Output directory
+#' @param skip Number of iterations to skip (i.e., if building on another run.)
+#' @param lpdf Log-likelihood function.  Used only if Bayesian posteriors are
+#' being run.
+#' @param lprior Log-prior probability density function.  Used only if Bayesian
+#' posteriors are being run.
+#' @param atype Scenario type: either "Reference" or "Hindcast"
+#' @param logparallel Name of directory to use for parallel workers' log files.
+#' If \code{NULL}, then don't write log files.
+#' @return List of ScenarioInfo objects for the ensemble members
+#' @import foreach doParallel
+#' @author KVC November 2017
+#' @importFrom utils capture.output sessionInfo
+#' @export
+run_ensemble_test_bayes <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+                         lpdf=get_lpdf(1), lprior=uniform_prior,
+                         atype="Hindcast", logparallel=NULL) {
+  # Silence package checks
+  obj <- NULL
+
+  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
+  # or linyears is used in a single model design.
+
+  ## Set options for ensembles
+  ## min and max values for each parameter
+  limits.AGROFOREST <- c(0.1, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
+  limits.CROPLAND <- c(0.1, 2)
+  limits.LAGSHARE <- c(0.5, 0.99)
+  limits.LINYEARS <- round(c(10, 20))
+
+  serialnumber <- skip + (1:N)
+  rn <- randtoolbox::sobol(N+skip, NPARAM)
+  rn <- rn[serialnumber,]
+  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
+  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
+  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
+  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
+  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
+  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
+  # lagshare and linyears are mutually
+  # exclusive
+
+  ## Filename suffix.  This will be used to create unique filenames for the
+  ## outputs across all worker processes, continuation runs, etc.
+  suffix <- sprintf("-%06d",skip)
+
+  # Set up a list to store scenario information objects
+  scenObjects <- Map(gen_ensemble_member,
+                     levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
+                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
+                     atype, suffix, aOutputDir) %>%
+    unlist(recursive=FALSE)
+
+  serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
+
+  # Loop over all scenario configurations and run the model
+  rslt <-
+    foreach(obj = serialized_scenObjs, .combine=rbind) %dopar% {
+      if(!is.null(logparallel)) {
+        nn <- Sys.info()['nodename']
+        sn <- obj$mScenarioName
+        fn <- file.path(logparallel, paste0('info-', sn, '.txt'))
+        print(fn)
+        logfil <- file(fn, 'w')
+        if(!file.exists(fn)) {
+          stop("Couldn't create logfile: ", fn)
+        }
+        writeLines(c('nodename= ', nn), con=logfil)
+        writeLines(capture.output(sessionInfo()),con=logfil)
+        flush(logfil)
+      }
+
+      if(N <= 50)  {
+        message("Starting simulation: ", obj$mScenarioName)
+      }
+
+      si <- as.ScenarioInfo(obj)
+      if(N > 50) {
+        rslt <- suppressMessages(run_model(si))
+      }
+      else {
+        rslt <- run_model(si)
+      }
+
+      message("Finished: ", obj$mSerialNumber)
+
+      if(!is.null(logparallel)) {
+        writeLines(capture.output(warnings()), con=logfil)
+        close(logfil)
+      }
+      rslt
+    }
+
+  message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
+          format(utils::object.size(rslt), units="auto"))
+
+  ## Save the full set of ensemble results
+  filebase <- paste0("output_ensemble", suffix, '_noBayes',".rds")
+  outfile <- file.path(aOutputDir, filebase)
+  saveRDS(rslt, outfile)
+
+  return(list(rslt, scenObjects, lprior, lpdf, outfile, suffix))
 }
 
 #' Generate the ensemble members for a single set of parameters
