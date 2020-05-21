@@ -1,0 +1,146 @@
+---
+title: "Testing to develop objective functions with the correct structure to match existing work and run seamlessly"
+author: "ACS"
+date: "5/21/2020"
+output: 
+  html_document:
+      toc: true
+      toc_float: true
+      toc_depth: 4
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gcamland)
+```
+
+# Figure out what run_bayes is doing
+
+- added a  truncated function `run_ensemble_test_bayes` that stops before `run_bayes` portion in `run_ensemble`
+- will remove the `run_ensemble_test_bayes` function from final PR.
+
+## Via a truncated version of `run_ensemble`
+
+```{r}
+# #############################################################################
+## Truncate run_ensemble and return
+## info that goes into run_bayes
+## so can see what the i/o looks like
+## to replicate structure with new
+## objective functions.
+# #############################################################################
+set.seed(1)
+x <- run_ensemble_test_bayes(N=2)
+# ^ function version that returns before the Bayes analysis is run, ie with
+# return(list(rslt, scenObjects, lprior, lpdf, outfile, suffix))
+rslt <- x[[1]]
+scenObjects <- x[[2]]
+lprior <- x[[3]]
+lpdf <- x[[4]]
+outfile <- x[[5]]
+suffix <- x[[6]]
+
+aOutputDir <- "./outputs"
+# default output dir from run_ensemble - just copy the default used
+# instead out updating the return yet again.
+
+
+# Do the bayes piece
+scenObjectsBayes <- run_bayes(scenObjects, lpdf=lpdf, lprior = lprior)
+
+
+# the rest of the run_ensemble function
+## Save the scenario info from the scenarios that we ran
+filebase <- paste0("scenario-info", suffix, ".rds")
+scenfile <- file.path(aOutputDir, filebase)
+saveRDS(scenObjectsBayes, scenfile)
+
+message("Output directory is", aOutputDir)
+message("scenario file: ", scenfile)
+message("output file: ", outfile)
+
+warnings()
+
+invisible(scenObjectsBayes)
+```
+
+
+Compare the raw `scenObjects` with `scenObjectsBayes` to see what is coming out of `run_bayes`
+```{r}
+# #############################################################################
+## Investigate what run_bayes actually adds to scenObjects.
+## It appears to be nothing.
+# #############################################################################
+
+preBayes <- x[[2]][[5]]
+postBayes <- scenObjectsBayes[[5]]
+
+names(preBayes)
+
+names(postBayes)
+
+any(names(preBayes) != names(postBayes))
+
+any(preBayes$mScenarioType != postBayes$mScenarioType)
+
+any(preBayes$mLogitAgroForest_NonPasture != postBayes$mLogitAgroForest_NonPasture)
+
+any( preBayes$mLogitCropland != postBayes$mLogitCropland)
+
+any(preBayes$mPointwiseLikelihood != postBayes$mPointwiseLikelihood)
+
+any(preBayes$mSerialNumber != postBayes$mSerialNumber)
+
+any(preBayes$mRegion != postBayes$mRegion)
+
+any(preBayes$mShareWeights != postBayes$mShareWeights)
+
+any(preBayes$mCalibrateShareWt != postBayes$mCalibrateShareWt)
+
+any(preBayes$mExpectationType != postBayes$mExpectationType)
+
+any(preBayes$mSubRegion != postBayes$mSubRegion)
+
+any(preBayes$mLogitAgroForest != postBayes$mLogitAgroForest)
+
+any(preBayes$mLogPost != postBayes$mLogPost)
+
+any(preBayes$mLinearYears != postBayes$mLinearYears)
+preBayes$mLinearYears
+postBayes$mLinearYears
+
+any(preBayes$mLaggedShareOld != postBayes$mLaggedShareOld)
+preBayes$mLaggedShareOld
+postBayes$mLaggedShareOld
+
+any(preBayes$mOutputDir != postBayes$mOutputDir)
+
+any(preBayes$mFileName != postBayes$mFileName)
+
+any(preBayes$mLogitUseDefault != postBayes$mLogitUseDefault)
+
+any(preBayes$mUseZeroCost != postBayes$mUseZeroCost)
+
+any(preBayes$mScenarioName != postBayes$mScenarioName)
+
+
+# #############################################################################
+## Investigate waic
+## Again same, pre and post run_bayes
+# #############################################################################
+
+# take a look at the pre and post bayes loglikelihood
+preBayes$mPointwiseLikelihood
+
+postBayes$mPointwiseLikelihood
+
+# run the scenObjects pre and post through waic
+
+waic(scenObjects)
+
+waic(scenObjectsBayes)
+```
+
+
+## Compare with what comes out of the full `run_ensemble` that includes `run_bayes`
