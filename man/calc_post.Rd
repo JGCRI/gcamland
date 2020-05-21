@@ -4,7 +4,8 @@
 \alias{calc_post}
 \title{Compute the log-likelihood and log-posteriors for a set of parameters}
 \usage{
-calc_post(aScenarioInfo, obs, model, lpdf, lprior, varlvls = seq(0.1, 1, 0.1))
+calc_post(aScenarioInfo, obs, model, lpdf, lprior, varlvls = seq(0.1, 1,
+  0.1))
 }
 \arguments{
 \item{aScenarioInfo}{ScenarioInfo structure for the scenario}

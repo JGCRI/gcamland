@@ -39,6 +39,7 @@ Collate:
     'land_node.R'
     'linear_expectation.R'
     'main.R'
+    'objectivefun.R'
     'perfect_expectation.R'
     'plot_land.R'
     'process_hindcast_data.R'
