@@ -20,11 +20,21 @@ get_prices <- function(aScenType) {
     prices <- suppressMessages(read_csv(system.file("extdata", file, package = "gcamland"), skip = 1))
 
     # Tidy data
-    prices %>%
-      select(-scenario, -Units) %>%
-      gather(year, price, -region, -sector) %>%
-      mutate(year = as.integer(year)) ->
-      prices
+    if(aScenType == "PCHES") {
+      # PCHES scenarios have subregional price information
+      prices %>%
+        select(-scenario, -Units) %>%
+        gather(year, price, -region, -sector, -subregion) %>%
+        mutate(year = as.integer(year)) ->
+        prices
+    } else {
+      prices %>%
+        select(-scenario, -Units) %>%
+        gather(year, price, -region, -sector) %>%
+        mutate(year = as.integer(year)) ->
+        prices
+    }
+
   }
 
   # Filter for only years included in model simulation (or those before start year)
