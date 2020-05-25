@@ -134,7 +134,7 @@ construct_landdata_filename <- function(dir, stem)
 #'
 #' @param modeldata Data frame with model results
 #' @param aScenarioList List of ScenarioInfo structures for the scenarios
-#' @keywords internal
+#' @export
 add_parameter_data <- function(modeldata, aScenarioList)
 {
   if(inherits(aScenarioList, "ScenarioInfo")) {

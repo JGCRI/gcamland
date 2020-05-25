@@ -14,4 +14,3 @@ add_parameter_data(modeldata, aScenarioList)
 \description{
 Add model parameter values to a table of model results
 }
-\keyword{internal}
