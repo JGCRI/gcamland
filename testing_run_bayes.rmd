@@ -15,21 +15,24 @@ knitr::opts_chunk$set(echo = TRUE)
 library(gcamland)
 ```
 
-# Figure out what run_bayes is doing
+# Motivation
 
-- added a  truncated function `run_ensemble_test_bayes` that stops before `run_bayes` portion in `run_ensemble`
-- will remove the `run_ensemble_test_bayes` function from final PR.
+- added a  truncated function `run_ensemble_no_bayes` that stops before `run_bayes` portion in `run_ensemble`
+- will remove the `run_ensemble_no_bayes` function from final PR.
 - added a print statement in `run_ensemble` when `run_bayes` is run.
 
-## Setup params
+TODO: figure out N=2 vs N=4
+
+# Setup params
 
 Pick the number of runs to do
 
 ```{r}
 Nruns <- 2
+Ncompare <- 9 # one of the 10 runs to do specific comparison of
 ```
 
-## Via a truncated version of `run_ensemble`
+# Do run with truncated version of `run_ensemble`
 
 ```{r}
 # #############################################################################
@@ -41,7 +44,7 @@ Nruns <- 2
 # #############################################################################
 set.seed(1)
 
-x <- invisible(run_ensemble_test_bayes(N=Nruns))
+x <- invisible(run_ensemble_no_bayes(N=Nruns))
 # ^ function version that returns before the Bayes analysis is run, ie with
 # return(list(rslt, scenObjects, lprior, lpdf, outfile, suffix))
 rslt <- x[[1]]
@@ -55,7 +58,10 @@ aOutputDir <- "./outputs"
 # default output dir from run_ensemble - just copy the default used
 # instead out updating the return yet again.
 
+```
 
+# Put the results from truncated run_ensemble through run_bayes
+```{r}
 # Do the bayes piece
 scenObjectsBayes <- run_bayes(scenObjects, lpdf=lpdf, lprior = lprior)
 
@@ -76,25 +82,19 @@ invisible(scenObjectsBayes)
 ```
 
 
-Compare the raw `scenObjects` with `scenObjectsBayes` to see what is coming out of `run_bayes`
+# Compare input with output from run_bayes
+Compare the raw `scenObjects` that went into `run_bayes` with `scenObjectsBayes` that came out of `run_bayes`
+
 ```{r}
 # #############################################################################
 ## Investigate what run_bayes actually adds to scenObjects.
-## It appears to be nothing.
 # #############################################################################
-```
-
-```{r, echo = FALSE}
-# #############################################################################
-## Investigate what run_bayes actually adds to scenObjects.
-## It appears to be nothing.
-# #############################################################################
-for(Ncompare in 1:10){
+# for(Ncompare in 1:10){
   
   print(paste('comparing list entry', Ncompare))
   
-  preBayes_i <- x[[2]][[Ncompare]] # should be identical to scenObjects, just making sure
-# run_bayes didn't somehow touch scenObjects and overwrite anythign
+  preBayes_i <- x[[2]][[Ncompare]] # should be identical to scenObjects[[Ncompare]], just making sure
+# run_bayes didn't somehow touch scenObjects and overwrite anything
   
   postBayes_i <- scenObjectsBayes[[Ncompare]]
   
@@ -106,14 +106,16 @@ for(Ncompare in 1:10){
                any(preBayes_i$mScenarioType != postBayes_i$mScenarioType)))
   
   print(paste('any(preBayes_i$mLogitAgroForest_NonPasture != postBayes_i$mLogitAgroForest_NonPasture))',
-              any(preBayes_i$mLogitAgroForest_NonPasture != postBayes_i$mLogitAgroForest_NonPasture)))
+               any(preBayes_i$mLogitAgroForest_NonPasture != postBayes_i$mLogitAgroForest_NonPasture)))
   
   print(paste('any(preBayes_i$mLogitCropland != postBayes_i$mLogitCropland))',
                any(preBayes_i$mLogitCropland != postBayes_i$mLogitCropland)))
   
   print(any(preBayes_i$mPointwiseLikelihood != postBayes_i$mPointwiseLikelihood))
-  print(paste('head(preBayes_i$mPointwiseLikelihood)', head(preBayes_i$mPointwiseLikelihood)))
-  print(paste('head(postBayes_i$mPointwiseLikelihood)', head(postBayes_i$mPointwiseLikelihood)))
+  # print(paste('head(preBayes_i$mPointwiseLikelihood)'))
+  knitr::kable(head(preBayes_i$mPointwiseLikelihood), format = 'html')
+  # print(paste('head(postBayes_i$mPointwiseLikelihood)'))
+  knitr::kable(head(postBayes_i$mPointwiseLikelihood), format = 'html')
   
   print(paste('any(preBayes_i$mSerialNumber != postBayes_i$mSerialNumber))',
                any(preBayes_i$mSerialNumber != postBayes_i$mSerialNumber)))
@@ -138,8 +140,10 @@ for(Ncompare in 1:10){
   
   print(paste('any(preBayes_i$mLogPost != postBayes_i$mLogPost))',
                any(preBayes_i$mLogPost != postBayes_i$mLogPost)))
-  print(paste('head(preBayes_i$mLogPost)', head(preBayes_i$mLogPost)))
-  print(paste('head(postBayes_i$mLogPost)', head(postBayes_i$mLogPost)))
+  # print(paste('head(preBayes_i$mLogPost)'))
+  knitr::kable(head(preBayes_i$mLogPost), format = 'html')
+  # print(paste('head(postBayes_i$mLogPost)'))
+  knitr::kable(head(postBayes_i$mLogPost), format = 'html')
   
   print(paste('any(preBayes_i$mLinearYears != postBayes_i$mLinearYears))',
                any(preBayes_i$mLinearYears != postBayes_i$mLinearYears)))
@@ -161,7 +165,7 @@ for(Ncompare in 1:10){
   
   print(paste('any(preBayes_i$mScenarioName != postBayes_i$mScenarioName)',
               any(preBayes_i$mScenarioName != postBayes_i$mScenarioName)))
-}  
+
 ```
 
 Based on this truncated version that calls `run_bayes` outside of `run_ensemble`, it looks like `run_bayes` isn't doing anything.
@@ -175,10 +179,10 @@ set.seed(1)
 fullBayes <- invisible(run_ensemble(N=Nruns))
 ```
 
-## Compare with what comes out of the full `run_ensemble` that includes `run_bayes`
+# Comparison
 Compare to what came out of the truncated run and then calling `run_bayes` on that.
-```{r, echo = FALSE}
-for(Ncompare in 1:10){
+```{r}
+# for(Ncompare in 1:10){
   print(paste('comparing list entry', Ncompare))
   
   fullBayes_i <- fullBayes[[Ncompare]]
@@ -198,8 +202,10 @@ for(Ncompare in 1:10){
                any(fullBayes_i$mLogitCropland != postBayes_i$mLogitCropland)))
   
   print(any(fullBayes_i$mPointwiseLikelihood != postBayes_i$mPointwiseLikelihood))
-  print(paste('head(fullBayes_i$mPointwiseLikelihood)', head(fullBayes_i$mPointwiseLikelihood)))
-  print(paste('head(postBayes_i$mPointwiseLikelihood)', head(postBayes_i$mPointwiseLikelihood)))
+  # print(paste('head(fullBayes_i$mPointwiseLikelihood)'))
+  knitr::kable(head(fullBayes_i$mPointwiseLikelihood), format = 'html')
+  # print(paste('head(postBayes_i$mPointwiseLikelihood)'))
+  knitr::kable(head(postBayes_i$mPointwiseLikelihood), format = 'html')
   
   print(paste('any(fullBayes_i$mSerialNumber != postBayes_i$mSerialNumber))',
                any(fullBayes_i$mSerialNumber != postBayes_i$mSerialNumber)))
@@ -224,8 +230,10 @@ for(Ncompare in 1:10){
   
   print(paste('any(fullBayes_i$mLogPost != postBayes_i$mLogPost))',
                any(fullBayes_i$mLogPost != postBayes_i$mLogPost)))
-  print(paste('head(fullBayes_i$mLogPost)', head(fullBayes_i$mLogPost)))
-  print(paste('head(postBayes_i$mLogPost)', head(postBayes_i$mLogPost)))
+  # print(paste('head(fullBayes_i$mLogPost)'))
+  knitr::kable(head(fullBayes_i$mLogPost), format = 'html')
+  # print(paste('head(postBayes_i$mLogPost)'))
+  knitr::kable(head(postBayes_i$mLogPost), format = 'html')
   
   print(paste('any(fullBayes_i$mLinearYears != postBayes_i$mLinearYears))',
                any(fullBayes_i$mLinearYears != postBayes_i$mLinearYears)))
@@ -245,13 +253,13 @@ for(Ncompare in 1:10){
   print(paste('any(fullBayes_i$mUseZeroCost != postBayes_i$mUseZeroCost))',
               any(fullBayes_i$mUseZeroCost != postBayes_i$mUseZeroCost)))
   
-  print(paste('any(fullBayes_i$mScenarioName != postBayes_i$mScenarioName)',
+  print(paste('any(fullBayes_i$mScenarioName != postBayes_i$mScenarioName)', 
               any(fullBayes_i$mScenarioName != postBayes_i$mScenarioName)))
-}  
 ```
 
-### Compare pre bayes, post bayes, and full bayes
+# Compare pre bayes, post bayes, and full bayes
 
+Comparison is across all 10 runs (N=2 x 5 expectations).
 
 ```{r}
 # #############################################################################
@@ -260,36 +268,35 @@ for(Ncompare in 1:10){
   
 # run the scenObjects pre and post through waic
   
-print(waic(fullBayes))
+knitr::kable(waic(fullBayes), format = 'html')
   
-print(waic(scenObjectsBayes))
+knitr::kable(waic(scenObjectsBayes), format = 'html')
   
-print(waic(scenObjects)) # prebayes
+knitr::kable(waic(scenObjects), format = 'html') # prebayes
 
-print(waic(x[[2]])) # should be identical to scenObjects, just making sure
+knitr::kable(waic(x[[2]]), format = 'html') # should be identical to scenObjects, just making sure
 # run_bayes didn't somehow touch scenObjects and overwrite anythign
 ```  
 
-## Grand Table
 
 The good news is that  it looks like the code isn't triggering the `run_bayes` call in `grand_table`:  Based on the above,
-for the `preBayes` results that weren't touched by `run_bayes` at all (ie came out of the truncated `run_ensemble_test_bayes`), 
+for the `preBayes` results that weren't touched by `run_bayes` at all (ie came out of the truncated `run_ensemble_no_bayes`), 
 these runs all have `mLogPost` entries of size > 0. 
 
-The `run_bayes` call in `grand_table` only gets triggered if `length(mLogPost) == 0`. This is true for the call to `run_bayes` in `waic` as well; further, in both `grand_table` and `waic`, the call to `run_bayes` comes with a warning
+The `run_bayes` call in `grand_table` only gets triggered if `length(mLogPost) == 0`. This is true for the call to `run_bayes` in `waic` as well; further, in both `grand_table` and `waic`, the call to `run_bayes` comes with a warning which did not get printed here, suggesting `run_bayes` was not called.
 
 ```{r}
 # #############################################################################
 ## Investigate grand_table
 # #############################################################################
   
-print(grand_table(fullBayes))
+knitr::kable(grand_table(fullBayes), format = 'html')
   
-print(grand_table(scenObjectsBayes))
+knitr::kable(grand_table(scenObjectsBayes), format = 'html')
 
-print(grand_table(scenObjects))
+knitr::kable(grand_table(scenObjects), format = 'html')
   
-print(grand_table(x[[2]]))
+knitr::kable(grand_table(x[[2]]), format = 'html')
 
 ```
 
@@ -299,33 +306,39 @@ print(grand_table(x[[2]]))
 ## Investigate grand_table
 # #############################################################################
   
-print(MAP(grand_table(fullBayes)))
+knitr::kable(MAP(grand_table(fullBayes)), format = 'html')
   
-print(MAP(grand_table(scenObjectsBayes)))
+knitr::kable(MAP(grand_table(scenObjectsBayes)), format = 'html')
 
-print(MAP(grand_table(scenObjects)))
+knitr::kable(MAP(grand_table(scenObjects)), format = 'html')
   
-print(MAP(grand_table(x[[2]])))
+knitr::kable(MAP(grand_table(x[[2]])), format = 'html')
 
 ```
 
-# Finding
 
-- Since `preBayes` is identical to `postBayes` for every run coming from the truncated `run_ensemble_test_bayes` and since `post_Bayes` is identical to every `fullBayes` run coming from `run_ensemble`, it follows that `run_bayes` is literally doing nothing.
+
+# TODO
+
+- Since `preBayes` is identical to `postBayes` for every run coming from the truncated `run_ensemble_no_bayes` and since `post_Bayes` is identical to every `fullBayes` run coming from `run_ensemble`, it follows that `run_bayes` is literally doing nothing.
 
 - unless there is a dimension or structure to these runs that I have not tested.
 
 - the only way to test more thoroughly would be to completely comment out calls to `run_bayes` through `run_ensemble` and `grand_table` and `waic` and compare those results to what came out of an original run. Note that the call to `run_bayes` does not appear to be triggered in either `grand_table` or `waic`, because the corresponding warning is not output either.
 
-- Or maybe it's just that we are only using N=2.
+- maybe it isn't meant to do anything with the uniform sampling approach, and maybe it would just be useful for future MCMC things...
 
 - Good news is that we just need to make our version of `grand_table` and `MAP` for the objective functions. I thought I had to first understand the i/o structure of `run_bayes` and _then_ the i/o structure of `grand_table` to replicate but I was mistaken.
 
 
-# TODO
+TODO list 
 
-- code up `objectivefunction` options
+1. code up `objectivefunction` options
 
-- write `grand_table_objective`
+2.  write `grand_table_objective`
 
-- write `MAP_objective`
+3.  write `MAP_objective`
+
+4. Remove `run_bayes` from `run_ensemble` and replace with our analysis 
+
+5. Figure out why `run_bayes` runs with N=2 but throws error with N=4, and repeat above analysis from there.
