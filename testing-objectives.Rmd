@@ -1,0 +1,97 @@
+---
+title: "testing work flow with objective functions"
+author: "ACS"
+date: "5/25/2020"
+output: 
+  html_document:
+      toc: true
+      toc_float: true
+      toc_depth: 4
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gcamland)
+library(dplyr)
+library(tidyr)
+```
+
+# Motivation/notes
+
+- Operate on a truncated version of the `run_ensemble` function for testing and developing analysis work flow with objective functions:
+`run_ensemble_no_analysis`. This version removes the `lpdf` and `lprior` arguments as well as the `if` statement that launches `run_bayes`. 
+This seems like a cleaner way to support two different styles of analysis; otherwise, we'd have to add more arguments to `run_ensemble` to 
+specify which objective functions to use, and unless a run was doing both bayesian and objective function analysis, only a subset of the 
+arguments would ever be used. Seems cleaner to the do the run and break out the analysis after the fact, whether bayesian or objective function.
+- This approach will rely on some of the utility functions defined in `bayesian.R` like `get_historical_land_data`. These have been
+moved to their own script, and some have been updated from `internal` to `export` so that they can still be called from `bayesian.R` functions.
+
+
+# Setup params
+
+Pick the number of runs to do
+
+```{r}
+Nruns <- 3
+```
+
+# Do run with  `run_ensemble_no_analysis`
+
+```{r}
+# #############################################################################
+## Truncate run_ensemble and return
+## info that goes into run_bayes
+## so can see what the i/o looks like
+## to replicate structure with new
+## objective functions.
+# #############################################################################
+set.seed(1)
+
+x <- invisible(run_ensemble_no_analysis(N=Nruns))
+
+scenObjects <- x
+```
+
+# Test objective functions
+```{r}
+
+scenObjectsEvaluated <- run_objective(scenObjects)
+
+str(scenObjectsEvaluated)
+
+names(scenObjectsEvaluated[[1]])
+
+knitr::kable(head(scenObjectsEvaluated[[1]]$mObjFunEval))
+
+```
+
+# Test `grand_table_objective`
+```{r}
+grand_table_objective(aScenarioList = scenObjectsEvaluated) %>%
+  # these lines of code are because the `left_join` in 
+  # `add_parameter_data` (from utility-functions-analysis.R) is only
+  # a join on scenario, rather than scenario and region.
+  # Unclear if should update that join or if we somehow want to keep it
+  # separate; ideally will figure out more when do other regions.
+  # For now, leaving it alone so that the `grand_table` works as it
+  # did before. 
+  # (relevant because both `grand_table` and `grand_table_objective`
+  # call `add_parameter_data`)
+  filter(region.x == region.y) %>%
+  rename(region = region.x) %>%
+  select(-region.y) ->
+  GTobjective
+
+knitr::kable(head(GTobjective))
+
+# make pretty - decided not to do this in the function but can definitely add it in:
+GTobjective %>%
+  spread(objfun, objfunval) ->
+  GTobjective_pretty
+
+knitr::kable(head(GTobjective_pretty))
+```
+
+
+# Test `MAP_objective`

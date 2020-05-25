@@ -5,7 +5,8 @@
 \title{Run user-specified objective function evaluations on a list of scenarios}
 \usage{
 run_objective(aScenarioList, years = NULL, landtypes = NULL,
-  objectivefuns = c())
+  objectivefuns = c("bias", "rms", "centeredrms", "nrms", "centerednrms",
+  "kge"))
 }
 \arguments{
 \item{aScenarioList}{List of ScenarioInfo structures}
@@ -15,21 +16,30 @@ available years)}
 
 \item{landtypes}{Vector of land types to filter observations to (default is
 to use all available land types)}
+
+\item{objectivefuns}{User specified string of objective functions to calculate. Default
+is to all supported objective functions:
+c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge')).}
 }
 \value{
 Modified list of ScenarioInfo structures with the objective
-function calculation tables populated.
+function calculation tables populated as a new list entry in ScenarioInfo:
+ScenarioInfo$mObjFunEval.
 }
 \description{
 The assumption is that the scenarios have already been run.  The best way to
-arrange this is to use the return value of \code{\link{run_ensemble}} as the
+arrange this is to use the return value of \code{\link{run_ensemble_no_analysis}} as the
 argument to this function
 }
 \details{
 The \code{years} and \code{landtypes} arguments can be use to restrict the
 observations that will be used in the analysis.  The regions are always
 filtered to excatly the regions that are included in the ScenarioInfo
-structures.
-
-Typically log-probaility density functions are parameterized with a parameter
+structures. The \code{objectivefuns} is vector of strings with the names of
+objective functions to be evaluated. Currently, we support the following
+objective functions: \code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge'))}
+TODO: Define each and give equations being calculated
+}
+\author{
+ACS May 2020
 }
