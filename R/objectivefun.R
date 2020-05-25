@@ -24,7 +24,9 @@
 #' @param years Vector of years to filter observations to (default is to use all
 #' available years)
 #' @param landtypes Vector of land types to filter observations to (default is
-#' to use all available land types)
+#' to use all available land types). Currently, this is crop-type GCAM commodities
+#' with observations from FAO via the \code{get_historical_land_data} function.
+#' TODO: update to include choice of data sources and other land types, eg Forest.
 #' @param objectivefuns User specified string of objective functions to calculate. Default
 #' is to all supported objective functions:
 #' c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge')).
@@ -154,4 +156,86 @@ grand_table_objective <- function(aScenarioList)
     dplyr::select(-scenario, -year, -obs, -trend, -detrended, -obsvar, -model) %>%
     distinct
 
+}
+
+
+
+
+#' Calculate parameters than minimize objective function of choice for a collection of model runs
+#'
+#' Scans the runs in a given sample of model runs and selects the parameter set from those runs
+#' that minimizes a specified objective function across specified land.types.
+#' The final minimized value is currently coded as the mean across specified land.types of the
+#' specified objective function of interest.
+#'
+#' TODO: update the name so that it's not MAP anymore; currently naming this way for workflow
+#' consistency with bayesian analysis, but we aren't doing Maximum A Posteriori analysis anymore,
+#' so MAP is kind of misleading. I don't really have a better name right now though.
+#'
+#' TODO: more detail on calculation being done.
+#'
+#'
+#' @param samples Monte Carlo samples, given either as a grand table or a list
+#' of \code{ScenarioInfo} objects
+#' @param modelgroup Vector of names of columns that define the model groupings.
+#' The default is the single column \code{expectation.type}.
+#' @param reportvars Vector of names of variables for which to report
+#' expectations.  The default is all parameter values.
+#' @param objfun_to_min a single objective function to minimize, from the supported
+#' c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge')). Defaults to rms.
+#' Must be of length 1.
+#' @param landtypes Vector of land types to include in minimization. (default is
+#' to use  \code{c( "Corn", "FiberCrop", "MiscCrop", "OilCrop",
+#'  "OtherGrain", "PalmFruit",  "Rice", "Root_Tuber","SugarCrop",  "Wheat"))}.
+#'
+#' @author ACS May 2020
+#'
+#' @export
+MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+                objfun_to_min = 'rms', landtypes = NULL)
+{
+  if(!inherits(samples, 'data.frame')) {
+    ## Check that this is a scenario list
+    if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
+      stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
+  }
+
+  if(is.null(reportvars)) {
+    ## Use default values of reportvars
+    reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
+                    'share.old', 'linear.years')
+  }
+
+  if(is.null(landtypes)){
+    landtypes <- c( "Corn", "FiberCrop", "MiscCrop", "OilCrop",
+                    "OtherGrain", "PalmFruit",  "Rice", "Root_Tuber",
+                    "SugarCrop",  "Wheat")
+  }
+
+  samples_by_model <- split(samples, samples[,modelgroup])
+  maprows <-
+    lapply(
+      samples_by_model,
+      function(d) {
+
+        d %>%
+          filter(land.type %in% landtypes,
+                 objfun == objfun_to_min) %>%
+          # Calculate the average across those land.types of that
+          # objective function for each parameter set:
+          group_by(region, variable, objfun, expectation.type,
+                   share.old, linear.years, logit.agforest,
+                   logit.afnonpast, logit.crop) %>%
+          # TODO ^ group by region may change when look beyond US.
+          summarise(landTypeMeanObjFunVal = mean(abs(objfunval), na.rm = T)) %>%
+          ungroup ->
+          d_LandTypeMeanObjFunVal
+
+        k <- which.min(d_LandTypeMeanObjFunVal$landTypeMeanObjFunVal)
+
+        mapval <-  d_LandTypeMeanObjFunVal[k,c(modelgroup, reportvars, 'objfun', 'landTypeMeanObjFunVal')]
+
+        return(mapval)
+      })
+  bind_rows(maprows)
 }

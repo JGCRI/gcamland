@@ -15,7 +15,9 @@ run_objective(aScenarioList, years = NULL, landtypes = NULL,
 available years)}
 
 \item{landtypes}{Vector of land types to filter observations to (default is
-to use all available land types)}
+to use all available land types). Currently, this is crop-type GCAM commodities
+with observations from FAO via the \code{get_historical_land_data} function.
+TODO: update to include choice of data sources and other land types, eg Forest.}
 
 \item{objectivefuns}{User specified string of objective functions to calculate. Default
 is to all supported objective functions:
