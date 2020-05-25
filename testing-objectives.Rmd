@@ -33,27 +33,25 @@ moved to their own script, and some have been updated from `internal` to `export
 Pick the number of runs to do
 
 ```{r}
-Nruns <- 3
+Nruns <- 10
 ```
 
 # Do run with  `run_ensemble_no_analysis`
 
 ```{r}
-# #############################################################################
-## Truncate run_ensemble and return
-## info that goes into run_bayes
-## so can see what the i/o looks like
-## to replicate structure with new
-## objective functions.
-# #############################################################################
 set.seed(1)
 
-x <- invisible(run_ensemble_no_analysis(N=Nruns))
-
-scenObjects <- x
+scenObjects <- invisible(run_ensemble_no_analysis(N=Nruns))
 ```
 
-# Test objective functions
+# Test `run_objective`
+
+- Right now, the `run_objective` function evaluates user-specified objective function for each land type separately. Certainly _can_ give an argument wither fewer land types.
+- idea is that it's all so fast and not that big, just go ahead and calculate for each land type. Then when we call `MAP_objective` (which we should probably pick a different name for), _that_ function also takes a list of land types of interest, averages the objective function across those land types, and then picks the parameter set that gives you the smallest average objective function value (ie minimized error) across those land types.
+- Also, currently, from `get_historical_land_data` in `utility-functions-analysis.R` (previously in `bayesian.R`), this only supports comparison to FAO GCAM commodities - mostly crop data and not Forest or anything. A note to change this is included in the documentation of `MAP_objective`.
+
+
+
 ```{r}
 
 scenObjectsEvaluated <- run_objective(scenObjects)
@@ -85,7 +83,11 @@ grand_table_objective(aScenarioList = scenObjectsEvaluated) %>%
 
 knitr::kable(head(GTobjective))
 
-# make pretty - decided not to do this in the function but can definitely add it in:
+# make pretty - decided not to do this in the function but can definitely add.
+# Decided not to add in because makes filtering in the `MAP_objective` function
+# to the single objective function of interest easier. But we can easily add
+# this code into `grand_table_objective` to make the output of that pretty, and 
+# then add code to `MAP_objective` to make un-pretty and easier filtering.
 GTobjective %>%
   spread(objfun, objfunval) ->
   GTobjective_pretty
@@ -95,3 +97,45 @@ knitr::kable(head(GTobjective_pretty))
 
 
 # Test `MAP_objective`
+
+- TODO: figure out if min values getting selected are all the same because only 10 runs or ......
+
+
+## default argument
+
+Default arguments of `MAP_objective` currently is focused on RMS for all GCAM commodities ` c( "Corn", "FiberCrop", "MiscCrop", "OilCrop", "OtherGrain", "PalmFruit",  "Rice", "Root_Tuber", "SugarCrop",  "Wheat")` that we run and have FAO comparison data for. 
+
+`MAP_objective` is taking the average of RMS across all of these land types, and selecting the parameter set that minimizes that quantity.
+
+Currently no support for mixing and matching different objective functions for different crops. Seems doable but not implemented yet (eg maybe you want parameters that minimize both Corn's bias and OtherGrain's KGE.)
+
+
+```{r}
+
+knitr::kable(MAP_objective(GTobjective))
+
+```
+
+
+## Corn, OilCrop bias example
+
+Select parameters that minimize the average (absolute value of) bias in Corn and OilCrop
+
+- Current implementation does not allow for cancellation of errors because of absolute value included in `MAP_objective`. So being over in Corn and under in OilCrop won't cancel out and help you.
+
+
+```{r}
+
+knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'bias', landtypes = c('Corn', 'OilCrop')))
+
+```
+
+## OtherGrain rms example
+
+```{r}
+
+knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'rms', landtypes = c('OtherGrain')))
+
+```
+
+

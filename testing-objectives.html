@@ -1552,20 +1552,13 @@ div.tocify {
 <div id="setup-params" class="section level1">
 <h1><span class="header-section-number">2</span> Setup params</h1>
 <p>Pick the number of runs to do</p>
-<pre class="r"><code>Nruns &lt;- 3</code></pre>
+<pre class="r"><code>Nruns &lt;- 10</code></pre>
 </div>
 <div id="do-run-with-run_ensemble_no_analysis" class="section level1">
 <h1><span class="header-section-number">3</span> Do run with <code>run_ensemble_no_analysis</code></h1>
-<pre class="r"><code># #############################################################################
-## Truncate run_ensemble and return
-## info that goes into run_bayes
-## so can see what the i/o looks like
-## to replicate structure with new
-## objective functions.
-# #############################################################################
-set.seed(1)
+<pre class="r"><code>set.seed(1)
 
-x &lt;- invisible(run_ensemble_no_analysis(N=Nruns))</code></pre>
+scenObjects &lt;- invisible(run_ensemble_no_analysis(N=Nruns))</code></pre>
 <pre><code>## Warning: executing %dopar% sequentially: no parallel backend registered</code></pre>
 <pre><code>## Starting simulation: Hindcast_Perfect_AgroForest1.55_AgroForestNonPasture1.05_Cropland1.05</code></pre>
 <pre><code>## Initializing LandAllocator</code></pre>
@@ -2167,33 +2160,1472 @@ x &lt;- invisible(run_ensemble_no_analysis(N=Nruns))</code></pre>
 <pre><code>## Starting period: 36 (2010)</code></pre>
 <pre><code>## All model periods complete. Starting output.</code></pre>
 <pre><code>## Finished: 3.5</code></pre>
-<pre><code>## Result is 124200rows, 11columns, total size: 10.4 Mb</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest1.1875_AgroForestNonPasture0.8125_Cropland1.2875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 4.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.56125_AgroForest1.1875_AgroForestNonPasture0.8125_Cropland1.2875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 4.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest1.1875_AgroForestNonPasture0.8125_Cropland1.2875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 4.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear11_AgroForest1.1875_AgroForestNonPasture0.8125_Cropland1.2875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 4.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed11_0.56125_AgroForest1.1875_AgroForestNonPasture0.8125_Cropland1.2875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 4.5</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest2.6375_AgroForestNonPasture1.7625_Cropland0.3375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 5.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.80625_AgroForest2.6375_AgroForestNonPasture1.7625_Cropland0.3375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 5.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest2.6375_AgroForestNonPasture1.7625_Cropland0.3375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 5.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear16_AgroForest2.6375_AgroForestNonPasture1.7625_Cropland0.3375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 5.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed16_0.80625_AgroForest2.6375_AgroForestNonPasture1.7625_Cropland0.3375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 5.5</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest1.9125_AgroForestNonPasture0.3375_Cropland0.8125</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 6.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.68375_AgroForest1.9125_AgroForestNonPasture0.3375_Cropland0.8125</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 6.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest1.9125_AgroForestNonPasture0.3375_Cropland0.8125</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 6.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear14_AgroForest1.9125_AgroForestNonPasture0.3375_Cropland0.8125</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 6.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed14_0.68375_AgroForest1.9125_AgroForestNonPasture0.3375_Cropland0.8125</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 6.5</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest0.4625_AgroForestNonPasture1.2875_Cropland1.7625</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 7.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.92875_AgroForest0.4625_AgroForestNonPasture1.2875_Cropland1.7625</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 7.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest0.4625_AgroForestNonPasture1.2875_Cropland1.7625</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 7.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear19_AgroForest0.4625_AgroForestNonPasture1.2875_Cropland1.7625</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 7.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed19_0.92875_AgroForest0.4625_AgroForestNonPasture1.2875_Cropland1.7625</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 7.5</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest0.64375_AgroForestNonPasture0.69375_Cropland0.69375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 8.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.836875_AgroForest0.64375_AgroForestNonPasture0.69375_Cropland0.69375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 8.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest0.64375_AgroForestNonPasture0.69375_Cropland0.69375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 8.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear17_AgroForest0.64375_AgroForestNonPasture0.69375_Cropland0.69375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 8.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed17_0.836875_AgroForest0.64375_AgroForestNonPasture0.69375_Cropland0.69375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 8.5</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest2.09375_AgroForestNonPasture1.64375_Cropland1.64375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 9.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.591875_AgroForest2.09375_AgroForestNonPasture1.64375_Cropland1.64375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 9.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest2.09375_AgroForestNonPasture1.64375_Cropland1.64375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 9.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear12_AgroForest2.09375_AgroForestNonPasture1.64375_Cropland1.64375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 9.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed12_0.591875_AgroForest2.09375_AgroForestNonPasture1.64375_Cropland1.64375</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 9.5</code></pre>
+<pre><code>## Starting simulation: Hindcast_Perfect_AgroForest2.81875_AgroForestNonPasture0.21875_Cropland1.16875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 10.1</code></pre>
+<pre><code>## Starting simulation: Hindcast_Lagged0.959375_AgroForest2.81875_AgroForestNonPasture0.21875_Cropland1.16875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 10.2</code></pre>
+<pre><code>## Starting simulation: Hindcast_LaggedCurr_AgroForest2.81875_AgroForestNonPasture0.21875_Cropland1.16875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 10.3</code></pre>
+<pre><code>## Starting simulation: Hindcast_Linear19_AgroForest2.81875_AgroForestNonPasture0.21875_Cropland1.16875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 10.4</code></pre>
+<pre><code>## Starting simulation: Hindcast_Mixed19_0.959375_AgroForest2.81875_AgroForestNonPasture0.21875_Cropland1.16875</code></pre>
+<pre><code>## Initializing LandAllocator</code></pre>
+<pre><code>## Starting period: 1 (1975)</code></pre>
+<pre><code>## Starting period: 2 (1976)</code></pre>
+<pre><code>## Starting period: 3 (1977)</code></pre>
+<pre><code>## Starting period: 4 (1978)</code></pre>
+<pre><code>## Starting period: 5 (1979)</code></pre>
+<pre><code>## Starting period: 6 (1980)</code></pre>
+<pre><code>## Starting period: 7 (1981)</code></pre>
+<pre><code>## Starting period: 8 (1982)</code></pre>
+<pre><code>## Starting period: 9 (1983)</code></pre>
+<pre><code>## Starting period: 10 (1984)</code></pre>
+<pre><code>## Starting period: 11 (1985)</code></pre>
+<pre><code>## Starting period: 12 (1986)</code></pre>
+<pre><code>## Starting period: 13 (1987)</code></pre>
+<pre><code>## Starting period: 14 (1988)</code></pre>
+<pre><code>## Starting period: 15 (1989)</code></pre>
+<pre><code>## Starting period: 16 (1990)</code></pre>
+<pre><code>## Starting period: 17 (1991)</code></pre>
+<pre><code>## Starting period: 18 (1992)</code></pre>
+<pre><code>## Starting period: 19 (1993)</code></pre>
+<pre><code>## Starting period: 20 (1994)</code></pre>
+<pre><code>## Starting period: 21 (1995)</code></pre>
+<pre><code>## Starting period: 22 (1996)</code></pre>
+<pre><code>## Starting period: 23 (1997)</code></pre>
+<pre><code>## Starting period: 24 (1998)</code></pre>
+<pre><code>## Starting period: 25 (1999)</code></pre>
+<pre><code>## Starting period: 26 (2000)</code></pre>
+<pre><code>## Starting period: 27 (2001)</code></pre>
+<pre><code>## Starting period: 28 (2002)</code></pre>
+<pre><code>## Starting period: 29 (2003)</code></pre>
+<pre><code>## Starting period: 30 (2004)</code></pre>
+<pre><code>## Starting period: 31 (2005)</code></pre>
+<pre><code>## Starting period: 32 (2006)</code></pre>
+<pre><code>## Starting period: 33 (2007)</code></pre>
+<pre><code>## Starting period: 34 (2008)</code></pre>
+<pre><code>## Starting period: 35 (2009)</code></pre>
+<pre><code>## Starting period: 36 (2010)</code></pre>
+<pre><code>## All model periods complete. Starting output.</code></pre>
+<pre><code>## Finished: 10.5</code></pre>
+<pre><code>## Result is 414000rows, 11columns, total size: 34.8 Mb</code></pre>
 <pre><code>## Output directory is./outputs</code></pre>
 <pre><code>## scenario file: ./outputs/scenario-info-000000.rds</code></pre>
 <pre><code>## output file: ./outputs/output_ensemble-000000.rds</code></pre>
-<pre class="r"><code>scenObjects &lt;- x</code></pre>
 </div>
-<div id="test-objective-functions" class="section level1">
-<h1><span class="header-section-number">4</span> Test objective functions</h1>
+<div id="test-run_objective" class="section level1">
+<h1><span class="header-section-number">4</span> Test <code>run_objective</code></h1>
+<ul>
+<li>Right now, the <code>run_objective</code> function evaluates user-specified objective function for each land type separately. Certainly <em>can</em> give an argument wither fewer land types.</li>
+<li>idea is that it’s all so fast and not that big, just go ahead and calculate for each land type. Then when we call <code>MAP_objective</code> (which we should probably pick a different name for), <em>that</em> function also takes a list of land types of interest, averages the objective function across those land types, and then picks the parameter set that gives you the smallest average objective function value (ie minimized error) across those land types.</li>
+<li>Also, currently, from <code>get_historical_land_data</code> in <code>utility-functions-analysis.R</code> (previously in <code>bayesian.R</code>), this only supports comparison to FAO GCAM commodities - mostly crop data and not Forest or anything. A note to change this is included in the documentation of <code>MAP_objective</code>.</li>
+</ul>
 <pre class="r"><code>scenObjectsEvaluated &lt;- run_objective(scenObjects)
 
 str(scenObjectsEvaluated)</code></pre>
-<pre><code>## List of 15
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbb3c388&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbb50158&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbb63ab8&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbb713b8&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbb80858&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbb952a0&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbba2ba0&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbbb25f0&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbbc7e00&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbbd72a0&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbbe7ce8&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbbf75e8&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbc07038&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbc16938&gt; 
-##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fadbbc29ce8&gt;</code></pre>
+<pre><code>## List of 50
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef6982f690&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69843460&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69852eb0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698627b0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69875b60&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69884698&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69897ea8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698a58f8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698b51f8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698c4698&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698d70e0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698e69e0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef698f6430&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69909c40&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699170e0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69929b28&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69939428&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69946e78&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69956778&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69969b28&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69978660&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef6998be70&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef6999b8c0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699ab1c0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699b8660&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699cb0a8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699da9a8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699ea3f8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef699fdc08&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a0f0a8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a21af0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a2f3f0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a3ee40&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a4c740&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a5faf0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a6e628&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a81e38&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69a91888&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69aa1188&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69ab0628&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69ac1070&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69ad0970&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69ade3c0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69af3bd0&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69b01070&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69b15ab8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69b233b8&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69b32e08&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69b42708&gt; 
+##  $ :Classes 'ScenarioInfo', 'environment' &lt;environment: 0x7fef69b53ab8&gt;</code></pre>
 <pre class="r"><code>names(scenObjectsEvaluated[[1]])</code></pre>
 <pre><code>##  [1] &quot;mScenarioType&quot;               &quot;mLogitAgroForest_NonPasture&quot;
 ##  [3] &quot;mLogitCropland&quot;              &quot;mObjFunEval&quot;                
@@ -2426,7 +3858,11 @@ knitr::kable(head(GTobjective))</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code># make pretty - decided not to do this in the function but can definitely add it in:
+<pre class="r"><code># make pretty - decided not to do this in the function but can definitely add.
+# Decided not to add in because makes filtering in the `MAP_objective` function
+# to the single objective function of interest easier. But we can easily add
+# this code into `grand_table_objective` to make the output of that pretty, and 
+# then add code to `MAP_objective` to make un-pretty and easier filtering.
 GTobjective %&gt;%
   spread(objfun, objfunval) -&gt;
   GTobjective_pretty
@@ -2454,11 +3890,37 @@ knitr::kable(head(GTobjective_pretty))</code></pre>
 <td align="left">Corn</td>
 <td align="left">Land Area</td>
 <td align="left">Lagged</td>
-<td align="right">0.6225</td>
+<td align="right">0.561250</td>
 <td align="right">NA</td>
-<td align="right">2.275</td>
-<td align="right">0.575</td>
-<td align="right">1.525</td>
+<td align="right">1.18750</td>
+<td align="right">0.81250</td>
+<td align="right">1.28750</td>
+<td align="right">-132.96872</td>
+<td align="right">146.41128</td>
+</tr>
+<tr class="even">
+<td align="left">USA</td>
+<td align="left">Corn</td>
+<td align="left">Land Area</td>
+<td align="left">Lagged</td>
+<td align="right">0.591875</td>
+<td align="right">NA</td>
+<td align="right">2.09375</td>
+<td align="right">1.64375</td>
+<td align="right">1.64375</td>
+<td align="right">-161.38990</td>
+<td align="right">176.34574</td>
+</tr>
+<tr class="odd">
+<td align="left">USA</td>
+<td align="left">Corn</td>
+<td align="left">Land Area</td>
+<td align="left">Lagged</td>
+<td align="right">0.622500</td>
+<td align="right">NA</td>
+<td align="right">2.27500</td>
+<td align="right">0.57500</td>
+<td align="right">1.52500</td>
 <td align="right">-134.88382</td>
 <td align="right">150.47123</td>
 </tr>
@@ -2467,71 +3929,265 @@ knitr::kable(head(GTobjective_pretty))</code></pre>
 <td align="left">Corn</td>
 <td align="left">Land Area</td>
 <td align="left">Lagged</td>
-<td align="right">0.7450</td>
+<td align="right">0.683750</td>
 <td align="right">NA</td>
-<td align="right">1.550</td>
-<td align="right">1.050</td>
-<td align="right">1.050</td>
-<td align="right">-97.59368</td>
-<td align="right">116.84139</td>
+<td align="right">1.91250</td>
+<td align="right">0.33750</td>
+<td align="right">0.81250</td>
+<td align="right">-83.45605</td>
+<td align="right">97.67195</td>
 </tr>
 <tr class="odd">
 <td align="left">USA</td>
 <td align="left">Corn</td>
 <td align="left">Land Area</td>
 <td align="left">Lagged</td>
-<td align="right">0.8675</td>
+<td align="right">0.745000</td>
 <td align="right">NA</td>
-<td align="right">0.825</td>
-<td align="right">1.525</td>
-<td align="right">0.575</td>
-<td align="right">-44.87054</td>
-<td align="right">72.95912</td>
+<td align="right">1.55000</td>
+<td align="right">1.05000</td>
+<td align="right">1.05000</td>
+<td align="right">-97.59368</td>
+<td align="right">116.84139</td>
 </tr>
 <tr class="even">
 <td align="left">USA</td>
 <td align="left">Corn</td>
 <td align="left">Land Area</td>
-<td align="left">LaggedCurr</td>
-<td align="right">0.6225</td>
+<td align="left">Lagged</td>
+<td align="right">0.806250</td>
 <td align="right">NA</td>
-<td align="right">2.275</td>
-<td align="right">0.575</td>
-<td align="right">1.525</td>
-<td align="right">-136.78018</td>
-<td align="right">149.10578</td>
-</tr>
-<tr class="odd">
-<td align="left">USA</td>
-<td align="left">Corn</td>
-<td align="left">Land Area</td>
-<td align="left">LaggedCurr</td>
-<td align="right">0.7450</td>
-<td align="right">NA</td>
-<td align="right">1.550</td>
-<td align="right">1.050</td>
-<td align="right">1.050</td>
-<td align="right">-104.45551</td>
-<td align="right">119.12855</td>
-</tr>
-<tr class="even">
-<td align="left">USA</td>
-<td align="left">Corn</td>
-<td align="left">Land Area</td>
-<td align="left">LaggedCurr</td>
-<td align="right">0.8675</td>
-<td align="right">NA</td>
-<td align="right">0.825</td>
-<td align="right">1.525</td>
-<td align="right">0.575</td>
-<td align="right">-54.65014</td>
-<td align="right">76.07893</td>
+<td align="right">2.63750</td>
+<td align="right">1.76250</td>
+<td align="right">0.33750</td>
+<td align="right">-69.38829</td>
+<td align="right">91.84284</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="test-map_objective" class="section level1">
 <h1><span class="header-section-number">6</span> Test <code>MAP_objective</code></h1>
+<ul>
+<li>TODO: figure out if min values getting selected are all the same because only 10 runs or ……</li>
+</ul>
+<div id="default-argument" class="section level2">
+<h2><span class="header-section-number">6.1</span> default argument</h2>
+<p>Default arguments of <code>MAP_objective</code> currently is focused on RMS for all GCAM commodities <code>c( &quot;Corn&quot;, &quot;FiberCrop&quot;, &quot;MiscCrop&quot;, &quot;OilCrop&quot;, &quot;OtherGrain&quot;, &quot;PalmFruit&quot;,  &quot;Rice&quot;, &quot;Root_Tuber&quot;, &quot;SugarCrop&quot;,  &quot;Wheat&quot;)</code> that we run and have FAO comparison data for.</p>
+<p><code>MAP_objective</code> is taking the average of RMS across all of these land types, and selecting the parameter set that minimizes that quantity.</p>
+<p>Currently no support for mixing and matching different objective functions for different crops. Seems doable but not implemented yet (eg maybe you want parameters that minimize both Corn’s bias and OtherGrain’s KGE.)</p>
+<pre class="r"><code>knitr::kable(MAP_objective(GTobjective))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">expectation.type</th>
+<th align="right">logit.agforest</th>
+<th align="right">logit.afnonpast</th>
+<th align="right">logit.crop</th>
+<th align="right">share.old</th>
+<th align="right">linear.years</th>
+<th align="left">objfun</th>
+<th align="right">landTypeMeanObjFunVal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Lagged</td>
+<td align="right">0.64375</td>
+<td align="right">0.69375</td>
+<td align="right">0.69375</td>
+<td align="right">0.836875</td>
+<td align="right">NA</td>
+<td align="left">rms</td>
+<td align="right">25.05788</td>
+</tr>
+<tr class="even">
+<td align="left">LaggedCurr</td>
+<td align="right">0.64375</td>
+<td align="right">0.69375</td>
+<td align="right">0.69375</td>
+<td align="right">0.836875</td>
+<td align="right">NA</td>
+<td align="left">rms</td>
+<td align="right">24.95798</td>
+</tr>
+<tr class="odd">
+<td align="left">Linear</td>
+<td align="right">0.64375</td>
+<td align="right">0.69375</td>
+<td align="right">0.69375</td>
+<td align="right">NA</td>
+<td align="right">17</td>
+<td align="left">rms</td>
+<td align="right">37.34016</td>
+</tr>
+<tr class="even">
+<td align="left">Mixed</td>
+<td align="right">2.81875</td>
+<td align="right">0.21875</td>
+<td align="right">1.16875</td>
+<td align="right">0.959375</td>
+<td align="right">19</td>
+<td align="left">rms</td>
+<td align="right">24.60053</td>
+</tr>
+<tr class="odd">
+<td align="left">Perfect</td>
+<td align="right">0.64375</td>
+<td align="right">0.69375</td>
+<td align="right">0.69375</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">rms</td>
+<td align="right">35.35580</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="corn-oilcrop-bias-example" class="section level2">
+<h2><span class="header-section-number">6.2</span> Corn, OilCrop bias example</h2>
+<p>Select parameters that minimize the average (absolute value of) bias in Corn and OilCrop</p>
+<ul>
+<li>Current implementation does not allow for cancellation of errors because of absolute value. So being over in Corn and under in OilCrop won’t cancel out and help you.</li>
+</ul>
+<pre class="r"><code>knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'bias', landtypes = c('Corn', 'OilCrop')))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">expectation.type</th>
+<th align="right">logit.agforest</th>
+<th align="right">logit.afnonpast</th>
+<th align="right">logit.crop</th>
+<th align="right">share.old</th>
+<th align="right">linear.years</th>
+<th align="left">objfun</th>
+<th align="right">landTypeMeanObjFunVal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Lagged</td>
+<td align="right">2.81875</td>
+<td align="right">0.21875</td>
+<td align="right">1.16875</td>
+<td align="right">0.959375</td>
+<td align="right">NA</td>
+<td align="left">bias</td>
+<td align="right">22.91275</td>
+</tr>
+<tr class="even">
+<td align="left">LaggedCurr</td>
+<td align="right">2.81875</td>
+<td align="right">0.21875</td>
+<td align="right">1.16875</td>
+<td align="right">0.959375</td>
+<td align="right">NA</td>
+<td align="left">bias</td>
+<td align="right">21.02753</td>
+</tr>
+<tr class="odd">
+<td align="left">Linear</td>
+<td align="right">0.64375</td>
+<td align="right">0.69375</td>
+<td align="right">0.69375</td>
+<td align="right">NA</td>
+<td align="right">17</td>
+<td align="left">bias</td>
+<td align="right">97.01696</td>
+</tr>
+<tr class="even">
+<td align="left">Mixed</td>
+<td align="right">2.81875</td>
+<td align="right">0.21875</td>
+<td align="right">1.16875</td>
+<td align="right">0.959375</td>
+<td align="right">19</td>
+<td align="left">bias</td>
+<td align="right">16.27006</td>
+</tr>
+<tr class="odd">
+<td align="left">Perfect</td>
+<td align="right">1.91250</td>
+<td align="right">0.33750</td>
+<td align="right">0.81250</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">bias</td>
+<td align="right">89.06121</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="othergrain-rms-example" class="section level2">
+<h2><span class="header-section-number">6.3</span> OtherGrain rms example</h2>
+<pre class="r"><code>knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'rms', landtypes = c('OtherGrain')))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">expectation.type</th>
+<th align="right">logit.agforest</th>
+<th align="right">logit.afnonpast</th>
+<th align="right">logit.crop</th>
+<th align="right">share.old</th>
+<th align="right">linear.years</th>
+<th align="left">objfun</th>
+<th align="right">landTypeMeanObjFunVal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Lagged</td>
+<td align="right">1.5500</td>
+<td align="right">1.0500</td>
+<td align="right">1.0500</td>
+<td align="right">0.74500</td>
+<td align="right">NA</td>
+<td align="left">rms</td>
+<td align="right">12.34377</td>
+</tr>
+<tr class="even">
+<td align="left">LaggedCurr</td>
+<td align="right">2.6375</td>
+<td align="right">1.7625</td>
+<td align="right">0.3375</td>
+<td align="right">0.80625</td>
+<td align="right">NA</td>
+<td align="left">rms</td>
+<td align="right">15.09513</td>
+</tr>
+<tr class="odd">
+<td align="left">Linear</td>
+<td align="right">1.9125</td>
+<td align="right">0.3375</td>
+<td align="right">0.8125</td>
+<td align="right">NA</td>
+<td align="right">14</td>
+<td align="left">rms</td>
+<td align="right">21.16784</td>
+</tr>
+<tr class="even">
+<td align="left">Mixed</td>
+<td align="right">1.5500</td>
+<td align="right">1.0500</td>
+<td align="right">1.0500</td>
+<td align="right">0.74500</td>
+<td align="right">15</td>
+<td align="left">rms</td>
+<td align="right">12.34915</td>
+</tr>
+<tr class="odd">
+<td align="left">Perfect</td>
+<td align="right">1.9125</td>
+<td align="right">0.3375</td>
+<td align="right">0.8125</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">rms</td>
+<td align="right">30.53829</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
