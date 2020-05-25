@@ -176,7 +176,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble_test_bayes <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+run_ensemble_no_bayes <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior,
                          atype="Hindcast", logparallel=NULL) {
   # Silence package checks
