@@ -50,4 +50,5 @@ Collate:
     'sector_utils.R'
     'setup.R'
     'unmanaged_land_leaf.R'
+    'utility-functions-analysis.R'
     'waic.R'
