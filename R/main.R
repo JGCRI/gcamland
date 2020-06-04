@@ -59,11 +59,11 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 3)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
-  limits.CROPLAND <- c(0.1, 2)
+  limits.AGROFOREST <- c(0.01, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
+  limits.CROPLAND <- c(0.01, 3)
   limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
-  limits.LINYEARS <- round(c(10, 20)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
   if( aUseLatinHypercube ) {
