@@ -7,7 +7,7 @@
 run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
   lpdf = get_lpdf(1), lprior = uniform_prior, aType = "Hindcast",
   aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE,
-  aUseLatinHypercube = TRUE, aTotalSamplesPlanned = 500,
+  aSampleType = "LatinHyperCube", aTotalSamplesPlanned = 500,
   logparallel = NULL)
 }
 \arguments{
@@ -29,7 +29,7 @@ posteriors are being run.}
 
 \item{aDifferentiateParamByCrop}{Boolean indicating whether all crops should use the same expectation parameters}
 
-\item{aUseLatinHypercube}{Boolean indicating that Latin Hypercube Sampling should be used (if FALSE, sobol sequences will be used)}
+\item{aSampleType}{String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported}
 
 \item{aTotalSamplesPlanned}{Number of samples planned. For Latin Hypercube, we need to know the total before we start.}
 

@@ -33,7 +33,7 @@
 #' @param aType Scenario type: either "Reference" or "Hindcast"
 #' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
 #' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
-#' @param aUseLatinHypercube Boolean indicating that Latin Hypercube Sampling should be used (if FALSE, sobol sequences will be used)
+#' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
 #' @param aTotalSamplesPlanned Number of samples planned. For Latin Hypercube, we need to know the total before we start.
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
@@ -44,7 +44,7 @@
 #' @export
 run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
-                         aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aUseLatinHypercube = TRUE,
+                         aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
                          aTotalSamplesPlanned = 500, logparallel=NULL) {
   # Silence package checks
   obj <- NULL
@@ -66,11 +66,13 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
-  if( aUseLatinHypercube ) {
+  if( aSampleType == "LatinHyperCube" ) {
     set.seed(1234)
     randomNumbers <- lhs::randomLHS(aTotalSamplesPlanned, NPARAM)
-  } else {
+  } else if( aSampleType == "Sobol" ) {
     randomNumbers <- randtoolbox::sobol(N+skip, NPARAM)
+  } else {
+    stop("Unknown Sampling Type")
   }
   randomNumbers <- randomNumbers[serialnumber,]
 
