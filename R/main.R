@@ -67,6 +67,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
   serialnumber <- skip + (1:N)
   if( aUseLatinHypercube ) {
+    set.seed(1234)
     randomNumbers <- lhs::randomLHS(aTotalSamplesPlanned, NPARAM)
   } else {
     randomNumbers <- randtoolbox::sobol(N+skip, NPARAM)
