@@ -4,7 +4,9 @@
 \name{REQD.SUBDIRS}
 \alias{REQD.SUBDIRS}
 \title{Required subdirectories for output directory}
-\format{An object of class \code{NULL} of length 0.}
+\format{
+An object of class \code{NULL} of length 0.
+}
 \usage{
 REQD.SUBDIRS
 }

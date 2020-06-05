@@ -4,12 +4,23 @@
 \alias{update_scen_info}
 \title{update_scen_info}
 \usage{
-update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
-  aExpectationType = "Perfect", aLinearYears = NULL, aLinearYears1 = NULL,
-  aLinearYears2 = NULL, aLinearYears3 = NULL, aLaggedShareOld = NULL,
-  aLaggedShareOld1 = NULL, aLaggedShareOld2 = NULL,
-  aLaggedShareOld3 = NULL, aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
-  aIncludeSubsidies = FALSE, aShareWts = NULL)
+update_scen_info(
+  aName = NULL,
+  aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aExpectationType = "Perfect",
+  aLinearYears = NULL,
+  aLinearYears1 = NULL,
+  aLinearYears2 = NULL,
+  aLinearYears3 = NULL,
+  aLaggedShareOld = NULL,
+  aLaggedShareOld1 = NULL,
+  aLaggedShareOld2 = NULL,
+  aLaggedShareOld3 = NULL,
+  aUseZeroCost = FALSE,
+  aCalibrateShareWt = TRUE,
+  aIncludeSubsidies = FALSE,
+  aShareWts = NULL
+)
 }
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}

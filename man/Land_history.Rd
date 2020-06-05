@@ -4,13 +4,15 @@
 \name{Land_history}
 \alias{Land_history}
 \title{Historical land use data}
-\format{A data frame with 24313 rows and 4 variables:
+\format{
+A data frame with 24313 rows and 4 variables:
 \describe{
 \item{region}{GCAM region name.}
 \item{GCAM_commodity}{GCAM commodity name.}
 \item{year}{Year of the observation.}
 \item{area}{Land area for that commodity for the region and year.}
-}}
+}
+}
 \source{
 Cropland area is from FAO, aggregated to GCAM commodity and region. Non-crop area is from SAGE, processed by Moirai and then aggregated to GCAM type and region.
 }

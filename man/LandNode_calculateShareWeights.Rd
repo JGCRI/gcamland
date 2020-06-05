@@ -4,8 +4,12 @@
 \alias{LandNode_calculateShareWeights}
 \title{LandNode_calculateShareWeights}
 \usage{
-LandNode_calculateShareWeights(aLandNode, aChoiceFnAbove, aPeriod,
-  aScenarioInfo)
+LandNode_calculateShareWeights(
+  aLandNode,
+  aChoiceFnAbove,
+  aPeriod,
+  aScenarioInfo
+)
 }
 \arguments{
 \item{aLandNode}{Land node to perform calculations on}

@@ -3,7 +3,6 @@
 \docType{package}
 \name{gcamland}
 \alias{gcamland}
-\alias{gcamland-package}
 \title{gcamland: A stand-alone implementation of the GCAM land allocation subsystem.}
 \description{
 The \code{gcamland} package replicates the land allocation decisions made in

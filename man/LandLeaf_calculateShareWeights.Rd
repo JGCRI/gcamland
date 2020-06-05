@@ -4,8 +4,13 @@
 \alias{LandLeaf_calculateShareWeights}
 \title{LandLeaf_calculateShareWeights}
 \usage{
-LandLeaf_calculateShareWeights(aLandLeaf, aChoiceFnAbove, aPeriod, aParent,
-  aScenarioInfo)
+LandLeaf_calculateShareWeights(
+  aLandLeaf,
+  aChoiceFnAbove,
+  aPeriod,
+  aParent,
+  aScenarioInfo
+)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf to perform calculations on}
