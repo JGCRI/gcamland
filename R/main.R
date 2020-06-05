@@ -34,7 +34,7 @@
 #' @author KVC November 2017 / ACS May 2020
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble_no_analysis <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                                      atype="Hindcast", logparallel=NULL) {
   # Silence package checks
   obj <- NULL
