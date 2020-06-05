@@ -19,7 +19,7 @@ run_mc <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL)
     cl <- makeCluster(nodes, outfile="")
     registerDoParallel(cl)
 
-    print(system.time(run_ensemble(N, outdir, skip, logparallel=logdir)))
+    print(system.time(run_ensemble_bayesian(N, outdir, skip, logparallel=logdir)))
     stopCluster(cl)
 }
 
