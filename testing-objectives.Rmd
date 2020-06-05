@@ -27,13 +27,14 @@ arguments would ever be used. Seems cleaner to the do the run and break out the 
 - This approach will rely on some of the utility functions defined in `bayesian.R` like `get_historical_land_data`. These have been
 moved to their own script, and some have been updated from `internal` to `export` so that they can still be called from `bayesian.R` functions.
 
+- Adding a sentence so the PR will re-run tests.
 
 # Setup params
 
 Pick the number of runs to do
 
 ```{r}
-Nruns <- 10
+Nruns <- 3
 ```
 
 # Do run with  `run_ensemble_no_analysis`
