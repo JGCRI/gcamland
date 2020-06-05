@@ -262,7 +262,7 @@ run_ensemble_bayesian <- function(N = 500, aOutputDir = "./outputs", skip = 0,
           format(utils::object.size(rslt), units="auto"))
 
   ## Save the full set of ensemble results
-  filebase <- paste0("output_ensemble", suffix, ".rds")
+  filebase <- paste0("bayes-output_ensemble", suffix, ".rds")
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
@@ -273,7 +273,7 @@ run_ensemble_bayesian <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   }
 
   ## Save the scenario info from the scenarios that we ran
-  filebase <- paste0("scenario-info", suffix, ".rds")
+  filebase <- paste0("bayes-scenario-info", suffix, ".rds")
   scenfile <- file.path(aOutputDir, filebase)
   saveRDS(scenObjects, scenfile)
 
