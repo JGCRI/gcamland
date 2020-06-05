@@ -2,8 +2,12 @@
 % Please edit documentation in R/main.R
 \name{run_ensemble_no_analysis}
 \alias{run_ensemble_no_analysis}
-\title{Run an ensemble of offline land models}
+\title{Run an ensemble of offline land models; by default, no analyis of
+the runs is completed.}
 \usage{
+run_ensemble_no_analysis(N = 500, aOutputDir = "./outputs", skip = 0,
+  atype = "Hindcast", logparallel = NULL)
+
 run_ensemble_no_analysis(N = 500, aOutputDir = "./outputs", skip = 0,
   atype = "Hindcast", logparallel = NULL)
 }
@@ -18,8 +22,21 @@ run_ensemble_no_analysis(N = 500, aOutputDir = "./outputs", skip = 0,
 
 \item{logparallel}{Name of directory to use for parallel workers' log files.
 If \code{NULL}, then don't write log files.}
+
+\item{N}{Number of parameter sets to select}
+
+\item{aOutputDir}{Output directory}
+
+\item{skip}{Number of iterations to skip (i.e., if building on another run.)}
+
+\item{atype}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{logparallel}{Name of directory to use for parallel workers' log files.
+If \code{NULL}, then don't write log files.}
 }
 \value{
+List of ScenarioInfo objects for the ensemble members
+
 List of ScenarioInfo objects for the ensemble members
 }
 \description{
@@ -28,8 +45,28 @@ sequence and mapping it to a specified range for each parameter.
 Then, each parameter set is run through the offline land model in
 each of the Perfect, Lagged, and Linear variants.  (I.e., if N
 parameter sets are selected, then 3N scenarios are run.)
+
+Parameter combinations are selected by generating a quasi-random
+sequence and mapping it to a specified range for each parameter.
+Then, each parameter set is run through the offline land model in
+each of the Perfect, Lagged, and Linear variants.  (I.e., if N
+parameter sets are selected, then 3N scenarios are run.)
+}
+\details{
+This function is strictly for running the ensemble of models. Analysis
+must be completed after the fact.
 }
 \section{Output}{
+
+The model results are written to a series of files in the specified output
+directory.
+The
+list of \code{ScenarioInfo} objects is written to a file called
+\code{scenario-info.rds} in the output directory.  This file can be loaded
+with a command such as \code{scenaro_list <-
+readRDS('output/scenario-info.rds')}.  These objects contain links to the
+model output files.
+
 
 The model results are written to a series of files in the specified output
 directory.
@@ -43,5 +80,7 @@ the Bayesian analysis was run.
 }
 
 \author{
+KVC November 2017 / ACS May 2020
+
 KVC November 2017 / ACS May 2020
 }
