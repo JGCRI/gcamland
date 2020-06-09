@@ -8,6 +8,7 @@
 #' @import readr
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate
+#' @importFrom stats aggregate
 #' @author KVC June 2019
 #' @export
 get_historic_yields <- function(){
