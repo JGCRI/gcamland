@@ -102,6 +102,8 @@ test_that("land cover matches reference values", {
       select(-scenario) ->
       outputData
 
+    compareData <- compareData[c("name", "year", "region", "land.allocation")]
+
     expect_identical(dim(outputData), dim(compareData),
                      info = paste("Dimensions are not the same for reference land allocation"))
 
