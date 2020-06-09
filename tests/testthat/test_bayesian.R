@@ -4,19 +4,19 @@ testscenarios <- readRDS('data/scenario-info.rds')
 
 test_that("get_historical_land_data returns filtered FAO data", {
     ## no filtering
-    expect_equivalent(get_historical_land_data() %>% select(-variable, -obsvar, -trend, -detrended),
+    expect_equivalent(get_historical_land_data() %>% select(region, year, land.type, obs),
                       Land_history %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## region filtering
-    expect_equivalent(get_historical_land_data("USA") %>% select(-variable, -obsvar, -trend, -detrended),
+    expect_equivalent(get_historical_land_data("USA") %>% select(region, year, land.type, obs),
                       dplyr::filter(Land_history, region=="USA") %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## year filtering
-    expect_equivalent(get_historical_land_data(years=c(1972, 1984)) %>% select(-variable, -obsvar, -trend, -detrended),
+    expect_equivalent(get_historical_land_data(years=c(1972, 1984)) %>% select(region, year, land.type, obs),
                       dplyr::filter(Land_history, year==1972 | year==1984) %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
     ## commodity filtering
-    expect_equivalent(get_historical_land_data(commodities="Corn") %>% select(-variable, -obsvar, -trend, -detrended),
+    expect_equivalent(get_historical_land_data(commodities="Corn") %>% select(region, year, land.type, obs),
                       dplyr::filter(Land_history, GCAM_commodity == "Corn") %>%
                         dplyr::rename(land.type=GCAM_commodity, obs=area))
 
