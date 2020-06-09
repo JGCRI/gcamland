@@ -5,7 +5,7 @@
 \alias{YIELD.RATIOS}
 \title{Ratio of Yield to First Historical Year}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 150 rows and 4 columns.
+An object of class \code{data.frame} with 150 rows and 4 columns.
 }
 \usage{
 YIELD.RATIOS
