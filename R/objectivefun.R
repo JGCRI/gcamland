@@ -17,8 +17,15 @@
 #' filtered to excatly the regions that are included in the ScenarioInfo
 #' structures. The \code{objectivefuns} is vector of strings with the names of
 #' objective functions to be evaluated. Currently, we support the following
-#' objective functions: \code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge'))}
-#' TODO: Define each and give equations being calculated
+#' objective functions:
+#' \code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge')}
+#'
+#' \code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms'} are defined and
+#' examined in Snyder et al 2017 (https://doi.org/10.5194/gmd-10-4307-2017),
+#' among other places.
+#'
+#' The definition for \code{'kge'} presented in Knoben et al 2019
+#' (https://doi.org/10.5194/hess-23-4323-2019) is the one implemented here.
 #'
 #' @param aScenarioList List of ScenarioInfo structures
 #' @param years Vector of years to filter observations to (default is to use all
@@ -53,7 +60,14 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
     # This is along the lines of the mPointwiseLikelihood, mLogPost list entries.
     modeldata[[s$mScenarioName]] %>%
       dplyr::inner_join(obsdata, .,
-                        by=(c('region','land.type','variable','year'))) ->
+                        by=(c('region','land.type','variable','year'))) %>%
+      # calculate many of the pieces that are commonly used across the different
+      # objective functions:
+      group_by(region, land.type, variable) %>%
+      mutate(obsMean = mean(obs, na.rm = T),
+             modelMean = mean(model, na.rm = T),
+             obsSD = sd(obs, na.rm = T) ) %>%
+      ungroup ->
       s$mObjFunEval
 
 
@@ -65,27 +79,69 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
 
         s$mObjFunEval %>%
           group_by(region, land.type, variable) %>%
-          mutate(obsMean = mean(obs, na.rm = T),
-                 modelMean = mean(model, na.rm = T),
-                 bias = modelMean - obsMean) %>%
-          ungroup %>%
-          select(-modelMean, -obsMean) ->
+          mutate(bias = modelMean - obsMean) %>%
+          ungroup  ->
           s$mObjFunEval
 
         } # end bias calculation
-
 
 
       if (objfun == 'rms') {
 
          s$mObjFunEval %>%
           group_by(region, land.type, variable) %>%
-          mutate(rms = sqrt(mean( ((obs-model)^2) ) ) ) %>%
+          mutate(rms = sqrt(mean( ((model-obs)^2) ) ) ) %>%
           ungroup ->
           s$mObjFunEval
 
       } # end rms  calculation
 
+
+      if (objfun == 'centeredrms') {
+
+        s$mObjFunEval %>%
+          group_by(region, land.type, variable) %>%
+          mutate(centeredrms = sqrt(mean( (( (model - modelMean) - (obs - obsMean)  )^2) ) ) ) %>%
+          ungroup ->
+          s$mObjFunEval
+
+      } # end centeredrms  calculation
+
+
+      if (objfun == 'nrms') {
+
+        s$mObjFunEval %>%
+          group_by(region, land.type, variable) %>%
+          mutate(nrms = sqrt(mean( ((model-obs)^2) ) ) / obsSD ) %>%
+          ungroup  ->
+          s$mObjFunEval
+
+      } # end nrms  calculation
+
+
+      if (objfun == 'centerednrms') {
+
+        s$mObjFunEval %>%
+          group_by(region, land.type, variable) %>%
+          mutate(centerednrms = sqrt(mean( (( (model - modelMean) - (obs - obsMean)  )^2) ) ) / obsSD) %>%
+          ungroup  ->
+          s$mObjFunEval
+
+      } # end centeredrms  calculation
+
+
+      if (objfun == 'kge') {
+
+        s$mObjFunEval %>%
+          group_by(region, land.type, variable) %>%
+          mutate(modelSD = sd(model, na.rm = T),
+                 corr = cor(model, obs),
+                 kge = 1 - sqrt(  (corr - 1)^2  + ( (modelSD / obsSD) - 1 )^2 + ( (modelMean / obsMean) - 1 )^2 )) %>%
+          ungroup %>%
+          select(-modelSD, -corr) ->
+          s$mObjFunEval
+
+      } # end centeredrms  calculation
 
     }  # end for loop over objective function options
 
@@ -95,6 +151,7 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
     # named from the measure name, holding the measured value to
     # two columns: measure name and value:
     s$mObjFunEval %>%
+      select(-modelMean, -obsMean, -obsSD) %>%
       gather(objfun, objfunval, -scenario, -region, -land.type, -variable, -year, -obs, -trend,
              -detrended, -obsvar, -model) ->
       s$mObjFunEval
@@ -164,15 +221,36 @@ grand_table_objective <- function(aScenarioList)
 #' Calculate parameters than minimize objective function of choice for a collection of model runs
 #'
 #' Scans the runs in a given sample of model runs and selects the parameter set from those runs
-#' that minimizes a specified objective function across specified land.types.
-#' The final minimized value is currently coded as the mean across specified land.types of the
+#' that minimizes a specified objective function across specified landtypes.
+#' The final minimized value is currently coded as the mean across specified landtypes of the
 #' specified objective function of interest.
+#'
+#' For \code{'bias'}, the quantity being minimized is actually the average over specified land
+#' types of \code{abs('bias')}, as a bias of 0 is
+#' perfect performance, and a bias of 0.25 vs -0.25 are equally 'good'.
+#'
+#' For \code{'kge'}, the quantity being minimized is actually the average over specified land
+#' types of \code{1 -'kge'}. This is chosen because of the following:
+#' \itemize{
+#' \item{Values of \code{'kge'} can range anywhere from -infinity to +1, with a value of +1 being
+#' perfect model performance, therefore \code{'kge'} is not directly useful as a quantity to be
+#' minimized.}
+#' \item{Values of \code{-'kge'} range from -1 to +infinity, with -1 corresponding to perfect
+#' model performance, as well as being the minimum value achieved by this measure. However,
+#' because this quantity can be either negative or positive, it is possible that cancellation
+#' of errors may occur when calculating the mean across specified land types, leading to
+#' a false minimum.}
+#' \item{Values of \code{1-'kge'} range from 0 to +infinity, with 0 corresponding to perfect
+#' model performance, as well as being the minimum value achieved by this measure.
+#' Additionally, because all values of this quantity are positive, no cancelation of
+#' errors may occur when calculating the mean across specified land types.}
+#' }
+#'
 #'
 #' TODO: update the name so that it's not MAP anymore; currently naming this way for workflow
 #' consistency with bayesian analysis, but we aren't doing Maximum A Posteriori analysis anymore,
 #' so MAP is kind of misleading. I don't really have a better name right now though.
-#'
-#' TODO: more detail on calculation being done.
+#' maybe minimizer_objective??
 #'
 #'
 #' @param samples Monte Carlo samples, given either as a grand table or a list
@@ -212,22 +290,34 @@ MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NUL
                     "SugarCrop",  "Wheat")
   }
 
-  samples_by_model <- split(samples, samples[,modelgroup])
+
+
+  # Filter to objective function of interest, and land types of interest.
+  # Adjust the quantity minimized for bias and kge:
+  samples %>%
+    filter(land.type %in% landtypes,
+           objfun == objfun_to_min) %>%
+    mutate(minimizervalue = if_else(objfun == 'bias', abs(objfunval),
+                                    if_else(objfun == 'kge', 1-objfunval,
+                                            objfunval))  ) ->
+    adjustedsamples
+
+
+  samples_by_model <- split(adjustedsamples, adjustedsamples[,modelgroup])
+
   maprows <-
     lapply(
       samples_by_model,
       function(d) {
 
         d %>%
-          filter(land.type %in% landtypes,
-                 objfun == objfun_to_min) %>%
           # Calculate the average across those land.types of that
           # objective function for each parameter set:
           group_by(region, variable, objfun, expectation.type,
                    share.old, linear.years, logit.agforest,
                    logit.afnonpast, logit.crop) %>%
           # TODO ^ group by region may change when look beyond US.
-          summarise(landTypeMeanObjFunVal = mean(abs(objfunval), na.rm = T)) %>%
+          summarise(landTypeMeanObjFunVal = mean(minimizervalue, na.rm = T)) %>%
           ungroup ->
           d_LandTypeMeanObjFunVal
 

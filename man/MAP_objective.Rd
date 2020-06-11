@@ -27,16 +27,36 @@ to use  \code{c( "Corn", "FiberCrop", "MiscCrop", "OilCrop",
 }
 \description{
 Scans the runs in a given sample of model runs and selects the parameter set from those runs
-that minimizes a specified objective function across specified land.types.
-The final minimized value is currently coded as the mean across specified land.types of the
+that minimizes a specified objective function across specified landtypes.
+The final minimized value is currently coded as the mean across specified landtypes of the
 specified objective function of interest.
 }
 \details{
+For \code{'bias'}, the quantity being minimized is actually the average over specified land
+types of \code{abs('bias')}, as a bias of 0 is
+perfect performance, and a bias of 0.25 vs -0.25 are equally 'good'.
+
+For \code{'kge'}, the quantity being minimized is actually the average over specified land
+types of \code{1 -'kge'}. This is chosen because of the following:
+\itemize{
+\item{Values of \code{'kge'} can range anywhere from -infinity to +1, with a value of +1 being
+perfect model performance, therefore \code{'kge'} is not directly useful as a quantity to be
+minimized.}
+\item{Values of \code{-'kge'} range from -1 to +infinity, with -1 corresponding to perfect
+model performance, as well as being the minimum value achieved by this measure. However,
+because this quantity can be either negative or positive, it is possible that cancellation
+of errors may occur when calculating the mean across specified land types, leading to
+a false minimum.}
+\item{Values of \code{1-'kge'} range from 0 to +infinity, with 0 corresponding to perfect
+model performance, as well as being the minimum value achieved by this measure.
+Additionally, because all values of this quantity are positive, no cancelation of
+errors may occur when calculating the mean across specified land types.}
+}
+
 TODO: update the name so that it's not MAP anymore; currently naming this way for workflow
 consistency with bayesian analysis, but we aren't doing Maximum A Posteriori analysis anymore,
 so MAP is kind of misleading. I don't really have a better name right now though.
-
-TODO: more detail on calculation being done.
+maybe minimizer_objective??
 }
 \author{
 ACS May 2020

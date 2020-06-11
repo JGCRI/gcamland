@@ -39,8 +39,15 @@ observations that will be used in the analysis.  The regions are always
 filtered to excatly the regions that are included in the ScenarioInfo
 structures. The \code{objectivefuns} is vector of strings with the names of
 objective functions to be evaluated. Currently, we support the following
-objective functions: \code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge'))}
-TODO: Define each and give equations being calculated
+objective functions:
+\code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge')}
+
+\code{c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms'} are defined and
+examined in Snyder et al 2017 (https://doi.org/10.5194/gmd-10-4307-2017),
+among other places.
+
+The definition for \code{'kge'} presented in Knoben et al 2019
+(https://doi.org/10.5194/hess-23-4323-2019) is the one implemented here.
 }
 \author{
 ACS May 2020
