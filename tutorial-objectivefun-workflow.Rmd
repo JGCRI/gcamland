@@ -33,7 +33,7 @@ moved to their own script, and some have been updated from `internal` to `export
 Pick the number of runs to do
 
 ```{r}
-Nruns <- 2
+Nruns <- 10
 ```
 
 # Do some runs 
