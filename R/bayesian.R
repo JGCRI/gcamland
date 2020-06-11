@@ -220,6 +220,7 @@ run_bayes <- function(aScenarioList, years=NULL, landtypes=NULL,
 uniform_prior <- function(params) {0}
 
 #' Organize a list of ScenarioInfo objects into a grand table of parameters
+#' for runs that have been analyzed with Bayesian approach.
 #'
 #' The table produced includes the model parameters and log-posterior
 #' probability for all of the models in the input list.
@@ -235,7 +236,7 @@ uniform_prior <- function(params) {0}
 #' @return Data frame containing model parameters and log-posterior
 #' probabilities.
 #' @export
-grand_table <- function(aScenarioList)
+grand_table_bayes <- function(aScenarioList)
 {
     ## silence package checks
     scenario <- NULL
@@ -261,6 +262,7 @@ grand_table <- function(aScenarioList)
 
 
 #' Calculate MAP (maximum a posteriori) estimates for a collection of model runs
+#' that have been analysed following a Bayesian approach.
 #'
 #' The MAP estimate is the estimate in each model group with the highest
 #' posterior probability density.  The results are reported in a data frame that
@@ -276,7 +278,7 @@ grand_table <- function(aScenarioList)
 #' @param lp Name of the column containing the log posterior
 #' probability.  Ignored if \code{weighted==FALSE}.
 #' @export
-MAP <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+MAP_bayes <- function(samples, modelgroup='expectation.type', reportvars=NULL,
                 lp='lp_')
 {
     if(!inherits(samples, 'data.frame')) {
