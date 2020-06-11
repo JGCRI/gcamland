@@ -1,7 +1,6 @@
 ---
-title: "testing work flow with objective functions"
+title: "Tutorial work flow with objective functions"
 author: "ACS"
-date: "5/25/2020"
 output: 
   html_document:
       toc: true
@@ -27,35 +26,45 @@ arguments would ever be used. Seems cleaner to the do the run and break out the 
 - This approach will rely on some of the utility functions defined in `bayesian.R` like `get_historical_land_data`. These have been
 moved to their own script, and some have been updated from `internal` to `export` so that they can still be called from `bayesian.R` functions.
 
-- Adding a sentence so the PR will re-run tests.
+
 
 # Setup params
 
 Pick the number of runs to do
 
 ```{r}
-Nruns <- 3
+Nruns <- 2
 ```
 
-# Do run with  `run_ensemble_no_analysis`
+# Do some runs 
+Now, by default, no analysis is run. Only the ensemble of runs is generated, and analysis can be done after the fact. 
 
+An example of the call to run the model, as well as the progress print statements included.
 ```{r}
 set.seed(1)
 
-scenObjects <- invisible(run_ensemble_no_analysis(N=Nruns))
+scenObjects <- run_ensemble(N=Nruns)
 ```
 
-# Test `run_objective`
+# Run the objective function analysis
 
-- Right now, the `run_objective` function evaluates user-specified objective function for each land type separately. Certainly _can_ give an argument wither fewer land types.
+- Right now, the `run_objective` function evaluates user-specified objective function for each land type separately. Certainly _can_ give an argument with fewer land types.
 - idea is that it's all so fast and not that big, just go ahead and calculate for each land type. Then when we call `MAP_objective` (which we should probably pick a different name for), _that_ function also takes a list of land types of interest, averages the objective function across those land types, and then picks the parameter set that gives you the smallest average objective function value (ie minimized error) across those land types.
 - Also, currently, from `get_historical_land_data` in `utility-functions-analysis.R` (previously in `bayesian.R`), this only supports comparison to FAO GCAM commodities - mostly crop data and not Forest or anything. A note to change this is included in the documentation of `MAP_objective`.
 
+- Note that land cover types X region combinations that have a standard deviation of 0 in the observational data, warnings will
+be thrown and the metrics `nrms`, `centerednrms`, and `kge` will return NA values. 
+- For land cover types X region combinations that have a standard deviation of 0 in the _modeled_ data, warnings will
+be thrown and the metric `kge` will return NA values. In the United States, this means PalmFruit. 
 
-
+An example of the function call to run the objective function analysis.
 ```{r}
 
 scenObjectsEvaluated <- run_objective(scenObjects)
+```
+
+And different views of the results of that analysis. Note that the list item `$mObjFunEval` for each scenario is where this analysis is contained:
+```{r}
 
 str(scenObjectsEvaluated)
 
@@ -63,9 +72,22 @@ names(scenObjectsEvaluated[[1]])
 
 knitr::kable(head(scenObjectsEvaluated[[1]]$mObjFunEval))
 
+knitr::kable(tail(scenObjectsEvaluated[[1]]$mObjFunEval))
+
+knitr::kable(head(scenObjectsEvaluated[[1]]$mObjFunEval %>%
+                    filter(land.type == 'PalmFruit', 
+                           objfun == 'kge')))
+
 ```
 
-# Test `grand_table_objective`
+# Organize these evaluated results 
+
+Using the `grand_table_objective` function results of the objective function evaluations 
+are reorganized into a grand table of parameters.
+The table produced includes the model parameters and all user-specified objective
+function evaluations, for all of the models in the input list.
+
+An example of the call to this function and a quick look at the structure of the results.
 ```{r}
 grand_table_objective(aScenarioList = scenObjectsEvaluated) %>%
   # these lines of code are because the `left_join` in 
@@ -83,12 +105,13 @@ grand_table_objective(aScenarioList = scenObjectsEvaluated) %>%
   GTobjective
 
 knitr::kable(head(GTobjective))
+```
 
-# make pretty - decided not to do this in the function but can definitely add.
-# Decided not to add in because makes filtering in the `MAP_objective` function
-# to the single objective function of interest easier. But we can easily add
-# this code into `grand_table_objective` to make the output of that pretty, and 
-# then add code to `MAP_objective` to make un-pretty and easier filtering.
+
+And a view of a reshaped, 'prettier' (that is, wide) version of these results. 
+However, the long version `GTobjective` is what the next step in analysis is expecting.
+```{r}
+
 GTobjective %>%
   spread(objfun, objfunval) ->
   GTobjective_pretty
@@ -97,38 +120,78 @@ knitr::kable(head(GTobjective_pretty))
 ```
 
 
-# Test `MAP_objective`
+# Select the parameter set from runs that minimize specified obj fcn across specified land types
 
-- TODO: figure out if min values getting selected are all the same because only 10 runs or ......
+`Map_objective` is a minimizer function. Itcans the runs in a given sample of
+model runs and selects the parameter set from those runs that minimizes the
+mean across user-specified `landtypes` of a user-specified objective function, 
+`objfun_to_min`. 
+
+## Exceptions
+
+For `bias`, the quantity being minimized is actually the average over specified
+land types of `abs(bias)`, as a bias of 0 is perfect performance, and a bias of
+0.25 vs -0.25 are equally 'good'.
+
+For `kge`, the quantity being minimized is actually the average over specified
+land types of `1 -kge`. This is chosen because of the following:
+
+1. Values of `kge` can range anywhere from -infinity to +1, with a value of +1
+being perfect model performance, therefore `kge` is not directly useful as a 
+quantity to be minimized.
+
+2. Values of `1-kge` range from 0 to +infinity, with 0 corresponding to perfect
+model performance, as well as being the minimum value achieved by this measure. 
+Additionally, because all values of this quantity are positive, no cancelation 
+of errors may occur when calculating the mean across specified land types.
+
+Further details are given in the documentation of the `MAP_objective` function.
+
+## default arguments
+
+Default arguments of `MAP_objective` currently is focused on RMS 
+(`objfun_to_min = 'rms'`) for all GCAM commodities 
+`landtypes = c( "Corn", "FiberCrop", "MiscCrop", "OilCrop", "OtherGrain", "PalmFruit",  "Rice", "Root_Tuber", "SugarCrop",  "Wheat")` 
+that we run and have FAO comparison data for. 
+
+`MAP_objective` is taking the average of RMS across all of these land types, 
+and selecting the parameter set that minimizes that quantity.
+
+Currently no support for mixing and matching different objective functions 
+for different crops. Seems doable but not implemented yet (eg maybe you want
+parameters that minimize both Corn's bias and OtherGrain's KGE.)
 
 
-## default argument
-
-Default arguments of `MAP_objective` currently is focused on RMS for all GCAM commodities ` c( "Corn", "FiberCrop", "MiscCrop", "OilCrop", "OtherGrain", "PalmFruit",  "Rice", "Root_Tuber", "SugarCrop",  "Wheat")` that we run and have FAO comparison data for. 
-
-`MAP_objective` is taking the average of RMS across all of these land types, and selecting the parameter set that minimizes that quantity.
-
-Currently no support for mixing and matching different objective functions for different crops. Seems doable but not implemented yet (eg maybe you want parameters that minimize both Corn's bias and OtherGrain's KGE.)
-
-
+An example call to the `MAP_objective` function assuming default arguments, 
+and a printout of the results:
 ```{r}
 
 knitr::kable(MAP_objective(GTobjective))
-
 ```
 
 
 ## Corn, OilCrop bias example
 
-Select parameters that minimize the average (absolute value of) bias in Corn and OilCrop
+Select parameters that minimize the average (absolute value of) bias in Corn
+and OilCrop.
 
-- Current implementation does not allow for cancellation of errors because of absolute value included in `MAP_objective`. So being over in Corn and under in OilCrop won't cancel out and help you.
+The current implementation does not allow for cancellation of errors: the 
+average across specified land types of `abs(bias)` is what is actually being
+minimized in `MAP_objective`. So, for example, a positive bias in Corn and a
+negative bias in OilCrop will _not_ cancel out to give an artifically small
+mean error.
 
 
 ```{r}
 
 knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'bias', landtypes = c('Corn', 'OilCrop')))
+```
 
+### NOTE
+The error reported in the column `landTypeMeanObjFunVal` is what you think: it's the average error only across the specified land types. If you want to see what the error on Wheat is for this example, the results from `grand_table_objective` (ie `GTobjective`) must be filtered and examined.
+```{r}
+GTobjective %>%
+   filter(land.type == 'Wheat')
 ```
 
 ## OtherGrain rms example
@@ -136,7 +199,6 @@ knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'bias', landtypes = c('C
 ```{r}
 
 knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'rms', landtypes = c('OtherGrain')))
-
 ```
 
 
