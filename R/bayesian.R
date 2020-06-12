@@ -243,7 +243,7 @@ grand_table_bayes <- function(aScenarioList)
 
     tbllen <- sapply(aScenarioList, function(s) {length(s$mLogPost)})
     if(any(tbllen) == 0) {
-        warning('grand_table: One or more scenarios do not have posterior probability tables. Running run_bayes with default arguments.')
+        warning('grand_table_bayes: One or more scenarios do not have posterior probability tables. Running run_bayes with default arguments.')
         aScenarioList <- run_bayes(aScenarioList)
     }
 
@@ -285,7 +285,7 @@ MAP_bayes <- function(samples, modelgroup='expectation.type', reportvars=NULL,
         ## Check that this is a scenario list
         if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
             stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
-        samples <- grand_table(samples)
+        samples <- grand_table_bayes(samples)
     }
 
     if(is.null(reportvars)) {
@@ -316,7 +316,7 @@ MAP_bayes <- function(samples, modelgroup='expectation.type', reportvars=NULL,
 #' probabilities.
 #'
 #' The input to this function can be given either as a grand table
-#' (q.v. \code{\link{grand_table}}) or as a list of \code{ScenarioInfo}
+#' (q.v. \code{\link{grand_table_bayes}}) or as a list of \code{ScenarioInfo}
 #' objects.  Generally this collection will have several model families
 #' represented, so the table is split according to the model type.  The result
 #' will be a table of expectation values by model
@@ -338,7 +338,7 @@ EV <- function(samples, modelgroup='expectation.type', reportvars=NULL,
         ## Check that this is a scenario list
         if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
             stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
-        samples <- grand_table(samples)
+        samples <- grand_table_bayes(samples)
     }
 
     if(is.null(reportvars)) {
@@ -411,7 +411,7 @@ HPDI <- function(samples, interval = 0.95, modelgroup = 'expectation.type', repo
         ## Check that this is a scenario list
         if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
             stop('EV: samples must be a data frame or list of ScenarioInfo objects.')
-        samples <- grand_table(samples)
+        samples <- grand_table_bayes(samples)
     }
 
     if(is.null(reportvars)) {
