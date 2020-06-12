@@ -5,8 +5,17 @@
 \title{Run an ensemble of offline land models; by default, no analyis of
 the runs is completed.}
 \usage{
-run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
-  atype = "Hindcast", logparallel = NULL)
+run_ensemble(
+  N = 500,
+  aOutputDir = "./outputs",
+  skip = 0,
+  aType = "Hindcast",
+  IncludeSubsidies = FALSE,
+  aDifferentiateParamByCrop = FALSE,
+  aSampleType = "LatinHyperCube",
+  aTotalSamplesPlanned = 500,
+  logparallel = NULL
+)
 }
 \arguments{
 \item{N}{Number of parameter sets to select}
@@ -15,10 +24,18 @@ run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
 
 \item{skip}{Number of iterations to skip (i.e., if building on another run.)}
 
-\item{atype}{Scenario type: either "Reference" or "Hindcast"}
+\item{aType}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{aDifferentiateParamByCrop}{Boolean indicating whether all crops should use the same expectation parameters}
+
+\item{aSampleType}{String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported}
+
+\item{aTotalSamplesPlanned}{Number of samples planned. For Latin Hypercube, we need to know the total before we start.}
 
 \item{logparallel}{Name of directory to use for parallel workers' log files.
 If \code{NULL}, then don't write log files.}
+
+\item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
 }
 \value{
 List of ScenarioInfo objects for the ensemble members
@@ -47,5 +64,5 @@ model output files.
 }
 
 \author{
-KVC November 2017 / ACS May 2020
+KVC November 2017
 }

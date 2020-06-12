@@ -4,9 +4,12 @@
 \alias{run_objective}
 \title{Run user-specified objective function evaluations on a list of scenarios}
 \usage{
-run_objective(aScenarioList, years = NULL, landtypes = NULL,
-  objectivefuns = c("bias", "rms", "centeredrms", "nrms", "centerednrms",
-  "kge"))
+run_objective(
+  aScenarioList,
+  years = NULL,
+  landtypes = NULL,
+  objectivefuns = c("bias", "rms", "centeredrms", "nrms", "centerednrms", "kge")
+)
 }
 \arguments{
 \item{aScenarioList}{List of ScenarioInfo structures}

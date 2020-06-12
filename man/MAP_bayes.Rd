@@ -5,8 +5,12 @@
 \title{Calculate MAP (maximum a posteriori) estimates for a collection of model runs
 that have been analysed following a Bayesian approach.}
 \usage{
-MAP_bayes(samples, modelgroup = "expectation.type", reportvars = NULL,
-  lp = "lp_")
+MAP_bayes(
+  samples,
+  modelgroup = "expectation.type",
+  reportvars = NULL,
+  lp = "lp_"
+)
 }
 \arguments{
 \item{samples}{Monte Carlo samples, given either as a grand table or a list

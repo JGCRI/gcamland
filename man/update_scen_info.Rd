@@ -4,10 +4,23 @@
 \alias{update_scen_info}
 \title{update_scen_info}
 \usage{
-update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
-  aExpectationType = "Perfect", aLinearYears = NULL,
-  aLaggedShareOld = NULL, aUseZeroCost = FALSE,
-  aCalibrateShareWt = TRUE, aShareWts = NULL)
+update_scen_info(
+  aName = NULL,
+  aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aExpectationType = "Perfect",
+  aLinearYears = NULL,
+  aLinearYears1 = NULL,
+  aLinearYears2 = NULL,
+  aLinearYears3 = NULL,
+  aLaggedShareOld = NULL,
+  aLaggedShareOld1 = NULL,
+  aLaggedShareOld2 = NULL,
+  aLaggedShareOld3 = NULL,
+  aUseZeroCost = FALSE,
+  aCalibrateShareWt = TRUE,
+  aIncludeSubsidies = FALSE,
+  aShareWts = NULL
+)
 }
 \arguments{
 \item{aName}{New scenario name (default will generate this from other info)}
@@ -18,11 +31,25 @@ update_scen_info(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE,
 
 \item{aLinearYears}{New linear years (default = NULL)}
 
+\item{aLinearYears1}{New linear years for crop group 1 (see constants.R) (default = NULL)}
+
+\item{aLinearYears2}{New linear years for crop group 2 (see constants.R) (default = NULL)}
+
+\item{aLinearYears3}{New linear years for crop group 3 (see constants.R) (default = NULL)}
+
 \item{aLaggedShareOld}{New lagged share old (default = NULL)}
+
+\item{aLaggedShareOld1}{New lagged share old (group 1) (see constants.R) (default = NULL)}
+
+\item{aLaggedShareOld2}{New lagged share old (group 2) (see constants.R) (default = NULL)}
+
+\item{aLaggedShareOld3}{New lagged share old (group 3) (see constants.R) (default = NULL)}
 
 \item{aUseZeroCost}{New cost assumption (default = FALSE)}
 
 \item{aCalibrateShareWt}{Flag indicating share weights should be calibrated}
+
+\item{aIncludeSubsidies}{Flag indicating subsidies should be added to profit}
 
 \item{aShareWts}{Vector of share weights}
 }

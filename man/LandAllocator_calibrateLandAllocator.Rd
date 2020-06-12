@@ -4,8 +4,7 @@
 \alias{LandAllocator_calibrateLandAllocator}
 \title{LandAllocator_calibrateLandAllocator}
 \usage{
-LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod,
-  aScenarioInfo)
+LandAllocator_calibrateLandAllocator(aLandAllocator, aPeriod, aScenarioInfo)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator for this region}

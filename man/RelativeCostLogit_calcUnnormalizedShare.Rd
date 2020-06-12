@@ -4,8 +4,12 @@
 \alias{RelativeCostLogit_calcUnnormalizedShare}
 \title{RelativeCostLogit_calcUnnormalizedShare}
 \usage{
-RelativeCostLogit_calcUnnormalizedShare(aChoiceFnAbove, aShareWeight,
-  aProfit, aPeriod)
+RelativeCostLogit_calcUnnormalizedShare(
+  aChoiceFnAbove,
+  aShareWeight,
+  aProfit,
+  aPeriod
+)
 }
 \arguments{
 \item{aChoiceFnAbove}{Choice function (logit type and exponent from node above)}

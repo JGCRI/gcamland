@@ -4,8 +4,13 @@
 \alias{MAP_objective}
 \title{Calculate parameters than minimize objective function of choice for a collection of model runs}
 \usage{
-MAP_objective(samples, modelgroup = "expectation.type",
-  reportvars = NULL, objfun_to_min = "rms", landtypes = NULL)
+MAP_objective(
+  samples,
+  modelgroup = "expectation.type",
+  reportvars = NULL,
+  objfun_to_min = "rms",
+  landtypes = NULL
+)
 }
 \arguments{
 \item{samples}{Monte Carlo samples, given either as a grand table or a list
@@ -52,6 +57,7 @@ model performance, as well as being the minimum value achieved by this measure.
 Additionally, because all values of this quantity are positive, no cancelation of
 errors may occur when calculating the mean across specified land types.}
 }
+
 
 TODO: update the name so that it's not MAP anymore; currently naming this way for workflow
 consistency with bayesian analysis, but we aren't doing Maximum A Posteriori analysis anymore,
