@@ -26,8 +26,5 @@ All of the runs in a single ensemble should have the same regions, years, and
 commodities, so generally it will only be necessary to run this function once
 at the beginning of the analysis.  The resulting data can be matched to the
 model results for each of the models run in order to calculate Bayesian
-likelihoods.
-
-This function also computes the grouped variance for use in subsequent
-calculations.
+likelihoods and objective function evaluations.
 }
