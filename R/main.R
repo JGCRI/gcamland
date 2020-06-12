@@ -12,7 +12,6 @@
 #' This function is strictly for running the ensemble of models. Analysis
 #' must be completed after the fact.
 #'
-#'
 #' @section Output:
 #' The model results are written to a series of files in the specified output
 #' directory.
@@ -26,41 +25,74 @@
 #' @param N Number of parameter sets to select
 #' @param aOutputDir Output directory
 #' @param skip Number of iterations to skip (i.e., if building on another run.)
-#' @param atype Scenario type: either "Reference" or "Hindcast"
+#' @param aType Scenario type: either "Reference" or "Hindcast"
+#' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
+#' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
+#' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
+#' @param aTotalSamplesPlanned Number of samples planned. For Latin Hypercube, we need to know the total before we start.
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members
 #' @import foreach doParallel
-#' @author KVC November 2017 / ACS May 2020
+#' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
-                                     atype="Hindcast", logparallel=NULL) {
+run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+                          aType="Hindcast",
+                          IncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
+                          aTotalSamplesPlanned = 500, logparallel=NULL) {
+
   # Silence package checks
   obj <- NULL
 
-  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
-  # or linyears is used in a single model design.
+  # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
+  # lagged share and linear years. If FALSE, then only one paramter for each. In both cases, there are 3 logit exponents
+  if( aDifferentiateParamByCrop ) {
+    NPARAM <- 9
+  } else {
+    NPARAM <- 5
+  }
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 3)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
-  limits.CROPLAND <- c(0.1, 2)
-  limits.LAGSHARE <- c(0.5, 0.99)
-  limits.LINYEARS <- round(c(10, 20))
+  limits.AGROFOREST <- c(0.01, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
+  limits.CROPLAND <- c(0.01, 3)
+  limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
-  rn <- randtoolbox::sobol(N+skip, NPARAM)
-  rn <- rn[serialnumber,]
-  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
-  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
-  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
-  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
-  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
-  # lagshare and linyears are mutually
-  # exclusive
+  if( aSampleType == "LatinHyperCube" ) {
+    set.seed(1234)
+    randomNumbers <- lhs::randomLHS(aTotalSamplesPlanned, NPARAM)
+  } else if( aSampleType == "Sobol" ) {
+    randomNumbers <- randtoolbox::sobol(N+skip, NPARAM)
+  } else {
+    stop("Unknown Sampling Type")
+  }
+  randomNumbers <- randomNumbers[serialnumber,]
+
+  scaleParam <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
+  levels.AGROFOREST <- scaleParam(randomNumbers[,1], limits.AGROFOREST)
+  levels.AGROFOREST_NONPASTURE <- scaleParam(randomNumbers[,2], limits.AGROFOREST_NONPASTURE)
+  levels.CROPLAND <- scaleParam(randomNumbers[,3], limits.CROPLAND)
+  if( aDifferentiateParamByCrop ) {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
+    levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+  } else {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- levels.LAGSHARE1
+    levels.LAGSHARE3 <- levels.LAGSHARE1
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,5], limits.LINYEARS))
+    levels.LINYEARS2 <- levels.LINYEARS1
+    levels.LINYEARS3 <- levels.LINYEARS1
+  }
 
   ## Filename suffix.  This will be used to create unique filenames for the
   ## outputs across all worker processes, continuation runs, etc.
@@ -69,8 +101,9 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, suffix, aOutputDir) %>%
+                     levels.LAGSHARE1, levels.LAGSHARE2, levels.LAGSHARE3,
+                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3, serialnumber,
+                     aType, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
@@ -115,7 +148,6 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
   message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
           format(utils::object.size(rslt), units="auto"))
-
   ## Save the full set of ensemble results
   filebase <- paste0("output_ensemble", suffix, ".rds")
   outfile <- file.path(aOutputDir, filebase)
@@ -137,8 +169,6 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 }
 
 
-
-
 #' Run an ensemble of offline land models and complete Bayesian analysis
 #' of hindcast runs.
 #'
@@ -157,9 +187,9 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' directory.
 #' The
 #' list of \code{ScenarioInfo} objects is written to a file called
-#' \code{scenario-info.rds} in the output directory.  This file can be loaded
+#' \code{bayes-scenario-info.rds} in the output directory.  This file can be loaded
 #' with a command such as \code{scenaro_list <-
-#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
+#' readRDS('output/bayes-scenario-info.rds')}.  These objects contain links to the
 #' model output files, as well as the posterior probability density tables, if
 #' the Bayesian analysis was run.
 #'
@@ -170,7 +200,11 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' being run.
 #' @param lprior Log-prior probability density function.  Used only if Bayesian
 #' posteriors are being run.
-#' @param atype Scenario type: either "Reference" or "Hindcast"
+#' @param aType Scenario type: either "Reference" or "Hindcast"
+#' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
+#' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
+#' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
+#' @param aTotalSamplesPlanned Number of samples planned. For Latin Hypercube, we need to know the total before we start.
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members
@@ -178,34 +212,63 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble_bayesian <- function(N = 500, aOutputDir = "./outputs", skip = 0,
-                         lpdf=get_lpdf(1), lprior=uniform_prior,
-                         atype="Hindcast", logparallel=NULL) {
+
+run_ensemble_bayesian  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+                         lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
+                         aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
+                         aTotalSamplesPlanned = 500, logparallel=NULL) {
+
   # Silence package checks
   obj <- NULL
 
-  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
-                # or linyears is used in a single model design.
+  # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
+  # lagged share and linear years. If FALSE, then only one paramter for each. In both cases, there are 3 logit exponents
+  if( aDifferentiateParamByCrop ) {
+    NPARAM <- 9
+  } else {
+    NPARAM <- 5
+  }
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 3)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
-  limits.CROPLAND <- c(0.1, 2)
-  limits.LAGSHARE <- c(0.5, 0.99)
-  limits.LINYEARS <- round(c(10, 20))
+  limits.AGROFOREST <- c(0.01, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
+  limits.CROPLAND <- c(0.01, 3)
+  limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
-  rn <- randtoolbox::sobol(N+skip, NPARAM)
-  rn <- rn[serialnumber,]
-  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
-  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
-  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
-  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
-  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
-                                        # lagshare and linyears are mutually
-                                        # exclusive
+  if( aSampleType == "LatinHyperCube" ) {
+    set.seed(1234)
+    randomNumbers <- lhs::randomLHS(aTotalSamplesPlanned, NPARAM)
+  } else if( aSampleType == "Sobol" ) {
+    randomNumbers <- randtoolbox::sobol(N+skip, NPARAM)
+  } else {
+    stop("Unknown Sampling Type")
+  }
+  randomNumbers <- randomNumbers[serialnumber,]
+
+  scaleParam <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
+  levels.AGROFOREST <- scaleParam(randomNumbers[,1], limits.AGROFOREST)
+  levels.AGROFOREST_NONPASTURE <- scaleParam(randomNumbers[,2], limits.AGROFOREST_NONPASTURE)
+  levels.CROPLAND <- scaleParam(randomNumbers[,3], limits.CROPLAND)
+  if( aDifferentiateParamByCrop ) {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
+    levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+  } else {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- levels.LAGSHARE1
+    levels.LAGSHARE3 <- levels.LAGSHARE1
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,5], limits.LINYEARS))
+    levels.LINYEARS2 <- levels.LINYEARS1
+    levels.LINYEARS3 <- levels.LINYEARS1
+  }
 
   ## Filename suffix.  This will be used to create unique filenames for the
   ## outputs across all worker processes, continuation runs, etc.
@@ -214,8 +277,9 @@ run_ensemble_bayesian <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   # Set up a list to store scenario information objects
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, suffix, aOutputDir) %>%
+                     levels.LAGSHARE1, levels.LAGSHARE2, levels.LAGSHARE3,
+                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3, serialnumber,
+                     aType, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
@@ -266,7 +330,7 @@ run_ensemble_bayesian <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
-  if(atype == "Hindcast") {
+  if(aType == "Hindcast") {
       ## For hindcast runs, calculate the Bayesian posteriors
       scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
       print('bayes ran')
@@ -287,262 +351,6 @@ run_ensemble_bayesian <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 }
 
 
-#' Run an ensemble of offline land models
-#'
-#' Parameter combinations are selected by generating a quasi-random
-#' sequence and mapping it to a specified range for each parameter.
-#' Then, each parameter set is run through the offline land model in
-#' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
-#' parameter sets are selected, then 3N scenarios are run.)
-#'
-#'
-#' @section Output:
-#' The model results are written to a series of files in the specified output
-#' directory.
-#' The
-#' list of \code{ScenarioInfo} objects is written to a file called
-#' \code{scenario-info.rds} in the output directory.  This file can be loaded
-#' with a command such as \code{scenaro_list <-
-#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
-#' model output files, as well as the posterior probability density tables, if
-#' the Bayesian analysis was run.
-#'
-#' @param N Number of parameter sets to select
-#' @param aOutputDir Output directory
-#' @param skip Number of iterations to skip (i.e., if building on another run.)
-#' @param atype Scenario type: either "Reference" or "Hindcast"
-#' @param logparallel Name of directory to use for parallel workers' log files.
-#' If \code{NULL}, then don't write log files.
-#' @return List of ScenarioInfo objects for the ensemble members
-#' @import foreach doParallel
-#' @author KVC November 2017 / ACS May 2020
-#' @importFrom utils capture.output sessionInfo
-#' @export
-run_ensemble_no_analysis <- function(N = 500, aOutputDir = "./outputs", skip = 0,
-                         atype="Hindcast", logparallel=NULL) {
-  # Silence package checks
-  obj <- NULL
-
-  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
-  # or linyears is used in a single model design.
-
-  ## Set options for ensembles
-  ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 3)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
-  limits.CROPLAND <- c(0.1, 2)
-  limits.LAGSHARE <- c(0.5, 0.99)
-  limits.LINYEARS <- round(c(10, 20))
-
-  serialnumber <- skip + (1:N)
-  rn <- randtoolbox::sobol(N+skip, NPARAM)
-  rn <- rn[serialnumber,]
-  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
-  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
-  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
-  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
-  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
-  # lagshare and linyears are mutually
-  # exclusive
-
-  ## Filename suffix.  This will be used to create unique filenames for the
-  ## outputs across all worker processes, continuation runs, etc.
-  suffix <- sprintf("-%06d",skip)
-
-  # Set up a list to store scenario information objects
-  scenObjects <- Map(gen_ensemble_member,
-                     levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, suffix, aOutputDir) %>%
-    unlist(recursive=FALSE)
-
-  serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
-
-  # Loop over all scenario configurations and run the model
-  rslt <-
-    foreach(obj = serialized_scenObjs, .combine=rbind) %dopar% {
-      if(!is.null(logparallel)) {
-        nn <- Sys.info()['nodename']
-        sn <- obj$mScenarioName
-        fn <- file.path(logparallel, paste0('info-', sn, '.txt'))
-        print(fn)
-        logfil <- file(fn, 'w')
-        if(!file.exists(fn)) {
-          stop("Couldn't create logfile: ", fn)
-        }
-        writeLines(c('nodename= ', nn), con=logfil)
-        writeLines(capture.output(sessionInfo()),con=logfil)
-        flush(logfil)
-      }
-
-      if(N <= 50)  {
-        message("Starting simulation: ", obj$mScenarioName)
-      }
-
-      si <- as.ScenarioInfo(obj)
-      if(N > 50) {
-        rslt <- suppressMessages(run_model(si))
-      }
-      else {
-        rslt <- run_model(si)
-      }
-
-      message("Finished: ", obj$mSerialNumber)
-
-      if(!is.null(logparallel)) {
-        writeLines(capture.output(warnings()), con=logfil)
-        close(logfil)
-      }
-      rslt
-    }
-
-  message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
-          format(utils::object.size(rslt), units="auto"))
-
-  ## Save the full set of ensemble results
-  filebase <- paste0("output_ensemble", suffix, ".rds")
-  outfile <- file.path(aOutputDir, filebase)
-  saveRDS(rslt, outfile)
-
-
-  ## Save the scenario info from the scenarios that we ran
-  filebase <- paste0("scenario-info", suffix, ".rds")
-  scenfile <- file.path(aOutputDir, filebase)
-  saveRDS(scenObjects, scenfile)
-
-  message("Output directory is", aOutputDir)
-  message("scenario file: ", scenfile)
-  message("output file: ", outfile)
-
-  warnings()
-
-  invisible(scenObjects)
-}
-
-
-
-#' Run an ensemble of offline land models without Bayes piece
-#'
-#' TO BE DELETED BEFORE BRANCH MERGED
-#'
-#' @section Output:
-#' The model results are written to a series of files in the specified output
-#' directory.
-#' The
-#' list of \code{ScenarioInfo} objects is written to a file called
-#' \code{scenario-info.rds} in the output directory.  This file can be loaded
-#' with a command such as \code{scenaro_list <-
-#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
-#' model output files, as well as the posterior probability density tables, if
-#' the Bayesian analysis was run.
-#'
-#' @param N Number of parameter sets to select
-#' @param aOutputDir Output directory
-#' @param skip Number of iterations to skip (i.e., if building on another run.)
-#' @param lpdf Log-likelihood function.  Used only if Bayesian posteriors are
-#' being run.
-#' @param lprior Log-prior probability density function.  Used only if Bayesian
-#' posteriors are being run.
-#' @param atype Scenario type: either "Reference" or "Hindcast"
-#' @param logparallel Name of directory to use for parallel workers' log files.
-#' If \code{NULL}, then don't write log files.
-#' @return List of ScenarioInfo objects for the ensemble members
-#' @import foreach doParallel
-#' @author KVC November 2017 / ACS May 2020
-#' @importFrom utils capture.output sessionInfo
-#' @export
-run_ensemble_no_bayes <- function(N = 500, aOutputDir = "./outputs", skip = 0,
-                         lpdf=get_lpdf(1), lprior=uniform_prior,
-                         atype="Hindcast", logparallel=NULL) {
-  # Silence package checks
-  obj <- NULL
-
-  NPARAM <- 4   # There are actually 5 parameters, but only one of lagshare
-  # or linyears is used in a single model design.
-
-  ## Set options for ensembles
-  ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 3)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
-  limits.CROPLAND <- c(0.1, 2)
-  limits.LAGSHARE <- c(0.5, 0.99)
-  limits.LINYEARS <- round(c(10, 20))
-
-  serialnumber <- skip + (1:N)
-  rn <- randtoolbox::sobol(N+skip, NPARAM)
-  rn <- rn[serialnumber,]
-  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
-  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
-  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
-  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
-  levels.LAGSHARE <- scl(rn[,4], limits.LAGSHARE)
-  levels.LINYEARS <- round(scl(rn[,4], limits.LINYEARS))  # reuse rn[,4] because
-  # lagshare and linyears are mutually
-  # exclusive
-
-  ## Filename suffix.  This will be used to create unique filenames for the
-  ## outputs across all worker processes, continuation runs, etc.
-  suffix <- sprintf("-%06d",skip)
-
-  # Set up a list to store scenario information objects
-  scenObjects <- Map(gen_ensemble_member,
-                     levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
-                     levels.LAGSHARE, levels.LINYEARS, serialnumber,
-                     atype, suffix, aOutputDir) %>%
-    unlist(recursive=FALSE)
-
-  serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
-
-  # Loop over all scenario configurations and run the model
-  rslt <-
-    foreach(obj = serialized_scenObjs, .combine=rbind) %dopar% {
-      if(!is.null(logparallel)) {
-        nn <- Sys.info()['nodename']
-        sn <- obj$mScenarioName
-        fn <- file.path(logparallel, paste0('info-', sn, '.txt'))
-        print(fn)
-        logfil <- file(fn, 'w')
-        if(!file.exists(fn)) {
-          stop("Couldn't create logfile: ", fn)
-        }
-        writeLines(c('nodename= ', nn), con=logfil)
-        writeLines(capture.output(sessionInfo()),con=logfil)
-        flush(logfil)
-      }
-
-      if(N <= 50)  {
-        message("Starting simulation: ", obj$mScenarioName)
-      }
-
-      si <- as.ScenarioInfo(obj)
-      if(N > 50) {
-        rslt <- suppressMessages(run_model(si))
-      }
-      else {
-        rslt <- run_model(si)
-      }
-
-      message("Finished: ", obj$mSerialNumber)
-
-      if(!is.null(logparallel)) {
-        writeLines(capture.output(warnings()), con=logfil)
-        close(logfil)
-      }
-      rslt
-    }
-
-  message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
-          format(utils::object.size(rslt), units="auto"))
-
-  ## Save the full set of ensemble results
-  filebase <- paste0("output_ensemble", suffix, '_noBayes',".rds")
-  outfile <- file.path(aOutputDir, filebase)
-  saveRDS(rslt, outfile)
-
-  return(list(rslt, scenObjects, lprior, lpdf, outfile, suffix))
-}
-
 #' Generate the ensemble members for a single set of parameters
 #'
 #' This generates one each of the Perfect, Lagged, and Linear scenario types
@@ -554,28 +362,38 @@ run_ensemble_no_bayes <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param agForNonPast The logit exponent for the non-pasture nest, which
 #' controls competition between crops, grass/shrub, and forest.
 #' @param crop The logit exponent for the crop nest
-#' @param share The share parameter for the lagged model
-#' @param linyears The number of years parameter for the linear model
+#' @param share1 The share parameter for the lagged model for crop group 1 (see constants.R)
+#' @param share2 The share parameter for the lagged model for crop group 2 (see constants.R)
+#' @param share3 The share parameter for the lagged model for crop group 3 (see constants.R)
+#' @param linyears1 The number of years parameter for the linear model for crop group 1 (see constants.R)
+#' @param linyears2 The number of years parameter for the linear model for crop group 2 (see constants.R)
+#' @param linyears3 The number of years parameter for the linear model for crop group 3 (see constants.R)
 #' @param serialnum Serial number for the run
-#' @param scentype Scenario type, either "Hindcast" or "Reference"
+#' @param aScenType Scenario type, either "Hindcast" or "Reference"
+#' @param aIncludeSubsidies Boolean flag indicating whether subsidies should be included in profit
 #' @param suffix Suffix for output filenames.
 #' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
-gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
-                                serialnum, scentype, suffix, aOutputDir)
+gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share3, linyears1, linyears2, linyears3,
+                                serialnum, aScenType, aIncludeSubsidies, suffix, aOutputDir)
 {
   ## Perfect expectations scenario
-  scenName <- getScenName(scentype, "Perfect", NULL, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Perfect", NULL, agFor, agForNonPast, crop)
 
-  perfscen <- ScenarioInfo(aScenarioType = scentype,
+  perfscen <- ScenarioInfo(aScenarioType = aScenType,
                            aExpectationType = "Perfect",
-                           aLinearYears = NA,
-                           aLaggedShareOld = NA,
+                           aLinearYears1 = NA,
+                           aLinearYears2 = NA,
+                           aLinearYears3 = NA,
+                           aLaggedShareOld1 = NA,
+                           aLaggedShareOld2 = NA,
+                           aLaggedShareOld3 = NA,
                            aLogitUseDefault = FALSE,
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
                            aLogitCropland = crop,
+                           aIncludeSubsidies = aIncludeSubsidies,
                            aScenarioName = scenName,
                            aFileName = paste0("ensemble", suffix),
                            aSerialNum = serialnum+0.1,
@@ -583,62 +401,87 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share, linyears,
 
 
   ## Lagged scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
-  scenName <- getScenName(scentype, "Lagged", share, agFor, agForNonPast, crop)
+  share <- paste(share1, share2, share3, sep="-")
+  scenName <- getScenName(aScenType, "Lagged", share, agFor, agForNonPast, crop)
 
-  lagscen <- ScenarioInfo(aScenarioType = scentype,
+  lagscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Lagged",
-                          aLinearYears = NA,
-                          aLaggedShareOld = share,
+                          aLinearYears1 = NA,
+                          aLinearYears2 = NA,
+                          aLinearYears3 = NA,
+                          aLaggedShareOld1 = share1,
+                          aLaggedShareOld2 = share2,
+                          aLaggedShareOld3 = share3,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
   ## Lagged scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
-  scenName <- getScenName(scentype, "LaggedCurr", share, agFor, agForNonPast, crop)
+  share <- paste(share1, share2, share3, sep="-")
+  scenName <- getScenName(aScenType, "LaggedCurr", share, agFor, agForNonPast, crop)
 
-  lagcurrscen <- ScenarioInfo(aScenarioType = scentype,
+  lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "LaggedCurr",
-                          aLinearYears = NA,
-                          aLaggedShareOld = share,
+                          aLinearYears1 = NA,
+                          aLinearYears2 = NA,
+                          aLinearYears3 = NA,
+                          aLaggedShareOld1 = share1,
+                          aLaggedShareOld2 = share2,
+                          aLaggedShareOld3 = share3,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.3,
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
-  scenName <- getScenName(scentype, "Linear", linyears, agFor, agForNonPast, crop)
-  linscen <- ScenarioInfo(aScenarioType = scentype,
+  linyears <- paste(linyears1, linyears2, linyears3, sep="-")
+  scenName <- getScenName(aScenType, "Linear", linyears, agFor, agForNonPast, crop)
+  linscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Linear",
-                          aLinearYears = linyears,
-                          aLaggedShareOld = NA,
+                          aLinearYears1 = linyears1,
+                          aLinearYears2 = linyears2,
+                          aLinearYears3 = linyears3,
+                          aLaggedShareOld1 = NA,
+                          aLaggedShareOld2 = NA,
+                          aLaggedShareOld3 = NA,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.4,
                           aOutputDir = aOutputDir)
 
   ## mixed scenario, using linear for yield and adaptive for prices
-  scenName <- getScenName(scentype, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
-  mixedscen <- ScenarioInfo(aScenarioType = scentype,
+  linyears <- paste(linyears1, linyears2, linyears3, sep="-")
+  share <- paste(share1, share2, share3, sep="-")
+  scenName <- getScenName(aScenType, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
+  mixedscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Mixed",
-                          aLinearYears = linyears,
-                          aLaggedShareOld = share,
+                          aLinearYears1 = linyears1,
+                          aLinearYears2 = linyears2,
+                          aLinearYears3 = linyears3,
+                          aLaggedShareOld1 = share1,
+                          aLaggedShareOld2 = share2,
+                          aLaggedShareOld3 = share3,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
                           aLogitCropland = crop,
+                          aIncludeSubsidies = aIncludeSubsidies,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.5,
