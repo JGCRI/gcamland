@@ -281,8 +281,9 @@ MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NUL
 {
   # Silence package checks
   land.type <- region <- variable <- objfun <- objfunval <- expectation.type <-
-    share.old <- linear.years <- logit.agforest <- logit.afnonpast <-
-    logit.crop <- minimizervalue <- NULL
+    share.old1 <- share.old2 <- share.old3 <- linear.years1 <- linear.years2 <-
+    linear.years3 <- logit.agforest <- logit.afnonpast <- logit.crop <-
+      minimizervalue <- NULL
 
   if(!inherits(samples, 'data.frame')) {
     ## Check that this is a scenario list
@@ -293,7 +294,8 @@ MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NUL
   if(is.null(reportvars)) {
     ## Use default values of reportvars
     reportvars <- c('logit.agforest', 'logit.afnonpast', 'logit.crop',
-                    'share.old', 'linear.years')
+                    'share.old1', 'share.old2',  'share.old3',
+                    'linear.years1', 'linear.years2', 'linear.years3')
   }
 
   if(is.null(landtypes)){
@@ -326,8 +328,9 @@ MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NUL
           # Calculate the average across those land.types of that
           # objective function for each parameter set:
           group_by(region, variable, objfun, expectation.type,
-                   share.old, linear.years, logit.agforest,
-                   logit.afnonpast, logit.crop) %>%
+                   share.old1, share.old2, share.old3,
+                   linear.years1, linear.years2, linear.years3,
+                   logit.agforest, logit.afnonpast, logit.crop) %>%
           # TODO ^ group by region may change when look beyond US.
           summarise(landTypeMeanObjFunVal = mean(minimizervalue, na.rm = T)) %>%
           ungroup ->
