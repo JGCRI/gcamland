@@ -10,7 +10,7 @@ run_ensemble(
   aOutputDir = "./outputs",
   skip = 0,
   aType = "Hindcast",
-  IncludeSubsidies = FALSE,
+  aIncludeSubsidies = FALSE,
   aDifferentiateParamByCrop = FALSE,
   aSampleType = "LatinHyperCube",
   aTotalSamplesPlanned = 500,
@@ -26,6 +26,8 @@ run_ensemble(
 
 \item{aType}{Scenario type: either "Reference" or "Hindcast"}
 
+\item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
+
 \item{aDifferentiateParamByCrop}{Boolean indicating whether all crops should use the same expectation parameters}
 
 \item{aSampleType}{String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported}
@@ -34,8 +36,6 @@ run_ensemble(
 
 \item{logparallel}{Name of directory to use for parallel workers' log files.
 If \code{NULL}, then don't write log files.}
-
-\item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
 }
 \value{
 List of ScenarioInfo objects for the ensemble members
