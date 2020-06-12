@@ -7,7 +7,8 @@
 #' @return YieldRatio in historical period
 #' @import readr
 #' @importFrom tidyr gather
-#' @importFrom dplyr mutate select left_join filter
+#' @importFrom dplyr mutate
+#' @importFrom stats aggregate
 #' @author KVC June 2019
 #' @export
 get_historic_yields <- function(){
@@ -27,29 +28,27 @@ get_historic_yields <- function(){
 
   # Tidy data
   faoHA %>%
-    gather(year, ha, -FAO_country, -item) %>%
-    mutate(year = as.integer(year), ha = as.integer(ha)) ->
+    gather(year, ha, -FAO_country, -item) ->
     faoHA
+  faoHA$year <- as.integer(faoHA$year)
+  faoHA$ha <- as.integer(faoHA$ha)
 
   faoProd %>%
-    gather(year, prod, -FAO_country, -item) %>%
-    mutate(year = as.integer(year)) ->
+    gather(year, prod, -FAO_country, -item) ->
     faoProd
+  faoProd$year <- as.integer(faoProd$year)
 
   # Join data and compute average yield
-  faoHA %>%
-    left_join(faoProd, by=c("FAO_country", "item", "year")) %>%
-    left_join(select(agluCtry, FAO_country, iso), by="FAO_country") %>%
-    left_join(select(iso_GCAM_regID, iso, GCAM_region_ID), by="iso") %>%
-    left_join(GCAM_region_names, by="GCAM_region_ID") %>%
-    left_join(select(FAO_ag_items_PRODSTAT, item, GCAM_commodity), by="item") %>%
-    na.omit() %>%
-    group_by(region, GCAM_commodity, year) %>%
-    summarize(ha = sum(ha), prod = sum(prod)) %>%
-    ungroup %>%
-    mutate(yield = prod / ha) %>%
-    select(region, GCAM_commodity, year, yield) ->
-    faoYield
+  faoYield <- merge(faoHA, faoProd, by=c("FAO_country", "item", "year"), all.x = TRUE)
+  faoYield <- merge(faoYield, agluCtry[c("FAO_country", "iso")], by=c("FAO_country"), all.x = TRUE)
+  faoYield <- merge(faoYield, iso_GCAM_regID[c("iso", "GCAM_region_ID")], by=c("iso"), all.x = TRUE)
+  faoYield <- merge(faoYield, GCAM_region_names, by=c("GCAM_region_ID"), all.x = TRUE)
+  faoYield <- merge(faoYield, FAO_ag_items_PRODSTAT[c("item", "GCAM_commodity")], by=c("item"), all.x = TRUE)
+  faoYield <- na.omit(faoYield)
+  faoYield <- faoYield[c("region", "GCAM_commodity", "year", "ha", "prod")]
+  faoYield <- aggregate(.~region + GCAM_commodity + year, faoYield, FUN="sum")
+  faoYield$yield <- faoYield$prod / faoYield$ha
+  faoYield <- faoYield[c("region", "GCAM_commodity", "year", "yield")]
 
   return(faoYield)
 }

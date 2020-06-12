@@ -4,8 +4,14 @@
 \alias{HPDI}
 \title{Calculate highest posterior density interval (HPDI) for a set of samples}
 \usage{
-HPDI(samples, interval = 0.95, modelgroup = "expectation.type",
-  reportvars = NULL, weighted = TRUE, lp = "lp_")
+HPDI(
+  samples,
+  interval = 0.95,
+  modelgroup = "expectation.type",
+  reportvars = NULL,
+  weighted = TRUE,
+  lp = "lp_"
+)
 }
 \arguments{
 \item{samples}{Monte Carlo samples, given either as a grand table or a list

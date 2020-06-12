@@ -4,10 +4,19 @@
 \alias{run_ensemble}
 \title{Run an ensemble of offline land models}
 \usage{
-run_ensemble(N = 500, aOutputDir = "./outputs", skip = 0,
-  lpdf = get_lpdf(1), lprior = uniform_prior, aType = "Hindcast",
-  aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE,
-  logparallel = NULL)
+run_ensemble(
+  N = 500,
+  aOutputDir = "./outputs",
+  skip = 0,
+  lpdf = get_lpdf(1),
+  lprior = uniform_prior,
+  aType = "Hindcast",
+  aIncludeSubsidies = FALSE,
+  aDifferentiateParamByCrop = FALSE,
+  aSampleType = "LatinHyperCube",
+  aTotalSamplesPlanned = 500,
+  logparallel = NULL
+)
 }
 \arguments{
 \item{N}{Number of parameter sets to select}
@@ -27,6 +36,10 @@ posteriors are being run.}
 \item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
 
 \item{aDifferentiateParamByCrop}{Boolean indicating whether all crops should use the same expectation parameters}
+
+\item{aSampleType}{String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported}
+
+\item{aTotalSamplesPlanned}{Number of samples planned. For Latin Hypercube, we need to know the total before we start.}
 
 \item{logparallel}{Name of directory to use for parallel workers' log files.
 If \code{NULL}, then don't write log files.}

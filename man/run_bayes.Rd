@@ -4,8 +4,13 @@
 \alias{run_bayes}
 \title{Run all the Bayesian analysis on a list of scenarios}
 \usage{
-run_bayes(aScenarioList, years = NULL, landtypes = NULL,
-  lpdf = get_lpdf(1), lprior = uniform_prior)
+run_bayes(
+  aScenarioList,
+  years = NULL,
+  landtypes = NULL,
+  lpdf = get_lpdf(1),
+  lprior = uniform_prior
+)
 }
 \arguments{
 \item{aScenarioList}{List of ScenarioInfo structures}

@@ -4,8 +4,7 @@
 \alias{MAP}
 \title{Calculate MAP (maximum a posteriori) estimates for a collection of model runs}
 \usage{
-MAP(samples, modelgroup = "expectation.type", reportvars = NULL,
-  lp = "lp_")
+MAP(samples, modelgroup = "expectation.type", reportvars = NULL, lp = "lp_")
 }
 \arguments{
 \item{samples}{Monte Carlo samples, given either as a grand table or a list

@@ -10,7 +10,7 @@
 #' @export
 get_prices <- function(aScenType) {
   # Silence package checks
-  region <- sector <- year <- price <- scenario <- Units <- NULL
+  region <- sector <- year <- price <- scenario <- Units <- subregion <- NULL
 
   # Get prices
   if(aScenType == "Hindcast") {

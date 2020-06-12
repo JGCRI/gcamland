@@ -33,6 +33,8 @@
 #' @param aType Scenario type: either "Reference" or "Hindcast"
 #' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
 #' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
+#' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
+#' @param aTotalSamplesPlanned Number of samples planned. For Latin Hypercube, we need to know the total before we start.
 #' @param logparallel Name of directory to use for parallel workers' log files.
 #' If \code{NULL}, then don't write log files.
 #' @return List of ScenarioInfo objects for the ensemble members
@@ -42,8 +44,8 @@
 #' @export
 run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
-                         aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE,
-                         logparallel=NULL) {
+                         aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
+                         aTotalSamplesPlanned = 500, logparallel=NULL) {
   # Silence package checks
   obj <- NULL
 
@@ -57,33 +59,41 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
   ## Set options for ensembles
   ## min and max values for each parameter
-  limits.AGROFOREST <- c(0.1, 3)
-  limits.AGROFOREST_NONPASTURE <- c(0.1, 2)
-  limits.CROPLAND <- c(0.1, 2)
+  limits.AGROFOREST <- c(0.01, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
+  limits.CROPLAND <- c(0.01, 3)
   limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
-  limits.LINYEARS <- round(c(10, 20)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
-  rn <- randtoolbox::sobol(N+skip, NPARAM)
-  rn <- rn[serialnumber,]
-  scl <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
-  levels.AGROFOREST <- scl(rn[,1], limits.AGROFOREST)
-  levels.AGROFOREST_NONPASTURE <- scl(rn[,2], limits.AGROFOREST_NONPASTURE)
-  levels.CROPLAND <- scl(rn[,3], limits.CROPLAND)
+  if( aSampleType == "LatinHyperCube" ) {
+    set.seed(1234)
+    randomNumbers <- lhs::randomLHS(aTotalSamplesPlanned, NPARAM)
+  } else if( aSampleType == "Sobol" ) {
+    randomNumbers <- randtoolbox::sobol(N+skip, NPARAM)
+  } else {
+    stop("Unknown Sampling Type")
+  }
+  randomNumbers <- randomNumbers[serialnumber,]
+
+  scaleParam <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
+  levels.AGROFOREST <- scaleParam(randomNumbers[,1], limits.AGROFOREST)
+  levels.AGROFOREST_NONPASTURE <- scaleParam(randomNumbers[,2], limits.AGROFOREST_NONPASTURE)
+  levels.CROPLAND <- scaleParam(randomNumbers[,3], limits.CROPLAND)
   if( aDifferentiateParamByCrop ) {
     # Set expectation parameters equal for all three crop groups
-    levels.LAGSHARE1 <- scl(rn[,4], limits.LAGSHARE)
-    levels.LAGSHARE2 <- scl(rn[,5], limits.LAGSHARE)
-    levels.LAGSHARE3 <- scl(rn[,6], limits.LAGSHARE)
-    levels.LINYEARS1 <- round(scl(rn[,7], limits.LINYEARS))
-    levels.LINYEARS2 <- round(scl(rn[,8], limits.LINYEARS))
-    levels.LINYEARS3 <- round(scl(rn[,9], limits.LINYEARS))
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
+    levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
   } else {
     # Set expectation parameters equal for all three crop groups
-    levels.LAGSHARE1 <- scl(rn[,4], limits.LAGSHARE)
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
     levels.LAGSHARE2 <- levels.LAGSHARE1
     levels.LAGSHARE3 <- levels.LAGSHARE1
-    levels.LINYEARS1 <- round(scl(rn[,5], limits.LINYEARS))
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,5], limits.LINYEARS))
     levels.LINYEARS2 <- levels.LINYEARS1
     levels.LINYEARS3 <- levels.LINYEARS1
   }

@@ -4,9 +4,22 @@
 \alias{gen_ensemble_member}
 \title{Generate the ensemble members for a single set of parameters}
 \usage{
-gen_ensemble_member(agFor, agForNonPast, crop, share1, share2, share3,
-  linyears1, linyears2, linyears3, serialnum, aScenType, aIncludeSubsidies,
-  suffix, aOutputDir)
+gen_ensemble_member(
+  agFor,
+  agForNonPast,
+  crop,
+  share1,
+  share2,
+  share3,
+  linyears1,
+  linyears2,
+  linyears3,
+  serialnum,
+  aScenType,
+  aIncludeSubsidies,
+  suffix,
+  aOutputDir
+)
 }
 \arguments{
 \item{agFor}{The logit exponent the ag/forest nest, which controls

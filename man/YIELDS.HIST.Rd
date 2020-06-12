@@ -4,7 +4,9 @@
 \name{YIELDS.HIST}
 \alias{YIELDS.HIST}
 \title{Historic FAO Yields}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14953 rows and 4 columns.}
+\format{
+An object of class \code{data.frame} with 14953 rows and 4 columns.
+}
 \usage{
 YIELDS.HIST
 }

@@ -4,8 +4,12 @@
 \alias{LandAllocator_calculateNodeProfitRates}
 \title{LandAllocator_calculateNodeProfitRates}
 \usage{
-LandAllocator_calculateNodeProfitRates(aLandAllocator, aUnmanagedLandValue,
-  aChoiceFunction, aPeriod)
+LandAllocator_calculateNodeProfitRates(
+  aLandAllocator,
+  aUnmanagedLandValue,
+  aChoiceFunction,
+  aPeriod
+)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator}

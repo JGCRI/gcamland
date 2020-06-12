@@ -4,8 +4,11 @@
 \alias{UnmanagedLandLeaf_setUnmanagedLandProfitRate}
 \title{UnmanagedLandLeaf_setUnmanagedLandProfitRate}
 \usage{
-UnmanagedLandLeaf_setUnmanagedLandProfitRate(aUnmanagedLandLeaf,
-  aAverageProfitRate, aPeriod)
+UnmanagedLandLeaf_setUnmanagedLandProfitRate(
+  aUnmanagedLandLeaf,
+  aAverageProfitRate,
+  aPeriod
+)
 }
 \arguments{
 \item{aUnmanagedLandLeaf}{Leaf to set profit rate for}

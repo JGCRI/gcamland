@@ -4,15 +4,30 @@
 \alias{ScenarioInfo}
 \title{ScenarioInfo constructor}
 \usage{
-ScenarioInfo(aExpectationType = NULL, aLaggedShareOld1 = NA,
-  aLaggedShareOld2 = NA, aLaggedShareOld3 = NA, aLinearYears1 = NA,
-  aLinearYears2 = NA, aLinearYears3 = NA, aLogitUseDefault = TRUE,
-  aLogitAgroForest = NA, aLogitAgroForest_NonPasture = NA,
-  aLogitCropland = NA, aUseZeroCost = FALSE, aCalibrateShareWt = TRUE,
-  aIncludeSubsidies = FALSE, aShareWeights = NULL,
-  aScenarioType = DEFAULT.SCENARIO.TYPE, aScenarioName = NULL,
-  aFileName = NULL, aOutputDir = "./outputs", aSerialNum = NA,
-  aRegion = DEFAULT.REGION, aSubRegion = NULL)
+ScenarioInfo(
+  aExpectationType = NULL,
+  aLaggedShareOld1 = NA,
+  aLaggedShareOld2 = NA,
+  aLaggedShareOld3 = NA,
+  aLinearYears1 = NA,
+  aLinearYears2 = NA,
+  aLinearYears3 = NA,
+  aLogitUseDefault = TRUE,
+  aLogitAgroForest = NA,
+  aLogitAgroForest_NonPasture = NA,
+  aLogitCropland = NA,
+  aUseZeroCost = FALSE,
+  aCalibrateShareWt = TRUE,
+  aIncludeSubsidies = FALSE,
+  aShareWeights = NULL,
+  aScenarioType = DEFAULT.SCENARIO.TYPE,
+  aScenarioName = NULL,
+  aFileName = NULL,
+  aOutputDir = "./outputs",
+  aSerialNum = NA,
+  aRegion = DEFAULT.REGION,
+  aSubRegion = NULL
+)
 }
 \arguments{
 \item{aExpectationType}{Expectation type}

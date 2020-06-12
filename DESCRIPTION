@@ -6,7 +6,7 @@ Author: Katherine Calvin
 Maintainer: Katherine Calvin <katherine.calvin@pnnl.gov>
 Description: Allocates land among a variety of uses following the methodology in GCAM (github.com/jgcri/gcam-core).
 License: file LICENSE
-Depends: R (>= 3.3)
+Depends: R (>= 3.4.3)
 Imports:
     assertthat (>= 0.2),
     dplyr (>= 0.4.3),
@@ -17,10 +17,11 @@ Imports:
     igraph (>= 1.0.1),
     randtoolbox (>= 1.17),
     doParallel (>= 1.0.7),
-    foreach (>= 1.4)
+    foreach (>= 1.4),
+    lhs (>= 1.0)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: testthat,
     covr
 BugReports: https://github.com/JGCRI/gcamland/issues
