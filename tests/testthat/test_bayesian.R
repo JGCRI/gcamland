@@ -1,6 +1,6 @@
 context("Bayesian")
 
-testscenarios <- readRDS('data/scenario-info.rds')
+testscenarios <- readRDS('data/bayes-scenario-info.rds')
 
 test_that("get_historical_land_data returns filtered FAO data", {
     ## no filtering
@@ -57,8 +57,8 @@ test_that("Functions returned by get_lpdf are valid", {
 })
 
 
-test_that("The table produced by grand_table is grand.", {
-    gt <- grand_table(testscenarios)
+test_that("The table produced by grand_table_bayes is grand.", {
+    gt <- grand_table_bayes(testscenarios)
     expect_true(inherits(gt, 'data.frame'))
     expect_equal(nrow(gt), 10000)
     expect_equal(ncol(gt), 9)
@@ -73,8 +73,8 @@ test_that("The table produced by grand_table is grand.", {
 })
 
 
-test_that("MAP function produces correct answer.", {
-    map <- MAP(testscenarios)
+test_that("MAP_bayes function produces correct answer.", {
+    map <- MAP_bayes(testscenarios)
     expect_true(inherits(map, 'data.frame'))
     expect_equal(nrow(map), 2)
     expect_equal(ncol(map), 8)
