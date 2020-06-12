@@ -9,7 +9,7 @@
 #' Run user-specified objective function evaluations on a list of scenarios
 #'
 #' The assumption is that the scenarios have already been run.  The best way to
-#' arrange this is to use the return value of \code{\link{run_ensemble_no_analysis}} as the
+#' arrange this is to use the return value of \code{\link{run_ensemble}} as the
 #' argument to this function
 #'
 #' The \code{years} and \code{landtypes} arguments can be use to restrict the

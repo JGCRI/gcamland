@@ -33,7 +33,7 @@ ScenarioInfo$mObjFunEval.
 }
 \description{
 The assumption is that the scenarios have already been run.  The best way to
-arrange this is to use the return value of \code{\link{run_ensemble_no_analysis}} as the
+arrange this is to use the return value of \code{\link{run_ensemble}} as the
 argument to this function
 }
 \details{

@@ -1,4 +1,4 @@
-#' gcamland: A stand-alone implementation of the GCAM land allocation subsystem.
+ #' gcamland: A stand-alone implementation of the GCAM land allocation subsystem.
 #'
 #' The \code{gcamland} package replicates the land allocation decisions made in
 #' GCAM (\url{https:://github.com/jgcri/gcam-core}). The equations are documented in
@@ -26,9 +26,9 @@
 #'
 #' \strong{Running Ensembles}
 #'
-#' The \code{\link{run_ensemble}} function function will generate and run a
+#' The \code{\link{run_ensemble_bayes}} function function will generate and run a
 #' collection of scenarios with varying parameters. The parameters are sampled
-#' quasi-randomly using a Sobol sequence. The arguments to \code{run_ensemble} are the
+#' quasi-randomly using a Sobol sequence. The arguments to \code{run_ensemble_bayes} are the
 #' number of samples (for each expectation model, so 3 times that many will
 #' actually be run), output directory, and (optionally) scenario type.
 #'
@@ -38,9 +38,9 @@
 #' rest.
 #' \preformatted{
 #' registerDoParallel(cores=6)
-#' ensemble_scenarios <- run_ensemble(1000, './ensemble-output')
+#' ensemble_scenarios <- run_ensemble_bayes(1000, './ensemble-output')
 #' }
-#' The return value from \code{run_ensemble} is a list of \code{ScenarioInfo}
+#' The return value from \code{run_ensemble_bayes} is a list of \code{ScenarioInfo}
 #' structures for the scenarios that were run.
 #'
 #' For very large ensembles ensembles you will probably want to run them in
@@ -59,13 +59,13 @@
 #' results.  The \code{\link{run_bayes}} function compares the model outputs to
 #' the historical data and computes posterior probability densities for the
 #' samples.  The results of \code{run_bayes} are stored in the
-#' \code{ScenarioInfo} structures.  You can use the \code{\link{grand_table}}
+#' \code{ScenarioInfo} structures.  You can use the \code{\link{grand_table_bayes}}
 #' function to reorganize these results into a table for more convenient
 #' analysis.
 #'
 #' Other Bayesian analysis functions include:
 #' \describe{
-#' \item{\code{\link{MAP}}}{Maximum a posteriori parameter
+#' \item{\code{\link{MAP_bayes}}}{Maximum a posteriori parameter
 #' estimate.}
 #' \item{\code{\link{EV}}}{Expectation value for parameters.}
 #' \item{\code{\link{HPDI}}}{Highest Posterior Density Interval (a type of
