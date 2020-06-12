@@ -1,43 +1,36 @@
 ---
-title: "Tutorial work flow with objective functions"
-author: "ACS"
-output: 
-  html_document:
-      toc: true
-      toc_float: true
-      toc_depth: 4
-      number_sections: true
+title: "Tutorial work flow with objective function-based analysis"
+author: "Abigail Snyder"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial work flow with objective function-based analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
 knitr::opts_chunk$set(echo = TRUE)
 library(gcamland)
 library(dplyr)
 library(tidyr)
 ```
 
-# Motivation/notes
-
-- Operate on a truncated version of the `run_ensemble` function for testing and developing analysis work flow with objective functions:
-`run_ensemble_no_analysis`. This version removes the `lpdf` and `lprior` arguments as well as the `if` statement that launches `run_bayes`. 
-This seems like a cleaner way to support two different styles of analysis; otherwise, we'd have to add more arguments to `run_ensemble` to 
-specify which objective functions to use, and unless a run was doing both bayesian and objective function analysis, only a subset of the 
-arguments would ever be used. Seems cleaner to the do the run and break out the analysis after the fact, whether bayesian or objective function.
-- This approach will rely on some of the utility functions defined in `bayesian.R` like `get_historical_land_data`. These have been
-moved to their own script, and some have been updated from `internal` to `export` so that they can still be called from `bayesian.R` functions.
-
-
-
 # Setup params
 
-Pick the number of runs to do
+Pick the number of runs to do. We select only two for this tutorial to speed things up.
 
 ```{r}
-Nruns <- 10
+Nruns <- 2
 ```
 
 # Do some runs 
-Now, by default, no analysis is run. Only the ensemble of runs is generated, and analysis can be done after the fact. 
+By default, no analysis is run. Only the ensemble of runs is generated, and analysis can be done after the fact. 
 
 An example of the call to run the model, as well as the progress print statements included.
 ```{r}
@@ -200,5 +193,4 @@ GTobjective %>%
 
 knitr::kable(MAP_objective(GTobjective, objfun_to_min = 'rms', landtypes = c('OtherGrain')))
 ```
-
 
