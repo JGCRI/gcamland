@@ -49,7 +49,7 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
   # Silence package checks
   region <- land.type <- variable <- obs <- model <- modelMean <- obsMean <-
     obsSD <- modelSD <- corr <- objfunval <- scenario <- year <- trend <-
-    detrended <- obsvar <- NULL
+    detrended <- obsvar <- . <- NULL
 
   # Pull the comparison data and model data
   rgns <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
@@ -197,7 +197,7 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
 grand_table_objective <- function(aScenarioList)
 {
   ## silence package checks
-  scenario <- year <- obs <- trend <- detrended <- obsvarl <- model <- NULL
+  scenario <- year <- obs <- trend <- detrended <- obsvar <- model <- NULL
 
   tbllen <- sapply(aScenarioList, function(s) {length(s$mObjFunEval)})
   if(any(tbllen) == 0) {
