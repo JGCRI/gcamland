@@ -4,12 +4,12 @@
 \alias{ReadData_AgProd}
 \title{ReadData_AgProd}
 \usage{
-ReadData_AgProd(aRegionName, ascentype, aSubRegion, subregionData = NULL)
+ReadData_AgProd(aRegionName, aScenType, aSubRegion, subregionData = NULL)
 }
 \arguments{
 \item{aRegionName}{Region to read data for}
 
-\item{ascentype}{Scenario type: either "Reference" or "Hindcast"}
+\item{aScenType}{Scenario type: either "Reference" or "Hindcast"}
 
 \item{aSubRegion}{Subregion to read data for}
 

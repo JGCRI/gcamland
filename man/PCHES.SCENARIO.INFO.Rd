@@ -4,7 +4,9 @@
 \name{PCHES.SCENARIO.INFO}
 \alias{PCHES.SCENARIO.INFO}
 \title{PCHES.SCENARIO.INFO}
-\format{An object of class \code{ScenarioInfo} (inherits from \code{environment}) of length 19.}
+\format{
+An object of class \code{ScenarioInfo} (inherits from \code{environment}) of length 24.
+}
 \usage{
 PCHES.SCENARIO.INFO
 }

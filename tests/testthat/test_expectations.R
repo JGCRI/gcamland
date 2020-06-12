@@ -9,6 +9,7 @@ test_that("yield expectation calculation works", {
   # First, create a land leaf
   testLeaf <- LandLeaf("test", TIME.PARAMS[[DEFAULT.SCENARIO.TYPE]]$FINAL_CALIBRATION_PERIOD,
                        max(PERIODS[[DEFAULT.SCENARIO.TYPE]]))
+  testLeaf$mProductName <- "Corn" # Product name used to determine which expectation parameters to use
   testLeaf$mYield[1] <- 1
   testLeaf$mYield[2] <- 2
   testLeaf$mYield[3] <- 3
@@ -19,8 +20,12 @@ test_that("yield expectation calculation works", {
 
   # Next, create a temp scenarioInfo object with the right parameters
   tempScen <- ScenarioInfo()
-  tempScen$mLaggedShareOld <- 0.5
-  tempScen$mLinearYears <- 2
+  tempScen$mLaggedShareOld1 <- 0.5
+  tempScen$mLaggedShareOld2 <- 0.5
+  tempScen$mLaggedShareOld3 <- 0.5
+  tempScen$mLinearYears1 <- 2
+  tempScen$mLinearYears2 <- 2
+  tempScen$mLinearYears3 <- 2
 
   # Expectation type needs to be set for lagged expectations to work
   # (other types will ignore this field)

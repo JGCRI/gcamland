@@ -27,6 +27,17 @@ PERIODS <- sapply(SCEN.TYPES, function(type) {
                   }, simplify=FALSE, USE.NAMES=TRUE)
 
 # **************************************************************************************************************
+# * Crop groupings for expectations. gcamland has the option of differentiating expectation
+# * parameters by crop. We do this in three groups, with the crops belonging to each group specified here.
+# * Groupings are based on correlation coefficients between profit & land for different expectations.
+# * We do not have correlations for PalmFruit, Pasture, biomass, FodderHerb, FodderGrass, or Forest so putting in group 3
+CROP_GROUP1 <- c("Wheat", "OtherGrain", "MiscCrop")
+CROP_GROUP2 <- c("Corn", "SugarCrop", "Root_Tuber")
+CROP_GROUP3 <- c("OilCrop", "Pasture", "biomass",
+                 "Rice", "PalmFruit", "FodderHerb",
+                 "FodderGrass", "FiberCrop", "Forest", "willow")
+
+# **************************************************************************************************************
 # * Threshold-related constants
 # TODO: Make sure these are consistent with GCAM
 LARGE_NUMBER <- 1e9

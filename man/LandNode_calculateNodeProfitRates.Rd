@@ -4,8 +4,12 @@
 \alias{LandNode_calculateNodeProfitRates}
 \title{LandNode_calculateNodeProfitRates}
 \usage{
-LandNode_calculateNodeProfitRates(aLandNode, aAverageProfitRateAbove,
-  aChoiceFnAbove, aPeriod)
+LandNode_calculateNodeProfitRates(
+  aLandNode,
+  aAverageProfitRateAbove,
+  aChoiceFnAbove,
+  aPeriod
+)
 }
 \arguments{
 \item{aLandNode}{Current land node}

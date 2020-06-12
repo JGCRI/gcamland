@@ -4,8 +4,13 @@
 \alias{EV}
 \title{Calculate the parameter expectation values for a collection of model runs.}
 \usage{
-EV(samples, modelgroup = "expectation.type", reportvars = NULL,
-  weighted = TRUE, lp = "lp_")
+EV(
+  samples,
+  modelgroup = "expectation.type",
+  reportvars = NULL,
+  weighted = TRUE,
+  lp = "lp_"
+)
 }
 \arguments{
 \item{samples}{Monte Carlo samples, given either as a grand table or a list

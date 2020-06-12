@@ -4,8 +4,15 @@
 \alias{Leaf_setup}
 \title{Leaf_setup}
 \usage{
-Leaf_setup(aLandAllocator, aRegionName, aData, aColName, aScenarioInfo,
-  aAgData = NULL, newTechData = NULL)
+Leaf_setup(
+  aLandAllocator,
+  aRegionName,
+  aData,
+  aColName,
+  aScenarioInfo,
+  aAgData = NULL,
+  newTechData = NULL
+)
 }
 \arguments{
 \item{aLandAllocator}{LandAllocator that needs set up}

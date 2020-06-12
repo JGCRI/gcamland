@@ -102,6 +102,8 @@ test_that("land cover matches reference values", {
       select(-scenario) ->
       outputData
 
+    compareData <- compareData[c("name", "year", "region", "land.allocation")]
+
     expect_identical(dim(outputData), dim(compareData),
                      info = paste("Dimensions are not the same for reference land allocation"))
 
@@ -214,8 +216,7 @@ test_that("land area doesn't change over time", {
 
   # Aggregate to regions
   outputData %>%
-    separate(name, into=c("type", "AEZ"), sep="AEZ") %>%
-    group_by(AEZ, year) %>%
+    group_by(year) %>%
     summarize(land.allocation = sum(land.allocation)) ->
     outputData
 
@@ -230,7 +231,7 @@ test_that("land area doesn't change over time", {
               by = "uniqueJoinField") %>%
     select(-uniqueJoinField) %>%
     # Select appropriate columns
-    select(AEZ, year, land.allocation) ->
+    select(year, land.allocation) ->
     compareData
 
   expect_equivalent(round_df(outputData), round_df(compareData),
@@ -258,9 +259,10 @@ test_that("scenario land data is correct", {
     na.omit() ->
     modeldata
 
-  comparedata <- c(0.000000, 331.982760,  43.296600,  85.523100,  94.471800, 408.951480,
-                   41.582560, 331.204490, 37.888590,   0.000000,
-                   8.280702,  14.629500,  4.569620,  8.229700, 192.709000, 0.000000)
+  comparedata <- c(0.000000, 331.982760,  43.296600,  85.523100,  94.471800, 3263.48926,
+                   392.29993, 41.582560, 331.204490, 430.38414, 37.888590,   0.000000,
+                   2469.70985,  14.629500,  34.11813 , 4.569620,  738.80971,
+                   8.229700, 240.67582, 186.82978, 192.709000, 0.000000)
 
   expect_equal(sort(modeldata$model), sort(comparedata))
 })
@@ -269,8 +271,8 @@ test_that("log-likelihood is calculated correctly", {
     ## Comparison data
     ll_ref <-
         structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
-                       ll_ = c(-48.6, -59.5, -66.0, -70.6, -74.2,
-                               -77.2, -79.7, -81.9, -83.8, -85.6)),
+                       ll_ = c(-153.9, -157.5, -160.0, -162.1, -163.9,
+                               -165.4, -166.8, -168.0, -169.1, -170.2)),
                   .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
 
 
@@ -290,8 +292,8 @@ test_that("log-likelihood is calculated correctly", {
 test_that("posterior pdf table is calculated correctly", {
     ## This test possibly obviates the need for the log-likelihood test.
     gt_ref <- structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-                1), lp_ = c(-48.6, -59.5, -66.0, -70.6, -74.2,
-                            -77.2, -79.7, -81.9, -83.8, -85.6), expectation.type =
+                1), lp_ = c(-153.9, -157.5, -160.0, -162.1, -163.9,
+                            -165.4, -166.8, -168.0, -169.1, -170.2), expectation.type =
                 c("Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect",
                 "Perfect", "Perfect", "Perfect"), share.old = c(NA, NA, NA, NA, NA, NA, NA, NA,
                 NA, NA), linear.years = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),

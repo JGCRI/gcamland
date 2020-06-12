@@ -13,6 +13,17 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   # Silence package checks
   sector <- year <- yield <- lm <- predict <- GCAM_commodity <- NULL
 
+  # Get shareOld -- Note that shareOld can differ based on crop group. Determine which crop this leaf belongs in
+  if(aLandLeaf$mProductName %in% CROP_GROUP1 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld1
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP2 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld2
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld3
+  } else {
+    message("Error: crop grouping not specified.")
+  }
+
   # Calculate expectations. For model periods > 1, we calculate this iteratively to save time.
   if ( aPeriod > 1 ) {
     # Get previous expectation
@@ -26,8 +37,8 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     }
 
     # Calculate expected yield
-    expectedYield <- aScenarioInfo$mLaggedShareOld * previousExpectation +
-      (1 - aScenarioInfo$mLaggedShareOld) * newInformation
+    expectedYield <- shareOld * previousExpectation +
+      (1 - shareOld) * newInformation
   } else {
     # If we don't have saved previousExpectations, we need to generate them
     # using calc_lagged_expectation(). First, we need to set up a yield table
@@ -51,10 +62,10 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     # Now, we call calc_lagged_expectation() to calculate the expectations
     if( aScenarioInfo$mExpectationType == "LaggedCurr" ) {
       currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-      expectedYield <- calc_lagged_expectation(currYear, aScenarioInfo$mLaggedShareOld, yield_table, 'yield')
+      expectedYield <- calc_lagged_expectation(currYear, shareOld, yield_table, 'yield')
     } else {
       prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - 1
-      expectedYield <- calc_lagged_expectation(prevYear, aScenarioInfo$mLaggedShareOld, yield_table, 'yield')
+      expectedYield <- calc_lagged_expectation(prevYear, shareOld, yield_table, 'yield')
     }
   }
 
@@ -77,6 +88,17 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   # Silence package checks
   sector <- lm <- predict <- year <- price <- NULL
 
+  # Get shareOld -- Note that shareOld can differ based on crop group. Determine which crop this leaf belongs in
+  if(aLandLeaf$mProductName %in% CROP_GROUP1 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld1
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP2 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld2
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld3
+  } else {
+    message("Error: crop grouping not specified.")
+  }
+
   # Get price table for the scenario/land type
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
   price_table <- dplyr::filter(price_table, sector == aLandLeaf$mProductName[1])
@@ -85,14 +107,14 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
     # Calculate expected price
     if( aScenarioInfo$mExpectationType == "LaggedCurr" ) {
       currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-      expectedPrice <- calc_lagged_expectation(currYear, aScenarioInfo$mLaggedShareOld, price_table, 'price')
+      expectedPrice <- calc_lagged_expectation(currYear, shareOld, price_table, 'price')
     } else {
       if( aPeriod > 1 ) {
         prevYear <- get_per_to_yr(aPeriod-1, aScenarioInfo$mScenarioType)
       } else {
         prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - 1
       }
-      expectedPrice <- calc_lagged_expectation(prevYear, aScenarioInfo$mLaggedShareOld, price_table, 'price')
+      expectedPrice <- calc_lagged_expectation(prevYear, shareOld, price_table, 'price')
     }
 
   } else {
