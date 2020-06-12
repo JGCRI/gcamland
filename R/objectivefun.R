@@ -40,11 +40,18 @@
 #' @return Modified list of ScenarioInfo structures with the objective
 #' function calculation tables populated as a new list entry in ScenarioInfo:
 #' ScenarioInfo$mObjFunEval.
+#' @importFrom stats cor sd
 #' @author ACS May 2020
 #' @export
 run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
                           objectivefuns = c('bias', 'rms', 'centeredrms', 'nrms', 'centerednrms', 'kge'))
 {
+  # Silence package checks
+  region <- land.type <- variable <- obs <- model <- modelMean <- obsMean <-
+    obsSD <- modelSD <- corr <- objfunval <- scenario <- year <- trend <-
+    detrended <- obsvar <- NULL
+
+  # Pull the comparison data and model data
   rgns <- unique(sapply(aScenarioList, function(s) {s$mRegion}))
   obsdata <- get_historical_land_data(rgns, years, landtypes)
   modeldata <- get_scenario_land_data(aScenarioList)
@@ -66,7 +73,7 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
       group_by(region, land.type, variable) %>%
       mutate(obsMean = mean(obs, na.rm = T),
              modelMean = mean(model, na.rm = T),
-             obsSD = sd(obs, na.rm = T) ) %>%
+             obsSD = stats::sd(obs, na.rm = T) ) %>%
       ungroup ->
       s$mObjFunEval
 
@@ -134,8 +141,8 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
 
         s$mObjFunEval %>%
           group_by(region, land.type, variable) %>%
-          mutate(modelSD = sd(model, na.rm = T),
-                 corr = cor(model, obs),
+          mutate(modelSD = stats::sd(model, na.rm = T),
+                 corr = stats::cor(model, obs),
                  kge = 1 - sqrt(  (corr - 1)^2  + ( (modelSD / obsSD) - 1 )^2 + ( (modelMean / obsMean) - 1 )^2 )) %>%
           ungroup %>%
           select(-modelSD, -corr) ->
@@ -190,7 +197,7 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
 grand_table_objective <- function(aScenarioList)
 {
   ## silence package checks
-  scenario <- NULL
+  scenario <- year <- obs <- trend <- detrended <- obsvarl <- model <- NULL
 
   tbllen <- sapply(aScenarioList, function(s) {length(s$mObjFunEval)})
   if(any(tbllen) == 0) {
@@ -272,6 +279,11 @@ grand_table_objective <- function(aScenarioList)
 MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NULL,
                 objfun_to_min = 'rms', landtypes = NULL)
 {
+  # Silence package checks
+  land.type <- region <- variable <- objfun <- objfunval <- expectation.type <-
+    share.old <- linear.years <- logit.agforest <- logit.afnonpast <-
+    logit.crop <- minimizervalue <- NULL
+
   if(!inherits(samples, 'data.frame')) {
     ## Check that this is a scenario list
     if( !inherits(samples, 'list') || !all(sapply(samples, is.ScenarioInfo)))
