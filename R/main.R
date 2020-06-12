@@ -212,8 +212,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-
-run_ensemble_bayesian  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
                          aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
                          aTotalSamplesPlanned = 500, logparallel=NULL) {
