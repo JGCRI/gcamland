@@ -9,7 +9,13 @@ library('doParallel')
 ## outdir:   Output directory
 ## skip:     Number of iterations to skip (i.e., if resuming from a previous run)
 ## logdir:   Directory for logs
-run_ens_obj_analysis <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL)
+run_ens_obj_analysis <- function(nodefile, nproc,
+                                 N = 500, outdir, skip = 0, logdir=NULL,
+                                 aType = "Hindcast",
+                                 aIncludeSubsidies = FALSE,
+                                 aDifferentiateParamByCrop = FALSE,
+                                 aSampleType = "LatinHyperCube",
+                                 aTotalSamplesPlanned = 500)
 {
     print(getwd())
     nodes <- readr::read_lines(nodefile)
@@ -19,13 +25,41 @@ run_ens_obj_analysis <- function(nodefile, nproc, N, outdir, skip=0, logdir=NULL
     cl <- makeCluster(nodes, outfile="")
     registerDoParallel(cl)
 
-    print(system.time(run_ensemble(N, outdir, skip, logparallel=logdir)))
-    stopCluster(cl)
+    print(system.time(scenObjects <- run_ensemble(N = N, aOutputDir = outdir,
+                                   skip = skip,
+                                   aType = aType,
+                                   aIncludeSubsidies = aIncludeSubsidies,
+                                   aDifferentiateParamByCrop = aDifferentiateParamByCrop,
+                                   aSampleType = aSampleType,
+                                   aTotalSamplesPlanned = aTotalSamplesPlanned,
+                                   logparallel=logdir)))
 
-    # TODO: update to include objective function analysis
-    # run_objective can be run in parallel and explictly saved.
-    # grand_table_objective and MAP_objective need to work on
-    # the results of run_objective for all models of interest.
+
+    # Do the objective function calculations for every scenario
+    print(system.time(suppressWarnings(scenObjectsEvaluated <- run_objective(scenObjects))))
+
+
+    # Convert those to a grand_table
+    print(system.time(GT <- grand_table_objective(aScenarioList = scenObjectsEvaluated)))
+
+    # save those
+    suffix <- sprintf("-%06d",skip)
+    filebase <- paste0("grand_table_objective_", suffix, "_", Sys.Date(),".rds")
+    GTfile <- file.path(outdir, filebase)
+    saveRDS(GT, GTfile)
+
+
+    # select the parameter set that minimizes average across all crops RMS.
+    print(system.time(minimized <- minimize_objective(GTobjective,
+                                                      objfun_to_min = 'rms')))
+
+    # and save
+    filebase <- paste0("minimized_rms_allcrops_", suffix, "_", Sys.Date(),".rds")
+    minfile <- file.path(outdir, filebase)
+    saveRDS(minimized, minfile)
+
+
+    stopCluster(cl)
 }
 
 
