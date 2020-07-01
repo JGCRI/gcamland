@@ -2,7 +2,7 @@
 # Objective functions for use in model evaluation across parameter sets.
 # Can be used for  brute force approach.
 # Also includes functions for analysis of objective function results,
-# namely analogues to `grand_table`and `MAP` from bayesian.R
+# namely analogues to `grand_table` and `MAP` from bayesian.R
 
 
 
@@ -253,13 +253,6 @@ grand_table_objective <- function(aScenarioList)
 #' errors may occur when calculating the mean across specified land types.}
 #' }
 #'
-#'
-#' TODO: update the name so that it's not MAP anymore; currently naming this way for workflow
-#' consistency with bayesian analysis, but we aren't doing Maximum A Posteriori analysis anymore,
-#' so MAP is kind of misleading. I don't really have a better name right now though.
-#' maybe minimizer_objective??
-#'
-#'
 #' @param samples Monte Carlo samples, given either as a grand table or a list
 #' of \code{ScenarioInfo} objects
 #' @param modelgroup Vector of names of columns that define the model groupings.
@@ -276,7 +269,7 @@ grand_table_objective <- function(aScenarioList)
 #' @author ACS May 2020
 #'
 #' @export
-MAP_objective <- function(samples, modelgroup='expectation.type', reportvars=NULL,
+minimize_objective <- function(samples, modelgroup='expectation.type', reportvars=NULL,
                 objfun_to_min = 'rms', landtypes = NULL)
 {
   # Silence package checks

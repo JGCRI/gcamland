@@ -1,8 +1,7 @@
 # utility-functions-analysis.R
 #
-# utility functions for analysis
-# pulled out of `bayesian.R` because they're useful
-# in both a bayesian approach and an objective function approach.
+# Utility functions for analysis.
+# Can be used with both bayesian.R and objectivefun.R
 
 #' Get historical land use data
 #'
