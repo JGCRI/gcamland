@@ -42,11 +42,11 @@ scenObjects <- run_ensemble(N=Nruns)
 # Run the objective function analysis
 
 - Right now, the `run_objective` function evaluates user-specified objective function for each land type separately. Certainly _can_ give an argument with fewer land types.
-- idea is that it's all so fast and not that big, just go ahead and calculate for each land type. Then when we call `minimize_objective` (which we should probably pick a different name for), _that_ function also takes a list of land types of interest, averages the objective function across those land types, and then picks the parameter set that gives you the smallest average objective function value (ie minimized error) across those land types.
+- idea is that it's all so fast and not that big, just go ahead and calculate for each land type. Then when we call `minimize_objective`, _that_ function also takes a list of land types of interest, averages the objective function across those land types, and then picks the parameter set that gives you the smallest average objective function value (ie minimized error) across those land types.
 - Also, currently, from `get_historical_land_data` in `utility-functions-analysis.R` (previously in `bayesian.R`), this only supports comparison to FAO GCAM commodities - mostly crop data and not Forest or anything. A note to change this is included in the documentation of `minimize_objective`.
 
 - Note that land cover types X region combinations that have a standard deviation of 0 in the observational data, warnings will
-be thrown and the metrics `nrms`, `centerednrms`, and `kge` will return NA values. 
+be thrown and the metrics `nrms`, `centerednrms`, and `kge` will return NA values. While we have not seen this in observational data in the United States, we have not yet checked every commodity in every region.
 - For land cover types X region combinations that have a standard deviation of 0 in the _modeled_ data, warnings will
 be thrown and the metric `kge` will return NA values. In the United States, this means PalmFruit. 
 
@@ -86,6 +86,8 @@ grand_table_objective(aScenarioList = scenObjectsEvaluated) %>%
   # these lines of code are because the `left_join` in 
   # `add_parameter_data` (from utility-functions-analysis.R) is only
   # a join on scenario, rather than scenario and region.
+  #
+  # TODO:
   # Unclear if should update that join or if we somehow want to keep it
   # separate; ideally will figure out more when do other regions.
   # For now, leaving it alone so that the `grand_table` works as it
