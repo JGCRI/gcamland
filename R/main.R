@@ -1,6 +1,179 @@
 # main.R
 
-#' Run an ensemble of offline land models
+#' Run an ensemble of offline land models; by default, no analyis of
+#' the runs is completed.
+#'
+#' Parameter combinations are selected by generating a quasi-random
+#' sequence and mapping it to a specified range for each parameter.
+#' Then, each parameter set is run through the offline land model in
+#' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
+#' parameter sets are selected, then 3N scenarios are run.)
+#'
+#' This function is strictly for running the ensemble of models. Analysis
+#' must be completed after the fact.
+#'
+#' @section Output:
+#' The model results are written to a series of files in the specified output
+#' directory.
+#' The
+#' list of \code{ScenarioInfo} objects is written to a file called
+#' \code{scenario-info.rds} in the output directory.  This file can be loaded
+#' with a command such as \code{scenaro_list <-
+#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
+#' model output files.
+#'
+#' @param N Number of parameter sets to select
+#' @param aOutputDir Output directory
+#' @param skip Number of iterations to skip (i.e., if building on another run.)
+#' @param aType Scenario type: either "Reference" or "Hindcast"
+#' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
+#' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
+#' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
+#' @param aTotalSamplesPlanned Number of samples planned. For Latin Hypercube, we need to know the total before we start.
+#' @param logparallel Name of directory to use for parallel workers' log files.
+#' If \code{NULL}, then don't write log files.
+#' @return List of ScenarioInfo objects for the ensemble members
+#' @import foreach doParallel
+#' @author KVC November 2017
+#' @importFrom utils capture.output sessionInfo
+#' @export
+run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+                          aType = "Hindcast",
+                          aIncludeSubsidies = FALSE,
+                          aDifferentiateParamByCrop = FALSE,
+                          aSampleType = "LatinHyperCube",
+                          aTotalSamplesPlanned = 500,
+                          logparallel=NULL) {
+
+  # Silence package checks
+  obj <- NULL
+
+  # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
+  # lagged share and linear years. If FALSE, then only one paramter for each. In both cases, there are 3 logit exponents
+  if( aDifferentiateParamByCrop ) {
+    NPARAM <- 9
+  } else {
+    NPARAM <- 5
+  }
+
+  ## Set options for ensembles
+  ## min and max values for each parameter
+  limits.AGROFOREST <- c(0.01, 3)
+  limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
+  limits.CROPLAND <- c(0.01, 3)
+  limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
+
+  serialnumber <- skip + (1:N)
+  if( aSampleType == "LatinHyperCube" ) {
+    set.seed(1234)
+    randomNumbers <- lhs::randomLHS(aTotalSamplesPlanned, NPARAM)
+  } else if( aSampleType == "Sobol" ) {
+    randomNumbers <- randtoolbox::sobol(N+skip, NPARAM)
+  } else {
+    stop("Unknown Sampling Type")
+  }
+  randomNumbers <- randomNumbers[serialnumber,]
+
+  scaleParam <- function(fac, limits) {limits[1] + fac*(limits[2]-limits[1])}
+  levels.AGROFOREST <- scaleParam(randomNumbers[,1], limits.AGROFOREST)
+  levels.AGROFOREST_NONPASTURE <- scaleParam(randomNumbers[,2], limits.AGROFOREST_NONPASTURE)
+  levels.CROPLAND <- scaleParam(randomNumbers[,3], limits.CROPLAND)
+  if( aDifferentiateParamByCrop ) {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
+    levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+  } else {
+    # Set expectation parameters equal for all three crop groups
+    levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
+    levels.LAGSHARE2 <- levels.LAGSHARE1
+    levels.LAGSHARE3 <- levels.LAGSHARE1
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,5], limits.LINYEARS))
+    levels.LINYEARS2 <- levels.LINYEARS1
+    levels.LINYEARS3 <- levels.LINYEARS1
+  }
+
+  ## Filename suffix.  This will be used to create unique filenames for the
+  ## outputs across all worker processes, continuation runs, etc.
+  suffix <- sprintf("-%06d",skip)
+
+  # Set up a list to store scenario information objects
+  scenObjects <- Map(gen_ensemble_member,
+                     levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
+                     levels.LAGSHARE1, levels.LAGSHARE2, levels.LAGSHARE3,
+                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3, serialnumber,
+                     aType, aIncludeSubsidies, suffix, aOutputDir) %>%
+    unlist(recursive=FALSE)
+
+  serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
+
+  # Loop over all scenario configurations and run the model
+  rslt <-
+    foreach(obj = serialized_scenObjs, .combine=rbind) %dopar% {
+      if(!is.null(logparallel)) {
+        nn <- Sys.info()['nodename']
+        sn <- obj$mScenarioName
+        fn <- file.path(logparallel, paste0('info-', sn, '.txt'))
+        print(fn)
+        logfil <- file(fn, 'w')
+        if(!file.exists(fn)) {
+          stop("Couldn't create logfile: ", fn)
+        }
+        writeLines(c('nodename= ', nn), con=logfil)
+        writeLines(capture.output(sessionInfo()),con=logfil)
+        flush(logfil)
+      }
+
+      if(N <= 50)  {
+        message("Starting simulation: ", obj$mScenarioName)
+      }
+
+      si <- as.ScenarioInfo(obj)
+      if(N > 50) {
+        rslt <- suppressMessages(run_model(si))
+      }
+      else {
+        rslt <- run_model(si)
+      }
+
+      message("Finished: ", obj$mSerialNumber)
+
+      if(!is.null(logparallel)) {
+        writeLines(capture.output(warnings()), con=logfil)
+        close(logfil)
+      }
+      rslt
+    }
+
+  message("Result is ", nrow(rslt), "rows, ", ncol(rslt), "columns, total size: ",
+          format(utils::object.size(rslt), units="auto"))
+  ## Save the full set of ensemble results
+  filebase <- paste0("output_ensemble", suffix, ".rds")
+  outfile <- file.path(aOutputDir, filebase)
+  saveRDS(rslt, outfile)
+
+
+  ## Save the scenario info from the scenarios that we ran
+  filebase <- paste0("scenario-info", suffix, ".rds")
+  scenfile <- file.path(aOutputDir, filebase)
+  saveRDS(scenObjects, scenfile)
+
+  message("Output directory is", aOutputDir)
+  message("scenario file: ", scenfile)
+  message("output file: ", outfile)
+
+  warnings()
+
+  invisible(scenObjects)
+}
+
+
+#' Run an ensemble of offline land models and complete Bayesian analysis
+#' of hindcast runs.
 #'
 #' Parameter combinations are selected by generating a quasi-random
 #' sequence and mapping it to a specified range for each parameter.
@@ -17,9 +190,9 @@
 #' directory.
 #' The
 #' list of \code{ScenarioInfo} objects is written to a file called
-#' \code{scenario-info.rds} in the output directory.  This file can be loaded
+#' \code{bayes-scenario-info.rds} in the output directory.  This file can be loaded
 #' with a command such as \code{scenaro_list <-
-#' readRDS('output/scenario-info.rds')}.  These objects contain links to the
+#' readRDS('output/bayes-scenario-info.rds')}.  These objects contain links to the
 #' model output files, as well as the posterior probability density tables, if
 #' the Bayesian analysis was run.
 #'
@@ -42,10 +215,11 @@
 #' @author KVC November 2017
 #' @importFrom utils capture.output sessionInfo
 #' @export
-run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
+run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
                          aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
                          aTotalSamplesPlanned = 500, logparallel=NULL) {
+
   # Silence package checks
   obj <- NULL
 
@@ -154,17 +328,18 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
           format(utils::object.size(rslt), units="auto"))
 
   ## Save the full set of ensemble results
-  filebase <- paste0("output_ensemble", suffix, ".rds")
+  filebase <- paste0("bayes-output_ensemble", suffix, ".rds")
   outfile <- file.path(aOutputDir, filebase)
   saveRDS(rslt, outfile)
 
   if(aType == "Hindcast") {
       ## For hindcast runs, calculate the Bayesian posteriors
       scenObjects <- run_bayes(scenObjects, lpdf=lpdf, lprior=lprior)
+      print('bayes ran')
   }
 
   ## Save the scenario info from the scenarios that we ran
-  filebase <- paste0("scenario-info", suffix, ".rds")
+  filebase <- paste0("bayes-scenario-info", suffix, ".rds")
   scenfile <- file.path(aOutputDir, filebase)
   saveRDS(scenObjects, scenfile)
 
@@ -176,6 +351,7 @@ run_ensemble <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
   invisible(scenObjects)
 }
+
 
 #' Generate the ensemble members for a single set of parameters
 #'

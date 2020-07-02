@@ -304,7 +304,7 @@ test_that("posterior pdf table is calculated correctly", {
                 c(NA, -10L), .Names = c("xi", "lp_", "expectation.type", "share.old",
                 "linear.years", "logit.agforest", "logit.afnonpast", "logit.crop", "region"))
 
-    gt <- grand_table(list(test.info))
+    gt <- grand_table_bayes(list(test.info))
 
     expect_equal(gt$xi, gt_ref$xi)
     expect_equal(round(gt$lp_, digits = 1), gt_ref$lp_)

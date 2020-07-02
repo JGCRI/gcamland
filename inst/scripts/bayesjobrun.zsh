@@ -11,7 +11,7 @@ nodefile=$tmpdir/nodes.txt
 
 scontrol show hostnames > $nodefile
 
-program=`Rscript -e 'cat(system.file("scripts", "mc-batch.R", package="gcamland"))'`
+program=`Rscript -e 'cat(system.file("scripts", "bayes-batch.R", package="gcamland"))'`
 
 N=960
 tid=$SLURM_ARRAY_TASK_ID
