@@ -48,6 +48,15 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   # Silence package checks
   obj <- NULL
 
+  # Print information on this ensemble
+  message("*************ENSEMBLE CONFIGURATION*****************")
+  message("Running ", N, " ensembles")
+  message(aTotalSamplesPlanned, " ensembles planned")
+  message("Subsidies included? ", aIncludeSubsidies)
+  message("Parameters differentiated by crop? ", aDifferentiateParamByCrop)
+  message("Sampling strategy is ", aSampleType)
+  message("****************************************************")
+
   # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
   # lagged share and linear years. If FALSE, then only one paramter for each. In both cases, there are 3 logit exponents
   if( aDifferentiateParamByCrop ) {
