@@ -15,7 +15,9 @@
 #' likelihoods and objective function evaluations.
 #'
 #' @param regions Regions to keep in filtered data. (Default is use all regions.)
-#' @param years Years to keep in filtered data. (Default is use all years.)
+#' @param years Years to keep in filtered data. (Default is use all years.). Note,
+#' this function calculates the linear trend in historic data; therefore subsetting
+#' to different years with this argument will result in different trend lines.
 #' @param commodities GCAM commodities to keep in filtered data (Default is to
 #' use all commodities.)
 #' @return Data frame containing the filtered data.

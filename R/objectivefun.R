@@ -68,6 +68,7 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
     modeldata[[s$mScenarioName]] %>%
       dplyr::inner_join(obsdata, .,
                         by=(c('region','land.type','variable','year'))) %>%
+      filter(year %in% unique(obsdata$year)) %>%
       # calculate many of the pieces that are commonly used across the different
       # objective functions:
       group_by(region, land.type, variable) %>%
