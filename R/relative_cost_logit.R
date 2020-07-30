@@ -35,7 +35,6 @@ ChoiceFunction <- function(aType, aLogitExponent){
 RelativeCostLogit_calcUnnormalizedShare <- function(aChoiceFnAbove, aShareWeight, aProfit, aPeriod) {
   # Negative profits are not allowed so they are instead capped at getMinCostThreshold()
   cappedProfit <- max(aProfit, RelativeCostLogit_getMinCostThreshold())
-
   if(aShareWeight > 0) {
     unnormalizedShare <- (aShareWeight*cappedProfit)^(aChoiceFnAbove$mLogitExponent)
   } else {

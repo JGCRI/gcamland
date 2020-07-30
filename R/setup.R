@@ -380,7 +380,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
   }
 
 
-  if(aScenarioInfo$mScenarioType == "Hindcast") {
+  if(grepl("Hindcast", aScenarioInfo$mScenarioType)) {
     # We only have AgProdChange at region level for historical data
     agProdChange <- filter(agProdChange, GCAM_commodity == aLandLeaf$mProductName[1])
   } else {
@@ -432,7 +432,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
       # Note: we are including this parameter because it is in the C++ code, but GCAM doesn't use it
       #       So, we aren't using it in Reference scenarios. However, we are using it in Hindcast
       #       to better represent the costs observed in the past.
-      if ( aScenarioInfo$mScenarioType == "Hindcast" &
+      if ( grepl("Hindcast", aScenarioInfo$mScenarioType) &
            name %in% costTechChange$AgProductionTechnology &
            y %in% costTechChange$year) {
         aLandLeaf$mNonLandCostTechChange[[per]] <- as.numeric(costTechChange$nonLandCostTechChange[costTechChange$year == y &
@@ -443,11 +443,11 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
     }
 
     # Set cost in the LandLeaf
-    if(aScenarioInfo$mUseZeroCost == FALSE & aScenarioInfo$mScenarioType != "Hindcast" &
+    if(aScenarioInfo$mUseZeroCost == FALSE & !grepl("Hindcast", aScenarioInfo$mScenarioType) &
        name %in% cost$AgProductionTechnology & y %in% cost$year)  {
       aLandLeaf$mCost[per] <- as.numeric(cost$nonLandVariableCost[cost$year == y &
                                                                     cost$AgProductionTechnology == name])
-    } else if ( aScenarioInfo$mUseZeroCost == FALSE & aScenarioInfo$mScenarioType == "Hindcast" &
+    } else if ( aScenarioInfo$mUseZeroCost == FALSE & grepl("Hindcast", aScenarioInfo$mScenarioType) &
                 name %in% cost$AgProductionTechnology & y %in% cost$year &
                 per <= TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
       # Only set the cost for Hindcasts in the calibration years. We will use tech
@@ -468,7 +468,7 @@ AgProductionTechnology_setup <- function(aLandLeaf, aAgData, aScenarioInfo) {
     }
 
     # Set harvested to cropped ratio in the LandLeaf
-    if (name %in% HAtoCL$AgProductionTechnology & aScenarioInfo$mScenarioType == "Hindcast") {
+    if (name %in% HAtoCL$AgProductionTechnology & grepl("Hindcast", aScenarioInfo$mScenarioType)) {
       # Note we only have data for model periods defined in the reference. For Hindcasts, we should
       # use 1975 values for all periods.
       aLandLeaf$mHAtoCL[per] <- as.numeric(HAtoCL$harvests.per.year[HAtoCL$year == min(YEARS[[aScenarioInfo$mScenarioType]]) &

@@ -722,8 +722,8 @@ get_AgProdChange <- function(ascentype, aSubRegion) {
   }
   else {
     # Read in data
-    if(ascentype == "Hindcast") {
-      agProdChange <- get_hindcast_AgProdChange()
+    if(grepl("Hindcast", ascentype)) {
+      agProdChange <- get_hindcast_AgProdChange(ascentype)
     } else {
       agProdChange <- suppressMessages(read_csv(system.file("extdata", "./scenario-data/L205.AgProdChange_ref.csv", package = "gcamland"), skip = 3))
     }

@@ -64,7 +64,8 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
       currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
       expectedYield <- calc_lagged_expectation(currYear, shareOld, yield_table, 'yield')
     } else {
-      prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - 1
+      timestep <- get_per_to_yr(aPeriod+1, aScenarioInfo$mScenarioType) - get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
+      prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - timestep
       expectedYield <- calc_lagged_expectation(prevYear, shareOld, yield_table, 'yield')
     }
   }
@@ -112,7 +113,8 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
       if( aPeriod > 1 ) {
         prevYear <- get_per_to_yr(aPeriod-1, aScenarioInfo$mScenarioType)
       } else {
-        prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - 1
+        timestep <- get_per_to_yr(aPeriod+1, aScenarioInfo$mScenarioType) - get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
+        prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - timestep
       }
       expectedPrice <- calc_lagged_expectation(prevYear, shareOld, price_table, 'price')
     }
