@@ -28,15 +28,18 @@ get_historic_yields <- function(){
 
   # Tidy data
   faoHA %>%
-    gather(year, ha, -FAO_country, -item) ->
+    gather(year, ha, -FAO_country, -item) %>%
+    replace_na(list(ha = 0)) ->
     faoHA
   faoHA$year <- as.integer(faoHA$year)
   faoHA$ha <- as.integer(faoHA$ha)
 
   faoProd %>%
-    gather(year, prod, -FAO_country, -item) ->
+    gather(year, prod, -FAO_country, -item) %>%
+    replace_na(list(prod = 0))->
     faoProd
   faoProd$year <- as.integer(faoProd$year)
+  faoProd$prod <- as.integer(faoProd$prod)
 
   # Join data and compute average yield
   faoYield <- merge(faoHA, faoProd, by=c("FAO_country", "item", "year"), all.x = TRUE)
@@ -44,11 +47,12 @@ get_historic_yields <- function(){
   faoYield <- merge(faoYield, iso_GCAM_regID[c("iso", "GCAM_region_ID")], by=c("iso"), all.x = TRUE)
   faoYield <- merge(faoYield, GCAM_region_names, by=c("GCAM_region_ID"), all.x = TRUE)
   faoYield <- merge(faoYield, FAO_ag_items_PRODSTAT[c("item", "GCAM_commodity")], by=c("item"), all.x = TRUE)
-  faoYield <- na.omit(faoYield)
   faoYield <- faoYield[c("region", "GCAM_commodity", "year", "ha", "prod")]
+  faoYield <- na.omit(faoYield)
   faoYield <- aggregate(.~region + GCAM_commodity + year, faoYield, FUN="sum")
   faoYield$yield <- faoYield$prod / faoYield$ha
   faoYield <- faoYield[c("region", "GCAM_commodity", "year", "yield")]
+  faoYield <- na.omit(faoYield)
 
   return(faoYield)
 }
