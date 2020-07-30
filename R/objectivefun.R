@@ -60,6 +60,18 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
   # for each scenario, do analysis for all objective functions specified in input
   # arguments:
   aScenarioListAnalyzed <- lapply(aScenarioList,  function(s) {
+    # If timestep > 1, we need to average the obsdata
+    # Ideally, we would get timestep from the data itself, but that is difficult.
+    # Instead we rely on the ScenarioType to do this
+    if(s$mScenarioType == "Hindcast5yr") {
+      obsdata %>%
+        mutate(year1 = year,
+               year = round(year / 5) * 5) %>%
+        group_by(region, land.type, variable, year) %>%
+        summarize(obs = mean(obs)) %>%
+        ungroup() ->
+        obsdata
+    }
 
     # bring together observed and scenario specific model data for analysis.
     # Do this as an extra list entry to each scenario holding the objective function
@@ -77,7 +89,6 @@ run_objective <- function(aScenarioList, years=NULL, landtypes=NULL,
              obsSD = stats::sd(obs, na.rm = T) ) %>%
       ungroup ->
       s$mObjFunEval
-
 
     # Loop over all user specified objective functions to append that calculation
     # as its own column in this new list entry, s$mObjFunEval:
