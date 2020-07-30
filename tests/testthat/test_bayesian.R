@@ -30,12 +30,14 @@ test_that("get_historical_land_data returns filtered FAO data", {
     get_historical_land_data("Australia_NZ", 1972:1984,
                              all_output_commodities) %>% dplyr::select(-variable, -obsvar, -trend, -detrended) ->
       modelData
+    modelData <- modelData[with(modelData, order(region, land.type, year)), ]
 
     readr::read_csv('data/complex_filter_ref.csv', col_types='ccdd') %>%
       dplyr::rename(land.type=GCAM_commodity, obs=area) ->
       compareData
+    compareData <- compareData[with(compareData, order(region, land.type, year)), ]
 
-    expect_equivalent(modelData, compareData)
+    expect_equal(modelData$obs, compareData$obs, tolerance = 0.01)
 })
 
 

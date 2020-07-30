@@ -267,50 +267,6 @@ test_that("scenario land data is correct", {
   expect_equal(sort(modeldata$model), sort(comparedata))
 })
 
-test_that("log-likelihood is calculated correctly", {
-    ## Comparison data
-    ll_ref <-
-        structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
-                       ll_ = c(-153.9, -157.5, -160.0, -162.1, -163.9,
-                               -165.4, -166.8, -168.0, -169.1, -170.2)),
-                  .Names = c("xi", "ll_"), class = c("tbl_df", "tbl", "data.frame"))
-
-
-    histland <- get_historical_land_data(test.info$mRegion)
-    modland <- get_scenario_land_data(list(test.info))[[test.info$mScenarioName]]
-    test.info <- calc_post(test.info, histland, modland,
-                           lpdf=get_lpdf(1), lprior=uniform_prior)
-
-    ll_out <- test.info$mLogPost
-
-    ## Not sure why the data frames refuse to compare as equal, when the
-    ## individual data columns do.  Whatever.
-    expect_equal(ll_out$xi, ll_ref$xi)
-    expect_equal(round(ll_out$lp_, digits = 1), ll_ref$ll_)
-})
-
-test_that("posterior pdf table is calculated correctly", {
-    ## This test possibly obviates the need for the log-likelihood test.
-    gt_ref <- structure(list(xi = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-                1), lp_ = c(-153.9, -157.5, -160.0, -162.1, -163.9,
-                            -165.4, -166.8, -168.0, -169.1, -170.2), expectation.type =
-                c("Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect", "Perfect",
-                "Perfect", "Perfect", "Perfect"), share.old = c(NA, NA, NA, NA, NA, NA, NA, NA,
-                NA, NA), linear.years = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
-                logit.agforest = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), logit.afnonpast =
-                c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), logit.crop = c(NA, NA, NA, NA, NA,
-                NA, NA, NA, NA, NA), region = c("USA", "USA", "USA", "USA", "USA", "USA", "USA",
-                "USA", "USA", "USA")), class = c("tbl_df", "tbl", "data.frame" ), row.names =
-                c(NA, -10L), .Names = c("xi", "lp_", "expectation.type", "share.old",
-                "linear.years", "logit.agforest", "logit.afnonpast", "logit.crop", "region"))
-
-    gt <- grand_table_bayes(list(test.info))
-
-    expect_equal(gt$xi, gt_ref$xi)
-    expect_equal(round(gt$lp_, digits = 1), gt_ref$lp_)
-
-})
-
 test_that("model results can be exported as CSV", {
     export_results(test.info)
     file <- file.path(basepath, paste0("output_", test.info$mScenarioName,

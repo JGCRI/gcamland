@@ -9,7 +9,9 @@ get_historical_land_data(regions = NULL, years = NULL, commodities = NULL)
 \arguments{
 \item{regions}{Regions to keep in filtered data. (Default is use all regions.)}
 
-\item{years}{Years to keep in filtered data. (Default is use all years.)}
+\item{years}{Years to keep in filtered data. (Default is use all years.). Note,
+this function calculates the linear trend in historic data; therefore subsetting
+to different years with this argument will result in different trend lines.}
 
 \item{commodities}{GCAM commodities to keep in filtered data (Default is to
 use all commodities.)}
