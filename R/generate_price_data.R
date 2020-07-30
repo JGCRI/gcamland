@@ -13,7 +13,7 @@ get_prices <- function(aScenType) {
   region <- sector <- year <- price <- scenario <- Units <- subregion <- NULL
 
   # Get prices
-  if(aScenType == "Hindcast") {
+  if(grepl("Hindcast", aScenType)) {
     prices <- get_hindcast_prices()
   } else {
     file <- paste("./scenario-data/AgPrices_", aScenType, ".csv", sep="")
