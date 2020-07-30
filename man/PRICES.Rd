@@ -5,7 +5,7 @@
 \alias{PRICES}
 \title{Price tables for each scenario type.}
 \format{
-An object of class \code{list} of length 4.
+An object of class \code{list} of length 6.
 }
 \usage{
 PRICES

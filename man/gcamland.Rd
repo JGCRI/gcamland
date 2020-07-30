@@ -9,7 +9,7 @@ The \code{gcamland} package replicates the land allocation decisions made in
 GCAM (\url{https:://github.com/jgcri/gcam-core}). The equations are documented in
 Wise et al. (2014). \code{gcamland} takes in prices and agricultural productivity
 growth and calculates land allocation. The model can operate in either
-hindcast (1975-2010) or future mode (2010-2100), running either single
+hindcast (1975-2015) or future mode (2010-2100), running either single
 simulations or large ensembles.
 }
 \section{Usage}{
