@@ -4,7 +4,10 @@
 \alias{get_hindcast_AgProdChange}
 \title{get_hindcast_AgProdChange}
 \usage{
-get_hindcast_AgProdChange()
+get_hindcast_AgProdChange(aScenType)
+}
+\arguments{
+\item{aScenType}{Scenario type}
 }
 \value{
 AgProdChange in historical period

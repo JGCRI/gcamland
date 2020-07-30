@@ -4,7 +4,10 @@
 \alias{get_historic_yield_ratios}
 \title{get_historic_yield_ratios}
 \usage{
-get_historic_yield_ratios()
+get_historic_yield_ratios(aScenType)
+}
+\arguments{
+\item{aScenType}{Scenario type}
 }
 \value{
 YieldRatio in historical period

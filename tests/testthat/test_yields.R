@@ -34,7 +34,7 @@ test_that("historical yields are calculated correctly", {
 
 test_that("yield ratios are 1 for base year", {
   # First, get model calculated values
-  get_historic_yield_ratios() %>%
+  get_historic_yield_ratios("Hindcast") %>%
     filter(year == min(YEARS$Hindcast)) ->
     base_ratio
 
