@@ -15,6 +15,17 @@ get_prices <- function(aScenType) {
   # Get prices
   if(grepl("Hindcast", aScenType)) {
     prices <- get_hindcast_prices()
+    if(aScenType == "Hindcast5yr") {
+      # Need 5 year average price instead of single year
+      # Ideally this would use the timestep information
+      prices %>%
+        mutate(year1 = year,
+               year = round(year / 5) * 5) %>%
+        group_by(sector, year) %>%
+        summarize(price = mean(price)) %>%
+        ungroup() ->
+        prices
+    }
   } else {
     file <- paste("./scenario-data/AgPrices_", aScenType, ".csv", sep="")
     prices <- suppressMessages(read_csv(system.file("extdata", file, package = "gcamland"), skip = 1))
