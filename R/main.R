@@ -517,6 +517,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
 #' @return Table of model results.
 #' @author KVC
 #' @importFrom assertthat assert_that has_attr
+#' @importFrom utils read.csv
 #' @export
 #' @examples
 #' \dontrun{
@@ -524,6 +525,8 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
 #' run_model(SCENARIO.INFO, aPeriods = 1:5)
 #' }
 run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL) {
+  # Silence package checks
+  read.csv <- period <- NULL
 
   #### Step 1: Setup
   # Ensure that output directories exist
