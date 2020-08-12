@@ -64,6 +64,8 @@ Initialize an Class called LandLeaf
 \item{\code{mNonLandCostTechChange}}{Technical change on the cost of this leaf}
 
 \item{\code{mAgProdChange}}{Technical change on yield for this leaf}
+
+\item{\code{mConstraintCost}}{Cost added to ensure constraints are met}
 }}
 
 \author{

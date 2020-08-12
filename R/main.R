@@ -558,6 +558,28 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL)
     #### Step 3: Final calculation
     # Next, call calcFinalLandAllocation for LandAllocator
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
+
+    ### Step 4: Check that constraints are met
+    if ( aScenarioInfo$mIncludeConstraint & per > TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
+      read.csv(system.file("extdata", aScenarioInfo$mConstraintFile, package = "gcamland")) %>%
+        filter(period == per) ->
+        constraints
+
+      if(nrow(constraints) > 0) {
+        # Loop through all constraints for this period
+        for(i in 1:nrow(constraints)) {
+          message("Constraining: ", constraints$string[i])
+          landConstraintCost <- 0
+          while( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > constraints$value[i] ) {
+            landConstraintCost <- landConstraintCost + 1e6
+            # Constraint not met. Adjust cost and recalculate
+            Sector_initCalc(mLandAllocator, per, aScenarioInfo, landConstraintCost, constraints$string[i])
+            LandAllocator_initCalc(mLandAllocator, per, aScenarioInfo)
+            LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
+          } # End while loop to meet constraint
+        } # End for loop over constraints
+      }
+    }
   }
 
   #### Step 4: Reporting

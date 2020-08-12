@@ -4,7 +4,13 @@
 \alias{Sector_initCalc}
 \title{Sector_initCalc}
 \usage{
-Sector_initCalc(aLandAllocator, aPeriod, aScenarioInfo)
+Sector_initCalc(
+  aLandAllocator,
+  aPeriod,
+  aScenarioInfo,
+  aLandConstraintCost = 0,
+  aLandConstraintString = ""
+)
 }
 \arguments{
 \item{aLandAllocator}{Land allocator to perform initializations on}
@@ -12,6 +18,10 @@ Sector_initCalc(aLandAllocator, aPeriod, aScenarioInfo)
 \item{aPeriod}{Current model time period}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aLandConstraintCost}{Additional cost used to constrain land}
+
+\item{aLandConstraintString}{String identifying which leafs are included in the constraint}
 }
 \description{
 Sector_initCalc

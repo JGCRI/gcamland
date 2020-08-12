@@ -112,3 +112,73 @@ sumx <- function(x)
 {
     sum(x[order(abs(x))])
 }
+
+#' LandAllocator_getLandAreaByCriteria
+#'
+#' @details Calculate total land area that meets a particular criteria.
+#'          Criteria is currently determined by a string appearing in the
+#'          name of the land type
+#' @param aLandAllocator Land allocator
+#' @param aString String to group land area by
+#' @param aPeriod Model period to get land area for
+#'
+#' @return Land area
+LandAllocator_getLandAreaByCriteria <- function(aLandAllocator, aString, aPeriod) {
+  # Set total land to 0
+  totalLand <- 0
+
+  for(child in aLandAllocator$mChildren) {
+    if(inherits(child, "LandNode")) {
+      totalLand <- totalLand + LandNode_getLandAreaByCriteria(child, aString, aPeriod)
+    } else {
+      totalLand <- totalLand + LandLeaf_getLandAreaByCriteria(child, aString, aPeriod)
+    }
+  }
+
+  return(totalLand)
+}
+
+#' LandNode_getLandAreaByCriteria
+#'
+#' @details Calculate total land area that meets a particular criteria.
+#'          Criteria is currently determined by a string appearing in the
+#'          name of the land type
+#' @param aLandNode Land allocator
+#' @param aString String to group land area by
+#' @param aPeriod Model period to get land area for
+#'
+#' @return Land area
+LandNode_getLandAreaByCriteria <- function(aLandNode, aString, aPeriod) {
+  # Set land to zero for this node
+  land <- 0
+
+  # Loop over children, calling their `getLandAreaByCriteria` function
+  for(child in aLandNode$mChildren) {
+    if(inherits(child, "LandNode")) {
+      land <- land + LandNode_getLandAreaByCriteria(child, aString, aPeriod)
+    } else {
+      land <- land + LandLeaf_getLandAreaByCriteria(child, aString, aPeriod)
+    }
+  }
+
+  return(land)
+}
+
+
+#' LandLeaf_getLandAreaByCriteria
+#'
+#' @details Calculate total land area that meets a particular criteria.
+#'          Criteria is currently determined by a string appearing in the
+#'          name of the land type
+#' @param aLandLeaf Land allocator
+#' @param aString String to group land area by
+#' @param aPeriod Model period to get land area for
+#'
+#' @return Land area for this leaf
+LandLeaf_getLandAreaByCriteria <- function(aLandLeaf, aString, aPeriod) {
+  if(grepl(aString, aLandLeaf$mName[1])) {
+    return(aLandLeaf$mLandAllocation[[aPeriod]])
+  } else {
+    return(0)
+  }
+}
