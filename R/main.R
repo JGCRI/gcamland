@@ -574,11 +574,21 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL)
           message("Constraining: ", constraints$string[i])
           landConstraintCost <- 0
           while( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > constraints$value[i] ) {
-            landConstraintCost <- landConstraintCost + 1e6
+            currValue <- LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per)
+            message("Current value: ", currValue, ", Target value:", constraints$value[i])
+            landConstraintCost <- landConstraintCost + 1e7
             # Constraint not met. Adjust cost and recalculate
             Sector_initCalc(mLandAllocator, per, aScenarioInfo, landConstraintCost, constraints$string[i])
             LandAllocator_initCalc(mLandAllocator, per, aScenarioInfo)
             LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
+
+            # Check that we are making progress toward meeting constraint
+            if( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > 0.999*currValue) {
+              message("Progress is not being made. New value (",
+                      LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per),
+                      ") is less than 0.1% smaller than old value (", currValue, ")")
+              break
+            }
           } # End while loop to meet constraint
         } # End for loop over constraints
       }
