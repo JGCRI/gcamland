@@ -6,8 +6,8 @@
 #' Parameter combinations are selected by generating a quasi-random
 #' sequence and mapping it to a specified range for each parameter.
 #' Then, each parameter set is run through the offline land model in
-#' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
-#' parameter sets are selected, then 3N scenarios are run.)
+#' each of the Perfect, Adaptive, HybridPerfectAdaptive, HybridLinearAdaptive, and Linear variants.
+#'  (I.e., if N parameter sets are selected, then 5N scenarios are run.)
 #'
 #' This function is strictly for running the ensemble of models. Analysis
 #' must be completed after the fact.
@@ -58,7 +58,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   message("****************************************************")
 
   # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
-  # lagged share and linear years. If FALSE, then only one paramter for each. In both cases, there are 3 logit exponents
+  # lagged share and linear years. If FALSE, then only one parameter for each. In both cases, there are 3 logit exponents
   if( aDifferentiateParamByCrop ) {
     NPARAM <- 9
   } else {
@@ -187,8 +187,8 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' Parameter combinations are selected by generating a quasi-random
 #' sequence and mapping it to a specified range for each parameter.
 #' Then, each parameter set is run through the offline land model in
-#' each of the Perfect, Lagged, and Linear variants.  (I.e., if N
-#' parameter sets are selected, then 3N scenarios are run.)
+#' each of the Perfect, Adaptive, HybridLinearAdaptive, HybridPerfectAdaptive, and Linear variants.
+#' (I.e., if N parameter sets are selected, then 5N scenarios are run.)
 #'
 #' If the scenario type is "Hindcast", then after each model has been run, the
 #' Bayesian analysis will be run so that its results can be stored with the rest
@@ -364,7 +364,7 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 
 #' Generate the ensemble members for a single set of parameters
 #'
-#' This generates one each of the Perfect, Lagged, and Linear scenario types
+#' This generates one each of the Perfect, Adaptive, HybridLinearAdaptive, HybridPerfectAdaptive, and Linear scenario types
 #' using the input parameters.  The return value is a list of the three
 #' \code{ScenarioInfo} objects for the scenarios generated.
 #'
@@ -411,12 +411,12 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
                            aOutputDir = aOutputDir)
 
 
-  ## Lagged scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
+  ## Adaptive scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
   share <- paste(share1, share2, share3, sep="-")
-  scenName <- getScenName(aScenType, "Lagged", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Adaptive", share, agFor, agForNonPast, crop)
 
   lagscen <- ScenarioInfo(aScenarioType = aScenType,
-                          aExpectationType = "Lagged",
+                          aExpectationType = "Adaptive",
                           aLinearYears1 = NA,
                           aLinearYears2 = NA,
                           aLinearYears3 = NA,
@@ -433,12 +433,12 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
                           aSerialNum = serialnum+0.2,
                           aOutputDir = aOutputDir)
 
-  ## Lagged scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
+  ## HybridPerfectAdaptive scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
   share <- paste(share1, share2, share3, sep="-")
-  scenName <- getScenName(aScenType, "LaggedCurr", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "HybridPerfectAdaptive", share, agFor, agForNonPast, crop)
 
   lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
-                          aExpectationType = "LaggedCurr",
+                          aExpectationType = "HybridPerfectAdaptive",
                           aLinearYears1 = NA,
                           aLinearYears2 = NA,
                           aLinearYears3 = NA,
@@ -479,9 +479,9 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
   ## mixed scenario, using linear for yield and adaptive for prices
   linyears <- paste(linyears1, linyears2, linyears3, sep="-")
   share <- paste(share1, share2, share3, sep="-")
-  scenName <- getScenName(aScenType, "Mixed", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "HybridLinearAdaptive", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
   mixedscen <- ScenarioInfo(aScenarioType = aScenType,
-                          aExpectationType = "Mixed",
+                          aExpectationType = "HybridLinearAdaptive",
                           aLinearYears1 = linyears1,
                           aLinearYears2 = linyears2,
                           aLinearYears3 = linyears3,

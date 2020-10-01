@@ -27,26 +27,26 @@ test_that("yield expectation calculation works", {
   tempScen$mLinearYears2 <- 2
   tempScen$mLinearYears3 <- 2
 
-  # Expectation type needs to be set for lagged expectations to work
+  # Expectation type needs to be set for adaptive expectations to work
   # (other types will ignore this field)
-  tempScen$mExpectationType <- "Lagged"
+  tempScen$mExpectationType <- "Adaptive"
 
   # Now, calculate expectations using all methods
   perfectYield <- PerfectExpectation_calcExpectedYield(testLeaf, 4)
-  laggedYield <- LaggedExpectation_calcExpectedYield(testLeaf, 4, tempScen)
+  adaptiveYield <- AdaptiveExpectation_calcExpectedYield(testLeaf, 4, tempScen)
   linearYield1 <- LinearExpectation_calcExpectedYield(testLeaf, 4, tempScen)
 
   # Compare to expectations
   expect_equivalent(perfectYield, 4,
                     info = paste("PerfectExpectation_calcExpectedYield not producing expected values"))
-  expect_equivalent(laggedYield, 2.25,
-                    info = paste("LaggedExpectation_calcExpectedYield not producing expected values"))
+  expect_equivalent(adaptiveYield, 2.25,
+                    info = paste("AdaptiveExpectation_calcExpectedYield not producing expected values"))
   expect_equivalent(linearYield1, 3,
                     info = paste("LinearExpectation_calcExpectedYield not producing expected values (1)"))
 
 })
 
-test_that('lagged expectation function is equivalent to simple loop', {
+test_that('adaptive expectation function is equivalent to simple loop', {
   year <- c(1971, 1972, 1973)
   qty <- c(1.0, 2.0, 3.0)
   pricetable <- data.frame(year=year, qty=qty)
@@ -69,7 +69,7 @@ test_that('lagged expectation function is equivalent to simple loop', {
 
   ## for alpha==0, and years in the table, we should just get back the original value
   for(t in year) {
-    expect_equal(calc_lagged_expectation(t, 0, pricetable, 'qty'),
+    expect_equal(calc_adaptive_expectation(t, 0, pricetable, 'qty'),
                  qty[year==t],
                  info=paste('t=',t))
   }
@@ -77,7 +77,7 @@ test_that('lagged expectation function is equivalent to simple loop', {
   ## Compare the package implementation with the loop version above.
   for(alpha in c(0.1, 0.5, 0.9)) {
     for(t in c(1900, year, 1975)) {
-      expect_equal(calc_lagged_expectation(t, alpha, pricetable, 'qty'),
+      expect_equal(calc_adaptive_expectation(t, alpha, pricetable, 'qty'),
                    loopcalc(t, alpha),
                    info=paste('alpha=',alpha,' t=',t))
     }
