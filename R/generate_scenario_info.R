@@ -42,7 +42,7 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
-ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Lagged", and "LaggedCurr" ExpectationType are supported
+ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "HybridLinearAdaptive", and "HybridPerfectAdaptive" ExpectationType are supported
                          aExpectationType = NULL,
                          aLaggedShareOld1 = NA,
                          aLaggedShareOld2 = NA,
@@ -280,7 +280,7 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
     new_scen_info$mLinearYears3 <- aLinearYears3
   }
 
-  # Set share of old expectations in lagged expectation if specified
+  # Set share of old expectations in adaptive expectation if specified
   if(is.numeric(aLaggedShareOld)) {
     # Set all groups to this value if it specified. These can be individually overwritten later.
     new_scen_info$mLaggedShareOld1 <- aLaggedShareOld

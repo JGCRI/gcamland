@@ -29,6 +29,7 @@ Suggests:
     rmarkdown
 BugReports: https://github.com/JGCRI/gcamland/issues
 Collate:
+    'adaptive_expectation.R'
     'ag_production_technology.R'
     'bayesian.R'
     'constants.R'
@@ -37,7 +38,6 @@ Collate:
     'generate_price_data.R'
     'generate_scenario_info.R'
     'helpers.R'
-    'lagged_expectation.R'
     'land_allocator.R'
     'land_leaf.R'
     'land_node.R'

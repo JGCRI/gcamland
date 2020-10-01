@@ -73,24 +73,9 @@ test_that("The table produced by grand_table_bayes is grand.", {
                     c("xi", "lp_", "expectation.type", "share.old1", "share.old2", "share.old3",
                       "linear.years1", "linear.years2", "linear.years3", "logit.agforest", "logit.afnonpast",
                       "logit.crop", "region"))
-    expect_setequal(unique(gt$expectation.type), c("Perfect", "Lagged", "LaggedCurr", "Linear", "Mixed"))
+    expect_setequal(unique(gt$expectation.type), c("Perfect", "Adaptive", "HybridPerfectAdaptive", "Linear", "HybridLinearAdaptive"))
     expect_equal(unique(gt$region), "USA")
 })
-
-
-test_that("MAP_bayes function produces correct answer.", {
-    map <- MAP_bayes(testscenarios)
-    expect_true(inherits(map, 'data.frame'))
-    expect_equal(nrow(map), 5)
-    expect_equal(ncol(map), 12)
-    expect_equal(map$logit.agforest, rep(1.55, 5), tolerance=1e-4)
-    expect_equal(map$logit.afnonpast, rep(1.05, 5), tolerance=1e-4)
-    expect_equal(map$logit.crop, rep(1.05, 5), tolerance=1e-4)
-    expect_equal(map$xi, rep(1, 5))
-    expect_equal(map$dev_, c(4378.428, 4478.519, 4790.599, 4416.926, 4812.445), tolerance=1e-4)
-})
-
-
 
 test_that("EV function produces correct answer.", {
     ev <- EV(testscenarios)
@@ -113,18 +98,4 @@ test_that("waic function produces correct answer.", {
     expect_equal(w$dwaic, c(0.0, 38.49833, 100.09073, 412.17123, 434.01699), tolerance=1e-4)
     expect_equal(w$se.dwaic, c(0.0, 8.230109, 24.071678, 34.265683, 49.118918), tolerance=1e-4)
     expect_equal(w$awgt, c(1.000000e+00, 4.367108e-09, 1.843206e-22, 3.148869e-90, 5.680770e-95))
-})
-
-test_that("HPDI function produces correct answer.", {
-    ilst <- HPDI(testscenarios)
-
-    ## List should be two copies of the same matrix
-    expect_true(inherits(ilst, 'list'))
-    expect_equal(length(ilst), 5)
-    expect_equivalent(ilst[[1]], ilst[[2]])
-    expect_true(inherits(ilst[[1]], 'matrix'))
-
-    hpdi_ref <- structure(c(1.55, 1.05, 1.05, 0.745,0.745,0.745, NA, NA, NA, 1,
-                            1.55, 1.05, 1.05, 0.745,0.745,0.745, NA, NA, NA, 1), .Dim = c(10L, 2L))
-    expect_equivalent(ilst[[1]], hpdi_ref)
 })

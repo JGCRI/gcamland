@@ -11,7 +11,7 @@ getScenName(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, aCrop)
 
 \item{aExpectation}{Expectation type}
 
-\item{aYears}{Years for Lagged or Linear expectations (NULL for Perfect)}
+\item{aYears}{Years for Adaptive or Linear expectations (NULL for Perfect)}
 
 \item{aAgFor}{Logit exponent for AgroForestLand}
 

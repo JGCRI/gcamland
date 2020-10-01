@@ -56,7 +56,7 @@ controls competition between crops, grass/shrub, and forest.}
 List of three ScenarioInfo objects
 }
 \description{
-This generates one each of the Perfect, Lagged, and Linear scenario types
+This generates one each of the Perfect, Adaptive, HybridLinearAdaptive, HybridPerfectAdaptive, and Linear scenario types
 using the input parameters.  The return value is a list of the three
 \code{ScenarioInfo} objects for the scenarios generated.
 }
