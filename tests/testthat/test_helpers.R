@@ -11,8 +11,8 @@ test_that("scenario names are generated correctly", {
                  "test_Perfect_AgroForest-3_AgroForestNonPasture-3_Cropland-3")
     expect_equal(getScenName("test", "Linear", 5, -3, -3, -3),
                  "test_Linear5_AgroForest-3_AgroForestNonPasture-3_Cropland-3")
-    expect_equal(getScenName("test", "Lagged", 0.5, -3, -3, -3),
-                 "test_Lagged0.5_AgroForest-3_AgroForestNonPasture-3_Cropland-3")
+    expect_equal(getScenName("test", "Adaptive", 0.5, -3, -3, -3),
+                 "test_Adaptive0.5_AgroForest-3_AgroForestNonPasture-3_Cropland-3")
 })
 
 test_that("Scenario info objects can be converted to lists and restored.", {

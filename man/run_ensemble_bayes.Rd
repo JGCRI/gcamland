@@ -52,8 +52,8 @@ List of ScenarioInfo objects for the ensemble members
 Parameter combinations are selected by generating a quasi-random
 sequence and mapping it to a specified range for each parameter.
 Then, each parameter set is run through the offline land model in
-each of the Perfect, Lagged, and Linear variants.  (I.e., if N
-parameter sets are selected, then 3N scenarios are run.)
+each of the Perfect, Adaptive, HybridLinearAdaptive, HybridPerfectAdaptive, and Linear variants.
+(I.e., if N parameter sets are selected, then 5N scenarios are run.)
 }
 \details{
 If the scenario type is "Hindcast", then after each model has been run, the

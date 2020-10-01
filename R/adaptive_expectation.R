@@ -1,15 +1,15 @@
-# lagged_expectation.R
+# adaptive_expectation.R
 
-#' LaggedExpectation_calcExpectedYield
+#' AdaptiveExpectation_calcExpectedYield
 #'
 #' @details Calculate the expected yield for a LandLeaf using
-#'          a lagged approach -- use linear combination of previous expectation and
+#'          an adaptive approach -- use linear combination of previous expectation and
 #'          new information.
 #' @param aLandLeaf LandLeaf to calculate expected yield for
 #' @param aPeriod Current model period
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
-LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
+AdaptiveExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInfo) {
   # Silence package checks
   sector <- year <- yield <- lm <- predict <- GCAM_commodity <- NULL
 
@@ -30,7 +30,7 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     previousExpectation <- aLandLeaf$mExpectedYield[[aPeriod - 1]]
 
     # Get new information
-    if( aScenarioInfo$mExpectationType == "LaggedCurr" ) {
+    if( aScenarioInfo$mExpectationType == "HybridPerfectAdaptive" ) {
       newInformation <- aLandLeaf$mYield[[aPeriod]]
     } else {
       newInformation <- aLandLeaf$mYield[[aPeriod - 1]]
@@ -59,14 +59,14 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     }
     yield_table$yield <- yield_table$base_yield * yield_table$yield_ratio
 
-    # Now, we call calc_lagged_expectation() to calculate the expectations
-    if( aScenarioInfo$mExpectationType == "LaggedCurr" ) {
+    # Now, we call calc_adaptive_expectation() to calculate the expectations
+    if( aScenarioInfo$mExpectationType == "HybridPerfectAdaptive" ) {
       currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-      expectedYield <- calc_lagged_expectation(currYear, shareOld, yield_table, 'yield')
+      expectedYield <- calc_adaptive_expectation(currYear, shareOld, yield_table, 'yield')
     } else {
       timestep <- get_per_to_yr(aPeriod+1, aScenarioInfo$mScenarioType) - get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
       prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - timestep
-      expectedYield <- calc_lagged_expectation(prevYear, shareOld, yield_table, 'yield')
+      expectedYield <- calc_adaptive_expectation(prevYear, shareOld, yield_table, 'yield')
     }
   }
 
@@ -76,16 +76,16 @@ LaggedExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   return(expectedYield)
 }
 
-#' LaggedExpectation_calcExpectedPrice
+#' AdaptiveExpectation_calcExpectedPrice
 #'
 #' @details Calculate the expected price for a LandLeaf using
-#'          a lagged approach -- use linear combination of previous expectation and
+#'          an adaptive approach -- use linear combination of previous expectation and
 #'          new information.
 #' @param aLandLeaf LandLeaf to calculate expected price for
 #' @param aPeriod Current model period
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
-LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInfo){
+AdaptiveExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInfo){
   # Silence package checks
   sector <- lm <- predict <- year <- price <- NULL
 
@@ -106,9 +106,9 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 
   if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
     # Calculate expected price
-    if( aScenarioInfo$mExpectationType == "LaggedCurr" ) {
+    if( aScenarioInfo$mExpectationType == "HybridPerfectAdaptive" ) {
       currYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
-      expectedPrice <- calc_lagged_expectation(currYear, shareOld, price_table, 'price')
+      expectedPrice <- calc_adaptive_expectation(currYear, shareOld, price_table, 'price')
     } else {
       if( aPeriod > 1 ) {
         prevYear <- get_per_to_yr(aPeriod-1, aScenarioInfo$mScenarioType)
@@ -116,7 +116,7 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
         timestep <- get_per_to_yr(aPeriod+1, aScenarioInfo$mScenarioType) - get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType)
         prevYear <- get_per_to_yr(aPeriod, aScenarioInfo$mScenarioType) - timestep
       }
-      expectedPrice <- calc_lagged_expectation(prevYear, shareOld, price_table, 'price')
+      expectedPrice <- calc_adaptive_expectation(prevYear, shareOld, price_table, 'price')
     }
 
   } else {
@@ -155,7 +155,7 @@ LaggedExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
 #' @param colname Name of the column that has the data for which we are
 #' computing the expectation (e.g. \code{'price'})
 #' @export
-calc_lagged_expectation <- function(t, alpha, datatbl, colname)
+calc_adaptive_expectation <- function(t, alpha, datatbl, colname)
 {
   year <- datatbl[['year']]
   x <- datatbl[[colname]]

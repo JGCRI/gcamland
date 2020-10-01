@@ -71,7 +71,7 @@ get_historic_yields <- function(){
 #' @export
 get_hindcast_AgProdChange <- function(aScenType){
   # Silence package checks
-  year <- prev_year <- GCAM_commodity <- yield.x <- yield.y <- region <- AgProdChange <- NULL
+  year <- prev_year <- GCAM_commodity <- yield <- yield.x <- yield.y <- region <- AgProdChange <- NULL
 
     # Compute AgProdChange
   if(aScenType != "Hindcast5yr") {

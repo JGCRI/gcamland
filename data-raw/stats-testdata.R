@@ -79,7 +79,7 @@ gen_stats_testdata <- function()
     limits <- c(0, 6)
     scentype <- 'Hindcast'
     exptype1 <- 'Perfect'
-    exptype2 <- 'Lagged'
+    exptype2 <- 'Adaptive'
 
     rn <- randtoolbox::sobol(Nsample, NPARAM)
     p <- limits[1] + rn*(limits[2]-limits[1])
