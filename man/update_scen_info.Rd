@@ -12,10 +12,14 @@ update_scen_info(
   aLinearYears1 = NULL,
   aLinearYears2 = NULL,
   aLinearYears3 = NULL,
+  aLinearYears4 = NULL,
+  aLinearYears5 = NULL,
   aLaggedShareOld = NULL,
   aLaggedShareOld1 = NULL,
   aLaggedShareOld2 = NULL,
   aLaggedShareOld3 = NULL,
+  aLaggedShareOld4 = NULL,
+  aLaggedShareOld5 = NULL,
   aUseZeroCost = FALSE,
   aCalibrateShareWt = TRUE,
   aIncludeSubsidies = FALSE,
@@ -37,6 +41,10 @@ update_scen_info(
 
 \item{aLinearYears3}{New linear years for crop group 3 (see constants.R) (default = NULL)}
 
+\item{aLinearYears4}{New linear years for crop group 4 (see constants.R) (default = NULL)}
+
+\item{aLinearYears5}{New linear years for crop group 5 (see constants.R) (default = NULL)}
+
 \item{aLaggedShareOld}{New lagged share old (default = NULL)}
 
 \item{aLaggedShareOld1}{New lagged share old (group 1) (see constants.R) (default = NULL)}
@@ -44,6 +52,10 @@ update_scen_info(
 \item{aLaggedShareOld2}{New lagged share old (group 2) (see constants.R) (default = NULL)}
 
 \item{aLaggedShareOld3}{New lagged share old (group 3) (see constants.R) (default = NULL)}
+
+\item{aLaggedShareOld4}{New lagged share old (group 4) (see constants.R) (default = NULL)}
+
+\item{aLaggedShareOld5}{New lagged share old (group 5) (see constants.R) (default = NULL)}
 
 \item{aUseZeroCost}{New cost assumption (default = FALSE)}
 

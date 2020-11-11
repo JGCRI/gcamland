@@ -11,9 +11,13 @@ gen_ensemble_member(
   share1,
   share2,
   share3,
+  share4,
+  share5,
   linyears1,
   linyears2,
   linyears3,
+  linyears4,
+  linyears5,
   serialnum,
   aScenType,
   aIncludeSubsidies,
@@ -36,11 +40,19 @@ controls competition between crops, grass/shrub, and forest.}
 
 \item{share3}{The share parameter for the lagged model for crop group 3 (see constants.R)}
 
+\item{share4}{The share parameter for the lagged model for crop group 4 (see constants.R)}
+
+\item{share5}{The share parameter for the lagged model for crop group 5 (see constants.R)}
+
 \item{linyears1}{The number of years parameter for the linear model for crop group 1 (see constants.R)}
 
 \item{linyears2}{The number of years parameter for the linear model for crop group 2 (see constants.R)}
 
 \item{linyears3}{The number of years parameter for the linear model for crop group 3 (see constants.R)}
+
+\item{linyears4}{The number of years parameter for the linear model for crop group 4 (see constants.R)}
+
+\item{linyears5}{The number of years parameter for the linear model for crop group 5 (see constants.R)}
 
 \item{serialnum}{Serial number for the run}
 

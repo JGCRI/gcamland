@@ -9,9 +9,13 @@ ScenarioInfo(
   aLaggedShareOld1 = NA,
   aLaggedShareOld2 = NA,
   aLaggedShareOld3 = NA,
+  aLaggedShareOld4 = NA,
+  aLaggedShareOld5 = NA,
   aLinearYears1 = NA,
   aLinearYears2 = NA,
   aLinearYears3 = NA,
+  aLinearYears4 = NA,
+  aLinearYears5 = NA,
   aLogitUseDefault = TRUE,
   aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA,
@@ -38,11 +42,19 @@ ScenarioInfo(
 
 \item{aLaggedShareOld3}{Share of old expectations included in current expectation for crop group 3 (see constants.R)}
 
+\item{aLaggedShareOld4}{Share of old expectations included in current expectation for crop group 4 (see constants.R)}
+
+\item{aLaggedShareOld5}{Share of old expectations included in current expectation for crop group 5 (see constants.R)}
+
 \item{aLinearYears1}{Years for linear expectations for crop group 1 (see constants.R)}
 
 \item{aLinearYears2}{Years for linear expectations for crop group 2 (see constants.R)}
 
 \item{aLinearYears3}{Years for linear expectations for crop group 3 (see constants.R)}
+
+\item{aLinearYears4}{Years for linear expectations for crop group 4 (see constants.R)}
+
+\item{aLinearYears5}{Years for linear expectations for crop group 5 (see constants.R)}
 
 \item{aLogitUseDefault}{Boolean indicating whether to use default logits}
 
