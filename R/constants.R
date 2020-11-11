@@ -37,9 +37,12 @@ PERIODS <- sapply(SCEN.TYPES, function(type) {
 # * parameters by crop. We do this in three groups, with the crops belonging to each group specified here.
 CROP_GROUP1 <- c("Corn", "OilCrop")         # Crops used for feed/fuel.
 CROP_GROUP2 <- c("Wheat", "OtherGrain")     # Other coarse grains.
-CROP_GROUP3 <- c("biomass", "FiberCrop", "FodderGrass", "FodderHerb",
-                 "Forest", "MiscCrop", "PalmFruit", "Pasture", "Rice",
-                 "Root_Tuber", "SugarCrop", "willow")  # All other commodities
+CROP_GROUP3 <- c( "Rice")
+CROP_GROUP4 <- c("SugarCrop")
+CROP_GROUP5 <- c("biomass", "FiberCrop", "FodderGrass", "FodderHerb",
+                 "Forest", "MiscCrop", "PalmFruit", "Pasture",
+                 "Root_Tuber", "willow")  # All other commodities
+
 
 # **************************************************************************************************************
 # * Threshold-related constants

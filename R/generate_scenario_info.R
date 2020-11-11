@@ -18,9 +18,13 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aLaggedShareOld1 Share of old expectations included in current expectation for crop group 1 (see constants.R)
 #' @param aLaggedShareOld2 Share of old expectations included in current expectation for crop group 2 (see constants.R)
 #' @param aLaggedShareOld3 Share of old expectations included in current expectation for crop group 3 (see constants.R)
+#' @param aLaggedShareOld4 Share of old expectations included in current expectation for crop group 4 (see constants.R)
+#' @param aLaggedShareOld5 Share of old expectations included in current expectation for crop group 5 (see constants.R)
 #' @param aLinearYears1 Years for linear expectations for crop group 1 (see constants.R)
 #' @param aLinearYears2 Years for linear expectations for crop group 2 (see constants.R)
 #' @param aLinearYears3 Years for linear expectations for crop group 3 (see constants.R)
+#' @param aLinearYears4 Years for linear expectations for crop group 4 (see constants.R)
+#' @param aLinearYears5 Years for linear expectations for crop group 5 (see constants.R)
 #' @param aLogitUseDefault Boolean indicating whether to use default logits
 #' @param aLogitAgroForest AgroForest logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
@@ -47,9 +51,13 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "Hybr
                          aLaggedShareOld1 = NA,
                          aLaggedShareOld2 = NA,
                          aLaggedShareOld3 = NA,
+                         aLaggedShareOld4 = NA,
+                         aLaggedShareOld5 = NA,
                          aLinearYears1 = NA,
                          aLinearYears2 = NA,
                          aLinearYears3 = NA,
+                         aLinearYears4 = NA,
+                         aLinearYears5 = NA,
                          aLogitUseDefault = TRUE,
                          aLogitAgroForest = NA,
                          aLogitAgroForest_NonPasture = NA,
@@ -73,9 +81,13 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "Hybr
   self$mLaggedShareOld1 <- aLaggedShareOld1
   self$mLaggedShareOld2 <- aLaggedShareOld2
   self$mLaggedShareOld3 <- aLaggedShareOld3
+  self$mLaggedShareOld4 <- aLaggedShareOld4
+  self$mLaggedShareOld5 <- aLaggedShareOld5
   self$mLinearYears1 <- aLinearYears1
   self$mLinearYears2 <- aLinearYears2
   self$mLinearYears3 <- aLinearYears3
+  self$mLinearYears4 <- aLinearYears4
+  self$mLinearYears5 <- aLinearYears5
   self$mLogitUseDefault <- aLogitUseDefault
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
