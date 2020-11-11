@@ -95,7 +95,7 @@ getScenName <- function(aScenName, aExpectation, aYears, aRegion, aAgFor, aAgFor
   }
 
   # Add region name
-  scenNameAdj <- paste(aScenName, "_", aRegion, sep="")
+  scenNameAdj <- paste(scenNameAdj, "_", aRegion, sep="")
 
   # Add logit info
   scenNameAdj <- paste(scenNameAdj, "_AgroForest", aAgFor, sep="")

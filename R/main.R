@@ -426,7 +426,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                                 suffix, aOutputDir)
 {
   ## Perfect expectations scenario
-  scenName <- getScenName(aScenType, "Perfect", NULL, aRegion, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenName = aScenType,
+                          aExpectation = "Perfect",
+                          aYears = NULL,
+                          aRegion = aRegion,
+                          aAgFor = agFor,
+                          aAgForNonPast = agForNonPast,
+                          aCrop = crop)
 
   perfscen <- ScenarioInfo(aScenarioType = aScenType,
                            aExpectationType = "Perfect",
@@ -454,7 +460,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
 
   ## Adaptive scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
   share <- paste(share1, share2, share3, share4, share5, sep="-")
-  scenName <- getScenName(aScenType, "Adaptive", share, aRegion, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenName = aScenType,
+                          aExpectation = "Adaptive",
+                          aYears = share,
+                          aRegion = aRegion,
+                          aAgFor = agFor,
+                          aAgForNonPast = agForNonPast,
+                          aCrop = crop)
 
   lagscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Adaptive",
@@ -481,7 +493,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
 
   ## HybridPerfectAdaptive scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
   share <- paste(share1, share2, share3, share4, share5, sep="-")
-  scenName <- getScenName(aScenType, "HybridPerfectAdaptive", share, aRegion, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenName = aScenType,
+                          aExpectation = "HybridPerfectAdaptive",
+                          aYears = share,
+                          aRegion = aRegion,
+                          aAgFor = agFor,
+                          aAgForNonPast = agForNonPast,
+                          aCrop = crop)
 
   lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "HybridPerfectAdaptive",
@@ -508,7 +526,14 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
 
   ## Linear scenario
   linyears <- paste(linyears1, linyears2, linyears3, linyears4, linyears5, sep="-")
-  scenName <- getScenName(aScenType, "Linear", linyears, aRegion, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenName = aScenType,
+                          aExpectation = "Linear",
+                          aYears = linyears,
+                          aRegion = aRegion,
+                          aAgFor = agFor,
+                          aAgForNonPast = agForNonPast,
+                          aCrop = crop)
+
   linscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Linear",
                           aLinearYears1 = linyears1,
@@ -535,8 +560,14 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
   ## mixed scenario, using linear for yield and adaptive for prices
   linyears <- paste(linyears1, linyears2, linyears3, linyears4, linyears5, sep="-")
   share <- paste(share1, share2, share3, share4, share5, sep="-")
-  scenName <- getScenName(aScenType, "HybridLinearAdaptive", paste(linyears, share, sep="_"),
-                          aRegion, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenName = aScenType,
+                          aExpectation = "HybridLinearAdaptive",
+                          aYears = paste(linyears, share, sep="_"),
+                          aRegion = aRegion,
+                          aAgFor = agFor,
+                          aAgForNonPast = agForNonPast,
+                          aCrop = crop)
+
   mixedscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "HybridLinearAdaptive",
                           aLinearYears1 = linyears1,
