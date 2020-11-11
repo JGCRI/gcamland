@@ -57,7 +57,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   message("Sampling strategy is ", aSampleType)
   message("****************************************************")
 
-  # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
+  # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 5 parameters each for
   # lagged share and linear years. If FALSE, then only one parameter for each. In both cases, there are 3 logit exponents
   if( aDifferentiateParamByCrop ) {
     NPARAM <- 13
@@ -425,9 +425,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                            aLinearYears1 = NA,
                            aLinearYears2 = NA,
                            aLinearYears3 = NA,
+                           aLinearYears4 = NA,
+                           aLinearYears5 = NA,
                            aLaggedShareOld1 = NA,
                            aLaggedShareOld2 = NA,
                            aLaggedShareOld3 = NA,
+                           aLaggedShareOld4 = NA,
+                           aLaggedShareOld5 = NA,
                            aLogitUseDefault = FALSE,
                            aLogitAgroForest = agFor,
                            aLogitAgroForest_NonPasture = agForNonPast,
@@ -517,17 +521,21 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                           aOutputDir = aOutputDir)
 
   ## mixed scenario, using linear for yield and adaptive for prices
-  linyears <- paste(linyears1, linyears2, linyears3, sep="-")
-  share <- paste(share1, share2, share3, sep="-")
+  linyears <- paste(linyears1, linyears2, linyears3, linyears4, linyears5, sep="-")
+  share <- paste(share1, share2, share3, share4, share5, sep="-")
   scenName <- getScenName(aScenType, "HybridLinearAdaptive", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
   mixedscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "HybridLinearAdaptive",
                           aLinearYears1 = linyears1,
                           aLinearYears2 = linyears2,
                           aLinearYears3 = linyears3,
+                          aLinearYears4 = linyears4,
+                          aLinearYears5 = linyears5,
                           aLaggedShareOld1 = share1,
                           aLaggedShareOld2 = share2,
                           aLaggedShareOld3 = share3,
+                          aLaggedShareOld4 = share4,
+                          aLaggedShareOld5 = share5,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
