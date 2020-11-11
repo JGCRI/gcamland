@@ -20,6 +20,10 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     numYears <- aScenarioInfo$mLinearYears2
   } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
     numYears <- aScenarioInfo$mLinearYears3
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP4 ) {
+    numYears <- aScenarioInfo$mLinearYears4
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP5 ) {
+    numYears <- aScenarioInfo$mLinearYears5
   } else {
     message("Error: crop grouping not specified.")
   }
@@ -90,6 +94,10 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
     numYears <- aScenarioInfo$mLinearYears2
   } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
     numYears <- aScenarioInfo$mLinearYears3
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP4 ) {
+    numYears <- aScenarioInfo$mLinearYears4
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP5 ) {
+    numYears <- aScenarioInfo$mLinearYears5
   } else {
     message("Error: crop grouping not specified.")
   }
