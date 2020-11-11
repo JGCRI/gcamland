@@ -23,9 +23,13 @@ test_that("yield expectation calculation works", {
   tempScen$mLaggedShareOld1 <- 0.5
   tempScen$mLaggedShareOld2 <- 0.5
   tempScen$mLaggedShareOld3 <- 0.5
+  tempScen$mLaggedShareOld4 <- 0.5
+  tempScen$mLaggedShareOld5 <- 0.5
   tempScen$mLinearYears1 <- 2
   tempScen$mLinearYears2 <- 2
   tempScen$mLinearYears3 <- 2
+  tempScen$mLinearYears4 <- 2
+  tempScen$mLinearYears5 <- 2
 
   # Expectation type needs to be set for adaptive expectations to work
   # (other types will ignore this field)
