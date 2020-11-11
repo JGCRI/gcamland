@@ -70,8 +70,10 @@ test_that("The table produced by grand_table_bayes is grand.", {
     expect_equal(nrow(gt), 100)
     expect_equal(ncol(gt), 13)
     expect_setequal(names(gt),
-                    c("xi", "lp_", "expectation.type", "share.old1", "share.old2", "share.old3",
-                      "linear.years1", "linear.years2", "linear.years3", "logit.agforest", "logit.afnonpast",
+                    c("xi", "lp_", "expectation.type",
+                      "share.old1", "share.old2", "share.old3", "share.old4", "share.old5",
+                      "linear.years1", "linear.years2", "linear.years3", "linear.years4", "linear.years5",
+                      "logit.agforest", "logit.afnonpast",
                       "logit.crop", "region"))
     expect_setequal(unique(gt$expectation.type), c("Perfect", "Adaptive", "HybridPerfectAdaptive", "Linear", "HybridLinearAdaptive"))
     expect_equal(unique(gt$region), "USA")

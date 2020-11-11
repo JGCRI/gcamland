@@ -19,9 +19,13 @@ test_that('Alternate scenario types run successfully', {
                                      aLinearYears1 = 2,
                                      aLinearYears2 = 2,
                                      aLinearYears3 = 2,
+                                     aLinearYears4 = 2,
+                                     aLinearYears5 = 2,
                                      aLaggedShareOld1 = 0.5,
                                      aLaggedShareOld2 = 0.5,
                                      aLaggedShareOld3 = 0.5,
+                                     aLaggedShareOld4 = 0.5,
+                                     aLaggedShareOld5 = 0.5,
                                      aLogitUseDefault = TRUE,
                                      aScenarioType = type,
                                      aScenarioName = paste(type, expectation, sep='-'),
@@ -43,9 +47,13 @@ test_that('Sub region runs successfully', {
     testscen$mLinearYears1 <- 2
     testscen$mLinearYears2 <- 2
     testscen$mLinearYears3 <- 2
+    testscen$mLinearYears4 <- 2
+    testscen$mLinearYears5 <- 2
     testscen$mLaggedShareOld1 <- 0.5
     testscen$mLaggedShareOld2 <- 0.5
     testscen$mLaggedShareOld3 <- 0.5
+    testscen$mLaggedShareOld4 <- 0.5
+    testscen$mLaggedShareOld5 <- 0.5
 
     expect_message(run_model(testscen, runperiods),
                    info=paste('Failure in scenario type=', type,
