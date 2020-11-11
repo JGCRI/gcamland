@@ -20,6 +20,7 @@ gen_ensemble_member(
   linyears5,
   serialnum,
   aScenType,
+  aRegion = DEFAULT.REGION,
   aIncludeSubsidies,
   suffix,
   aOutputDir
@@ -57,6 +58,9 @@ controls competition between crops, grass/shrub, and forest.}
 \item{serialnum}{Serial number for the run}
 
 \item{aScenType}{Scenario type, either "Hindcast" or "Reference"}
+
+\item{aRegion}{Region to use in the calculation.  Right now we only run a
+single region at a time.}
 
 \item{aIncludeSubsidies}{Boolean flag indicating whether subsidies should be included in profit}
 

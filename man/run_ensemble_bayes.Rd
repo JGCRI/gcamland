@@ -12,6 +12,7 @@ run_ensemble_bayes(
   lpdf = get_lpdf(1),
   lprior = uniform_prior,
   aType = "Hindcast",
+  aRegion = DEFAULT.REGION,
   aIncludeSubsidies = FALSE,
   aDifferentiateParamByCrop = FALSE,
   aSampleType = "LatinHyperCube",
@@ -33,6 +34,9 @@ being run.}
 posteriors are being run.}
 
 \item{aType}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{aRegion}{Region to use in the calculation.  Right now we only run a
+single region at a time.}
 
 \item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
 

@@ -10,6 +10,7 @@ run_ensemble(
   aOutputDir = "./outputs",
   skip = 0,
   aType = "Hindcast",
+  aRegion = DEFAULT.REGION,
   aIncludeSubsidies = FALSE,
   aDifferentiateParamByCrop = FALSE,
   aSampleType = "LatinHyperCube",
@@ -25,6 +26,9 @@ run_ensemble(
 \item{skip}{Number of iterations to skip (i.e., if building on another run.)}
 
 \item{aType}{Scenario type: either "Reference" or "Hindcast"}
+
+\item{aRegion}{Region to use in the calculation.  Right now we only run a
+single region at a time.}
 
 \item{aIncludeSubsidies}{Boolean indicating subsidies should be added to profit}
 

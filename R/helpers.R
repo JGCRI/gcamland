@@ -74,13 +74,15 @@ getStartYear <- function(aScenType) {
 #' @param aScenName Scenario base name
 #' @param aExpectation Expectation type
 #' @param aYears Years for Adaptive or Linear expectations (NULL for Perfect)
+#' @param aRegion Region to use in the calculation.  Right now we only run a
+#' single region at a time.
 #' @param aAgFor Logit exponent for AgroForestLand
 #' @param aAgForNonPast Logit exponent for AgroForestLand_NonPasture
 #' @param aCrop Logit exponent for Cropland
 #'
 #' @return Scenario name
 #' @author KVC November 2017
-getScenName <- function(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, aCrop) {
+getScenName <- function(aScenName, aExpectation, aYears, aRegion, aAgFor, aAgForNonPast, aCrop) {
   # Add expectation information
   if(aExpectation == "Linear") {
     scenNameAdj <- paste(aScenName, "_", aExpectation, aYears, sep="")
@@ -91,6 +93,9 @@ getScenName <- function(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, 
   } else {
     scenNameAdj <- paste(aScenName, "_", aExpectation, sep="")
   }
+
+  # Add region name
+  scenNameAdj <- paste(aScenName, "_", aRegion, sep="")
 
   # Add logit info
   scenNameAdj <- paste(scenNameAdj, "_AgroForest", aAgFor, sep="")

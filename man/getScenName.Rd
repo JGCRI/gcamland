@@ -4,7 +4,15 @@
 \alias{getScenName}
 \title{getScenName}
 \usage{
-getScenName(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, aCrop)
+getScenName(
+  aScenName,
+  aExpectation,
+  aYears,
+  aRegion,
+  aAgFor,
+  aAgForNonPast,
+  aCrop
+)
 }
 \arguments{
 \item{aScenName}{Scenario base name}
@@ -12,6 +20,9 @@ getScenName(aScenName, aExpectation, aYears, aAgFor, aAgForNonPast, aCrop)
 \item{aExpectation}{Expectation type}
 
 \item{aYears}{Years for Adaptive or Linear expectations (NULL for Perfect)}
+
+\item{aRegion}{Region to use in the calculation.  Right now we only run a
+single region at a time.}
 
 \item{aAgFor}{Logit exponent for AgroForestLand}
 

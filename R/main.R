@@ -26,6 +26,8 @@
 #' @param aOutputDir Output directory
 #' @param skip Number of iterations to skip (i.e., if building on another run.)
 #' @param aType Scenario type: either "Reference" or "Hindcast"
+#' @param aRegion Region to use in the calculation.  Right now we only run a
+#' single region at a time.
 #' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
 #' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
 #' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
@@ -38,7 +40,7 @@
 #' @importFrom utils capture.output sessionInfo
 #' @export
 run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
-                          aType = "Hindcast",
+                          aType = "Hindcast", aRegion = DEFAULT.REGION,
                           aIncludeSubsidies = FALSE,
                           aDifferentiateParamByCrop = FALSE,
                           aSampleType = "LatinHyperCube",
@@ -125,7 +127,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                      levels.LAGSHARE4, levels.LAGSHARE5,
                      levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3,
                      levels.LINYEARS4, levels.LINYEARS5, serialnumber,
-                     aType, aIncludeSubsidies, suffix, aOutputDir) %>%
+                     aType, aRegion, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
@@ -223,6 +225,8 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param lprior Log-prior probability density function.  Used only if Bayesian
 #' posteriors are being run.
 #' @param aType Scenario type: either "Reference" or "Hindcast"
+#' @param aRegion Region to use in the calculation.  Right now we only run a
+#' single region at a time.
 #' @param aIncludeSubsidies Boolean indicating subsidies should be added to profit
 #' @param aDifferentiateParamByCrop Boolean indicating whether all crops should use the same expectation parameters
 #' @param aSampleType String indicating what type of sampling, currently only "LatinHyperCube" and "Sobol" are supported
@@ -236,6 +240,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @export
 run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                          lpdf=get_lpdf(1), lprior=uniform_prior, aType="Hindcast",
+                         aRegion = DEFAULT.REGION,
                          aIncludeSubsidies = FALSE, aDifferentiateParamByCrop = FALSE, aSampleType = "LatinHyperCube",
                          aTotalSamplesPlanned = 500, logparallel=NULL) {
 
@@ -310,7 +315,7 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
                      levels.LAGSHARE4, levels.LAGSHARE5,
                      levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3,
                      levels.LINYEARS4, levels.LINYEARS5, serialnumber,
-                     aType, aIncludeSubsidies, suffix, aOutputDir) %>%
+                     aType, aRegion, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
 
@@ -406,6 +411,8 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param linyears5 The number of years parameter for the linear model for crop group 5 (see constants.R)
 #' @param serialnum Serial number for the run
 #' @param aScenType Scenario type, either "Hindcast" or "Reference"
+#' @param aRegion Region to use in the calculation.  Right now we only run a
+#' single region at a time.
 #' @param aIncludeSubsidies Boolean flag indicating whether subsidies should be included in profit
 #' @param suffix Suffix for output filenames.
 #' @param aOutputDir Name of the output directory.
@@ -414,11 +421,12 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 gen_ensemble_member <- function(agFor, agForNonPast, crop,
                                 share1, share2, share3, share4, share5,
                                 linyears1, linyears2, linyears3,linyears4, linyears5,
-                                serialnum, aScenType, aIncludeSubsidies,
+                                serialnum, aScenType,aRegion = DEFAULT.REGION,
+                                aIncludeSubsidies,
                                 suffix, aOutputDir)
 {
   ## Perfect expectations scenario
-  scenName <- getScenName(aScenType, "Perfect", NULL, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Perfect", NULL, aRegion, agFor, agForNonPast, crop)
 
   perfscen <- ScenarioInfo(aScenarioType = aScenType,
                            aExpectationType = "Perfect",
@@ -440,12 +448,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                            aScenarioName = scenName,
                            aFileName = paste0("ensemble", suffix),
                            aSerialNum = serialnum+0.1,
+                           aRegion = aRegion,
                            aOutputDir = aOutputDir)
 
 
   ## Adaptive scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
   share <- paste(share1, share2, share3, share4, share5, sep="-")
-  scenName <- getScenName(aScenType, "Adaptive", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Adaptive", share, aRegion, agFor, agForNonPast, crop)
 
   lagscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Adaptive",
@@ -467,11 +476,12 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.2,
+                          aRegion = aRegion,
                           aOutputDir = aOutputDir)
 
   ## HybridPerfectAdaptive scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
   share <- paste(share1, share2, share3, share4, share5, sep="-")
-  scenName <- getScenName(aScenType, "HybridPerfectAdaptive", share, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "HybridPerfectAdaptive", share, aRegion, agFor, agForNonPast, crop)
 
   lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "HybridPerfectAdaptive",
@@ -493,11 +503,12 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.3,
+                          aRegion = aRegion,
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
   linyears <- paste(linyears1, linyears2, linyears3, linyears4, linyears5, sep="-")
-  scenName <- getScenName(aScenType, "Linear", linyears, agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "Linear", linyears, aRegion, agFor, agForNonPast, crop)
   linscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Linear",
                           aLinearYears1 = linyears1,
@@ -518,12 +529,14 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.4,
+                          aRegion = aRegion,
                           aOutputDir = aOutputDir)
 
   ## mixed scenario, using linear for yield and adaptive for prices
   linyears <- paste(linyears1, linyears2, linyears3, linyears4, linyears5, sep="-")
   share <- paste(share1, share2, share3, share4, share5, sep="-")
-  scenName <- getScenName(aScenType, "HybridLinearAdaptive", paste(linyears, share, sep="_"), agFor, agForNonPast, crop)
+  scenName <- getScenName(aScenType, "HybridLinearAdaptive", paste(linyears, share, sep="_"),
+                          aRegion, agFor, agForNonPast, crop)
   mixedscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "HybridLinearAdaptive",
                           aLinearYears1 = linyears1,
@@ -544,6 +557,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                           aScenarioName = scenName,
                           aFileName = paste0("ensemble", suffix),
                           aSerialNum = serialnum+0.5,
+                          aRegion = aRegion,
                           aOutputDir = aOutputDir)
 
   list(perfscen, lagscen, lagcurrscen, linscen, mixedscen)
