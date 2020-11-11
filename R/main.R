@@ -60,7 +60,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 3 parameters each for
   # lagged share and linear years. If FALSE, then only one parameter for each. In both cases, there are 3 logit exponents
   if( aDifferentiateParamByCrop ) {
-    NPARAM <- 9
+    NPARAM <- 13
   } else {
     NPARAM <- 5
   }
@@ -70,8 +70,8 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   limits.AGROFOREST <- c(0.01, 3)
   limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
   limits.CROPLAND <- c(0.01, 3)
-  limits.LAGSHARE <- c(0.1, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
-  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
+  limits.LAGSHARE <- c(0.1, 0.99) # Note: these limits are used for all crop-specific shares if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
   if( aSampleType == "LatinHyperCube" ) {
@@ -93,17 +93,25 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
     levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
     levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
     levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
-    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
-    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
-    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+    levels.LAGSHARE4 <- scaleParam(randomNumbers[,7], limits.LAGSHARE)
+    levels.LAGSHARE5 <- scaleParam(randomNumbers[,8], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,10], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,11], limits.LINYEARS))
+    levels.LINYEARS4 <- round(scaleParam(randomNumbers[,12], limits.LINYEARS))
+    levels.LINYEARS5 <- round(scaleParam(randomNumbers[,13], limits.LINYEARS))
   } else {
     # Set expectation parameters equal for all three crop groups
     levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
     levels.LAGSHARE2 <- levels.LAGSHARE1
     levels.LAGSHARE3 <- levels.LAGSHARE1
+    levels.LAGSHARE4 <- levels.LAGSHARE1
+    levels.LAGSHARE5 <- levels.LAGSHARE1
     levels.LINYEARS1 <- round(scaleParam(randomNumbers[,5], limits.LINYEARS))
     levels.LINYEARS2 <- levels.LINYEARS1
     levels.LINYEARS3 <- levels.LINYEARS1
+    levels.LINYEARS4 <- levels.LINYEARS1
+    levels.LINYEARS5 <- levels.LINYEARS1
   }
 
   ## Filename suffix.  This will be used to create unique filenames for the
@@ -114,7 +122,9 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE1, levels.LAGSHARE2, levels.LAGSHARE3,
-                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3, serialnumber,
+                     levels.LAGSHARE4, levels.LAGSHARE5,
+                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3,
+                     levels.LINYEARS4, levels.LINYEARS5, serialnumber,
                      aType, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
 
@@ -245,8 +255,8 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   limits.AGROFOREST <- c(0.01, 3)
   limits.AGROFOREST_NONPASTURE <- c(0.01, 3)
   limits.CROPLAND <- c(0.01, 3)
-  limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all three crop-specific shares if aDifferentiateParamByCrop is TRUE
-  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all three crop-specific years if aDifferentiateParamByCrop is TRUE
+  limits.LAGSHARE <- c(0.5, 0.99) # Note: these limits are used for all crop-specific shares if aDifferentiateParamByCrop is TRUE
+  limits.LINYEARS <- round(c(2, 25)) # Note: these limits are used for all crop-specific years if aDifferentiateParamByCrop is TRUE
 
   serialnumber <- skip + (1:N)
   if( aSampleType == "LatinHyperCube" ) {
@@ -268,17 +278,25 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
     levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
     levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
     levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
-    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
-    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
-    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+    levels.LAGSHARE4 <- scaleParam(randomNumbers[,7], limits.LAGSHARE)
+    levels.LAGSHARE5 <- scaleParam(randomNumbers[,8], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,10], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,11], limits.LINYEARS))
+    levels.LINYEARS4 <- round(scaleParam(randomNumbers[,12], limits.LINYEARS))
+    levels.LINYEARS5 <- round(scaleParam(randomNumbers[,13], limits.LINYEARS))
   } else {
     # Set expectation parameters equal for all three crop groups
     levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
     levels.LAGSHARE2 <- levels.LAGSHARE1
     levels.LAGSHARE3 <- levels.LAGSHARE1
+    levels.LAGSHARE4 <- levels.LAGSHARE1
+    levels.LAGSHARE5 <- levels.LAGSHARE1
     levels.LINYEARS1 <- round(scaleParam(randomNumbers[,5], limits.LINYEARS))
     levels.LINYEARS2 <- levels.LINYEARS1
     levels.LINYEARS3 <- levels.LINYEARS1
+    levels.LINYEARS4 <- levels.LINYEARS1
+    levels.LINYEARS5 <- levels.LINYEARS1
   }
 
   ## Filename suffix.  This will be used to create unique filenames for the
@@ -289,9 +307,12 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   scenObjects <- Map(gen_ensemble_member,
                      levels.AGROFOREST, levels.AGROFOREST_NONPASTURE, levels.CROPLAND,
                      levels.LAGSHARE1, levels.LAGSHARE2, levels.LAGSHARE3,
-                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3, serialnumber,
+                     levels.LAGSHARE4, levels.LAGSHARE5,
+                     levels.LINYEARS1, levels.LINYEARS2, levels.LINYEARS3,
+                     levels.LINYEARS4, levels.LINYEARS5, serialnumber,
                      aType, aIncludeSubsidies, suffix, aOutputDir) %>%
     unlist(recursive=FALSE)
+
 
   serialized_scenObjs <- lapply(scenObjects, as.list) # Convert to a list to survive serialization
 
@@ -376,9 +397,13 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param share1 The share parameter for the lagged model for crop group 1 (see constants.R)
 #' @param share2 The share parameter for the lagged model for crop group 2 (see constants.R)
 #' @param share3 The share parameter for the lagged model for crop group 3 (see constants.R)
+#' @param share4 The share parameter for the lagged model for crop group 4 (see constants.R)
+#' @param share5 The share parameter for the lagged model for crop group 5 (see constants.R)
 #' @param linyears1 The number of years parameter for the linear model for crop group 1 (see constants.R)
 #' @param linyears2 The number of years parameter for the linear model for crop group 2 (see constants.R)
 #' @param linyears3 The number of years parameter for the linear model for crop group 3 (see constants.R)
+#' @param linyears4 The number of years parameter for the linear model for crop group 4 (see constants.R)
+#' @param linyears5 The number of years parameter for the linear model for crop group 5 (see constants.R)
 #' @param serialnum Serial number for the run
 #' @param aScenType Scenario type, either "Hindcast" or "Reference"
 #' @param aIncludeSubsidies Boolean flag indicating whether subsidies should be included in profit
@@ -386,8 +411,11 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
 #' @keywords internal
-gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share3, linyears1, linyears2, linyears3,
-                                serialnum, aScenType, aIncludeSubsidies, suffix, aOutputDir)
+gen_ensemble_member <- function(agFor, agForNonPast, crop,
+                                share1, share2, share3, share4, share5,
+                                linyears1, linyears2, linyears3,linyears4, linyears5,
+                                serialnum, aScenType, aIncludeSubsidies,
+                                suffix, aOutputDir)
 {
   ## Perfect expectations scenario
   scenName <- getScenName(aScenType, "Perfect", NULL, agFor, agForNonPast, crop)
@@ -412,7 +440,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
 
 
   ## Adaptive scenario - without including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i-1])
-  share <- paste(share1, share2, share3, sep="-")
+  share <- paste(share1, share2, share3, share4, share5, sep="-")
   scenName <- getScenName(aScenType, "Adaptive", share, agFor, agForNonPast, crop)
 
   lagscen <- ScenarioInfo(aScenarioType = aScenType,
@@ -420,9 +448,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
                           aLinearYears1 = NA,
                           aLinearYears2 = NA,
                           aLinearYears3 = NA,
+                          aLinearYears4 = NA,
+                          aLinearYears5 = NA,
                           aLaggedShareOld1 = share1,
                           aLaggedShareOld2 = share2,
                           aLaggedShareOld3 = share3,
+                          aLaggedShareOld4 = share4,
+                          aLaggedShareOld5 = share5,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
@@ -434,7 +466,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
                           aOutputDir = aOutputDir)
 
   ## HybridPerfectAdaptive scenario - with including current prices (i.e., y[i] = a*y[i-1] + (1-a)*x[i])
-  share <- paste(share1, share2, share3, sep="-")
+  share <- paste(share1, share2, share3, share4, share5, sep="-")
   scenName <- getScenName(aScenType, "HybridPerfectAdaptive", share, agFor, agForNonPast, crop)
 
   lagcurrscen <- ScenarioInfo(aScenarioType = aScenType,
@@ -442,9 +474,13 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
                           aLinearYears1 = NA,
                           aLinearYears2 = NA,
                           aLinearYears3 = NA,
+                          aLinearYears4 = NA,
+                          aLinearYears5 = NA,
                           aLaggedShareOld1 = share1,
                           aLaggedShareOld2 = share2,
                           aLaggedShareOld3 = share3,
+                          aLaggedShareOld4 = share4,
+                          aLaggedShareOld5 = share5,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,
@@ -456,16 +492,20 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
                           aOutputDir = aOutputDir)
 
   ## Linear scenario
-  linyears <- paste(linyears1, linyears2, linyears3, sep="-")
+  linyears <- paste(linyears1, linyears2, linyears3, linyears4, linyears5, sep="-")
   scenName <- getScenName(aScenType, "Linear", linyears, agFor, agForNonPast, crop)
   linscen <- ScenarioInfo(aScenarioType = aScenType,
                           aExpectationType = "Linear",
                           aLinearYears1 = linyears1,
                           aLinearYears2 = linyears2,
                           aLinearYears3 = linyears3,
+                          aLinearYears4 = linyears4,
+                          aLinearYears5 = linyears5,
                           aLaggedShareOld1 = NA,
                           aLaggedShareOld2 = NA,
                           aLaggedShareOld3 = NA,
+                          aLaggedShareOld4 = NA,
+                          aLaggedShareOld5 = NA,
                           aLogitUseDefault = FALSE,
                           aLogitAgroForest = agFor,
                           aLogitAgroForest_NonPasture = agForNonPast,

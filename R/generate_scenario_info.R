@@ -161,9 +161,13 @@ SCENARIO.INFO <- ScenarioInfo(aScenarioType = DEFAULT.SCENARIO.TYPE,
                               aLinearYears1 = NA,
                               aLinearYears2 = NA,
                               aLinearYears3 = NA,
+                              aLinearYears4 = NA,
+                              aLinearYears5 = NA,
                               aLaggedShareOld1 = NA,
                               aLaggedShareOld2 = NA,
                               aLaggedShareOld3 = NA,
+                              aLaggedShareOld4 = NA,
+                              aLaggedShareOld5 = NA,
                               aLogitUseDefault = TRUE,
                               aLogitAgroForest = NA,
                               aLogitAgroForest_NonPasture = NA,
@@ -186,9 +190,13 @@ PCHES.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "PCHES",
                               aLinearYears1 = NA,
                               aLinearYears2 = NA,
                               aLinearYears3 = NA,
+                              aLinearYears4 = NA,
+                              aLinearYears5 = NA,
                               aLaggedShareOld1 = NA,
                               aLaggedShareOld2 = NA,
                               aLaggedShareOld3 = NA,
+                              aLaggedShareOld4 = NA,
+                              aLaggedShareOld5 = NA,
                               aLogitUseDefault = TRUE,
                               aLogitAgroForest = NA,
                               aLogitAgroForest_NonPasture = NA,
@@ -210,9 +218,13 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
                                     aLinearYears1 = NA,
                                     aLinearYears2 = NA,
                                     aLinearYears3 = NA,
+                                    aLinearYears4 = NA,
+                                    aLinearYears5 = NA,
                                     aLaggedShareOld1 = NA,
                                     aLaggedShareOld2 = NA,
                                     aLaggedShareOld3 = NA,
+                                    aLaggedShareOld4 = NA,
+                                    aLaggedShareOld5 = NA,
                                     aLogitUseDefault = TRUE,
                                     aLogitAgroForest = NA,
                                     aLogitAgroForest_NonPasture = NA,
@@ -236,10 +248,14 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
 #' @param aLinearYears1 New linear years for crop group 1 (see constants.R) (default = NULL)
 #' @param aLinearYears2 New linear years for crop group 2 (see constants.R) (default = NULL)
 #' @param aLinearYears3 New linear years for crop group 3 (see constants.R) (default = NULL)
+#' @param aLinearYears4 New linear years for crop group 4 (see constants.R) (default = NULL)
+#' @param aLinearYears5 New linear years for crop group 5 (see constants.R) (default = NULL)
 #' @param aLaggedShareOld New lagged share old (default = NULL)
 #' @param aLaggedShareOld1 New lagged share old (group 1) (see constants.R) (default = NULL)
 #' @param aLaggedShareOld2 New lagged share old (group 2) (see constants.R) (default = NULL)
 #' @param aLaggedShareOld3 New lagged share old (group 3) (see constants.R) (default = NULL)
+#' @param aLaggedShareOld4 New lagged share old (group 4) (see constants.R) (default = NULL)
+#' @param aLaggedShareOld5 New lagged share old (group 5) (see constants.R) (default = NULL)
 #' @param aUseZeroCost New cost assumption (default = FALSE)
 #' @param aCalibrateShareWt Flag indicating share weights should be calibrated
 #' @param aIncludeSubsidies Flag indicating subsidies should be added to profit
@@ -253,7 +269,9 @@ SRB.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "SRB",
 #' update_scen_info(aScenarioType = "Hindcast")
 update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE , aExpectationType = "Perfect",
                              aLinearYears = NULL, aLinearYears1 = NULL, aLinearYears2 = NULL, aLinearYears3 = NULL,
+                             aLinearYears4 = NULL, aLinearYears5 = NULL,
                              aLaggedShareOld = NULL, aLaggedShareOld1 = NULL, aLaggedShareOld2 = NULL, aLaggedShareOld3 = NULL,
+                             aLaggedShareOld4 = NULL,  aLaggedShareOld5 = NULL,
                              aUseZeroCost = FALSE, aCalibrateShareWt = TRUE, aIncludeSubsidies = FALSE, aShareWts = NULL) {
 
   # Set the names of the scenario & file based on read in information
@@ -281,6 +299,8 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
     new_scen_info$mLinearYears1 <- aLinearYears
     new_scen_info$mLinearYears2 <- aLinearYears
     new_scen_info$mLinearYears3 <- aLinearYears
+    new_scen_info$mLinearYears4 <- aLinearYears
+    new_scen_info$mLinearYears5 <- aLinearYears
   }
   if(is.numeric(aLinearYears1)) {
     new_scen_info$mLinearYears1 <- aLinearYears1
@@ -291,6 +311,12 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   if(is.numeric(aLinearYears3)) {
     new_scen_info$mLinearYears3 <- aLinearYears3
   }
+  if(is.numeric(aLinearYears4)) {
+    new_scen_info$mLinearYears4 <- aLinearYears4
+  }
+  if(is.numeric(aLinearYears5)) {
+    new_scen_info$mLinearYears5 <- aLinearYears5
+  }
 
   # Set share of old expectations in adaptive expectation if specified
   if(is.numeric(aLaggedShareOld)) {
@@ -298,6 +324,8 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
     new_scen_info$mLaggedShareOld1 <- aLaggedShareOld
     new_scen_info$mLaggedShareOld2 <- aLaggedShareOld
     new_scen_info$mLaggedShareOld3 <- aLaggedShareOld
+    new_scen_info$mLaggedShareOld4 <- aLaggedShareOld
+    new_scen_info$mLaggedShareOld5 <- aLaggedShareOld
   }
   if(is.numeric(aLaggedShareOld1)) {
     new_scen_info$mLaggedShareOld1 <- aLaggedShareOld1
@@ -307,6 +335,12 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
   }
   if(is.numeric(aLaggedShareOld3)) {
     new_scen_info$mLaggedShareOld3 <- aLaggedShareOld3
+  }
+  if(is.numeric(aLaggedShareOld4)) {
+    new_scen_info$mLaggedShareOld4 <- aLaggedShareOld4
+  }
+  if(is.numeric(aLaggedShareOld5)) {
+    new_scen_info$mLaggedShareOld5 <- aLaggedShareOld5
   }
 
   if(aCalibrateShareWt == FALSE & is.null(aShareWts)) {

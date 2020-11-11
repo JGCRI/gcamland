@@ -20,6 +20,10 @@ AdaptiveExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioI
     shareOld <- aScenarioInfo$mLaggedShareOld2
   } else if(aLandLeaf$mProductName %in% CROP_GROUP3 ) {
     shareOld <- aScenarioInfo$mLaggedShareOld3
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP4 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld4
+  } else if(aLandLeaf$mProductName %in% CROP_GROUP5 ) {
+    shareOld <- aScenarioInfo$mLaggedShareOld5
   } else {
     message("Error: crop grouping not specified.")
   }
