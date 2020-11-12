@@ -2,7 +2,7 @@
 
 #SBATCH -n 48
 #SBATCH -t 150
-#SBATCH -A GCIMS
+#SBATCH -A IHESD
 
 date
 
