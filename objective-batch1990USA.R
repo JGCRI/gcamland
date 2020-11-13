@@ -1,8 +1,8 @@
 #### Test script for objective function analysis
 
-library('gcamland', lib.loc = '/people/snyd535/R')
+library('gcamland', lib.loc = '/qfs/people/snyd535/R/x86_64-pc-linux-gnu-library/3.4/')
 # devtools::load_all('/pic/projects/GCAM/Abigail/gcamland/')
-library('doParallel', lib.loc = '/people/snyd535/R')
+library('doParallel', lib.loc = '/qfs/people/snyd535/R/x86_64-pc-linux-gnu-library/3.4/')
 
 ## nodefile: File containing the list of nodes
 ## nproc:    Total number of cores available ($SLURM_NTASKS)
