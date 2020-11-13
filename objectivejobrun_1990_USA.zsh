@@ -18,14 +18,14 @@ scontrol show hostnames > $nodefile
 program=`Rscript -e 'cat("/pic/projects/GCAM/Abigail/gcamland/objective-batch1990.R")'`
 
 N=500
-TOTAL_SAMPLES=100000
+TOTAL_SAMPLES=10
 PARAM=TRUE
 SUBS=FALSE
 REGION="USA"
 tid=$SLURM_ARRAY_TASK_ID
 let "skip = tid*N"
-outdir="/pic/scratch/$USER/gcamland/output/$REGION"
-logdir="/pic/scratch/$USER/gcamland/output/$REGION/log"
+outdir="/pic/projects/GCAM/Abigail/gcamland/output/$REGION"
+logdir="/pic/projects/GCAM/Abigail/gcamland/output/$REGION/log"
 
 mkdir -p $outdir
 mkdir -p $logdir
