@@ -15,13 +15,13 @@ nodefile=$tmpdir/nodes.txt
 
 scontrol show hostnames > $nodefile
 
-program=`Rscript -e 'cat("/pic/projects/GCAM/Abigail/gcamland/objective-batch1990China.R")'`
+program=`Rscript -e 'cat("/pic/projects/GCAM/Abigail/gcamland/objective-batch1990Brazil.R")'`
 
 N=500
 TOTAL_SAMPLES=100000
 PARAM=TRUE
 SUBS=FALSE
-REGION="China"
+REGION="Brazil"
 tid=$SLURM_ARRAY_TASK_ID
 let "skip = tid*N"
 outdir="/pic/projects/GCAM/Abigail/gcamland_output/$REGION"
