@@ -1,7 +1,7 @@
 #### Test script for objective function analysis
 
-library('gcamland')
-#devtools::load_all('/pic/projects/GCAM/Abigail/gcamland/')
+#library('gcamland')
+devtools::load_all('/pic/projects/GCAM/Abigail/gcamland/')
 library('doParallel')
 
 ## nodefile: File containing the list of nodes
