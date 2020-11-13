@@ -591,7 +591,8 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop,
                           aRegion = aRegion,
                           aOutputDir = aOutputDir)
 
-  list(perfscen, lagscen, lagcurrscen, linscen, mixedscen)
+  list(perfscen, lagscen, # lagcurrscen,
+       linscen, mixedscen)
 }
 
 
