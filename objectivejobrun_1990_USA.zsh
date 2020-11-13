@@ -25,15 +25,15 @@ REGION="USA"
 tid=$SLURM_ARRAY_TASK_ID
 let "skip = tid*N"
 outdir="/pic/scratch/$USER/gcamland/output/$REGION"
-logdir="/pic/scratch/$USER/gcamland"
+logdir="/pic/scratch/$USER/gcamland/output/$REGION/log"
 
 mkdir -p $outdir
 mkdir -p $logdir
 
 echo "Run command:"
-echo "source('$program'); run_ens_obj_analysis('$nodefile', $SLURM_NTASKS, $N, '$outdir', $skip, aDifferentiateParamByCrop = $PARAM, aIncludeSubsidies=$SUBS, aTotalSamplesPlanned = $TOTAL_SAMPLES, aRegion = $REGION)"
+echo "source('$program'); run_ens_obj_analysis('$nodefile', $SLURM_NTASKS, $N, '$outdir', $skip, logdir='$logdir', aDifferentiateParamByCrop = $PARAM, aIncludeSubsidies=$SUBS, aTotalSamplesPlanned = $TOTAL_SAMPLES, aRegion = $REGION)"
 
-Rscript -e "source('$program'); run_ens_obj_analysis('$nodefile', $SLURM_NTASKS, $N, '$outdir', $skip, aDifferentiateParamByCrop = $PARAM, aIncludeSubsidies=$SUBS, aTotalSamplesPlanned = $TOTAL_SAMPLES, aRegion = $REGION)"
+Rscript -e "source('$program'); run_ens_obj_analysis('$nodefile', $SLURM_NTASKS, $N, '$outdir', $skip, logdir='$logdir', aDifferentiateParamByCrop = $PARAM, aIncludeSubsidies=$SUBS, aTotalSamplesPlanned = $TOTAL_SAMPLES, aRegion = $REGION)"
 ## Use this version instead to write log files:
 ## Rscript -e "source('$program'); run_ens_obj_analysis('$nodefile', $SLURM_NTASKS, $N, '$outdir', '$skip', '$logdir')"
 
