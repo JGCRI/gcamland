@@ -1,6 +1,6 @@
 #### Test script for objective function analysis
 
-#library('gcamland')
+library('gcamland')
 # devtools::load_all('/pic/projects/GCAM/Abigail/gcamland/')
 library('doParallel')
 
