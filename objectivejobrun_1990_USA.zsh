@@ -18,7 +18,7 @@ scontrol show hostnames > $nodefile
 program=`Rscript -e 'cat("/pic/projects/GCAM/Abigail/gcamland/objective-batch1990.R")'`
 
 N=500
-TOTAL_SAMPLES=10
+TOTAL_SAMPLES=2
 PARAM=TRUE
 SUBS=FALSE
 REGION="USA"
