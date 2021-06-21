@@ -517,6 +517,7 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
 #' @return Table of model results.
 #' @author KVC
 #' @importFrom assertthat assert_that has_attr
+#' @importFrom utils read.csv
 #' @export
 #' @examples
 #' \dontrun{
@@ -524,6 +525,8 @@ gen_ensemble_member <- function(agFor, agForNonPast, crop, share1, share2, share
 #' run_model(SCENARIO.INFO, aPeriods = 1:5)
 #' }
 run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL) {
+  # Silence package checks
+  read.csv <- period <- NULL
 
   #### Step 1: Setup
   # Ensure that output directories exist
@@ -558,6 +561,47 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL)
     #### Step 3: Final calculation
     # Next, call calcFinalLandAllocation for LandAllocator
     LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
+
+    ### Step 4: Check that constraints are met
+    if ( aScenarioInfo$mIncludeConstraint & per > TIME.PARAMS[[aScenarioInfo$mScenarioType]]$FINAL_CALIBRATION_PERIOD) {
+      read.csv(system.file("extdata", aScenarioInfo$mConstraintFile, package = "gcamland")) %>%
+        filter(period == per) ->
+        constraints
+
+      if(nrow(constraints) > 0) {
+        # Loop through all constraints for this period
+        for(i in 1:nrow(constraints)) {
+          message("Constraining: ", constraints$string[i])
+          landConstraintCost <- 0
+          while( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > constraints$value[i] ) {
+            currValue <- LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per)
+            message("Current value: ", currValue, ", Target value:", constraints$value[i])
+            if ( currValue < 2*constraints$value[i] ) {
+              # Use smaller increments when we get close to solution
+              landConstraintCost <- landConstraintCost + 1e8
+            } else if ( currValue > 20*constraints$value[i] ) {
+              # Use smaller increments when we get close to solution
+              landConstraintCost <- landConstraintCost + 1e10
+            } else {
+              landConstraintCost <- landConstraintCost + 1e9
+            }
+
+            # Constraint not met. Adjust cost and recalculate
+            Sector_initCalc(mLandAllocator, per, aScenarioInfo, landConstraintCost, constraints$string[i])
+            LandAllocator_initCalc(mLandAllocator, per, aScenarioInfo)
+            LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
+
+            # Check that we are making progress toward meeting constraint
+            if( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > 0.999999*currValue) {
+              message("Progress is not being made. New value (",
+                      LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per),
+                      ") is less than 0.0001% smaller than old value (", currValue, ")")
+              break
+            }
+          } # End while loop to meet constraint
+        } # End for loop over constraints
+      }
+    }
   }
 
   #### Step 4: Reporting

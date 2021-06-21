@@ -4,7 +4,13 @@
 \alias{Subsector_initCalc}
 \title{Subsector_initCalc}
 \usage{
-Subsector_initCalc(aLandNode, aPeriod, aScenarioInfo)
+Subsector_initCalc(
+  aLandNode,
+  aPeriod,
+  aScenarioInfo,
+  aLandConstraintCost,
+  aLandConstraintString
+)
 }
 \arguments{
 \item{aLandNode}{Land node to perform initializations on}
@@ -12,6 +18,10 @@ Subsector_initCalc(aLandNode, aPeriod, aScenarioInfo)
 \item{aPeriod}{Current model time period}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aLandConstraintCost}{Additional cost used to constrain land}
+
+\item{aLandConstraintString}{String identifying which leafs are included in the constraint}
 }
 \description{
 Subsector_initCalc

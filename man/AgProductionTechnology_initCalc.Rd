@@ -4,7 +4,13 @@
 \alias{AgProductionTechnology_initCalc}
 \title{AgProductionTechnology_initCalc}
 \usage{
-AgProductionTechnology_initCalc(aLandLeaf, aPeriod, aScenarioInfo)
+AgProductionTechnology_initCalc(
+  aLandLeaf,
+  aPeriod,
+  aScenarioInfo,
+  aLandConstraintCost,
+  aLandConstraintString
+)
 }
 \arguments{
 \item{aLandLeaf}{Land leaf}
@@ -12,6 +18,10 @@ AgProductionTechnology_initCalc(aLandLeaf, aPeriod, aScenarioInfo)
 \item{aPeriod}{Model time period.}
 
 \item{aScenarioInfo}{Scenario-related information, including names, logits, expectations}
+
+\item{aLandConstraintCost}{Additional cost used to constrain land}
+
+\item{aLandConstraintString}{String identifying which leafs are included in the constraint}
 }
 \description{
 AgProductionTechnology_initCalc

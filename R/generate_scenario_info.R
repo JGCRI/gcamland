@@ -39,6 +39,8 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aRegion Region to use in the calculation.  Right now we only run a
 #' single region at a time.
 #' @param aSubRegion Subregion name. Note we can only run a full region or a subregion not both
+#' @param aIncludeConstraint Boolean flag indicating that we are constraining some sort of land
+#' @param aConstraintFile String with the name/path to the file with constraints
 #' @return New ScenarioInfo object
 #' @export
 #' @author KVC November 2017
@@ -64,7 +66,9 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "Hybr
                          aOutputDir = "./outputs",
                          aSerialNum = NA,
                          aRegion = DEFAULT.REGION,
-                         aSubRegion = NULL) {
+                         aSubRegion = NULL,
+                         aIncludeConstraint = FALSE,
+                         aConstraintFile = "") {
 
   self <- new.env(parent=emptyenv())
   class(self) <- c("ScenarioInfo", class(self))
@@ -95,6 +99,8 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "Hybr
   self$mPointwiseLikelihood <- data.frame() # actually log-likelihood, tabulated
                                         # by data point.
   self$mLogPost <- data.frame()
+  self$mIncludeConstraint <- aIncludeConstraint
+  self$mConstraintFile <- aConstraintFile
 
   self
 }
@@ -184,7 +190,9 @@ PCHES.SCENARIO.INFO <- ScenarioInfo(aScenarioType = "PCHES",
                               aUseZeroCost = FALSE,
                               aCalibrateShareWt = TRUE,
                               aScenarioName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"),
-                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"))
+                              aFileName = paste0(DEFAULT.SCENARIO.TYPE, "_", "Perfect", "_", "PCHES"),
+                              aIncludeConstraint = FALSE,
+                              aConstraintFile = "./scenario-data/PCHES_constraint.csv")
 
 #' SRB.SCENARIO.INFO
 #'

@@ -39,8 +39,8 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioIn
       # PCHES uses subregional prices. First, figure out the subregion by decomposing the land leaf name
       # Note: can't use separate on this because some subregions have "_" in their name.
       subRegion <- sub(paste(aLandLeaf$mProductName, "_", sep=""), "", aLandLeaf$mName)
-      subRegion <- sub("_IRR", "", subRegion)
-      subRegion <- sub("_RFD", "", subRegion)
+      subRegion <- sub("_Irrigated", "", subRegion)
+      subRegion <- sub("_Rainfed", "", subRegion)
       expectedPrice <- price_table$price[price_table$year == y & price_table$sector == aLandLeaf$mProductName[1]
                                          & price_table$subregion == subRegion]
     } else {

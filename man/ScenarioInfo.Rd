@@ -26,7 +26,9 @@ ScenarioInfo(
   aOutputDir = "./outputs",
   aSerialNum = NA,
   aRegion = DEFAULT.REGION,
-  aSubRegion = NULL
+  aSubRegion = NULL,
+  aIncludeConstraint = FALSE,
+  aConstraintFile = ""
 )
 }
 \arguments{
@@ -76,6 +78,10 @@ The names should correspond to the names of the land leaf nodes.}
 single region at a time.}
 
 \item{aSubRegion}{Subregion name. Note we can only run a full region or a subregion not both}
+
+\item{aIncludeConstraint}{Boolean flag indicating that we are constraining some sort of land}
+
+\item{aConstraintFile}{String with the name/path to the file with constraints}
 }
 \value{
 New ScenarioInfo object

@@ -9,8 +9,10 @@
 #' @param aLandLeaf Land leaf
 #' @param aPeriod Model time period.
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
+#' @param aLandConstraintCost Additional cost used to constrain land
+#' @param aLandConstraintString String identifying which leafs are included in the constraint
 #' @author KVC September 2017
-AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
+AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo, aLandConstraintCost, aLandConstraintString) {
   # First, set the nonLandVariableCost for this technology in this period.
   # If no nonLandVariableCost is read in, get the previous period cost.
   # Note: you can never overwrite a positive cost with a zero cost. If the model sees a
@@ -66,6 +68,13 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo) {
     aLandLeaf$mYield[aPeriod] <- 0.0
   }
 
+  # Set constraint cost for this period
+  if( aLandConstraintString != "" & grepl(aLandConstraintString, aLandLeaf$mName[1]) ) {
+    aLandLeaf$mConstraintCost[aPeriod] <- aLandConstraintCost
+  } else if (length(aLandLeaf$mConstraintCost) < aPeriod) {
+    aLandLeaf$mConstraintCost[aPeriod] <- 0.0
+  }
+
   # Calculate profit rate
   AgProductionTechnology_calcProfitRate(aLandLeaf, aPeriod, aScenarioInfo)
 }
@@ -108,4 +117,7 @@ AgProductionTechnology_calcProfitRate <- function(aLandLeaf, aPeriod, aScenarioI
     # Subsidies are assumed to br in $/billion m2
     aLandLeaf$mProfitRate[aPeriod] <- aLandLeaf$mProfitRate[[aPeriod]] + aLandLeaf$mSubsidy[[aPeriod]]
   }
+
+  # Subtract constraint cost from profit
+  aLandLeaf$mProfitRate[aPeriod] <- aLandLeaf$mProfitRate[[aPeriod]] - aLandLeaf$mConstraintCost[[aPeriod]]
 }
