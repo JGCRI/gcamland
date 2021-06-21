@@ -71,7 +71,7 @@ AgProductionTechnology_initCalc <- function(aLandLeaf, aPeriod, aScenarioInfo, a
   # Set constraint cost for this period
   if( aLandConstraintString != "" & grepl(aLandConstraintString, aLandLeaf$mName[1]) ) {
     aLandLeaf$mConstraintCost[aPeriod] <- aLandConstraintCost
-  } else {
+  } else if (length(aLandLeaf$mConstraintCost) < aPeriod) {
     aLandLeaf$mConstraintCost[aPeriod] <- 0.0
   }
 

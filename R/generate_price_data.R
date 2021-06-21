@@ -27,18 +27,19 @@ get_prices <- function(aScenType) {
         prices
     }
   } else {
-    file <- paste("./scenario-data/AgPrices_", aScenType, ".csv", sep="")
-    prices <- suppressMessages(read_csv(system.file("extdata", file, package = "gcamland"), skip = 1))
 
     # Tidy data
     if(aScenType == "PCHES") {
+      prices <- read_csv("./inst/extdata/scenario-data/AgPrices_PCHES.csv", skip=1)
       # PCHES scenarios have subregional price information
       prices %>%
         select(-scenario, -Units) %>%
         gather(year, price, -region, -sector, -subregion) %>%
-        mutate(year = as.integer(year)) ->
+        mutate(year = as.integer(substr(year, 2, 5))) ->
         prices
     } else {
+      file <- paste("./scenario-data/AgPrices_", aScenType, ".csv", sep="")
+      prices <- suppressMessages(read_csv(system.file("extdata", file, package = "gcamland"), skip = 1))
       prices %>%
         select(-scenario, -Units) %>%
         gather(year, price, -region, -sector) %>%

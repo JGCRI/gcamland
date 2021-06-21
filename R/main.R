@@ -576,17 +576,26 @@ run_model <- function(aScenarioInfo, aPeriods=NULL, aVerbose=FALSE, agData=NULL)
           while( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > constraints$value[i] ) {
             currValue <- LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per)
             message("Current value: ", currValue, ", Target value:", constraints$value[i])
-            landConstraintCost <- landConstraintCost + 1e7
+            if ( currValue < 2*constraints$value[i] ) {
+              # Use smaller increments when we get close to solution
+              landConstraintCost <- landConstraintCost + 1e8
+            } else if ( currValue > 20*constraints$value[i] ) {
+              # Use smaller increments when we get close to solution
+              landConstraintCost <- landConstraintCost + 1e10
+            } else {
+              landConstraintCost <- landConstraintCost + 1e9
+            }
+
             # Constraint not met. Adjust cost and recalculate
             Sector_initCalc(mLandAllocator, per, aScenarioInfo, landConstraintCost, constraints$string[i])
             LandAllocator_initCalc(mLandAllocator, per, aScenarioInfo)
             LandAllocator_calcFinalLandAllocation(mLandAllocator, per, aScenarioInfo)
 
             # Check that we are making progress toward meeting constraint
-            if( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > 0.999*currValue) {
+            if( LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per) > 0.999999*currValue) {
               message("Progress is not being made. New value (",
                       LandAllocator_getLandAreaByCriteria(mLandAllocator, constraints$string[i], per),
-                      ") is less than 0.1% smaller than old value (", currValue, ")")
+                      ") is less than 0.0001% smaller than old value (", currValue, ")")
               break
             }
           } # End while loop to meet constraint
