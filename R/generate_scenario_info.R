@@ -26,6 +26,9 @@ DEFAULT.SCENARIO.TYPE <- "Reference"
 #' @param aLogitAgroForest_NonPasture AgroForest_NonPasture logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aLogitCropland Cropland logit exponent (assuming mLogitUseDefault ==
 #' FALSE)
+#' @param aLogitGrassShrub grassland v shrubland logit exponent (assuming mLogitUseDefault == FALSE)
+#' @param aLogitForestland AllForestLand logit exponent (assuming mLogitUseDefault == FALSE)
+#' @param aLogitPastureland Pastureland logit exponent (assuming mLogitUseDefault == FALSE)
 #' @param aUseZeroCost Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)
 #' @param aCalibrateShareWt Boolean indicating that the model should calculate share weights during calibration
 #' @param aIncludeSubsidies Boolean indicating whether subsidy information should modify profit
@@ -54,6 +57,9 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "Hybr
                          aLogitAgroForest = NA,
                          aLogitAgroForest_NonPasture = NA,
                          aLogitCropland = NA,
+                         aLogitGrassShrub = NA,
+                         aLogitForestland = NA,
+                         aLogitPastureland = NA,
                          aUseZeroCost = FALSE,
                          aCalibrateShareWt = TRUE,
                          aIncludeSubsidies = FALSE,
@@ -80,6 +86,9 @@ ScenarioInfo <- function(# Currently only "Perfect", "Linear", "Adaptive", "Hybr
   self$mLogitAgroForest <- aLogitAgroForest
   self$mLogitAgroForest_NonPasture <- aLogitAgroForest_NonPasture
   self$mLogitCropland <- aLogitCropland
+  self$mLogitGrassShrub <- aLogitGrassShrub
+  self$mLogitForestland <- aLogitForestland
+  self$mLogitPastureland <- aLogitPastureland
   self$mUseZeroCost <- aUseZeroCost
   self$mCalibrateShareWt <- aCalibrateShareWt
   self$mIncludeSubsidies <- aIncludeSubsidies

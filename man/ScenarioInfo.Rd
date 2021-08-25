@@ -16,6 +16,9 @@ ScenarioInfo(
   aLogitAgroForest = NA,
   aLogitAgroForest_NonPasture = NA,
   aLogitCropland = NA,
+  aLogitGrassShrub = NA,
+  aLogitForestland = NA,
+  aLogitPastureland = NA,
   aUseZeroCost = FALSE,
   aCalibrateShareWt = TRUE,
   aIncludeSubsidies = FALSE,
@@ -52,6 +55,12 @@ ScenarioInfo(
 
 \item{aLogitCropland}{Cropland logit exponent (assuming mLogitUseDefault ==
 FALSE)}
+
+\item{aLogitGrassShrub}{grassland v shrubland logit exponent (assuming mLogitUseDefault == FALSE)}
+
+\item{aLogitForestland}{AllForestLand logit exponent (assuming mLogitUseDefault == FALSE)}
+
+\item{aLogitPastureland}{Pastureland logit exponent (assuming mLogitUseDefault == FALSE)}
 
 \item{aUseZeroCost}{Boolean indicating whether to set costs to zero (assuming mUseZeroCost == FALSE)}
 

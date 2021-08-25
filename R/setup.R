@@ -166,6 +166,15 @@ LandNode_setup <- function(aLandAllocator, aRegionName, aData, aColumnName, aSce
       exponent <- aScenarioInfo$mLogitAgroForest_NonPasture
     } else if ( !aScenarioInfo$mLogitUseDefault & grepl("CropLand", childName) ) {
       exponent <- aScenarioInfo$mLogitCropland
+    } else if ( !aScenarioInfo$mLogitUseDefault & grepl("AllPastureLand", childName) & !is.na(aScenarioInfo$mLogitPastureland)) {
+      # If a pasture land logit exponent is specified, use it. However, this is not required so need to check for NA
+      exponent <- aScenarioInfo$mLogitPastureland
+    } else if ( !aScenarioInfo$mLogitUseDefault & grepl("AllForestLand", childName) & !is.na(aScenarioInfo$mLogitForestland)) {
+      # If a forest land logit exponent is specified, use it. However, this is not required so need to check for NA
+      exponent <- aScenarioInfo$mLogitForestland
+    } else if ( !aScenarioInfo$mLogitUseDefault & grepl("GrassShrubLand", childName) & !is.na(aScenarioInfo$mLogitGrassShrub)) {
+      # If a grass/shrub logit exponent is specified, use it. However, this is not required so need to check for NA
+      exponent <- aScenarioInfo$mLogitGrassShrub
     } else {
       exponent <- as.numeric(temp[[c("logit.exponent")]])
     }
