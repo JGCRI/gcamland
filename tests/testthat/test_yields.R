@@ -20,7 +20,12 @@ test_that("historical yields are calculated correctly", {
   }
 
   # Get Comparison Data
-  compareData <- read_csv("./comparison-data/FAO_yields_R_C_Y.csv", col_types = "ccid")
+  compareData <- read.csv("./comparison-data/FAO_yields_R_C_Y.csv", stringsAsFactors = F)
+  expect_true(is.character(compareData$region))
+  expect_true(is.character(compareData$GCAM_commodity))
+  expect_true(is.integer(compareData$year))
+  expect_true(is.numeric(compareData$yield))
+
   compareData <- compareData[with(compareData, order(region, GCAM_commodity, year)), ]
 
   # Calculate data from the model
