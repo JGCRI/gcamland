@@ -21,9 +21,9 @@ LandAllocator_setup <- function(aLandAllocator, aScenarioInfo, agData=NULL) {
     message("Running a Subregional Model")
     # Read in calibration data
     if(aLandAllocator$mSubRegion == "PCHES") {
-      subregionData <- suppressMessages(read.csv(system.file("extdata", "./initialization-data/LandUse_Data_PCHES.csv", package = "gcamland"), stringsAsFactors = FALSE))
+      subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Data_PCHES.csv", package = "gcamland")))
     } else {
-      subregionData <- suppressMessages(read.csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland"), stringsAsFactors = FALSE))
+      subregionData <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/LandUse_Nesting_SRB.csv", package = "gcamland")))
     }
   } else {
     subregionData <- NULL
