@@ -31,7 +31,11 @@ test_that("land cover matches calibration data", {
   }
 
   # Get comparison data
-  compareData <- read_csv("./comparison-data/HistLandAllocation.csv", col_types='ccid')
+  compareData <- read.csv("./comparison-data/HistLandAllocation.csv", stringsAsFactors = FALSE)
+  expect_true(is.character(compareData$region))
+  expect_true(is.character(compareData$name))
+  expect_true(is.integer(compareData$year))
+  expect_true(is.numeric(compareData$land.allocation))
   finalcalper <- TIME.PARAMS[[scentype]]$FINAL_CALIBRATION_PERIOD
   compareData %>%
     filter(region == test.info$mRegion,
