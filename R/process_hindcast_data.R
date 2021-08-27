@@ -9,11 +9,12 @@
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate
 #' @importFrom stats aggregate
+#' @importFrom utils read.csv
 #' @author KVC June 2019
 #' @export
 get_historic_yields <- function(){
   # Silence package checks
-  region <- yield <- na.omit <- FAO_country <- item <- iso <- GCAM_region_ID <- GCAM_commodity <- year <- ha <- NULL
+  region <- yield <- na.omit <- FAO_country <- item <- iso <- GCAM_region_ID <- GCAM_commodity <- year <- ha  <- nit <- NULL
 
   # Read in mappings
   agluCtry <- suppressMessages(read.csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3, stringsAsFactors = FALSE))

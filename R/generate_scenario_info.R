@@ -361,6 +361,7 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
 #' \code{\link{ScenarioInfo}} object.
 #'
 #' @return Share weights as a named vector
+#' @importFrom utils read.csv
 #' @export
 #'
 #' @author KVC December 2018
