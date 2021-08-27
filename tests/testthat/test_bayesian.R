@@ -32,9 +32,13 @@ test_that("get_historical_land_data returns filtered FAO data", {
       modelData
     modelData <- modelData[with(modelData, order(region, land.type, year)), ]
 
-    readr::read_csv('data/complex_filter_ref.csv', col_types='ccdd') %>%
+    read.csv('data/complex_filter_ref.csv', stringsAsFactors = FALSE) %>%
       dplyr::rename(land.type=GCAM_commodity, obs=area) ->
       compareData
+    expect_true(is.character(compareData$region))
+    expect_true(is.character(compareData$land.type))
+    expect_true(is.integer(compareData$year))
+    expect_true(is.numeric(compareData$obs))
     compareData <- compareData[with(compareData, order(region, land.type, year)), ]
 
     expect_equal(modelData$obs, compareData$obs, tolerance = 0.01)
