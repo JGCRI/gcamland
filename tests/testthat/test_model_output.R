@@ -85,7 +85,12 @@ test_that("land cover matches reference values", {
   if (SCENARIO.INFO$mScenarioName == "Reference_Perfect") {
 
     # Get comparison data
-    compareData <- read_csv("./comparison-data/LandAllocation_Reference_Perfect.csv", skip = 1, col_types='cdic')
+    compareData <- read.csv("./comparison-data/LandAllocation_Reference_Perfect.csv", skip=1, stringsAsFactors = FALSE)
+    expect_true(is.character(compareData$region))
+    expect_true(is.character(compareData$name))
+    expect_true(is.integer(compareData$year))
+    expect_true(is.numeric(compareData$land.allocation))
+
     compareData %>%
       filter(region == SCENARIO.INFO$mRegion,
              year %in% YEARS[[SCENARIO.INFO$mScenarioType]]) ->
