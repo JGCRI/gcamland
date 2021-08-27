@@ -229,7 +229,7 @@ grand_table_objective <- function(aScenarioList)
 
   add_parameter_data(modata, aScenarioList) %>%
     # remove individual year entries for observations and model data to clean up:
-    dplyr::select(-scenario, -year, -obs, -trend, -detrended, -obsvar, -model) %>%
+    dplyr::select( -year, -obs, -trend, -detrended, -obsvar, -model) %>%
     distinct
 
 }

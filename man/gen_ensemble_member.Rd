@@ -76,4 +76,3 @@ This generates one each of the Perfect, Adaptive, HybridLinearAdaptive, HybridPe
 using the input parameters.  The return value is a list of the three
 \code{ScenarioInfo} objects for the scenarios generated.
 }
-\keyword{internal}

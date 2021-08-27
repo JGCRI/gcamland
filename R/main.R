@@ -417,7 +417,7 @@ run_ensemble_bayes  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
 #' @param suffix Suffix for output filenames.
 #' @param aOutputDir Name of the output directory.
 #' @return List of three ScenarioInfo objects
-#' @keywords internal
+#' @export
 gen_ensemble_member <- function(agFor, agForNonPast, crop,
                                 share1, share2, share3, share4, share5,
                                 linyears1, linyears2, linyears3,linyears4, linyears5,
