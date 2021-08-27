@@ -16,29 +16,31 @@ get_historic_yields <- function(){
   region <- yield <- na.omit <- FAO_country <- item <- iso <- GCAM_region_ID <- GCAM_commodity <- year <- ha <- NULL
 
   # Read in mappings
-  agluCtry <- suppressMessages(read_csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3))
-  iso_GCAM_regID <- suppressMessages(read_csv(system.file("extdata", "./mappings/iso_GCAM_regID.csv", package = "gcamland"), skip = 3))
-  GCAM_region_names <- suppressMessages(read_csv(system.file("extdata", "./mappings/GCAM_region_names.csv", package = "gcamland"), skip = 3))
-  FAO_ag_items_PRODSTAT <- suppressMessages(read_csv(system.file("extdata", "./mappings/FAO_ag_items_PRODSTAT.csv", package = "gcamland"), skip = 3))
+  agluCtry <- suppressMessages(read.csv(system.file("extdata", "./mappings/AGLU_ctry.csv", package = "gcamland"), skip = 3, stringsAsFactors = FALSE))
+  iso_GCAM_regID <- suppressMessages(read.csv(system.file("extdata", "./mappings/iso_GCAM_regID.csv", package = "gcamland"), skip = 3, stringsAsFactors = FALSE))
+  GCAM_region_names <- suppressMessages(read.csv(system.file("extdata", "./mappings/GCAM_region_names.csv", package = "gcamland"), skip = 3, stringsAsFactors = FALSE))
+  FAO_ag_items_PRODSTAT <- suppressMessages(read.csv(system.file("extdata", "./mappings/FAO_ag_items_PRODSTAT.csv", package = "gcamland"), skip = 3, stringsAsFactors = FALSE))
 
   # Read production & harvested area (we'll calculate yield from this so we can aggregate)
-  faoHA <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/fao_ha.csv", package = "gcamland"),
-                                     col_types = cols(.default = "c")))
-  faoProd <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/fao_prod.csv", package = "gcamland")))
+  faoHA <- suppressMessages(read.csv(system.file("extdata", "./hindcast-data/fao_ha.csv", package = "gcamland"),
+                                     stringsAsFactors = FALSE))
+  faoProd <- suppressMessages(read.csv(system.file("extdata", "./hindcast-data/fao_prod.csv", package = "gcamland"), stringsAsFactors = FALSE))
 
   # Tidy data
   faoHA %>%
+    select(-nit) %>%
     gather(year, ha, -FAO_country, -item) %>%
     replace_na(list(ha = 0)) ->
     faoHA
-  faoHA$year <- as.integer(faoHA$year)
+  faoHA$year <- as.integer(substr(faoHA$year, 2, 5))
   faoHA$ha <- as.integer(faoHA$ha)
 
   faoProd %>%
+    select(-nit) %>%
     gather(year, prod, -FAO_country, -item) %>%
     replace_na(list(prod = 0))->
     faoProd
-  faoProd$year <- as.integer(faoProd$year)
+  faoProd$year <- as.integer(substr(faoProd$year, 2, 5))
   faoProd$prod <- as.integer(faoProd$prod)
 
   # Join data and compute average yield
