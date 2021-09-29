@@ -62,7 +62,7 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
   # Determine the number of parameters. If aDifferentiateParamByCrop = TRUE, then we have 5 parameters each for
   # lagged share and linear years. If FALSE, then only one parameter for each. In both cases, there are 3 logit exponents
   if( aDifferentiateParamByCrop ) {
-    NPARAM <- 13
+    NPARAM <- 9
   } else {
     NPARAM <- 5
   }
@@ -95,13 +95,13 @@ run_ensemble  <- function(N = 500, aOutputDir = "./outputs", skip = 0,
     levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
     levels.LAGSHARE2 <- scaleParam(randomNumbers[,5], limits.LAGSHARE)
     levels.LAGSHARE3 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
-    levels.LAGSHARE4 <- scaleParam(randomNumbers[,7], limits.LAGSHARE)
-    levels.LAGSHARE5 <- scaleParam(randomNumbers[,8], limits.LAGSHARE)
-    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
-    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,10], limits.LINYEARS))
-    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,11], limits.LINYEARS))
-    levels.LINYEARS4 <- round(scaleParam(randomNumbers[,12], limits.LINYEARS))
-    levels.LINYEARS5 <- round(scaleParam(randomNumbers[,13], limits.LINYEARS))
+    levels.LAGSHARE4 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
+    levels.LAGSHARE5 <- scaleParam(randomNumbers[,6], limits.LAGSHARE)
+    levels.LINYEARS1 <- round(scaleParam(randomNumbers[,7], limits.LINYEARS))
+    levels.LINYEARS2 <- round(scaleParam(randomNumbers[,8], limits.LINYEARS))
+    levels.LINYEARS3 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+    levels.LINYEARS4 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
+    levels.LINYEARS5 <- round(scaleParam(randomNumbers[,9], limits.LINYEARS))
   } else {
     # Set expectation parameters equal for all three crop groups
     levels.LAGSHARE1 <- scaleParam(randomNumbers[,4], limits.LAGSHARE)
