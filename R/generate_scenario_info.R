@@ -365,7 +365,7 @@ update_scen_info <- function(aName = NULL, aScenarioType = DEFAULT.SCENARIO.TYPE
 #'
 #' @author KVC December 2018
 get_saved_share_weights <- function() {
-  temp <- suppressMessages(read.csv(system.file("extdata", "./initialization-data/CalibratedShareWeights_2010.csv", package = "gcamland"), skip = 3, stringsAsFactors = FALSE))
+  temp <- suppressMessages(read_csv(system.file("extdata", "./initialization-data/CalibratedShareWeights_2010.csv", package = "gcamland"), skip = 3))
 
   shwt_vector <- as.numeric(temp$shareWeight)
   names(shwt_vector) <- temp$name
