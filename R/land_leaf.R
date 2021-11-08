@@ -140,7 +140,8 @@ LandLeaf_calcLandAllocation <- function(aLandLeaf, aLandAllocationAbove, aPeriod
     aLandLeaf$mLandAllocation[aPeriod] <- aLandAllocationAbove * aLandLeaf$mShare[[aPeriod]]
     aLandLeaf$mHarvestedLand[aPeriod] <- aLandLeaf$mLandAllocation[[aPeriod]] * aLandLeaf$mHAtoCL[[aPeriod]]
   } else {
-    aLandLeaf$mLandAllocation[aPeriod] <- 0.0;
+    aLandLeaf$mLandAllocation[aPeriod] <- 0.0
+    aLandLeaf$mHarvestedLand[aPeriod] <- 0.0
   }
 }
 
