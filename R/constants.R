@@ -53,7 +53,7 @@ DBL_MIN <- 1e-15
 
 # **************************************************************************************************************
 # * Types of biomass crops
-BIOMASS_TYPES <- c("biomass", "willow", "eucalyptus", "Jatropha")
+BIOMASS_TYPES <- c("biomass", "willow", "eucalyptus", "Jatropha", "miscanthus")
 
 # **************************************************************************************************************
 # * Region-specificiation. Only one region is currently permitted. A single AEZ can be specified, or
