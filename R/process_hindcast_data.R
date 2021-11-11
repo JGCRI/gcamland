@@ -87,7 +87,7 @@ get_hindcast_AgProdChange <- function(aScenType){
       mutate(prev_year = year - 1) %>%
       filter(prev_year %in% YEARS[[aScenType]]) %>%
       left_join(faoYield, by=c("region", "GCAM_commodity", "prev_year" = "year")) %>%
-      mutate(AgProdChange = (yield.x / yield.y) - 1) %>%
+      mutate(AgProdChange = if_else(!is.na(yield.y) & yield.y > 0, (yield.x / yield.y) - 1, 0)) %>%
       select(region, GCAM_commodity, year, AgProdChange) ->
       faoAgProdChange
   } else {
@@ -106,7 +106,7 @@ get_hindcast_AgProdChange <- function(aScenType){
       mutate(prev_year = year - 5) %>%
       filter(prev_year %in% YEARS[[aScenType]]) %>%
       left_join(faoYield, by=c("region", "GCAM_commodity", "prev_year" = "year")) %>%
-      mutate(AgProdChange = (yield.x / yield.y)^(1/5) - 1) %>%
+      mutate(AgProdChange = if_else(!is.na(yield.y) & yield.y > 0, (yield.x / yield.y)^(1/5) - 1, 0)) %>%
       select(region, GCAM_commodity, year, AgProdChange) ->
       faoAgProdChange
   }
