@@ -5,6 +5,43 @@ library(ggplot2)
 # bring together many disparate price data sets into a single set that has 1970ish-2015 for
 # all GCAM crop commodities and regions.
 
+
+# 1.  from 1991-2012, it uses gcam data system values for all regions and commodities.
+#     The way I updated the code to have it output prices for every year instead of just
+#     the average 2008-2012 probably didn't have it fill out some weird Cotton data quite correctly ->
+#     When you plot the final FiberCrop prices, the 1991-2012 years don't really fit the trend.
+# 1a. Specifically, the US fibercrop behavior was definitely wrong - in joining the production data
+#     to the price data around Line 179 of zchunk_LB1321.region_ag_prices.R, there end up being only
+#     NA data despite there being production and price data for both cotton lint and cottonseed (not
+#     seed cotton). This was because the join was done on `item.code` information.
+#     So I dropped that column so that we could actually get data. This does not seem to impact other
+#     commodities/regions significantly when I compare price time series with my changed gcamdata
+#     output vs an old version that kept `item.code`. Basically, some but not all gross looking
+#     behavior went away and it doesn't seem like new gross looking behavior was introduced.
+# 1b. Canadian FiberCrop - post 1990, FAO has no data for any kind of fibercrop in Canada
+#     (https://www.fao.org/faostat/en/#data/PP) and this is consistent with what comes out of
+#     the gcam data system and with Ryna's data (no values post 1990, though we wouldn't use
+#     them anyway). Pre 1990, FAO does have fibre crop nes data in Canada (https://www.fao.org/faostat/en/#data/PA)
+#     which is presumably where Ryna's pre 1990 values are sourced from. This results in a massive
+#     discontinuity int he price time series. We MAY need/want to drop any pre-1990 values and
+#     just backfill the 1991 value. **CHECK WITH XIN**
+# 2.  For years after 2012, all regions, all commodities, we use Ryna's values where we have
+#     them and just extend 2012 values through 2015 when we don't.
+# 3.  For years before 1991, for nonUSSR, non China regions, we use Ryna's data where we have it.
+# 4.  For years before 1991, frmr USSR regions, we use FAO discontinued series producer prices,
+#     with the units adjusted to 1975USD/kg via current year exchange rates (https://www.fao.org/faostat/en/#data/PE)
+#     and then US GDP deflation (gcam data system fao gdp deflators assumption file)
+#     (which Xin recommended). The time series look very reasonable in the frmr USSR regions
+#     doing that.
+# 5.  For years before 1991, China, I did the same calculations I did for the USSR with the
+#     discontinued China data. This results in some very weird price time series for some crops
+#     but that's a direct reflection of the exchange rate.
+#     **CHECK WITH XIN**
+# 6.  We ended up with Brazil prices from 1981, so I just extended the 1981 price back to 1975
+# 7.  For any other commodities and regions with missing years in 1975-2015, we just extended the
+#     closest available price through those missing years.
+
+
 source('R/constants.R')
 
 # -------------------------------------
@@ -392,58 +429,105 @@ faoPrices %>%
          year %in% YEARS$Hindcast) ->
   faoPrices
 
-ggplot(faoPrices %>% filter(sector == 'Corn')) +
+p<- ggplot(faoPrices %>% filter(sector == 'Corn')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('Corn')
+ggsave('inst/extdata/hindcast-data/price_time_series/Corn.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'FiberCrop')) +
+p<- ggplot(faoPrices %>% filter(sector == 'FiberCrop')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('FiberCrop')
+ggsave('inst/extdata/hindcast-data/price_time_series/FiberCrop.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'MiscCrop')) +
+p<- ggplot(faoPrices %>% filter(sector == 'MiscCrop')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('MiscCrop')
+ggsave('inst/extdata/hindcast-data/price_time_series/MiscCrop.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'OilCrop')) +
+p<- ggplot(faoPrices %>% filter(sector == 'OtherGrain')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('OtherGrain')
+ggsave('inst/extdata/hindcast-data/price_time_series/OtherGrain.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'Rice')) +
+p<- ggplot(faoPrices %>% filter(sector == 'OilCrop')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('OilCrop')
+ggsave('inst/extdata/hindcast-data/price_time_series/OilCrop.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'Root_Tuber')) +
+p<- ggplot(faoPrices %>% filter(sector == 'Rice')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('Rice')
+ggsave('inst/extdata/hindcast-data/price_time_series/Rice.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'SugarCrop')) +
+p<- ggplot(faoPrices %>% filter(sector == 'Root_Tuber')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('Root_Tuber')
+ggsave('inst/extdata/hindcast-data/price_time_series/RootTuber.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'Wheat')) +
+p<- ggplot(faoPrices %>% filter(sector == 'SugarCrop')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('SugarCrop')
+ggsave('inst/extdata/hindcast-data/price_time_series/SugarCrop.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-ggplot(faoPrices %>% filter(sector == 'PalmFruit')) +
+p<- ggplot(faoPrices %>% filter(sector == 'Wheat')) +
   geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4)
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('Wheat')
+ggsave('inst/extdata/hindcast-data/price_time_series/Wheat.jpg', p,
+       width = 12, height = 6, units = 'in')
 
-
-
-
+p<- ggplot(faoPrices %>% filter(sector == 'PalmFruit')) +
+  geom_point(aes(x=year, y=price), size = 0.2) +
+  facet_wrap(~GCAM_region_name, nrow = 4) +
+  ggtitle('PalmFruit')
+ggsave('inst/extdata/hindcast-data/price_time_series/PalmFruit.jpg', p,
+       width = 12, height = 6, units = 'in')
 
 # -------------------------------------
 # save final unified prices
 write.csv(faoPrices, 'inst/extdata/hindcast-data/prod_price_rgn_unified.csv', row.names = FALSE)
 
 
+old <- read.csv('inst/extdata/hindcast-data/prod_price_rgn_unified_old.csv', stringsAsFactors = F) %>%
+  rename(old=price)
 
-# Some of the prices for China pre 1991 are wild but that's the exchange rate.
-# Brazil we just extended 1981 prices back.
-# frmr USSR regions got USSR prices for pre 1991
-# No regions were missing interior years.
-# Any other regions, we filled in missing years going back with their first
-# available year. Missing regions going forward with last.
-# Need to check gcamdatasystem code for fibercrop, looks like my adjustment
-# from the trade years to all years wasn't a great choice.
+faoPrices %>%
+  left_join(old, by = c('GCAM_region_name', 'sector', 'year')) %>%
+  mutate(difference=price-old) ->
+  compare
 
+compare %>%
+  group_by(GCAM_region_name, sector) %>%
+  summarize(maxdiff = max(abs(difference)),
+            mindiff=min(abs(difference))) %>%
+  ungroup ->
+  x1
+
+x1%>%
+  gather(metric,  value, -sector, -GCAM_region_name) -> x
+
+ggplot(x %>% filter(sector!='FiberCrop')) +
+  geom_point(aes(x=sector, y=value, color=metric)) +
+  facet_wrap(~GCAM_region_name, nrow=4)+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplot(x %>% filter(sector=='FiberCrop')) +
+  geom_point(aes(x=sector, y=value, color=metric)) +
+  facet_wrap(~GCAM_region_name, nrow=4)+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
