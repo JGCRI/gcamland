@@ -69,11 +69,11 @@ get_hindcast_prices <- function(){
   price <- year <- sector <- GCAM_region_name <- GCAM_commod <- pp_2005usd_tonne <- uniqueJoinField <-  NULL
 
   # Read prices (these are already aggregated to gcam commodity and region)
-  faoPrices <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/prod_price_rgn.csv", package = "gcamland"), skip=3))
+  faoPrices <- suppressMessages(read.csv(system.file("extdata", "./hindcast-data/prod_price_rgn_unified.csv", package = "gcamland")))
 
   # Convert to 1975$/kg, filter for the right region, rename columns
   faoPrices %>%
-    filter(GCAM_region_name == DEFAULT.REGION) %>%
+    #dplyr::filter(GCAM_region_name == DEFAULT.REGION) %>%
     rename(sector = GCAM_commod,
            price = pp_2005usd_tonne) %>%
     mutate(price = price / 3.05 / 1000) %>% # 3.05 converts from 2005$ to 1975$; 1000 converts from tonnes to kg
