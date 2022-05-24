@@ -37,9 +37,13 @@ printDebug <- function(aLandAllocator, aScenarioInfo)
 #' @param aScenarioInfo Scenario-related information, including names, logits, expectations
 #' @author KVC November 2017
 printPrices <- function(aScenarioInfo) {
-    file <- file.path(aScenarioInfo$mOutputDir, "prices.csv")
     type <- aScenarioInfo$mScenarioType
-    write_csv(PRICES[[type]], file)
+    rgn <- aScenarioInfo$mRegion[1]
+    file <- file.path(aScenarioInfo$mOutputDir,
+                      paste0("prices_", rgn, ".csv"))
+    out_prices <- PRICES[[type]]
+    out_prices <- subset(out_prices, region == rgn)
+    write_csv(out_prices , file)
 }
 
 #' printAllOutputs

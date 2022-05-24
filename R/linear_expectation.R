@@ -114,6 +114,7 @@ LinearExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioInf
   # Get prices for this land leaf/scenario type
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
   price_table <- subset(price_table, sector == aLandLeaf$mProductName[1])
+  price_table <- subset(price_table, region == aScenarioInfo$mRegion[1])
 
   # Update price tibble to include actual prices
   i <- startYear
