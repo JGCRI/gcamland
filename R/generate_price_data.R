@@ -73,11 +73,12 @@ get_hindcast_prices <- function(){
 
   # Convert to 1975$/kg, filter for the right region, rename columns
   faoPrices %>%
+    distinct %>%
     #dplyr::filter(GCAM_region_name == DEFAULT.REGION) %>%
-    rename(sector = GCAM_commod,
-           price = pp_2005usd_tonne) %>%
-    mutate(price = price / 3.05 / 1000) %>% # 3.05 converts from 2005$ to 1975$; 1000 converts from tonnes to kg
-    select(year, sector, price) ->
+    rename(region = GCAM_region_name) %>%
+    # mutate(price = price / 3.05 / 1000) %>% # 3.05 converts from 2005$ to 1975$; 1000 converts from tonnes to kg
+    # ^ already done
+    select(region, year, sector, price) ->
     faoPrices
 
   # Prices for PalmFruit are missing prior to 1991, copy 1990 prices backward
@@ -94,11 +95,29 @@ get_hindcast_prices <- function(){
 
   # Forest, Fodder, biomass & Pasture prices are missing from FAO price data set
   # Read in from a separate file
-  extraPrices <- suppressMessages(read_csv(system.file("extdata", "./hindcast-data/price_extra.csv", package = "gcamland"), skip=4))
+  extraPrices <- suppressMessages(read.csv(system.file("extdata", "./hindcast-data/price_extra.csv", package = "gcamland"), skip=4))
 
+  # for nonUS regions, set the extra prices to a value of 1 (any nonzero constant)
   faoPrices %>%
-    bind_rows(select(extraPrices, sector, year, price)) ->
+    select(region) %>%
+    distinct %>%
+    filter(region != 'USA') %>%
+    mutate(uniqueJoinField = 1) %>%
+    full_join(extraPrices%>%
+                select(sector, year) %>%
+                distinct %>%
+                mutate(uniqueJoinField = 1,
+                       price = 1),
+              by = "uniqueJoinField") %>%
+    select(-uniqueJoinField) %>%
+    bind_rows(extraPrices) ->
+    extraPrices
+
+  # bind to faoPrices
+  faoPrices %>%
+    bind_rows(extraPrices) ->
     faoPrices
+
 
   return(faoPrices)
 }
