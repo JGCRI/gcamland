@@ -429,105 +429,105 @@ faoPrices %>%
          year %in% YEARS$Hindcast) ->
   faoPrices
 
-p<- ggplot(faoPrices %>% filter(sector == 'Corn')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('Corn')
-ggsave('inst/extdata/hindcast-data/price_time_series/Corn.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'FiberCrop')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('FiberCrop')
-ggsave('inst/extdata/hindcast-data/price_time_series/FiberCrop.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'MiscCrop')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('MiscCrop')
-ggsave('inst/extdata/hindcast-data/price_time_series/MiscCrop.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'OtherGrain')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('OtherGrain')
-ggsave('inst/extdata/hindcast-data/price_time_series/OtherGrain.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'OilCrop')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('OilCrop')
-ggsave('inst/extdata/hindcast-data/price_time_series/OilCrop.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'Rice')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('Rice')
-ggsave('inst/extdata/hindcast-data/price_time_series/Rice.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'Root_Tuber')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('Root_Tuber')
-ggsave('inst/extdata/hindcast-data/price_time_series/RootTuber.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'SugarCrop')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('SugarCrop')
-ggsave('inst/extdata/hindcast-data/price_time_series/SugarCrop.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'Wheat')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('Wheat')
-ggsave('inst/extdata/hindcast-data/price_time_series/Wheat.jpg', p,
-       width = 12, height = 6, units = 'in')
-
-p<- ggplot(faoPrices %>% filter(sector == 'PalmFruit')) +
-  geom_point(aes(x=year, y=price), size = 0.2) +
-  facet_wrap(~GCAM_region_name, nrow = 4) +
-  ggtitle('PalmFruit')
-ggsave('inst/extdata/hindcast-data/price_time_series/PalmFruit.jpg', p,
-       width = 12, height = 6, units = 'in')
+# p<- ggplot(faoPrices %>% filter(sector == 'Corn')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('Corn')
+# ggsave('inst/extdata/hindcast-data/price_time_series/Corn.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'FiberCrop')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('FiberCrop')
+# ggsave('inst/extdata/hindcast-data/price_time_series/FiberCrop.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'MiscCrop')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('MiscCrop')
+# ggsave('inst/extdata/hindcast-data/price_time_series/MiscCrop.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'OtherGrain')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('OtherGrain')
+# ggsave('inst/extdata/hindcast-data/price_time_series/OtherGrain.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'OilCrop')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('OilCrop')
+# ggsave('inst/extdata/hindcast-data/price_time_series/OilCrop.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'Rice')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('Rice')
+# ggsave('inst/extdata/hindcast-data/price_time_series/Rice.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'Root_Tuber')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('Root_Tuber')
+# ggsave('inst/extdata/hindcast-data/price_time_series/RootTuber.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'SugarCrop')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('SugarCrop')
+# ggsave('inst/extdata/hindcast-data/price_time_series/SugarCrop.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'Wheat')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('Wheat')
+# ggsave('inst/extdata/hindcast-data/price_time_series/Wheat.jpg', p,
+#        width = 12, height = 6, units = 'in')
+#
+# p<- ggplot(faoPrices %>% filter(sector == 'PalmFruit')) +
+#   geom_point(aes(x=year, y=price), size = 0.2) +
+#   facet_wrap(~GCAM_region_name, nrow = 4) +
+#   ggtitle('PalmFruit')
+# ggsave('inst/extdata/hindcast-data/price_time_series/PalmFruit.jpg', p,
+#        width = 12, height = 6, units = 'in')
 
 # -------------------------------------
 # save final unified prices
 write.csv(faoPrices, 'inst/extdata/hindcast-data/prod_price_rgn_unified.csv', row.names = FALSE)
 
 
-old <- read.csv('inst/extdata/hindcast-data/prod_price_rgn_unified_old.csv', stringsAsFactors = F) %>%
-  rename(old=price)
-
-faoPrices %>%
-  left_join(old, by = c('GCAM_region_name', 'sector', 'year')) %>%
-  mutate(difference=price-old) ->
-  compare
-
-compare %>%
-  group_by(GCAM_region_name, sector) %>%
-  summarize(maxdiff = max(abs(difference)),
-            mindiff=min(abs(difference))) %>%
-  ungroup ->
-  x1
-
-x1%>%
-  gather(metric,  value, -sector, -GCAM_region_name) -> x
-
-ggplot(x %>% filter(sector!='FiberCrop')) +
-  geom_point(aes(x=sector, y=value, color=metric)) +
-  facet_wrap(~GCAM_region_name, nrow=4)+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-
-ggplot(x %>% filter(sector=='FiberCrop')) +
-  geom_point(aes(x=sector, y=value, color=metric)) +
-  facet_wrap(~GCAM_region_name, nrow=4)+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# old <- read.csv('inst/extdata/hindcast-data/prod_price_rgn_unified_old.csv', stringsAsFactors = F) %>%
+#   rename(old=price)
+#
+# faoPrices %>%
+#   left_join(old, by = c('GCAM_region_name', 'sector', 'year')) %>%
+#   mutate(difference=price-old) ->
+#   compare
+#
+# compare %>%
+#   group_by(GCAM_region_name, sector) %>%
+#   summarize(maxdiff = max(abs(difference)),
+#             mindiff=min(abs(difference))) %>%
+#   ungroup ->
+#   x1
+#
+# x1%>%
+#   gather(metric,  value, -sector, -GCAM_region_name) -> x
+#
+# ggplot(x %>% filter(sector!='FiberCrop')) +
+#   geom_point(aes(x=sector, y=value, color=metric)) +
+#   facet_wrap(~GCAM_region_name, nrow=4)+
+#   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+#
+# ggplot(x %>% filter(sector=='FiberCrop')) +
+#   geom_point(aes(x=sector, y=value, color=metric)) +
+#   facet_wrap(~GCAM_region_name, nrow=4)+
+#   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
