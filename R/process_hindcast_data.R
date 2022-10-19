@@ -162,4 +162,5 @@ YIELDS.HIST <- get_historic_yields()
 #' Yields at geopolitical region level for all FAO years
 #' @include constants.R
 #' @author Kate Calvin
-YIELD.RATIOS <- get_historic_yield_ratios("Hindcast")
+#YIELD.RATIOS <- get_historic_yield_ratios("Hindcast")
+YIELD.RATIOS <- sapply(SCEN.TYPES, get_historic_yield_ratios, simplify=FALSE, USE.NAMES=TRUE)
