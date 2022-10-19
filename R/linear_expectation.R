@@ -28,6 +28,9 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
     message("Error: crop grouping not specified.")
   }
 
+  # subset the YIELD.RATIOS to only work with the region of interest
+  rgn.YIELD.RATIOS <- subset(YIELD.RATIOS, region == aScenarioInfo$mRegion[1])
+
   # Get scenario type
   scentype <- aScenarioInfo$mScenarioType
 
@@ -44,12 +47,12 @@ LinearExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioInf
   i <- startYear
   while(i < currYear){
     if(i < getStartYear(scentype)) {
-      if(aLandLeaf$mProductName[1] %in% YIELD.RATIOS$GCAM_commodity) {
-        if(i %in% YIELD.RATIOS$year) {
-          temp <- subset(YIELD.RATIOS, year == i & GCAM_commodity == aLandLeaf$mProductName[1])
+      if(aLandLeaf$mProductName[1] %in% rgn.YIELD.RATIOS$GCAM_commodity) {
+        if(i %in% rgn.YIELD.RATIOS$year) {
+          temp <- subset(rgn.YIELD.RATIOS, year == i & GCAM_commodity == aLandLeaf$mProductName[1])
           ratio <- temp$yieldRatio
         } else {
-          temp <- subset(YIELD.RATIOS, year == min(YIELD.RATIOS$year) & GCAM_commodity == aLandLeaf$mProductName[1])
+          temp <- subset(rgn.YIELD.RATIOS, year == min(rgn.YIELD.RATIOS$year) & GCAM_commodity == aLandLeaf$mProductName[1])
           ratio <- temp$yieldRatio
         }
       } else {

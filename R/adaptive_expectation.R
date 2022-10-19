@@ -28,6 +28,10 @@ AdaptiveExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioI
     message("Error: crop grouping not specified.")
   }
 
+  # subset the YIELD.RATIOS to only work with the region of interest
+  rgn.YIELD.RATIOS <- subset(YIELD.RATIOS, region == aScenarioInfo$mRegion[1])
+
+
   # Calculate expectations. For model periods > 1, we calculate this iteratively to save time.
   if ( aPeriod > 1 ) {
     # Get previous expectation
@@ -46,17 +50,17 @@ AdaptiveExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioI
   } else {
     # If we don't have saved previousExpectations, we need to generate them
     # using calc_lagged_expectation(). First, we need to set up a yield table
-    years <- seq(from=min(YIELD.RATIOS$year), to=get_per_to_yr(aPeriod, aScenType=aScenarioInfo$mScenarioType), by=1)
+    years <- seq(from=min(rgn.YIELD.RATIOS$year), to=get_per_to_yr(aPeriod, aScenType=aScenarioInfo$mScenarioType), by=1)
     yield_table <- data.frame(year = years,
                               base_yield = rep_len(aLandLeaf$mYield[[aPeriod]], length(years)),
                               yield_ratio = rep_len(1, length(years)))
-    if(aLandLeaf$mProductName[1] %in% YIELD.RATIOS$GCAM_commodity) {
+    if(aLandLeaf$mProductName[1] %in% rgn.YIELD.RATIOS$GCAM_commodity) {
       for(i in years) {
-        if(i %in% YIELD.RATIOS$year) {
-          temp <- subset(YIELD.RATIOS, year == i & GCAM_commodity == aLandLeaf$mProductName[1])
+        if(i %in% rgn.YIELD.RATIOS$year) {
+          temp <- subset(rgn.YIELD.RATIOS, year == i & GCAM_commodity == aLandLeaf$mProductName[1])
           yield_table$yield_ratio[yield_table$year == i] <- temp$yieldRatio
         } else {
-          temp <- subset(YIELD.RATIOS, year == min(YIELD.RATIOS$year) & GCAM_commodity == aLandLeaf$mProductName[1])
+          temp <- subset(rgn.YIELD.RATIOS, year == min(rgn.YIELD.RATIOS$year) & GCAM_commodity == aLandLeaf$mProductName[1])
           yield_table$yield_ratio[yield_table$year == i] <- temp$yieldRatio
         }
       }
