@@ -116,6 +116,7 @@ AdaptiveExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioI
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
   price_table <- dplyr::filter(price_table, sector == aLandLeaf$mProductName[1])
   price_table <- subset(price_table, region == aScenarioInfo$mRegion[1])
+  price_table <- price_table %>% distinct()
 
   if(aLandLeaf$mProductName[1] %in% unique(price_table$sector)) {
     # Calculate expected price

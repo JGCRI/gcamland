@@ -35,6 +35,7 @@ PerfectExpectation_calcExpectedPrice <- function(aLandLeaf, aPeriod, aScenarioIn
   # Get price for this leaf in this period only
   price_table <- PRICES[[aScenarioInfo$mScenarioType]]
   price_table <- subset(price_table, region == aScenarioInfo$mRegion[1])
+  price_table <- price_table %>% distinct()
   if(aLandLeaf$mProductName[1] %in% price_table$sector) {
     if(aScenarioInfo$mScenarioType == "PCHES") {
       # PCHES uses subregional prices. First, figure out the subregion by decomposing the land leaf name
