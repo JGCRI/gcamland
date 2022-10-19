@@ -132,8 +132,7 @@ get_historic_yield_ratios <- function(aScenType){
 
   # Get yields and filter for years up to and including the final historical year
   YIELDS.HIST %>%
-    filter(year <= min(YEARS[[aScenType]]),
-           region == DEFAULT.REGION) ->
+    filter(year <= min(YEARS[[aScenType]])) ->
     faoYield
 
   # Calculate ratio to final historical year
