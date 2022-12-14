@@ -53,6 +53,8 @@ get_historic_yields <- function(){
   faoYield <- na.omit(faoYield)
   faoYield <- aggregate(.~region + GCAM_commodity + year, faoYield, FUN="sum")
   faoYield$yield <- faoYield$prod / faoYield$ha
+  faoYield %>%
+    mutate(yield = if_else(ha == 0, 0, yield)) -> faoYield
   faoYield <- faoYield[c("region", "GCAM_commodity", "year", "yield")]
   faoYield <- na.omit(faoYield)
 
