@@ -20,8 +20,8 @@ Convert an object to a \code{ScenarioInfo} object
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{environment}: Convert an environment to a \code{ScenarioInfo}
+\item \code{as.ScenarioInfo(environment)}: Convert an environment to a \code{ScenarioInfo}
 
-\item \code{list}: Convert a list to a \code{ScenarioInfo}
+\item \code{as.ScenarioInfo(list)}: Convert a list to a \code{ScenarioInfo}
+
 }}
-

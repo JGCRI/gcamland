@@ -81,17 +81,18 @@ get_hindcast_prices <- function(){
     select(region, year, sector, price) ->
     faoPrices
 
-  # Prices for PalmFruit are missing prior to 1991, copy 1990 prices backward
-  faoPrices %>%
-    filter(sector == "PalmFruit",
-           year == 1991) %>%
-    select(-year) %>%
-    mutate(uniqueJoinField = 1) %>%
-    full_join(mutate(tibble(year = YEARS$Hindcast), uniqueJoinField = 1), by = "uniqueJoinField") %>%
-    select(-uniqueJoinField) %>%
-    filter(year < 1991) %>%
-    bind_rows(faoPrices) ->
-    faoPrices
+  # # Prices for PalmFruit are missing prior to 1991, copy 1990 prices backward
+  # # Now handled in inst>extdata>hindcast-data>unified_prices.R
+  # faoPrices %>%
+  #   filter(sector == "PalmFruit",
+  #          year == 1991) %>%
+  #   select(-year) %>%
+  #   mutate(uniqueJoinField = 1) %>%
+  #   full_join(mutate(tibble(year = YEARS$Hindcast), uniqueJoinField = 1), by = "uniqueJoinField") %>%
+  #   select(-uniqueJoinField) %>%
+  #   filter(year < 1991) %>%
+  #   bind_rows(faoPrices) ->
+  #   faoPrices
 
   # Forest, Fodder, biomass & Pasture prices are missing from FAO price data set
   # Read in from a separate file
