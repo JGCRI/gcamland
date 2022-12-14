@@ -29,8 +29,8 @@ AdaptiveExpectation_calcExpectedYield <- function(aLandLeaf, aPeriod, aScenarioI
   }
 
   # subset the YIELD.RATIOS to only work with the region of interest
-  # rgn.YIELD.RATIOS <- YIELD.RATIOS[[aScenarioInfo$mScenarioType]]
-  rgn.YIELD.RATIOS <- subset(YIELD.RATIOS, region == aScenarioInfo$mRegion[1])
+  rgn.YIELD.RATIOS <- YIELD.RATIOS[[aScenarioInfo$mScenarioType]]
+  rgn.YIELD.RATIOS <- subset(rgn.YIELD.RATIOS, region == aScenarioInfo$mRegion[1])
 
 
 
